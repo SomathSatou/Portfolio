@@ -1,0 +1,54 @@
+# === Dependencies ===
+node_modules/
+
+# === Build outputs ===
+dist/
+build/
+.out/
+.next/
+.svelte-kit/
+out/
+
+# === Caches ===
+.vite/
+.parcel-cache/
+.eslintcache
+.cache/
+.cache-loader/
+.tmp/
+tmp/
+.tailwindcss/
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Logs ===
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Env files (keep examples) ===
+.env
+.env.*
+!.env.example
+
+# === Test coverage / reports ===
+coverage/
+reports/
+
+# === Editor / OS files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# === Misc ===
+*.local
+*.orig
