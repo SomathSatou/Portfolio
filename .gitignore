@@ -52,3 +52,7 @@ desktop.ini
 # === Misc ===
 *.local
 *.orig
+
+.venv/*
+.venv
+*.pyc
