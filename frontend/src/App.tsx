@@ -1,44 +1,6 @@
 import React from 'react'
-
-function Header() {
-  const [dark, setDark] = React.useState<boolean>(document.documentElement.classList.contains('dark'))
-
-  function toggleTheme() {
-    const root = document.documentElement
-    const next = !dark
-    if (next) {
-      root.classList.add('dark')
-      try { localStorage.setItem('theme', 'dark') } catch { /* ignore storage errors */ }
-    } else {
-      root.classList.remove('dark')
-      try { localStorage.setItem('theme', 'light') } catch { /* ignore storage errors */ }
-    }
-    setDark(next)
-  }
-
-  return (
-    <header className="sticky top-0 z-50 bg-primary text-white shadow">
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <a href="#cv" className="font-semibold tracking-wide">Thomas Saout</a>
-        <nav className="flex items-center gap-6 text-sm">
-          <a href="#cv" className="hover:text-accent3 transition-colors">CV</a>
-          <a href="#projects" className="hover:text-accent3 transition-colors">Projets</a>
-          <a href="#contact" className="hover:text-accent3 transition-colors">Contact</a>
-          {/* TODO: Add language switch FR/EN with i18n */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="rounded-md bg-white/10 hover:bg-white/15 px-3 py-1.5 text-xs font-medium tracking-wide"
-            aria-label="Basculer le thème"
-            title="Basculer le thème"
-          >
-            {dark ? 'Mode clair' : 'Mode sombre'}
-          </button>
-        </nav>
-      </div>
-    </header>
-  )
-}
+import Layout from './components/Layout'
+import { categories, projectBySlug } from './data/projects'
 
 function SectionCV() {
   return (
@@ -77,38 +39,7 @@ function SectionCV() {
   )
 }
 
-function SectionProjects() {
-  const categories = [
-    {
-      name: 'Traitement documentaire',
-      items: ['Extraction de documents', 'Génération de documents', 'LLM & NLP'],
-    },
-    {
-      name: 'Jeux',
-      items: ['ALFI (ludique)', 'MechaIDLE'],
-    },
-    {
-      name: 'Web',
-      items: ['Projet à définir (Java, Laravel, TailwindCSS)', 'Infoscope (Django + React)'],
-    },
-    {
-      name: 'Recherche',
-      items: ['ICTAI 2024', 'Overview'],
-    },
-    {
-      name: 'Automatisation',
-      items: ['N8N'],
-    },
-    {
-      name: 'Formation',
-      items: ['Vercel', 'Supabase', 'OpenRouter'],
-    },
-    {
-      name: 'Sécurité',
-      items: ['Audit'],
-    },
-  ]
-
+ function SectionProjects() {
   return (
     <section id="projects">
       <div className="section">
@@ -120,13 +51,23 @@ function SectionProjects() {
             <div key={cat.name} className="card">
               <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
               <ul className="mt-3 list-disc pl-5 text-sm text-gray-700">
-                {cat.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
+                {cat.projectSlugs.map((slug) => {
+                  const p = projectBySlug[slug]
+                  if (!p) return null
+                  return (
+                    <li key={slug}>
+                      <a href={`#/project/${slug}`} className="hover:underline">
+                        {p.title}
+                      </a>
+                    </li>
+                  )
+                })}
               </ul>
-              <button className="mt-4 btn btn-accent">
-                Voir un exemple
-              </button>
+              {cat.projectSlugs.length > 0 && (
+                <a href={`#/project/${cat.projectSlugs[0]}`} className="mt-4 inline-block btn btn-accent">
+                  Voir un exemple
+                </a>
+              )}
             </div>
           ))}
         </div>
@@ -205,22 +146,106 @@ function SectionContact() {
   )
 }
 
-export default function App() {
+function Home({ scrollTo }: { scrollTo?: 'cv' | 'projects' | 'contact' }) {
+  React.useEffect(() => {
+    if (!scrollTo) return
+    // Scroll after render
+    const id = scrollTo
+    const el = document.getElementById(id)
+    if (el) {
+      // small timeout to ensure layout is painted
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0)
+    }
+  }, [scrollTo])
+
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <SectionCV />
-        <SectionProjects />
-        <SectionContact />
-      </main>
-      <footer className="border-t bg-white dark:bg-gray-900 dark:border-gray-800">
-        <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-600 dark:text-gray-400 flex items-center justify-between">
-          <span>© {new Date().getFullYear()} Thomas Saout</span>
-          <span className="text-gray-400">FR/EN bientôt • Django + React</span>
-        </div>
-      </footer>
-    </div>
+    <>
+      <SectionCV />
+      <SectionProjects />
+      <SectionContact />
+    </>
   )
+}
+
+function ProjectPage({ slug }: { slug: string }) {
+  const project = projectBySlug[slug]
+  if (!project) {
+    return (
+      <section>
+        <div className="section">
+          <nav className="text-sm text-gray-500 mb-4">
+            <a href="#/" className="hover:underline">Accueil</a>
+            <span className="mx-2">/</span>
+            <span>Projet</span>
+          </nav>
+          <h1 className="text-2xl font-semibold text-primary">Projet introuvable</h1>
+          <p className="mt-3 text-gray-700">Ce projet n'existe pas ou a été déplacé.</p>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section>
+      <div className="section">
+        <nav className="text-sm text-gray-500 mb-4">
+          <a href="#/" className="hover:underline">Accueil</a>
+          <span className="mx-2">/</span>
+          <a href="#/projects" className="hover:underline">Projets</a>
+          <span className="mx-2">/</span>
+          <span>{project.title}</span>
+        </nav>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <h1 className="text-3xl font-bold text-primary">{project.title}</h1>
+            <p className="mt-4 text-gray-700">{project.description}</p>
+            {/* Contenu détaillé à venir: sections, images, etc. */}
+          </div>
+          <aside className="card">
+            {project.image && (
+              <img src={project.image} alt={project.title} className="w-full rounded-md mb-4" />
+            )}
+            {project.tags && project.tags.length > 0 && (
+              <div className="mb-4 flex flex-wrap gap-2">
+                {project.tags.map((t) => (
+                  <span key={t} className="badge">{t}</span>
+                ))}
+              </div>
+            )}
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noreferrer" className="btn btn-outline">Voir sur GitHub</a>
+            )}
+          </aside>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default function App() {
+  const [hash, setHash] = React.useState<string>(() => window.location.hash || '#/')
+
+  React.useEffect(() => {
+    const onHashChange = () => setHash(window.location.hash || '#/')
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  // Simple hash router: #/ for home, #/project/:slug for project page
+  let view: React.ReactNode = null
+  const match = hash.match(/^#\/project\/([^#/?]+)/)
+  if (match) {
+    view = <ProjectPage slug={match[1]} />
+  } else {
+    // support #/cv, #/projects, #/contact for direct section links
+    let scrollTo: 'cv' | 'projects' | 'contact' | undefined
+    if (hash === '#/cv') scrollTo = 'cv'
+    else if (hash === '#/projects') scrollTo = 'projects'
+    else if (hash === '#/contact') scrollTo = 'contact'
+    view = <Home scrollTo={scrollTo} />
+  }
+
+  return <Layout>{view}</Layout>
 }
 
