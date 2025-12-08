@@ -24,13 +24,22 @@ const P = (title: string, category: string, extra: Partial<Project> = {}): Proje
   ,
   category,
   tags: extra.tags,
-  github: extra.github,
+  github: extra.github ?? 'https://github.com/SomathSatou',
   image: extra.image,
 })
 
+const DescriptionExtractDoc: string = 'De nos jours, l\'extraction d\'informations documentaires est un domaine clé utilisé dans de nombreux secteurs, notamment dans l\'industrie et les services financiers. j\'ai eu l\'occasion de travailler sur cette problématique durant  <a href="https://theses.hal.science/tel-05004226/document" target="_blank" rel="noreferrer">ma thèse</a> .'
+    + '<br /><br />L\'objectif de ce projet était d\'implémenter une solution complète pour l\'extraction automatique des informations clés des documents, nottament des factures, des analyse de laboratoire et des fiches suiveuse.</strong>'
+    + '<br /><br />En s\'appuyant sur des techniques de reconaissance de motifs dans des graphes enrichie avec des technique de reconaissance visuel dans les document nous sommes parvenus a extraire éfficacement des tableaux des documents traités.'
+    + '<br /><br /><figure><img src="/assets/DataExtraction.png" alt="Exemple d\'extraction" class="w-full h-auto rounded-lg shadow-md" style="max-width: 800px; margin: 0 auto;" /><figcaption>Titre de votre image</figcaption></figure>'
+    + '<br /><br />Cette solution a été développée dans le cadre d\'un projet de recherche collaboratif avec l\'équipe du LERIA de l\'université d\'Angers et l\'entreprise KS2.';
+
 export const projects: Project[] = [
-  // Traitement documentaire
-  P('Extraction de documents', 'Traitement documentaire'),
+  // Traitements documentaires 
+  P('Extraction d\'information documentaire', 'Traitement documentaire', { 
+    tags: ["TALN", "Traitement de texte", "Reconnaissance visuelle", "Graphes", "Analyse de documents"], 
+    description: DescriptionExtractDoc 
+  }),
   P('Génération de documents', 'Traitement documentaire'),
   P('LLM & NLP', 'Traitement documentaire'),
 

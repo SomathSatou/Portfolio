@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "powershell -ExecutionPolicy Bypass -File ./start.ps1"
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",

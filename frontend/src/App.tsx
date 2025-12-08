@@ -199,8 +199,10 @@ function ProjectPage({ slug }: { slug: string }) {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h1 className="text-3xl font-bold text-primary">{project.title}</h1>
-            <p className="mt-4 text-gray-700">{project.description}</p>
-            {/* Contenu détaillé à venir: sections, images, etc. */}
+            <div
+              className="mt-4 text-gray-700 space-y-4"
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
           </div>
           <aside className="card">
             {project.image && (
@@ -221,6 +223,7 @@ function ProjectPage({ slug }: { slug: string }) {
       </div>
     </section>
   )
+
 }
 
 export default function App() {
