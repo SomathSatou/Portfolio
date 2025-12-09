@@ -199,10 +199,9 @@ function ProjectPage({ slug }: { slug: string }) {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h1 className="text-3xl font-bold text-primary">{project.title}</h1>
-            <div
-              className="mt-4 text-gray-700 space-y-4"
-              dangerouslySetInnerHTML={{ __html: project.description }}
-            />
+            <div className="mt-4 text-gray-700 space-y-4">
+              {project.description}
+            </div>
           </div>
           <aside className="card">
             {project.image && (
