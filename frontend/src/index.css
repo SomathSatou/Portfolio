@@ -31,7 +31,7 @@
     font-family: Souvenir, Georgia, "Times New Roman", serif;
   }
   body {
-    @apply m-0 min-w-[320px] min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+    @apply m-0 min-w-[320px] min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white;
     line-height: 1.7;
   }
   a {
@@ -42,6 +42,7 @@
     font-style: italic;
     text-align: center;
     text-decoration: underline;
+    @apply dark:text-white;
   }
 }
 
@@ -69,5 +70,9 @@
 
   .badge {
     @apply inline-block rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary dark:bg-primary/20 dark:text-primaryLight;
+  }
+
+  figure {
+    @apply dark:bg-gray-600;
   }
 }
