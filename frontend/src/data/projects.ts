@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { DescriptionExtractDoc } from './ProjectComponent/DescriptionExtractDoc';
+import { DescFullMetalWar } from './ProjectComponent/DescFullMetalWar';
 
 export type Project = {
   slug: string
@@ -43,6 +44,7 @@ export const projects: Project[] = [
   // Jeux
   P('ALFI (ludique)', 'Jeux'),
   P('MechaIDLE', 'Jeux'),
+  P('FullMetalWar', 'Jeux', { description: DescFullMetalWar() }),
 
   // Web
   P('Projet à définir (Java, Laravel, TailwindCSS)', 'Web'),
