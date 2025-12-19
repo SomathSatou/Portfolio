@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 import { DescriptionExtractDoc } from '../components/Project/DescriptionExtractDoc';
 import { DescFullMetalWar } from '../components/Project/DescFullMetalWar';
+import { DescICTAI2024 } from '../components/Project/DescICTAI2024';
+import { DescOverview } from '../components/Project/DescOverview';
+import { DescInfoscope } from '../components/Project/DescInfoscope';
 
 export type Project = {
   slug: string
@@ -50,11 +53,19 @@ export const projects: Project[] = [
 
   // Web
   P('Projet à définir (Java, Laravel, TailwindCSS)', 'Web'),
-  P('Infoscope (Django + React)', 'Web'),
-
+  P('Infoscope (Django + React)', 'Web', {
+    tags: ["Django", "React", "WordPress Migration", "Média", "CMS"],
+    description: DescInfoscope()
+  }),
   // Recherche
-  P('ICTAI 2024', 'Recherche'),
-  P('Overview', 'Recherche'),
+  P('ICTAI 2024', 'Recherche', {
+    tags: ["IEEE", "Conférence", "Extraction de tableaux", "Vision par ordinateur", "Graphes"],
+    description: DescICTAI2024()
+  }),
+  P('Overview', 'Recherche', {
+    tags: ["IEEE Access", "État de l'art", "Extraction de données", "Factures", "Survey"],
+    description: DescOverview()
+  }),
 
   // Automatisation
   P('N8N', 'Automatisation'),
