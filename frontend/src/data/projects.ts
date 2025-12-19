@@ -44,7 +44,9 @@ export const projects: Project[] = [
   // Jeux
   P('ALFI (ludique)', 'Jeux'),
   P('MechaIDLE', 'Jeux'),
-  P('FullMetalWar', 'Jeux', { description: DescFullMetalWar() }),
+  P('FullMetalWar', 'Jeux', { 
+    tags: ["IA", "Stratégie", "Jeux"],
+    description: DescFullMetalWar() }),
 
   // Web
   P('Projet à définir (Java, Laravel, TailwindCSS)', 'Web'),
