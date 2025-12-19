@@ -17,18 +17,19 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-primary text-white shadow">
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <a href="#/" className="font-semibold tracking-wide">Thomas Saout</a>
-        <nav className="flex items-center gap-6 text-sm">
-          <a href="#/cv" className="hover:text-accent3 transition-colors">CV</a>
-          <a href="#/projects" className="hover:text-accent3 transition-colors">Projets</a>
-          <a href="#/contact" className="hover:text-accent3 transition-colors">Contact</a>
-          {/* TODO: Add language switch FR/EN with i18n */}
+    <header className="header">
+      <div className="header-container">
+        <a href="#/" className="header-brand">Thomas Saout</a>
+        <nav className="header-nav">
+          <a href="#/cv">CV</a>
+          <a href="#/projects">Projets</a>
+          <a href="#/courses">Cours</a>
+          <a href="#/hobbies">Loisirs</a>
+          <a href="#/contact">Contact</a>
           <button
             type="button"
             onClick={toggleTheme}
-            className="rounded-md bg-white/10 hover:bg-white/15 px-3 py-1.5 text-xs font-medium tracking-wide"
+            className="header-theme-toggle"
             aria-label="Basculer le thème"
             title="Basculer le thème"
           >

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @reference "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-primary: #5f2a62;
@@ -26,16 +27,31 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3 {
-    /* Use Souvenir for display headings */
-    font-family: Souvenir, Georgia, "Times New Roman", serif;
-  }
   body {
-    @apply m-0 min-w-[320px] min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-white;
+    @apply m-0 min-w-[320px] min-h-screen;
+    @apply bg-gray-50 text-gray-900;       /* Mode clair */
+    @apply dark:bg-gray-950 dark:text-gray-100;  /* Mode sombre */
     line-height: 1.7;
   }
+  /* Sections / cartes */
+  .section {
+    @apply bg-white dark:bg-gray-800;
+    @apply text-gray-900 dark:text-gray-100;
+  }
+  /* Boutons */
+  .btn-primary {
+    @apply bg-primary text-white;
+    @apply dark:bg-primaryLight dark:text-gray-900;
+  }
+  /* Liens globaux - mode clair vs sombre */
   a {
-    @apply text-primary hover:text-primaryLight;
+    @apply text-primary;
+    @apply dark:text-primaryLight;
+    @apply hover:text-primaryLight dark:hover:text-accent3;
+  }
+  /* Titres */
+  h1, h2, h3 {
+    @apply text-primary dark:text-primaryLight;
   }
 
   figure figcaption {
@@ -75,4 +91,31 @@
   figure {
     @apply dark:bg-gray-600;
   }
+}
+
+/* Header styles */
+.header {
+  @apply sticky top-0 z-50 shadow;
+  @apply bg-primary text-white;
+  @apply dark:text-white;
+}
+.header-container {
+  @apply mx-auto max-w-6xl px-4 py-3 flex items-center justify-between;
+}
+.header-brand {
+  @apply font-semibold tracking-wide text-white no-underline;
+  @apply hover:text-accent3;
+}
+.header-nav {
+  @apply flex items-center gap-6 text-sm;
+}
+.header-nav a {
+  @apply text-white no-underline;
+  @apply hover:text-accent3 transition-colors;
+}
+.header-theme-toggle {
+  @apply rounded-md px-3 py-1.5 text-xs font-medium tracking-wide cursor-pointer;
+  @apply bg-accent3 text-gray-900;           /* Mode clair: bouton jaune */
+  @apply dark:bg-white/10 dark:text-white;   /* Mode sombre: bouton subtil */
+  @apply hover:opacity-80 transition-all;
 }

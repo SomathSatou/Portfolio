@@ -12,12 +12,15 @@ function SectionCV() {
           className="w-80 h-80 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-primaryLight/60 shadow-lg"
         />
         <div className="max-w-3xl">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary">Développeur polyvalent</h1>
-          <p className="mt-4 text-base leading-relaxed">
-            Développeur polyvalent, je m’appuie sur une veille technologique active pour identifier les outils et frameworks les plus adaptés,
-            puis les transformer en solutions logicielles concrètes et efficaces. Mon expérience couvre backend (Java, Python, C++) et frontend
-            (frameworks modernes), CI/CD et architectures robustes. Qualité du code, maintenabilité et performance sont au cœur de mes pratiques.
-          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-primary">Développeur logiciel et web</h1>
+          <p className="mt-4 text-base leading-relaxed text-justify">
+            Développeur logiciel et web, j'évolue à l'interface entre recherche, ingénierie et applications métiers. 
+            Je m'appuie sur une veille technologique continue pour sélectionner les outils, frameworks et architectures 
+            les plus pertinents, puis les transformer en solutions logicielles robustes, performantes et maintenables. 
+            Mon expérience couvre le développement backend (Java, Python, C++), le développement web (frameworks frontend modernes), 
+            ainsi que la conception d'API, l'intégration continue, le déploiement et l'industrialisation des applications. 
+            Sensible à la qualité du code et aux bonnes pratiques, je privilégie des solutions fiables, évolutives et adaptées aux usages 
+            réels, en lien étroit avec les besoins métier. </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <a
               href="/assets/cv.pdf"
