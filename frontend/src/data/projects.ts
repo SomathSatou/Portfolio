@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { DescriptionExtractDoc } from './ProjectComponent/DescriptionExtractDoc';
-import { DescFullMetalWar } from './ProjectComponent/DescFullMetalWar';
+import { DescriptionExtractDoc } from '../components/Project/DescriptionExtractDoc';
+import { DescFullMetalWar } from '../components/Project/DescFullMetalWar';
 
 export type Project = {
   slug: string
