@@ -7,20 +7,34 @@ function Start-AppWindow {
     [string]$WorkingDir,
     [string]$Command
   )
-  $cmd = @"
+
+  $script = @"
+`$ErrorActionPreference = 'Stop'
+`$Title = @'
+$Title
+'@
+`$WorkingDir = @'
+$WorkingDir
+'@
+`$Command = @'
+$Command
+'@
+
 try {
-  Write-Host ("=> {0}" -f $Title) -ForegroundColor Cyan
-  Set-Location "$WorkingDir"
-  $Command
+  Write-Host ("=> {0}" -f `$Title) -ForegroundColor Cyan
+  Set-Location `$WorkingDir
+  Invoke-Expression `$Command
 } catch {
-  Write-Host ("[{0}] ERROR: {1}" -f $Title, $_.Exception.Message) -ForegroundColor Red
+  Write-Host ("[{0}] ERROR: {1}" -f `$Title, `$_.Exception.Message) -ForegroundColor Red
 }
 "@
 
+  $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($script))
+
   $psArgs = @(
     '-NoExit',
-    '-Command',
-    $cmd
+    '-EncodedCommand',
+    $encoded
   )
   Start-Process -FilePath powershell -ArgumentList $psArgs | Out-Null
 }
