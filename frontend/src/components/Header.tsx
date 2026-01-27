@@ -23,8 +23,9 @@ export default function Header() {
         <nav className="header-nav">
           <a href="#/cv">CV</a>
           <a href="#/projects">Projets</a>
-          <a href="#/courses">Cours</a>
-          <a href="#/hobbies">Loisirs</a>
+          <a href="#/teaching-research">Enseignement et Recherche</a>
+          {/*<a href="#/courses">Cours</a>
+          <a href="#/hobbies">Loisirs</a>*/}
           <a href="#/contact">Contact</a>
           <button
             type="button"

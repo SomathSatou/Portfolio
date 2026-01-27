@@ -1,6 +1,8 @@
 import React from 'react'
 import Layout from './components/Layout'
-import { categories, projectBySlug } from './data/projects'
+import { categories as projectCategories } from './data/projects'
+import { projectBySlug } from './data/projectIndex'
+import { teachingResearchCategories } from './data/teachingResearch'
 
 function SectionCV() {
   return (
@@ -42,7 +44,7 @@ function SectionCV() {
   )
 }
 
- function SectionProjects() {
+function SectionProjects() {
   return (
     <section id="projects">
       <div className="section">
@@ -50,7 +52,7 @@ function SectionCV() {
         <p className="mt-2 text-gray-600">Un aperçu de mes travaux et domaines d’expertise.</p>
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((cat) => (
+          {projectCategories.map((cat) => (
             <div key={cat.name} className="card">
               <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
               <ul className="mt-3 list-disc pl-5 text-sm text-gray-700">
@@ -79,20 +81,65 @@ function SectionCV() {
   )
 }
 
+function SectionTeachingResearch() {
+  return (
+    <section id="teaching-research">
+      <div className="section">
+        <h2 className="text-2xl md:text-3xl font-bold text-primary">Enseignement et Recherche</h2>
+        <p className="mt-2 text-gray-600">Travaux académiques, publications et supports liés à la formation.</p>
+
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {teachingResearchCategories.map((cat) => (
+            <div key={cat.name} className="card">
+              <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
+              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700">
+                {cat.projectSlugs.map((slug) => {
+                  const p = projectBySlug[slug]
+                  if (!p) return null
+                  return (
+                    <li key={slug}>
+                      <a href={`#/project/${slug}`} className="hover:underline">
+                        {p.title}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+              {cat.projectSlugs.length > 0 && (
+                <a href={`#/project/${cat.projectSlugs[0]}`} className="mt-4 inline-block btn btn-accent">
+                  Voir un exemple
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+
 function SectionContact() {
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [message, setMessage] = React.useState('')
   const [loading, setLoading] = React.useState(false)
   const [status, setStatus] = React.useState<null | { ok: boolean; text: string }>(null)
+  const [resultMessage, setResultMessage] = React.useState<string>('')
+  const [resultOk, setResultOk] = React.useState<boolean | null>(null)
   // Honeypot field (hidden)
   const [hp, setHp] = React.useState('')
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setStatus(null)
+    setResultMessage('Envoi…')
+    setResultOk(null)
     if (!name || !email || !message) {
       setStatus({ ok: false, text: 'Veuillez remplir tous les champs.' })
+      setResultMessage('Veuillez remplir tous les champs.')
+      setResultOk(false)
       return
     }
     setLoading(true)
@@ -104,9 +151,13 @@ function SectionContact() {
       })
       if (!res.ok) throw new Error('Erreur serveur')
       setStatus({ ok: true, text: 'Message envoyé. Merci !' })
+      setResultMessage('Message envoyé. Merci !')
+      setResultOk(true)
       setName(''); setEmail(''); setMessage('')
     } catch {
       setStatus({ ok: false, text: "Échec de l’envoi. Réessayez." })
+      setResultMessage("Échec de l’envoi. Réessayez.")
+      setResultOk(false)
     } finally {
       setLoading(false)
     }
@@ -135,21 +186,18 @@ function SectionContact() {
           <input type="text" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
           <div className="sm:col-span-2 flex items-center justify-between">
-            <span className="text-xs text-gray-500">Les messages sont envoyés côté serveur (dev: console).</span>
+            <span className={`text-xs ${resultOk === true ? 'text-green-700' : resultOk === false ? 'text-red-700' : 'text-gray-500'}`}>{resultMessage}</span>
             <button disabled={loading} type="submit" className="btn btn-accent">
               {loading ? 'Envoi…' : 'Envoyer'}
             </button>
           </div>
-          {status && (
-            <div className={`sm:col-span-2 text-sm ${status.ok ? 'text-green-700' : 'text-red-700'}`}>{status.text}</div>
-          )}
         </form>
       </div>
     </section>
   )
 }
 
-function Home({ scrollTo }: { scrollTo?: 'cv' | 'projects' | 'contact' }) {
+function Home({ scrollTo }: { scrollTo?: 'cv' | 'projects' | 'teaching-research' | 'contact' }) {
   React.useEffect(() => {
     if (!scrollTo) return
     // Scroll after render
@@ -165,6 +213,7 @@ function Home({ scrollTo }: { scrollTo?: 'cv' | 'projects' | 'contact' }) {
     <>
       <SectionCV />
       <SectionProjects />
+      <SectionTeachingResearch />
       <SectionContact />
     </>
   )
@@ -212,7 +261,7 @@ function ProjectPage({ slug }: { slug: string }) {
             )}
             {project.tags && project.tags.length > 0 && (
               <div className="mb-4 flex flex-wrap gap-2">
-                {project.tags.map((t) => (
+                {project.tags.map((t: string) => (
                   <span key={t} className="badge">{t}</span>
                 ))}
               </div>
@@ -244,9 +293,10 @@ export default function App() {
     view = <ProjectPage slug={match[1]} />
   } else {
     // support #/cv, #/projects, #/contact for direct section links
-    let scrollTo: 'cv' | 'projects' | 'contact' | undefined
+    let scrollTo: 'cv' | 'projects' | 'teaching-research' | 'contact' | undefined
     if (hash === '#/cv') scrollTo = 'cv'
     else if (hash === '#/projects') scrollTo = 'projects'
+    else if (hash === '#/teaching-research') scrollTo = 'teaching-research'
     else if (hash === '#/contact') scrollTo = 'contact'
     view = <Home scrollTo={scrollTo} />
   }
