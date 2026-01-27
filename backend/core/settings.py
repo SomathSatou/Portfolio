@@ -27,10 +27,17 @@ SECRET_KEY = 'django-insecure-8nn9pw=uze_v5&0ce$9ozrzwrm%8o3-x*tsdd^$g2dzq8x*lqd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+_env_allowed_hosts = os.getenv('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    'automia.org',
+    'www.automia.org',
+    'mail.automia.org',
 ]
+
+if _env_allowed_hosts:
+    ALLOWED_HOSTS += [h.strip() for h in _env_allowed_hosts.split(',') if h.strip()]
 
 
 # Application definition
