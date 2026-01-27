@@ -125,7 +125,6 @@ function SectionContact() {
   const [email, setEmail] = React.useState('')
   const [message, setMessage] = React.useState('')
   const [loading, setLoading] = React.useState(false)
-  const [status, setStatus] = React.useState<null | { ok: boolean; text: string }>(null)
   const [resultMessage, setResultMessage] = React.useState<string>('')
   const [resultOk, setResultOk] = React.useState<boolean | null>(null)
   // Honeypot field (hidden)
@@ -133,11 +132,9 @@ function SectionContact() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setStatus(null)
     setResultMessage('Envoi…')
     setResultOk(null)
     if (!name || !email || !message) {
-      setStatus({ ok: false, text: 'Veuillez remplir tous les champs.' })
       setResultMessage('Veuillez remplir tous les champs.')
       setResultOk(false)
       return
@@ -150,12 +147,10 @@ function SectionContact() {
         body: JSON.stringify({ name, email, message, honeypot: hp }),
       })
       if (!res.ok) throw new Error('Erreur serveur')
-      setStatus({ ok: true, text: 'Message envoyé. Merci !' })
       setResultMessage('Message envoyé. Merci !')
       setResultOk(true)
       setName(''); setEmail(''); setMessage('')
     } catch {
-      setStatus({ ok: false, text: "Échec de l’envoi. Réessayez." })
       setResultMessage("Échec de l’envoi. Réessayez.")
       setResultOk(false)
     } finally {
