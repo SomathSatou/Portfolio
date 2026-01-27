@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
 import { DescriptionExtractDoc } from '../components/Project/DescriptionExtractDoc';
 import { DescFullMetalWar } from '../components/Project/DescFullMetalWar';
-import { DescICTAI2024 } from '../components/Project/DescICTAI2024';
-import { DescOverview } from '../components/Project/DescOverview';
 import { DescInfoscope } from '../components/Project/DescInfoscope';
 
 export type Project = {
@@ -57,31 +55,13 @@ export const projects: Project[] = [
     tags: ["Django", "React", "WordPress Migration", "Média", "CMS"],
     description: DescInfoscope()
   }),
-  // Recherche
-  P('ICTAI 2024', 'Recherche', {
-    tags: ["IEEE", "Conférence", "Extraction de tableaux", "Vision par ordinateur", "Graphes"],
-    description: DescICTAI2024()
-  }),
-  P('Overview', 'Recherche', {
-    tags: ["IEEE Access", "État de l'art", "Extraction de données", "Factures", "Survey"],
-    description: DescOverview()
-  }),
 
   // Automatisation
   P('N8N', 'Automatisation'),
 
-  // Formation
-  P('Vercel', 'Formation'),
-  P('Supabase', 'Formation'),
-  P('OpenRouter', 'Formation'),
-
   // Sécurité
   P('Audit', 'Sécurité'),
 ]
-
-export const projectBySlug: Record<string, Project> = Object.fromEntries(
-  projects.map((p) => [p.slug, p]),
-)
 
 export type Category = {
   name: string
@@ -92,8 +72,6 @@ export const categories: Category[] = [
   { name: 'Traitement documentaire', projectSlugs: projects.filter(p => p.category === 'Traitement documentaire').map(p => p.slug) },
   { name: 'Jeux', projectSlugs: projects.filter(p => p.category === 'Jeux').map(p => p.slug) },
   { name: 'Web', projectSlugs: projects.filter(p => p.category === 'Web').map(p => p.slug) },
-  { name: 'Recherche', projectSlugs: projects.filter(p => p.category === 'Recherche').map(p => p.slug) },
   { name: 'Automatisation', projectSlugs: projects.filter(p => p.category === 'Automatisation').map(p => p.slug) },
-  { name: 'Formation', projectSlugs: projects.filter(p => p.category === 'Formation').map(p => p.slug) },
   { name: 'Sécurité', projectSlugs: projects.filter(p => p.category === 'Sécurité').map(p => p.slug) },
 ]
