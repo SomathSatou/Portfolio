@@ -1,5 +1,6 @@
 import React from 'react'
 import Layout from './components/Layout'
+import JdrRouter from './components/Jdr/JdrRouter'
 import { categories as projectCategories } from './data/projects'
 import { projectBySlug } from './data/projectIndex'
 import { teachingResearchCategories } from './data/teachingResearch'
@@ -280,6 +281,11 @@ export default function App() {
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+
+  // JDR routes — rendered outside of the portfolio Layout
+  if (hash.startsWith('#/jdr')) {
+    return <JdrRouter hash={hash} />
+  }
 
   // Simple hash router: #/ for home, #/project/:slug for project page
   let view: React.ReactNode = null
