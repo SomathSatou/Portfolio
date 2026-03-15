@@ -56,3 +56,4 @@ desktop.ini
 .venv/*
 .venv
 *.pyc
+PROMPT_JDR.md

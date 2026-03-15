@@ -1,0 +1,13 @@
+Avant de répondre à toute demande sur ce projet, lis et applique systématiquement les fichiers suivants situés à la racine du dépôt :
+
+- `AGENTS.md` — Contient la vue d'ensemble du projet, l'architecture, les commandes de setup, les endpoints API, les conventions de code, le thème, le modèle de données, l'i18n, la sécurité, le déploiement et les conventions spécifiques aux agents.
+- `SKILLS.md` — Catalogue des compétences techniques et fonctionnelles illustrées par le portfolio (frontend, backend, DevOps, intégration, qualité).
+
+Règles :
+1. Toujours respecter les conventions de code décrites dans `AGENTS.md` (TypeScript strict, classes Tailwind, dark mode, routing hash, Django/DRF).
+2. Toujours respecter le thème de couleurs et les design tokens définis dans `AGENTS.md`.
+3. Lancer `npm run lint` dans `frontend/` avant de proposer un commit.
+4. Vérifier `tsc -b` (via `npm run build`) pour les erreurs TypeScript.
+5. Ne pas modifier `db.sqlite3` directement — utiliser les migrations Django.
+6. Pour ajouter un projet : créer l'entrée dans `data/projects.ts` ou `data/teachingResearch.ts`, et si besoin un composant `Desc*.tsx`.
+7. Garder `README.md`, `AGENTS.md` et `SKILLS.md` à jour si la structure du projet change.
