@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Campaign, CampaignMembership, Character, Notification, UserProfile
+from .models import (
+    Campaign, CampaignMembership, Character, City, CityExport, CityImport,
+    MarketPrice, MerchantInventory, MerchantOrder, Notification, Resource, UserProfile,
+)
 
 
 class RegisterSerializer(serializers.Serializer):

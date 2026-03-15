@@ -6,6 +6,7 @@ import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import JdrLayout from './JdrLayout'
 import { CampaignPage, CharacterSheet, DashboardPage } from './Dashboard'
+import { MerchantPage } from './Merchant'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
