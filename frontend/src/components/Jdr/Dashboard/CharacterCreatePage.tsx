@@ -1,0 +1,209 @@
+import React from 'react'
+import api from '../api'
+import { useAuth } from '../useAuth'
+import type { Campaign } from './types'
+
+export default function CharacterCreatePage() {
+  const { user } = useAuth()
+
+  const [campaigns, setCampaigns] = React.useState<Campaign[]>([])
+  const [loading, setLoading] = React.useState(true)
+  const [submitting, setSubmitting] = React.useState(false)
+  const [error, setError] = React.useState('')
+
+  // Form fields
+  const [name, setName] = React.useState('')
+  const [campaignId, setCampaignId] = React.useState<number | ''>('')
+  const [classType, setClassType] = React.useState('')
+  const [description, setDescription] = React.useState('')
+
+  React.useEffect(() => {
+    let cancelled = false
+    api
+      .get<Campaign[]>('/campaigns/')
+      .then((res) => {
+        if (cancelled) return
+        setCampaigns(res.data)
+        if (res.data.length === 1) {
+          setCampaignId(res.data[0].id)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setError('Impossible de charger les campagnes.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+
+    if (!name.trim()) {
+      setError('Le nom du personnage est requis.')
+      return
+    }
+    if (!campaignId) {
+      setError('Veuillez sélectionner une campagne.')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const res = await api.post('/characters/', {
+        name: name.trim(),
+        campaign: campaignId,
+        class_type: classType.trim(),
+        description: description.trim(),
+      })
+      // Redirect to the new character sheet
+      window.location.hash = `#/jdr/character/${res.data.id}`
+    } catch (err: unknown) {
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        typeof (err as Record<string, unknown>).response === 'object'
+      ) {
+        const resp = (err as { response: { data?: Record<string, string[]> } }).response
+        const messages = resp.data
+          ? Object.values(resp.data).flat().join(' ')
+          : ''
+        setError(messages || 'Erreur lors de la création du personnage.')
+      } else {
+        setError('Erreur lors de la création du personnage.')
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const isMJ = user?.role === 'mj'
+
+  return (
+    <div className="max-w-xl mx-auto">
+      {/* Breadcrumb */}
+      <nav className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+        <a href="#/jdr/dashboard" className="hover:underline">
+          Dashboard
+        </a>
+        <span className="mx-2">/</span>
+        <span className="text-gray-900 dark:text-gray-100">Nouveau personnage</span>
+      </nav>
+
+      <h1 className="text-2xl font-bold text-primary dark:text-primaryLight mb-6">
+        Créer un personnage
+      </h1>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
+        </div>
+      ) : campaigns.length === 0 ? (
+        <div className="card p-6 text-center">
+          <p className="text-gray-500 dark:text-gray-400 mb-4">
+            {isMJ
+              ? 'Vous devez d\'abord créer une campagne avant de créer un personnage.'
+              : 'Vous devez d\'abord rejoindre une campagne avant de créer un personnage.'}
+          </p>
+          <a href="#/jdr/dashboard" className="btn btn-outline">
+            Retour au dashboard
+          </a>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="card p-6 space-y-5">
+          {error && (
+            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-700 dark:text-red-400">
+              {error}
+            </div>
+          )}
+
+          {/* Name */}
+          <div>
+            <label htmlFor="char-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Nom du personnage <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="char-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary"
+              placeholder="Ex : Alaric le Brave"
+              autoFocus
+              maxLength={200}
+            />
+          </div>
+
+          {/* Campaign */}
+          <div>
+            <label htmlFor="char-campaign" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Campagne <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="char-campaign"
+              value={campaignId}
+              onChange={(e) => setCampaignId(e.target.value ? Number(e.target.value) : '')}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary"
+            >
+              <option value="">— Sélectionner une campagne —</option>
+              {campaigns.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Class type */}
+          <div>
+            <label htmlFor="char-class" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Classe
+            </label>
+            <input
+              id="char-class"
+              type="text"
+              value={classType}
+              onChange={(e) => setClassType(e.target.value)}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary"
+              placeholder="Ex : Marchand, Alchimiste, Enchanteur…"
+              maxLength={100}
+            />
+            <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+              La classe détermine les mini-jeux accessibles (Marchand, Cultivateur, Enchanteur).
+            </p>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label htmlFor="char-desc" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Description
+            </label>
+            <textarea
+              id="char-desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary resize-y"
+              placeholder="Décrivez votre personnage : histoire, apparence, motivations…"
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-3 pt-2">
+            <a href="#/jdr/dashboard" className="btn btn-outline text-sm">
+              Annuler
+            </a>
+            <button type="submit" disabled={submitting} className="btn btn-primary text-sm">
+              {submitting ? 'Création…' : 'Créer le personnage'}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  )
+}

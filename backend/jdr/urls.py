@@ -22,6 +22,7 @@ from .views import (
     MerchantOrderSellView,
     MerchantOrderView,
     MerchantStatsView,
+    NextcloudEmbedUrlView,
     NotificationViewSet,
     RegisterView,
     ResourceViewSet,
@@ -32,6 +33,10 @@ from .views import (
     RuneDrawingSubmitView,
     RunePendingView,
     RuneTemplateViewSet,
+    SharedFolderContentView,
+    SharedFolderDetailView,
+    SharedFolderListCreateView,
+    SharedFolderUploadView,
 )
 
 router = DefaultRouter()
@@ -72,6 +77,12 @@ urlpatterns = [
     path('runes/drawings/<int:pk>/review/', RuneDrawingReviewView.as_view(), name='rune-drawing-review'),
     path('runes/pending/', RunePendingView.as_view(), name='rune-pending'),
     path('runes/collection/', RuneCollectionView.as_view(), name='rune-collection'),
+    # Files / Nextcloud
+    path('files/folders/', SharedFolderListCreateView.as_view(), name='shared-folders'),
+    path('files/folders/<int:pk>/', SharedFolderDetailView.as_view(), name='shared-folder-detail'),
+    path('files/folders/<int:pk>/content/', SharedFolderContentView.as_view(), name='shared-folder-content'),
+    path('files/folders/<int:pk>/upload/', SharedFolderUploadView.as_view(), name='shared-folder-upload'),
+    path('files/embed-url/', NextcloudEmbedUrlView.as_view(), name='nextcloud-embed-url'),
     # Router
     path('', include(router.urls)),
 ]

@@ -5,10 +5,11 @@ import JdrHomePage from './JdrHomePage'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import JdrLayout from './JdrLayout'
-import { CampaignPage, CharacterSheet, DashboardPage } from './Dashboard'
+import { CampaignPage, CharacterCreatePage, CharacterSheet, DashboardPage } from './Dashboard'
 import { GardenPage } from './Garden'
 import { MerchantPage } from './Merchant'
 import { RunesPage } from './Runes'
+import { FilesPage } from './Files'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -41,6 +42,14 @@ function JdrRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <CampaignPage campaignId={campaignMatch[1]} />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/character/new') {
+    return (
+      <ProtectedRoute>
+        <CharacterCreatePage />
       </ProtectedRoute>
     )
   }
@@ -82,6 +91,14 @@ function JdrRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <RunesPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/files') {
+    return (
+      <ProtectedRoute>
+        <FilesPage />
       </ProtectedRoute>
     )
   }

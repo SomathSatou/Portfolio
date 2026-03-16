@@ -1,6 +1,7 @@
 export { default as DashboardPage } from './DashboardPage'
 export { default as CampaignPage } from './CampaignPage'
 export { default as CharacterSheet } from './CharacterSheet'
+export { default as CharacterCreatePage } from './CharacterCreatePage'
 export { default as DashboardCard } from './DashboardCard'
 export { default as CampaignCard } from './CampaignCard'
 export { default as CharacterCard } from './CharacterCard'
