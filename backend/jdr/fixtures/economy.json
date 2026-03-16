@@ -1,67 +1,6711 @@
 {
   "cities": [
-    {"name": "Herbolas", "description": ""},
-    {"name": "Havre", "description": ""},
-    {"name": "Ponharilfei", "description": ""},
-    {"name": "Lunebrèche", "description": ""},
-    {"name": "Sylméris", "description": ""},
-    {"name": "Thornedhel", "description": ""},
-    {"name": "Valdrémil", "description": ""},
-    {"name": "Borr'Tanazh", "description": ""},
-    {"name": "Crik'Nok", "description": ""},
-    {"name": "Drughal'Mekh", "description": ""},
-    {"name": "Épine-Azur", "description": ""},
-    {"name": "Froumousse", "description": ""},
-    {"name": "Vëlyssandra", "description": ""},
-    {"name": "Morkhand", "description": ""},
-    {"name": "Kel'Surr", "description": ""},
-    {"name": "Urag-Tor", "description": ""},
-    {"name": "Aelthëanor", "description": ""},
-    {"name": "Arrakis", "description": ""},
-    {"name": "Briseval", "description": ""},
-    {"name": "Byaku-Kan", "description": ""},
-    {"name": "Chordy", "description": ""},
-    {"name": "Corallin", "description": ""},
-    {"name": "Cormautane", "description": ""},
-    {"name": "Durkholm", "description": ""},
-    {"name": "Fort-Gravelle", "description": ""},
-    {"name": "Gargabulle", "description": ""},
-    {"name": "Hin'Yaru", "description": ""},
-    {"name": "Khur-Maal", "description": ""},
-    {"name": "Kozan-Mura", "description": ""},
-    {"name": "Lugiar", "description": ""},
-    {"name": "Luthmeris", "description": ""},
-    {"name": "Nabaga", "description": ""},
-    {"name": "Nad'Rhima", "description": ""},
-    {"name": "Oridescasto", "description": ""},
-    {"name": "Parloa", "description": ""},
-    {"name": "Seiralala", "description": ""},
-    {"name": "Skarh-Tomul", "description": ""},
-    {"name": "Torgas", "description": ""},
-    {"name": "Galquobrak", "description": ""},
-    {"name": "Vestiaire", "description": ""}
+    {
+      "name": "Aelthëanor",
+      "description": ""
+    },
+    {
+      "name": "Arrakis",
+      "description": ""
+    },
+    {
+      "name": "Borr'Tanazh",
+      "description": ""
+    },
+    {
+      "name": "Briseval",
+      "description": ""
+    },
+    {
+      "name": "Byaku-Kan",
+      "description": ""
+    },
+    {
+      "name": "Chordy",
+      "description": ""
+    },
+    {
+      "name": "Corallin",
+      "description": ""
+    },
+    {
+      "name": "Cormautane",
+      "description": ""
+    },
+    {
+      "name": "Crik'Nok",
+      "description": ""
+    },
+    {
+      "name": "Drughal'Mekh",
+      "description": ""
+    },
+    {
+      "name": "Durkholm",
+      "description": ""
+    },
+    {
+      "name": "Fort-Gravelle",
+      "description": ""
+    },
+    {
+      "name": "Froumousse",
+      "description": ""
+    },
+    {
+      "name": "Galquobrak",
+      "description": ""
+    },
+    {
+      "name": "Gargabulle",
+      "description": ""
+    },
+    {
+      "name": "Havre",
+      "description": ""
+    },
+    {
+      "name": "Herbolas",
+      "description": ""
+    },
+    {
+      "name": "Hin'Yaru",
+      "description": ""
+    },
+    {
+      "name": "Kel'Surr",
+      "description": ""
+    },
+    {
+      "name": "Khur-Maal",
+      "description": ""
+    },
+    {
+      "name": "Kozan-Mura",
+      "description": ""
+    },
+    {
+      "name": "Lugiar",
+      "description": ""
+    },
+    {
+      "name": "Lunebrèche",
+      "description": ""
+    },
+    {
+      "name": "Luthmeris",
+      "description": ""
+    },
+    {
+      "name": "Morkhand",
+      "description": ""
+    },
+    {
+      "name": "Nabaga",
+      "description": ""
+    },
+    {
+      "name": "Nad'Rhima",
+      "description": ""
+    },
+    {
+      "name": "Oridescasto",
+      "description": ""
+    },
+    {
+      "name": "Parloa",
+      "description": ""
+    },
+    {
+      "name": "Ponharilfei",
+      "description": ""
+    },
+    {
+      "name": "Seiralala",
+      "description": ""
+    },
+    {
+      "name": "Skarh-Tomul",
+      "description": ""
+    },
+    {
+      "name": "Sylméris",
+      "description": ""
+    },
+    {
+      "name": "Thornedhel",
+      "description": ""
+    },
+    {
+      "name": "Torgas",
+      "description": ""
+    },
+    {
+      "name": "Urag-Tor",
+      "description": ""
+    },
+    {
+      "name": "Valdrémil",
+      "description": ""
+    },
+    {
+      "name": "Vestiaire",
+      "description": ""
+    },
+    {
+      "name": "Vëlyssandra",
+      "description": ""
+    },
+    {
+      "name": "Épine-Azur",
+      "description": ""
+    }
   ],
   "resources": [
-    {"name": "Lisserande", "craft_type": "Alchimie", "base_price": 3, "unit": "10u", "availability": "Commun"},
-    {"name": "Cuivre", "craft_type": "Forge", "base_price": 10, "unit": "kg", "availability": "Commun"},
-    {"name": "Blé", "craft_type": "Cuisine", "base_price": 1, "unit": "kg", "availability": "Abondant"},
-    {"name": "Acier de damas", "craft_type": "Forge", "base_price": 40, "unit": "kg", "availability": "Rare"},
-    {"name": "Cuir de dragon", "craft_type": "Tannerie", "base_price": 1000, "unit": "m²", "availability": "Légendaire"},
-    {"name": "Émeraude taillée", "craft_type": "Joaillerie", "base_price": 60, "unit": "unité", "availability": "Rare"}
+    {
+      "name": "Acier",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Acier de damas",
+      "craft_type": "Forge",
+      "base_price": 40.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Algues bleu",
+      "craft_type": "Alchimie",
+      "base_price": 14.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Algues médicinales",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Amandes",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Améthyste brute",
+      "craft_type": "Joaillerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Améthyste taillée",
+      "craft_type": "Joaillerie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Anneau en argent",
+      "craft_type": "Joaillerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Antidote Simple",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Antidote universel",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Appâts naturels",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Arbalète à répétition",
+      "craft_type": "Ingénierie",
+      "base_price": 150.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Arc court en bouleau",
+      "craft_type": "Menuiserie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Arc de chasse long",
+      "craft_type": "Menuiserie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Arc elfique",
+      "craft_type": "Menuiserie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Arc-en-ciel cristallisé",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Argent",
+      "craft_type": "Forge",
+      "base_price": 80.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Argéthane",
+      "craft_type": "Forge",
+      "base_price": 90.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Armes de siège",
+      "craft_type": "Forge",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Armure de bambou",
+      "craft_type": "Tannerie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Armure de cuir cloutée",
+      "craft_type": "Tannerie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Armure de cuir du désert",
+      "craft_type": "Tannerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Armure de cuir renforcé",
+      "craft_type": "Tannerie",
+      "base_price": 70.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Armure de mailles",
+      "craft_type": "Forge",
+      "base_price": 150.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Armure de plaques en Acier",
+      "craft_type": "Forge",
+      "base_price": 300.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Armure de plates",
+      "craft_type": "Forge",
+      "base_price": 250.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Automate mécanique simple",
+      "craft_type": "Ingénierie",
+      "base_price": 200.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Avoine",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Bague en argent et améthyste",
+      "craft_type": "Joaillerie",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Balmenduline",
+      "craft_type": "Alchimie",
+      "base_price": 5.0,
+      "unit": "30u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Bambou flexible",
+      "craft_type": "Menuiserie",
+      "base_price": 6.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bambou sacré",
+      "craft_type": "Menuiserie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bambou sculpté",
+      "craft_type": "Menuiserie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bannière de guilde brodée",
+      "craft_type": "Couture",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Bave de crapaud",
+      "craft_type": "Alchimie",
+      "base_price": 5.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Beurre fermier",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "pot",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bière blonde",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "bouteille",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bière de guerre",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "fût",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bière forte",
+      "craft_type": "Cuisine",
+      "base_price": 25.0,
+      "unit": "baril",
+      "availability": "Commun"
+    },
+    {
+      "name": "Blé",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Bois ancien",
+      "craft_type": "Menuiserie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois d'if",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Bois de bateau",
+      "craft_type": "Menuiserie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de bouleau",
+      "craft_type": "Menuiserie",
+      "base_price": 5.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de chauffage",
+      "craft_type": "Menuiserie",
+      "base_price": 1.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Bois de chêne",
+      "craft_type": "Menuiserie",
+      "base_price": 6.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de construction",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de cèdre",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de fumage",
+      "craft_type": "Menuiserie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de guerre",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de lune",
+      "craft_type": "Menuiserie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de palissade",
+      "craft_type": "Menuiserie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de qualité",
+      "craft_type": "Menuiserie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de récupération",
+      "craft_type": "Menuiserie",
+      "base_price": 5.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de résonance",
+      "craft_type": "Menuiserie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de soutien",
+      "craft_type": "Menuiserie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois de trempe",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois dur",
+      "craft_type": "Menuiserie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois exotique",
+      "craft_type": "Menuiserie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois flotté",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois précieux",
+      "craft_type": "Menuiserie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois réfractaire",
+      "craft_type": "Menuiserie",
+      "base_price": 22.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bois résistant",
+      "craft_type": "Menuiserie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bombe en fer",
+      "craft_type": "Ingénierie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Bottes en cuir robustes",
+      "craft_type": "Couture",
+      "base_price": 25.0,
+      "unit": "paire",
+      "availability": "Commun"
+    },
+    {
+      "name": "Boucles d'oreilles en saphir",
+      "craft_type": "Joaillerie",
+      "base_price": 180.0,
+      "unit": "paire",
+      "availability": "Rare"
+    },
+    {
+      "name": "Bouclier en Fer",
+      "craft_type": "Forge",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bouclier renforcé",
+      "craft_type": "Forge",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bouclier rond en bois",
+      "craft_type": "Menuiserie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Boutons en nacre",
+      "craft_type": "Joaillerie",
+      "base_price": 5.0,
+      "unit": "10u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Boutons précieux",
+      "craft_type": "Joaillerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Brochettes de chèvre épicées",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Bronze",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Bâton de marche sculpté",
+      "craft_type": "Menuiserie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cactus épineux",
+      "craft_type": "Alchimie",
+      "base_price": 7.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Cape de voyage en laine",
+      "craft_type": "Couture",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Carapace de crabe",
+      "craft_type": "Tannerie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Carottes",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Cartes de bataille",
+      "craft_type": "Enchantement",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cartes de territoire",
+      "craft_type": "Enchantement",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cartes du désert",
+      "craft_type": "Alchimie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cartes géologiques",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cartes marines",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Casque de mineur",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Casque en Fer",
+      "craft_type": "Forge",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cerfeuillu",
+      "craft_type": "Alchimie",
+      "base_price": 2.0,
+      "unit": "100u",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Champignon pâle",
+      "craft_type": "Alchimie",
+      "base_price": 5.0,
+      "unit": "20u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Champignons séchés",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "20u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Charbon",
+      "craft_type": "Alchimie",
+      "base_price": 2.0,
+      "unit": "100u",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Charbon ardent",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "100u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Charbon d'anthracite",
+      "craft_type": "Alchimie",
+      "base_price": 30.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Charbon de forge",
+      "craft_type": "Forge",
+      "base_price": 8.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Charbon de mine",
+      "craft_type": "Forge",
+      "base_price": 8.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Charbon raffiné",
+      "craft_type": "Forge",
+      "base_price": 10.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Chaussure de luxe",
+      "craft_type": "Tannerie",
+      "base_price": 40.0,
+      "unit": "paire",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Chemise en velours",
+      "craft_type": "Couture",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Clous en fer",
+      "craft_type": "Forge",
+      "base_price": 5.0,
+      "unit": "100u",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Coffre en bois",
+      "craft_type": "Menuiserie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Collier de corail",
+      "craft_type": "Joaillerie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Collier en or",
+      "craft_type": "Joaillerie",
+      "base_price": 200.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Contrats commerciaux",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Corail rouge",
+      "craft_type": "Joaillerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Corde harmonique",
+      "craft_type": "Menuiserie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cordes de qualité",
+      "craft_type": "Couture",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cordes solides",
+      "craft_type": "Couture",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Couteau de lancer",
+      "craft_type": "Forge",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Couture de chanvre",
+      "craft_type": "Couture",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Couture de lin",
+      "craft_type": "Couture",
+      "base_price": 4.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cristal de mana",
+      "craft_type": "Joaillerie",
+      "base_price": 90.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cristal de montagne",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Cristal de sable",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Cristal sonore",
+      "craft_type": "Joaillerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Cristaux de distillation",
+      "craft_type": "Joaillerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cristaux de glace",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Cristaux magiques",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir brut",
+      "craft_type": "Tannerie",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir d'instrument",
+      "craft_type": "Tannerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de bataille",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de camouflage",
+      "craft_type": "Tannerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de chameau",
+      "craft_type": "Tannerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de dragon",
+      "craft_type": "Tannerie",
+      "base_price": 1000.0,
+      "unit": "m²",
+      "availability": "Légendaire"
+    },
+    {
+      "name": "Cuir de harnais",
+      "craft_type": "Tannerie",
+      "base_price": 28.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de mineur",
+      "craft_type": "Tannerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de protection",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de qualité",
+      "craft_type": "Tannerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de tonneau",
+      "craft_type": "Tannerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir de travail",
+      "craft_type": "Tannerie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir durci",
+      "craft_type": "Tannerie",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir elfique",
+      "craft_type": "Tannerie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir fin",
+      "craft_type": "Tannerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir ignifuge",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir marin",
+      "craft_type": "Tannerie",
+      "base_price": 32.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir pour harnais",
+      "craft_type": "Tannerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir souple",
+      "craft_type": "Tannerie",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir usé",
+      "craft_type": "Tannerie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir épais",
+      "craft_type": "Tannerie",
+      "base_price": 28.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuir étanche",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Cuivre",
+      "craft_type": "Forge",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Dague en Bronze",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Diadème en or et émeraude",
+      "craft_type": "Joaillerie",
+      "base_price": 500.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Détonateur simple",
+      "craft_type": "Ingénierie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Eau de mer purifiée",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "litre",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Eau pure",
+      "craft_type": "Cuisine",
+      "base_price": 0.5,
+      "unit": "litre",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Encens de Concentration",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "bâton",
+      "availability": "Rare"
+    },
+    {
+      "name": "Encens de méditation",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "bâton",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Encens spirituel",
+      "craft_type": "Alchimie",
+      "base_price": 22.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Enclume de qualité",
+      "craft_type": "Forge",
+      "base_price": 200.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Encre magique",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Encre spirituelle",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Essence de feu",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Essence de froid",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Essence lunaire",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Fabrication d'Engrenages en bronze",
+      "craft_type": "Ingénierie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Farine d'avoine",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Farine de blé",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Farine de qualité",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fer",
+      "craft_type": "Forge",
+      "base_price": 13.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fer brut",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Fer ignifère",
+      "craft_type": "Forge",
+      "base_price": 60.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Fermoir en bronze",
+      "craft_type": "Forge",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fers à cheval",
+      "craft_type": "Forge",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Feu-piment",
+      "craft_type": "Alchimie",
+      "base_price": 6.0,
+      "unit": "10u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Feuilles de mûrier",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fibre tropicale",
+      "craft_type": "Couture",
+      "base_price": 6.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fil d'or",
+      "craft_type": "Joaillerie",
+      "base_price": 20.0,
+      "unit": "bobine",
+      "availability": "Rare"
+    },
+    {
+      "name": "Filet de pêche",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Filet de pêche magique",
+      "craft_type": "Menuiserie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Filets de pêche",
+      "craft_type": "Couture",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fils de cuivre",
+      "craft_type": "Ingénierie",
+      "base_price": 8.0,
+      "unit": "bobine",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fioles de cristal",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fioles en verre",
+      "craft_type": "Forge",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fleur bocolique",
+      "craft_type": "Alchimie",
+      "base_price": 5.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fleur de cerisier",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "50u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Fleur de lotus",
+      "craft_type": "Alchimie",
+      "base_price": 10.0,
+      "unit": "20u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Fleur de lune",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Flèches de chasse",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "lot",
+      "availability": "Commun"
+    },
+    {
+      "name": "Flèches à pointe de fer",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "lot (x10)",
+      "availability": "Commun"
+    },
+    {
+      "name": "Flûte en bois",
+      "craft_type": "Menuiserie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fouet en cuir",
+      "craft_type": "Tannerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fourrure d'hiver",
+      "craft_type": "Couture",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Fromage de chèvre",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "meule",
+      "availability": "Commun"
+    },
+    {
+      "name": "Fromage salé",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "meule",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Galettes de manioques",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "portion",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Gants en cuir souple",
+      "craft_type": "Couture",
+      "base_price": 15.0,
+      "unit": "paire",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gaz des marais",
+      "craft_type": "Alchimie",
+      "base_price": 10.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Gemme brute",
+      "craft_type": "Joaillerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Gemmes d'enchantement",
+      "craft_type": "Joaillerie",
+      "base_price": 100.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes de chaleur",
+      "craft_type": "Joaillerie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes de décoration",
+      "craft_type": "Joaillerie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes de renfort",
+      "craft_type": "Joaillerie",
+      "base_price": 55.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes de trempe",
+      "craft_type": "Joaillerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes décoratives",
+      "craft_type": "Joaillerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes pour alliage",
+      "craft_type": "Joaillerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Gemmes stellaires",
+      "craft_type": "Joaillerie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Graisse végétale",
+      "craft_type": "Alchimie",
+      "base_price": 2.0,
+      "unit": "100u",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Grand arc en if",
+      "craft_type": "Menuiserie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Hache de bûcheron",
+      "craft_type": "Forge",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Hache de guerre",
+      "craft_type": "Forge",
+      "base_price": 300.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Hache de guerre naine",
+      "craft_type": "Forge",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Hamecons de qualité",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Harpe enchantée",
+      "craft_type": "Menuiserie",
+      "base_price": 180.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Herbe elfique",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "20u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Herbes aromatiques",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes de montagne",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes de pistage",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes de tannage",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes de trempe",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes fourragères",
+      "craft_type": "Alchimie",
+      "base_price": 6.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes ignifuges",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes médicinales",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes rafraîchissantes",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Herbes vétérinaires",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "20u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Houblon",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Houblon premium",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Huile d'Affûtage",
+      "craft_type": "Alchimie",
+      "base_price": 10.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Huile de palme",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "litre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Iris lunaire",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "20u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Jade poli",
+      "craft_type": "Joaillerie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Jade pur",
+      "craft_type": "Joaillerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Katana",
+      "craft_type": "Forge",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Kimono de soie",
+      "craft_type": "Couture",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Kimono traditionnel",
+      "craft_type": "Couture",
+      "base_price": 70.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Laine",
+      "craft_type": "Couture",
+      "base_price": 5.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Laine brute",
+      "craft_type": "Couture",
+      "base_price": 4.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Laine de yak",
+      "craft_type": "Couture",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Laine épaisse",
+      "craft_type": "Couture",
+      "base_price": 6.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lait de vache",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "litre",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Lame de feu",
+      "craft_type": "Forge",
+      "base_price": 150.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Lame de glace",
+      "craft_type": "Forge",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Lames de dépeçage",
+      "craft_type": "Forge",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lanières de cuir",
+      "craft_type": "Tannerie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lentille en verre",
+      "craft_type": "Joaillerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Levure rare",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lin",
+      "craft_type": "Couture",
+      "base_price": 2.0,
+      "unit": "100u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lingot de mithril",
+      "craft_type": "Forge",
+      "base_price": 200.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Lisserande",
+      "craft_type": "Alchimie",
+      "base_price": 3.0,
+      "unit": "10u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Livre ancien",
+      "craft_type": "Enchantement",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Livres de musique",
+      "craft_type": "Enchantement",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Longue-vue simple",
+      "craft_type": "Ingénierie",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Luth enchanté",
+      "craft_type": "Menuiserie",
+      "base_price": 150.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Manche en bois robuste",
+      "craft_type": "Menuiserie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Manioques",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Manteau de montagne",
+      "craft_type": "Couture",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Manteau de noble",
+      "craft_type": "Couture",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Manteau elfique",
+      "craft_type": "Couture",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Marteau de Guerre",
+      "craft_type": "Forge",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Marteau de forgeron",
+      "craft_type": "Forge",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Menthe noire",
+      "craft_type": "Alchimie",
+      "base_price": 4.0,
+      "unit": "20u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Miel de fleurs rares",
+      "craft_type": "Cuisine",
+      "base_price": 15.0,
+      "unit": "pot",
+      "availability": "Commun"
+    },
+    {
+      "name": "Miel de qualité",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "pot",
+      "availability": "Commun"
+    },
+    {
+      "name": "Miel sauvage",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "pot (500g)",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Minerai de fer",
+      "craft_type": "Forge",
+      "base_price": 5.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Minerai de fer pur",
+      "craft_type": "Forge",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Mousse toxique",
+      "craft_type": "Alchimie",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Mélanges suspects",
+      "craft_type": "Cuisine",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Métal glacé",
+      "craft_type": "Forge",
+      "base_price": 45.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Métal harmonique",
+      "craft_type": "Joaillerie",
+      "base_price": 55.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Métal volcanique",
+      "craft_type": "Forge",
+      "base_price": 75.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Noix de coco",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "unité",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Obsidienne noire",
+      "craft_type": "Forge",
+      "base_price": 50.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Oeufs de poule",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "douzaine",
+      "availability": "Commun"
+    },
+    {
+      "name": "Oignons",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Ombreliane",
+      "craft_type": "Alchimie",
+      "base_price": 7.0,
+      "unit": "20u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Omelette aux champignons des bois",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Or",
+      "craft_type": "Forge",
+      "base_price": 150.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Orbe de divination",
+      "craft_type": "Alchimie",
+      "base_price": 100.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Orge",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Origami magique",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Outil de mineur",
+      "craft_type": "Forge",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils agricoles",
+      "craft_type": "Forge",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de calligraphie",
+      "craft_type": "Forge",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de commerce",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de forge",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de forge de maître",
+      "craft_type": "Forge",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de forge zen",
+      "craft_type": "Forge",
+      "base_price": 65.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de mine",
+      "craft_type": "Forge",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de précision",
+      "craft_type": "Forge",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils de réparation",
+      "craft_type": "Forge",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outils du désert",
+      "craft_type": "Forge",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Outre en peau de chèvre",
+      "craft_type": "Tannerie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pain d'avoine",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "pain",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pain de campagne",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "pain",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Pain de mer",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pain simple",
+      "craft_type": "Cuisine",
+      "base_price": 1.0,
+      "unit": "pain",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Paladium",
+      "craft_type": "Forge",
+      "base_price": 100.0,
+      "unit": "kg",
+      "availability": "Légendaire"
+    },
+    {
+      "name": "Pantalon en lin",
+      "craft_type": "Couture",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemin en peau de chèvre",
+      "craft_type": "Tannerie",
+      "base_price": 6.0,
+      "unit": "feuille",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemin magique",
+      "craft_type": "Enchantement",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Parchemins",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "10u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemins anciens",
+      "craft_type": "Alchimie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemins de luxe",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemins de qualité",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemins de sagesse",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Parchemins rares",
+      "craft_type": "Enchantement",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Partition magique",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Partitions anciennes",
+      "craft_type": "Alchimie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Patrons de couture",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Patrons de mode",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Peau d'ours",
+      "craft_type": "Tannerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Peau de chèvre",
+      "craft_type": "Tannerie",
+      "base_price": 6.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Peau de serpent",
+      "craft_type": "Tannerie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Peaux brutes",
+      "craft_type": "Cuisine",
+      "base_price": 20.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pendentif en rubis",
+      "craft_type": "Joaillerie",
+      "base_price": 250.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Perle d'eau douce",
+      "craft_type": "Joaillerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Perle des profondeurs",
+      "craft_type": "Joaillerie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Perles azur",
+      "craft_type": "Joaillerie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierre de taille",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierre fortifiée",
+      "craft_type": "Menuiserie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierre à aiguiser",
+      "craft_type": "Joaillerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierres de lest",
+      "craft_type": "Joaillerie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierres de meule",
+      "craft_type": "Forge",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pierres précieuses",
+      "craft_type": "Joaillerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pigments rares",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pioche de Mineur",
+      "craft_type": "Forge",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Piège à mâchoires",
+      "craft_type": "Ingénierie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Pièges métalliques",
+      "craft_type": "Forge",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Planche de chêne",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Plans d'architecture",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Plans techniques",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Plantes du désert",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Plume d'aigle",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "10u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Plume d'écriture",
+      "craft_type": "Menuiserie",
+      "base_price": 5.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Plumes",
+      "craft_type": "Menuiserie",
+      "base_price": 2.0,
+      "unit": "10u",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Poison de marais",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Poisson séché",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Pommade de Réduction de Douleur",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "pot",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion d'Inspiration",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Charme",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Clairvoyance",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Potion de Courage",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Force",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Force du Taureau",
+      "craft_type": "Alchimie",
+      "base_price": 30.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Longévité",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Magie Supérieure",
+      "craft_type": "Alchimie",
+      "base_price": 60.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Mana Mineure",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Nutrition",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Potion de Respiration Aquatique",
+      "craft_type": "Alchimie",
+      "base_price": 35.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Résistance au Froid",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Résistance au Poison",
+      "craft_type": "Alchimie",
+      "base_price": 32.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Résistance à la Chaleur",
+      "craft_type": "Alchimie",
+      "base_price": 22.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Sagesse",
+      "craft_type": "Alchimie",
+      "base_price": 45.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Potion de Soin",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Soin Mineure",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Potion de Souplesse",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Sérénité",
+      "craft_type": "Alchimie",
+      "base_price": 22.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Vision Nocturne",
+      "craft_type": "Alchimie",
+      "base_price": 28.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Potion de Vitalité",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Poudre d'Éveil",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "sachet (1g)",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Poudre d'étoile",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "sachet (1g)",
+      "availability": "Rare"
+    },
+    {
+      "name": "Poudre de Disparition",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "sachet (1g)",
+      "availability": "Rare"
+    },
+    {
+      "name": "Poudre de combat",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "sachet (1g)",
+      "availability": "Rare"
+    },
+    {
+      "name": "Poudre explosive",
+      "craft_type": "Alchimie",
+      "base_price": 30.0,
+      "unit": "sachet (1g)",
+      "availability": "Rare"
+    },
+    {
+      "name": "Poudre à canon",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Poudres diverses",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Poudres lunaires",
+      "craft_type": "Alchimie",
+      "base_price": 40.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Poudres stellaires",
+      "craft_type": "Alchimie",
+      "base_price": 50.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions de base",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions de luxe",
+      "craft_type": "Cuisine",
+      "base_price": 6.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions de voyage",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions elfiques",
+      "craft_type": "Cuisine",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions forestières",
+      "craft_type": "Cuisine",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions militaires",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions ouvrières",
+      "craft_type": "Cuisine",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Provisions variées",
+      "craft_type": "Cuisine",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Quartz bleu",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "10u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Racine amère",
+      "craft_type": "Cuisine",
+      "base_price": 1.5,
+      "unit": "10u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Racine douce-miel",
+      "craft_type": "Alchimie",
+      "base_price": 3.0,
+      "unit": "10u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Racine nerveuse",
+      "craft_type": "Alchimie",
+      "base_price": 4.0,
+      "unit": "10u",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Ragoût de bœuf et de légumes",
+      "craft_type": "Cuisine",
+      "base_price": 10.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Rations résistantes",
+      "craft_type": "Cuisine",
+      "base_price": 7.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Renforts d'armure en cuir",
+      "craft_type": "Tannerie",
+      "base_price": 25.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Ressorts en fer",
+      "craft_type": "Ingénierie",
+      "base_price": 10.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Riz de qualité",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Riz parfumé",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Robe d'érudit",
+      "craft_type": "Couture",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Robe de cérémonie en soie",
+      "craft_type": "Couture",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Robe de mage",
+      "craft_type": "Couture",
+      "base_price": 120.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Robe de mage supérieure",
+      "craft_type": "Couture",
+      "base_price": 500.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Robe de ménestrel",
+      "craft_type": "Couture",
+      "base_price": 55.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Robe élégante",
+      "craft_type": "Couture",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Rubis brut",
+      "craft_type": "Joaillerie",
+      "base_price": 30.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Rubis taillé",
+      "craft_type": "Joaillerie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Résine parfumée",
+      "craft_type": "Alchimie",
+      "base_price": 6.0,
+      "unit": "fiole",
+      "availability": "Commun"
+    },
+    {
+      "name": "Résines d'arbres",
+      "craft_type": "Alchimie",
+      "base_price": 18.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sabliers de précision",
+      "craft_type": "Forge",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sabre courbe",
+      "craft_type": "Forge",
+      "base_price": 90.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Sac de grain",
+      "craft_type": "Menuiserie",
+      "base_price": 8.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sac à dos en chanvre",
+      "craft_type": "Couture",
+      "base_price": 18.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Salade revigorante",
+      "craft_type": "Cuisine",
+      "base_price": 6.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Saphir brut",
+      "craft_type": "Joaillerie",
+      "base_price": 28.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Saphir taillé",
+      "craft_type": "Joaillerie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Sel de conservation",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel de mer",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel de roche",
+      "craft_type": "Alchimie",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel de tannage",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel marin",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel pour teinture",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Sel volcanique",
+      "craft_type": "Alchimie",
+      "base_price": 6.0,
+      "unit": "40u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Selle de cheval simple",
+      "craft_type": "Tannerie",
+      "base_price": 45.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Soie brute",
+      "craft_type": "Couture",
+      "base_price": 10.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Soie de luxe",
+      "craft_type": "Couture",
+      "base_price": 50.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Soie de qualité",
+      "craft_type": "Couture",
+      "base_price": 45.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Soie de ver des sables",
+      "craft_type": "Couture",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Soufflets de forge",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Soufflets industriels",
+      "craft_type": "Tannerie",
+      "base_price": 80.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Soupe de poisson",
+      "craft_type": "Cuisine",
+      "base_price": 5.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Soupe paysanne",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Stimulant de force",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "fiole",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Table en chêne",
+      "craft_type": "Menuiserie",
+      "base_price": 50.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tabouret simple",
+      "craft_type": "Menuiserie",
+      "base_price": 15.0,
+      "unit": "unité",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Tanin d'écorce",
+      "craft_type": "Tannerie",
+      "base_price": 4.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tapis en peau d'ours",
+      "craft_type": "Tannerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Tarte au miel et aux amandes",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Tartines de fromage salé sur pain grillé",
+      "craft_type": "Cuisine",
+      "base_price": 3.0,
+      "unit": "portion",
+      "availability": "Commun"
+    },
+    {
+      "name": "Teintures naturelles",
+      "craft_type": "Alchimie",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tente en toile de chanvre",
+      "craft_type": "Couture",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Thé aux herbes",
+      "craft_type": "Cuisine",
+      "base_price": 4.0,
+      "unit": "100g",
+      "availability": "Commun"
+    },
+    {
+      "name": "Thé de jasmin",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "100g",
+      "availability": "Commun"
+    },
+    {
+      "name": "Thé rare",
+      "craft_type": "Cuisine",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Thé vert",
+      "craft_type": "Cuisine",
+      "base_price": 6.0,
+      "unit": "100g",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tissu de voile",
+      "craft_type": "Couture",
+      "base_price": 15.0,
+      "unit": "mètre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tissu fin",
+      "craft_type": "Couture",
+      "base_price": 15.0,
+      "unit": "mètre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tissu tropical",
+      "craft_type": "Couture",
+      "base_price": 18.0,
+      "unit": "mètre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tissus fins",
+      "craft_type": "Couture",
+      "base_price": 12.0,
+      "unit": "mètre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tissus légers",
+      "craft_type": "Couture",
+      "base_price": 18.0,
+      "unit": "mètre",
+      "availability": "Commun"
+    },
+    {
+      "name": "Tube en bronze",
+      "craft_type": "Ingénierie",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Tunique en lin simple",
+      "craft_type": "Couture",
+      "base_price": 12.0,
+      "unit": "unité",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Turban du désert",
+      "craft_type": "Couture",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Moyen"
+    },
+    {
+      "name": "Velours teinté",
+      "craft_type": "Couture",
+      "base_price": 15.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Venin de scorpion",
+      "craft_type": "Alchimie",
+      "base_price": 15.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Viande de bœuf",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "kg",
+      "availability": "Abondant"
+    },
+    {
+      "name": "Viande de chèvre",
+      "craft_type": "Cuisine",
+      "base_price": 2.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Viande de gibier",
+      "craft_type": "Cuisine",
+      "base_price": 18.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Viande séchée",
+      "craft_type": "Cuisine",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Weedididi",
+      "craft_type": "Alchimie",
+      "base_price": 20.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Zynkium",
+      "craft_type": "Forge",
+      "base_price": 70.0,
+      "unit": "kg",
+      "availability": "Rare"
+    },
+    {
+      "name": "Écaille de poisson",
+      "craft_type": "Tannerie",
+      "base_price": 5.0,
+      "unit": "10u",
+      "availability": "Commun"
+    },
+    {
+      "name": "Écho magique",
+      "craft_type": "Enchantement",
+      "base_price": 30.0,
+      "unit": "fiole",
+      "availability": "Rare"
+    },
+    {
+      "name": "Écorce d'éveil",
+      "craft_type": "Alchimie",
+      "base_price": 6.0,
+      "unit": "10u",
+      "availability": "Rare"
+    },
+    {
+      "name": "Écorces de chêne",
+      "craft_type": "Menuiserie",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Émeraude brute",
+      "craft_type": "Joaillerie",
+      "base_price": 35.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Émeraude taillée",
+      "craft_type": "Joaillerie",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Rare"
+    },
+    {
+      "name": "Épice du désert",
+      "craft_type": "Cuisine",
+      "base_price": 15.0,
+      "unit": "100g",
+      "availability": "Rare"
+    },
+    {
+      "name": "Épice rare",
+      "craft_type": "Cuisine",
+      "base_price": 25.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Épices exotiques",
+      "craft_type": "Cuisine",
+      "base_price": 35.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Épices mystiques",
+      "craft_type": "Cuisine",
+      "base_price": 30.0,
+      "unit": "kg",
+      "availability": "Commun"
+    },
+    {
+      "name": "Épices rares",
+      "craft_type": "Cuisine",
+      "base_price": 8.0,
+      "unit": "100g",
+      "availability": "Rare"
+    },
+    {
+      "name": "Épée courte en Fer",
+      "craft_type": "Forge",
+      "base_price": 55.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Épée de garde",
+      "craft_type": "Forge",
+      "base_price": 60.0,
+      "unit": "unité",
+      "availability": "Commun"
+    },
+    {
+      "name": "Étain",
+      "craft_type": "Forge",
+      "base_price": 12.0,
+      "unit": "kg",
+      "availability": "Moyen"
+    }
   ],
   "exports": [
-    {"city": "Herbolas", "resource": "Lisserande", "price": 3, "availability": "Commun"},
-    {"city": "Ponharilfei", "resource": "Cuivre", "price": 10, "availability": "Commun"},
-    {"city": "Havre", "resource": "Blé", "price": 1, "availability": "Abondant"},
-    {"city": "Thornedhel", "resource": "Acier de damas", "price": 40, "availability": "Rare"},
-    {"city": "Drughal'Mekh", "resource": "Cuir de dragon", "price": 1000, "availability": "Légendaire"},
-    {"city": "Valdrémil", "resource": "Émeraude taillée", "price": 60, "availability": "Rare"}
+    {
+      "city": "Thornedhel",
+      "resource": "Acier de damas",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Amandes",
+      "price": 3.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Améthyste brute",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Antidote Simple",
+      "price": 15.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Antidote universel",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Arbalète à répétition",
+      "price": 150.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Arc de chasse long",
+      "price": 45.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Arc elfique",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Arc-en-ciel cristallisé",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Argent",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Argéthane",
+      "price": 90.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Armure de bambou",
+      "price": 40.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Havre",
+      "resource": "Armure de cuir cloutée",
+      "price": 80.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Armure de cuir du désert",
+      "price": 60.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Armure de cuir renforcé",
+      "price": 70.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Armure de mailles",
+      "price": 150.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Armure de plaques en Acier",
+      "price": 300.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Armure de plates",
+      "price": 250.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Automate mécanique simple",
+      "price": 200.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Avoine",
+      "price": 2.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Balmenduline",
+      "price": 5.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Bambou flexible",
+      "price": 6.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Bannière de guilde brodée",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Bave de crapaud",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Beurre fermier",
+      "price": 3.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Bière blonde",
+      "price": 3.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Blé",
+      "price": 3.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Havre",
+      "resource": "Blé",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Bois d'if",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Bois de bouleau",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Bois de cèdre",
+      "price": 12.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Bois de chauffage",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Havre",
+      "resource": "Bois de chêne",
+      "price": 12.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Bombe en fer",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Havre",
+      "resource": "Bottes en cuir robustes",
+      "price": 25.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Boucles d'oreilles en saphir",
+      "price": 180.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Bouclier en Fer",
+      "price": 60.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Bouclier renforcé",
+      "price": 80.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Boutons en nacre",
+      "price": 5.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Bronze",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Cactus épineux",
+      "price": 7.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Cape de voyage en laine",
+      "price": 30.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Carapace de crabe",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Carapace de crabe",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Casque de mineur",
+      "price": 35.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Cerfeuillu",
+      "price": 2.5,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Champignon pâle",
+      "price": 6.25,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Champignon pâle",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Champignons séchés",
+      "price": 3.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Charbon",
+      "price": 2.5,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Charbon ardent",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Chaussure de luxe",
+      "price": 40.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Chemise en velours",
+      "price": 45.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Clous en fer",
+      "price": 6.25,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Collier de corail",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Collier en or",
+      "price": 200.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Corail rouge",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Corde harmonique",
+      "price": 10.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Couture de chanvre",
+      "price": 3.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Couture de lin",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Cristal de montagne",
+      "price": 20.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Cristal de sable",
+      "price": 18.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Cristal sonore",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Cristaux de glace",
+      "price": 15.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Havre",
+      "resource": "Cuir brut",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Havre",
+      "resource": "Cuir durci",
+      "price": 12.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Cuivre",
+      "price": 10.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Détonateur simple",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Diadème en or et émeraude",
+      "price": 500.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Eau de mer purifiée",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Écaille de poisson",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Écho magique",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Écorce d'éveil",
+      "price": 18.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Émeraude brute",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Émeraude brute",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Émeraude taillée",
+      "price": 60.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Encens de Concentration",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Encens de méditation",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Enclume de qualité",
+      "price": 200.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Épée de garde",
+      "price": 60.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Épice du désert",
+      "price": 15.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Épices rares",
+      "price": 8.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Essence de feu",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Essence de froid",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Essence lunaire",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Fabrication d'Engrenages en bronze",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Farine de qualité",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Fer",
+      "price": 13.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Fer ignifère",
+      "price": 60.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Feu-piment",
+      "price": 7.5,
+      "availability": "Rare"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Fibre tropicale",
+      "price": 6.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Filet de pêche",
+      "price": 12.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Filet de pêche magique",
+      "price": 25.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Havre",
+      "resource": "Fleur bocolique",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Fleur de cerisier",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Fleur de lotus",
+      "price": 10.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Flûte en bois",
+      "price": 25.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Fourrure d'hiver",
+      "price": 12.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Fromage de chèvre",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Fromage salé",
+      "price": 5.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Gaz des marais",
+      "price": 10.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Gemme brute",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Graisse végétale",
+      "price": 2.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Grand arc en if",
+      "price": 60.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Hache de bûcheron",
+      "price": 35.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Hache de bûcheron",
+      "price": 25.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Hache de guerre naine",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Harpe enchantée",
+      "price": 180.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Herbe elfique",
+      "price": 12.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Houblon",
+      "price": 2.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Huile d'Affûtage",
+      "price": 10.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Huile de palme",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Iris lunaire",
+      "price": 10.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Iris lunaire",
+      "price": 8.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Katana",
+      "price": 120.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Kimono de soie",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Kimono traditionnel",
+      "price": 70.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Laine",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Laine de yak",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Lait de vache",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Lame de feu",
+      "price": 150.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Lame de glace",
+      "price": 120.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Lentille en verre",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Lin",
+      "price": 2.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Lisserande",
+      "price": 3.75,
+      "availability": "Commun"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Livre ancien",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Luth enchanté",
+      "price": 150.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Manioques",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Manteau de montagne",
+      "price": 50.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Manteau de noble",
+      "price": 120.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Manteau elfique",
+      "price": 60.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Marteau de forgeron",
+      "price": 30.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Marteau de Guerre",
+      "price": 50.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Métal glacé",
+      "price": 45.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Métal volcanique",
+      "price": 75.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Miel sauvage",
+      "price": 4.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Minerai de fer",
+      "price": 5.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Mousse toxique",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Noix de coco",
+      "price": 2.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Obsidienne noire",
+      "price": 50.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Ombreliane",
+      "price": 7.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Omelette aux champignons des bois",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Or",
+      "price": 150.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Orbe de divination",
+      "price": 100.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Origami magique",
+      "price": 15.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Outil de mineur",
+      "price": 20.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Pain d'avoine",
+      "price": 2.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Pain de campagne",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Havre",
+      "resource": "Pain simple",
+      "price": 1.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Paladium",
+      "price": 100.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Pantalon en lin",
+      "price": 20.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Parchemin magique",
+      "price": 12.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Partition magique",
+      "price": 20.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Peau d'ours",
+      "price": 15.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Peau de serpent",
+      "price": 10.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Pendentif en rubis",
+      "price": 250.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Perle d'eau douce",
+      "price": 25.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Perle des profondeurs",
+      "price": 50.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Piège à mâchoires",
+      "price": 45.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Pierre de taille",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Pierre fortifiée",
+      "price": 15.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Pioche de Mineur",
+      "price": 45.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Havre",
+      "resource": "Planche de chêne",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Plume d'aigle",
+      "price": 8.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Plume d'écriture",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Plumes",
+      "price": 2.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Poison de marais",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Poisson séché",
+      "price": 3.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Potion d'Inspiration",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Potion de Charme",
+      "price": 25.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Potion de Courage",
+      "price": 20.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Potion de Force",
+      "price": 18.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Potion de Force du Taureau",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Potion de Longévité",
+      "price": 50.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Potion de Magie Supérieure",
+      "price": 60.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Potion de Mana Mineure",
+      "price": 25.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Potion de Nutrition",
+      "price": 12.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Potion de Résistance à la Chaleur",
+      "price": 30.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Potion de Résistance à la Chaleur",
+      "price": 22.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Potion de Résistance au Froid",
+      "price": 25.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Potion de Résistance au Poison",
+      "price": 32.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Potion de Respiration Aquatique",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Potion de Respiration Aquatique",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Potion de Respiration Aquatique",
+      "price": 35.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Potion de Sagesse",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Potion de Sérénité",
+      "price": 22.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Potion de Souplesse",
+      "price": 18.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Potion de Vision Nocturne",
+      "price": 28.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Potion de Vitalité",
+      "price": 20.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Poudre d'étoile",
+      "price": 50.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Poudre d'Éveil",
+      "price": 18.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Poudre de combat",
+      "price": 25.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Poudre de Disparition",
+      "price": 40.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Poudre explosive",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Racine amère",
+      "price": 1.5,
+      "availability": "Commun"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Racine nerveuse",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Résine parfumée",
+      "price": 6.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Robe d'érudit",
+      "price": 45.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Robe de cérémonie en soie",
+      "price": 120.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Robe de mage",
+      "price": 90.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Robe de ménestrel",
+      "price": 55.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Robe élégante",
+      "price": 80.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Rubis brut",
+      "price": 30.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Rubis taillé",
+      "price": 50.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Sabre courbe",
+      "price": 90.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Sac à dos en chanvre",
+      "price": 18.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Sac de grain",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Saphir brut",
+      "price": 28.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Saphir brut",
+      "price": 28.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Saphir taillé",
+      "price": 45.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Sel volcanique",
+      "price": 6.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Soie brute",
+      "price": 10.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Soie de ver des sables",
+      "price": 20.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Soupe de poisson",
+      "price": 5.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Stimulant de force",
+      "price": 20.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Tanin d'écorce",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Tapis en peau d'ours",
+      "price": 35.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Tarte au miel et aux amandes",
+      "price": 12.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Tartines de fromage salé sur pain grillé",
+      "price": 3.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Tente en toile de chanvre",
+      "price": 35.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Thé aux herbes",
+      "price": 4.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Thé de jasmin",
+      "price": 8.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Thé vert",
+      "price": 6.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Tissu fin",
+      "price": 15.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Tissu tropical",
+      "price": 18.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Tunique en lin simple",
+      "price": 12.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Turban du désert",
+      "price": 35.0,
+      "availability": "Moyen"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Velours teinté",
+      "price": 15.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Venin de scorpion",
+      "price": 15.0,
+      "availability": "Rare"
+    },
+    {
+      "city": "Havre",
+      "resource": "Viande de bœuf",
+      "price": 2.0,
+      "availability": "Abondant"
+    },
+    {
+      "city": "Havre",
+      "resource": "Viande de chèvre",
+      "price": 2.0,
+      "availability": "Commun"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Zynkium",
+      "price": 70.0,
+      "availability": "Rare"
+    }
   ],
   "imports": [
-    {"city": "Ponharilfei", "resource": "Blé", "price": 1.5, "origin_city": "Havre"},
-    {"city": "Herbolas", "resource": "Cuivre", "price": 15, "origin_city": "Ponharilfei"},
-    {"city": "Havre", "resource": "Lisserande", "price": 5, "origin_city": "Herbolas"},
-    {"city": "Valdrémil", "resource": "Acier de damas", "price": 55, "origin_city": "Thornedhel"},
-    {"city": "Thornedhel", "resource": "Émeraude taillée", "price": 80, "origin_city": "Valdrémil"}
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Acier",
+      "price": 15.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Algues bleu",
+      "price": 14.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Algues bleu",
+      "price": 8.0,
+      "origin_city": "Épine-Azur"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Algues médicinales",
+      "price": 12.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Appâts naturels",
+      "price": 12.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Armes de siège",
+      "price": 120.0,
+      "origin_city": "Thornedhel"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Armes de siège",
+      "price": 80.0,
+      "origin_city": "Thornedhel"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Bague en argent et améthyste",
+      "price": 45.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Bambou sacré",
+      "price": 18.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Bambou sculpté",
+      "price": 25.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Bambou sculpté",
+      "price": 25.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Bière de guerre",
+      "price": 5.0,
+      "origin_city": "Galquobrak"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Bière forte",
+      "price": 8.0,
+      "origin_city": "Galquobrak"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Bois ancien",
+      "price": 40.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Bois de bateau",
+      "price": 40.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Bois de bateau",
+      "price": 35.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Bois de construction",
+      "price": 30.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Havre",
+      "resource": "Bois de construction",
+      "price": 8.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Bois de fumage",
+      "price": 10.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Bois de guerre",
+      "price": 12.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Bois de lune",
+      "price": 35.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Bois de palissade",
+      "price": 15.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Bois de palissade",
+      "price": 8.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Bois de palissade",
+      "price": 6.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Bois de qualité",
+      "price": 18.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Bois de récupération",
+      "price": 5.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Bois de résonance",
+      "price": 50.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Bois de soutien",
+      "price": 18.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Bois de soutien",
+      "price": 15.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Bois de trempe",
+      "price": 12.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Bois dur",
+      "price": 10.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Bois exotique",
+      "price": 15.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Bois flotté",
+      "price": 12.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Bois flotté",
+      "price": 10.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Bois flotté",
+      "price": 8.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Bois précieux",
+      "price": 20.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Bois réfractaire",
+      "price": 22.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Bois réfractaire",
+      "price": 22.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Bois résistant",
+      "price": 30.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Boutons précieux",
+      "price": 35.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Boutons précieux",
+      "price": 12.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Cartes de bataille",
+      "price": 20.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Cartes de territoire",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Cartes de territoire",
+      "price": 18.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Cartes du désert",
+      "price": 45.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Cartes du désert",
+      "price": 30.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Cartes géologiques",
+      "price": 40.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Cartes géologiques",
+      "price": 30.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Cartes marines",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Cartes marines",
+      "price": 30.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Cartes marines",
+      "price": 30.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Cartes marines",
+      "price": 25.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Cartes marines",
+      "price": 25.0,
+      "origin_city": "Briseval"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Cartes marines",
+      "price": 20.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Charbon d'anthracite",
+      "price": 30.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Charbon d'anthracite",
+      "price": 25.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Charbon d'anthracite",
+      "price": 10.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Charbon de forge",
+      "price": 8.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Charbon de forge",
+      "price": 6.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Charbon de forge",
+      "price": 6.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Charbon de mine",
+      "price": 8.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Charbon raffiné",
+      "price": 10.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Charbon raffiné",
+      "price": 8.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Charbon raffiné",
+      "price": 4.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Contrats commerciaux",
+      "price": 25.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Contrats commerciaux",
+      "price": 20.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Cordes de qualité",
+      "price": 30.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Cordes solides",
+      "price": 15.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Cristal de mana",
+      "price": 90.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Cristal de mana",
+      "price": 80.0,
+      "origin_city": "Oridescasto"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Cristal de mana",
+      "price": 80.0,
+      "origin_city": "Vëlyssandra"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Cristaux de distillation",
+      "price": 60.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Cristaux magiques",
+      "price": 50.0,
+      "origin_city": "Oridescasto"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Cuir d'instrument",
+      "price": 25.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Cuir de bataille",
+      "price": 35.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Cuir de camouflage",
+      "price": 30.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Cuir de chameau",
+      "price": 25.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Cuir de dragon",
+      "price": 80.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Cuir de harnais",
+      "price": 28.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Cuir de mineur",
+      "price": 30.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Cuir de protection",
+      "price": 35.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Cuir de protection",
+      "price": 25.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Cuir de protection",
+      "price": 12.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Cuir de qualité",
+      "price": 30.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Cuir de tonneau",
+      "price": 15.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Cuir de travail",
+      "price": 20.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Cuir de travail",
+      "price": 20.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Cuir elfique",
+      "price": 50.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Cuir elfique",
+      "price": 40.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Cuir elfique",
+      "price": 40.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Cuir épais",
+      "price": 28.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Cuir épais",
+      "price": 22.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Cuir épais",
+      "price": 18.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Cuir étanche",
+      "price": 35.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Cuir étanche",
+      "price": 22.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Cuir étanche",
+      "price": 20.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Cuir étanche",
+      "price": 20.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Cuir fin",
+      "price": 25.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Cuir fin",
+      "price": 25.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Cuir ignifuge",
+      "price": 35.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Cuir ignifuge",
+      "price": 30.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Cuir marin",
+      "price": 32.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Cuir pour harnais",
+      "price": 15.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Cuir souple",
+      "price": 28.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Cuir usé",
+      "price": 8.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Eau pure",
+      "price": 15.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Eau pure",
+      "price": 5.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Écorces de chêne",
+      "price": 12.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Encens spirituel",
+      "price": 22.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Encens spirituel",
+      "price": 20.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Encre magique",
+      "price": 25.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Encre spirituelle",
+      "price": 15.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Épice rare",
+      "price": 25.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Épices exotiques",
+      "price": 35.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Épices exotiques",
+      "price": 30.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Épices mystiques",
+      "price": 30.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Farine d'avoine",
+      "price": 3.0,
+      "origin_city": "Cormautane"
+    },
+    {
+      "city": "Havre",
+      "resource": "Farine de blé",
+      "price": 3.0,
+      "origin_city": "Torgas"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Fers à cheval",
+      "price": 18.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Feuilles de mûrier",
+      "price": 4.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Filets de pêche",
+      "price": 30.0,
+      "origin_city": "Crik'Nok"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Filets de pêche",
+      "price": 20.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Fioles de cristal",
+      "price": 15.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Fioles en verre",
+      "price": 12.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Flèches à pointe de fer",
+      "price": 8.0,
+      "origin_city": "Thornedhel"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Fleur de lune",
+      "price": 20.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Gemmes d'enchantement",
+      "price": 100.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Gemmes de chaleur",
+      "price": 45.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Gemmes de décoration",
+      "price": 45.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Gemmes de renfort",
+      "price": 55.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Gemmes de renfort",
+      "price": 55.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Gemmes de renfort",
+      "price": 50.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Gemmes de renfort",
+      "price": 40.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Gemmes de trempe",
+      "price": 60.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Gemmes décoratives",
+      "price": 30.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Gemmes pour alliage",
+      "price": 25.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Gemmes stellaires",
+      "price": 80.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Gemmes stellaires",
+      "price": 70.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Hamecons de qualité",
+      "price": 15.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Herbes aromatiques",
+      "price": 12.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Herbes de montagne",
+      "price": 25.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Herbes de montagne",
+      "price": 22.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Herbes de pistage",
+      "price": 15.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Herbes de pistage",
+      "price": 8.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Herbes de tannage",
+      "price": 18.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Herbes de tannage",
+      "price": 12.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Herbes de trempe",
+      "price": 15.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Herbes de trempe",
+      "price": 14.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Herbes de trempe",
+      "price": 12.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Herbes de trempe",
+      "price": 10.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Herbes de trempe",
+      "price": 8.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Herbes fourragères",
+      "price": 6.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Herbes ignifuges",
+      "price": 18.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Herbes ignifuges",
+      "price": 18.0,
+      "origin_city": "Drughal'Mekh"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Herbes ignifuges",
+      "price": 15.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Herbes médicinales",
+      "price": 12.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Herbes médicinales",
+      "price": 10.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Havre",
+      "resource": "Herbes médicinales",
+      "price": 6.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Herbes rafraîchissantes",
+      "price": 20.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Herbes rafraîchissantes",
+      "price": 15.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Herbes rafraîchissantes",
+      "price": 8.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Herbes vétérinaires",
+      "price": 8.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Houblon premium",
+      "price": 8.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Jade poli",
+      "price": 80.0,
+      "origin_city": "Vëlyssandra"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Jade poli",
+      "price": 60.0,
+      "origin_city": "Kel'Surr"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Jade poli",
+      "price": 60.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Jade poli",
+      "price": 50.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Jade poli",
+      "price": 25.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Jade pur",
+      "price": 60.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Laine brute",
+      "price": 4.0,
+      "origin_city": "Froumousse"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Laine épaisse",
+      "price": 6.0,
+      "origin_city": "Khur-Maal"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Lames de dépeçage",
+      "price": 20.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Levure rare",
+      "price": 25.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Lingot de mithril",
+      "price": 200.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Livres de musique",
+      "price": 35.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Livres de musique",
+      "price": 30.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Longue-vue simple",
+      "price": 50.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Longue-vue simple",
+      "price": 45.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Longue-vue simple",
+      "price": 35.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Mélanges suspects",
+      "price": 10.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Métal harmonique",
+      "price": 55.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Miel de fleurs rares",
+      "price": 15.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Miel de qualité",
+      "price": 8.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Minerai de fer pur",
+      "price": 20.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Orge",
+      "price": 3.0,
+      "origin_city": "Briseval"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Outils agricoles",
+      "price": 18.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Outils de calligraphie",
+      "price": 30.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Outils de commerce",
+      "price": 25.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Outils de forge",
+      "price": 50.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Havre",
+      "resource": "Outils de forge",
+      "price": 25.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Outils de forge de maître",
+      "price": 50.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Outils de forge zen",
+      "price": 65.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Outils de mine",
+      "price": 45.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Outils de mine",
+      "price": 35.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Outils de précision",
+      "price": 60.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Outils de précision",
+      "price": 35.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Outils de réparation",
+      "price": 35.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Outils du désert",
+      "price": 40.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Pain de mer",
+      "price": 3.0,
+      "origin_city": "Havre"
+    },
+    {
+      "city": "Havre",
+      "resource": "Parchemins",
+      "price": 12.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Parchemins anciens",
+      "price": 60.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Vëlyssandra",
+      "resource": "Parchemins anciens",
+      "price": 45.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Parchemins anciens",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Parchemins de luxe",
+      "price": 18.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Parchemins de qualité",
+      "price": 20.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Parchemins de sagesse",
+      "price": 40.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Parchemins rares",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Parchemins rares",
+      "price": 30.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Partitions anciennes",
+      "price": 45.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Patrons de couture",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Patrons de mode",
+      "price": 20.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Peaux brutes",
+      "price": 20.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Perles azur",
+      "price": 45.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Pièges métalliques",
+      "price": 25.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Pierre à aiguiser",
+      "price": 15.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Pierre à aiguiser",
+      "price": 5.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Pierres de lest",
+      "price": 15.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Pierres de meule",
+      "price": 15.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Pierres précieuses",
+      "price": 60.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Pierres précieuses",
+      "price": 40.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Pigments rares",
+      "price": 20.0,
+      "origin_city": "Oridescasto"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Plans d'architecture",
+      "price": 50.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Plans d'architecture",
+      "price": 50.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Plans d'architecture",
+      "price": 50.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Plans d'architecture",
+      "price": 45.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Plans techniques",
+      "price": 35.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Plans techniques",
+      "price": 15.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Plantes du désert",
+      "price": 20.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Potion de Clairvoyance",
+      "price": 25.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Poudre à canon",
+      "price": 40.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Poudre à canon",
+      "price": 30.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Poudres diverses",
+      "price": 15.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Poudres lunaires",
+      "price": 40.0,
+      "origin_city": "Vëlyssandra"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Poudres stellaires",
+      "price": 50.0,
+      "origin_city": "Aelthëanor"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Provisions",
+      "price": 3.0,
+      "origin_city": "Torgas"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Provisions de base",
+      "price": 12.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Provisions de base",
+      "price": 2.0,
+      "origin_city": "Cormautane"
+    },
+    {
+      "city": "Valdrémil",
+      "resource": "Provisions de luxe",
+      "price": 6.0,
+      "origin_city": "Cormautane"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Provisions de voyage",
+      "price": 12.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Provisions elfiques",
+      "price": 15.0,
+      "origin_city": "Vëlyssandra"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Provisions forestières",
+      "price": 10.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Thornedhel",
+      "resource": "Provisions militaires",
+      "price": 4.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Provisions militaires",
+      "price": 4.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Urag-Tor",
+      "resource": "Provisions ouvrières",
+      "price": 10.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Provisions ouvrières",
+      "price": 8.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Provisions ouvrières",
+      "price": 6.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Provisions variées",
+      "price": 10.0,
+      "origin_city": "Épine-Azur"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Provisions variées",
+      "price": 2.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Rations résistantes",
+      "price": 7.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Résines d'arbres",
+      "price": 18.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Riz de qualité",
+      "price": 4.0,
+      "origin_city": "Briseval"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Riz parfumé",
+      "price": 8.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Riz parfumé",
+      "price": 8.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Sabliers de précision",
+      "price": 35.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Torgas",
+      "resource": "Sel de conservation",
+      "price": 8.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Briseval",
+      "resource": "Sel de conservation",
+      "price": 6.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Sel de conservation",
+      "price": 4.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Sel de conservation",
+      "price": 4.0,
+      "origin_city": "Havre"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Sel de conservation",
+      "price": 3.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Morkhand",
+      "resource": "Sel de conservation",
+      "price": 3.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Sel de mer",
+      "price": 5.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Sel de mer",
+      "price": 4.0,
+      "origin_city": "Havre"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Sel de roche",
+      "price": 12.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Sel de roche",
+      "price": 8.0,
+      "origin_city": "Khur-Maal"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Sel de roche",
+      "price": 6.0,
+      "origin_city": "Nad'Rhima"
+    },
+    {
+      "city": "Nad'Rhima",
+      "resource": "Sel de tannage",
+      "price": 5.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Épine-Azur",
+      "resource": "Sel marin",
+      "price": 2.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Sel pour teinture",
+      "price": 5.0,
+      "origin_city": "Seiralala"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Soie de luxe",
+      "price": 50.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Soie de qualité",
+      "price": 45.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Soie de qualité",
+      "price": 35.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Drughal'Mekh",
+      "resource": "Soufflets de forge",
+      "price": 35.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Skarh-Tomul",
+      "resource": "Soufflets industriels",
+      "price": 80.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Teintures naturelles",
+      "price": 25.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Teintures naturelles",
+      "price": 25.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Teintures naturelles",
+      "price": 12.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Hin'Yaru",
+      "resource": "Thé rare",
+      "price": 15.0,
+      "origin_city": "Kozan-Mura"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Thé rare",
+      "price": 12.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Havre",
+      "resource": "Tissu de voile",
+      "price": 15.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Sylméris",
+      "resource": "Tissus fins",
+      "price": 12.0,
+      "origin_city": "Vestiaire"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Tissus légers",
+      "price": 18.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Viande de gibier",
+      "price": 18.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Kel'Surr",
+      "resource": "Viande séchée",
+      "price": 12.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Borr'Tanazh",
+      "resource": "Viande séchée",
+      "price": 6.0,
+      "origin_city": "Morkhand"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Viande séchée",
+      "price": 3.0,
+      "origin_city": "Fort-Gravelle"
+    },
+    {
+      "city": "Gargabulle",
+      "resource": "Weedididi",
+      "price": 20.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Weedididi",
+      "price": 18.0,
+      "origin_city": "Kozan-Mura"
+    },
+    {
+      "city": "Kozan-Mura",
+      "resource": "Weedididi",
+      "price": 16.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Cristal sonore",
+      "price": 70.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Livre ancien",
+      "price": 80.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Luthmeris",
+      "resource": "Livre ancien",
+      "price": 75.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Aelthëanor",
+      "resource": "Livre ancien",
+      "price": 70.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Parloa",
+      "resource": "Livre ancien",
+      "price": 60.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Oridescasto",
+      "resource": "Saphir taillé",
+      "price": 70.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Seiralala",
+      "resource": "Perle d'eau douce",
+      "price": 40.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Nabaga",
+      "resource": "Herbe elfique",
+      "price": 25.0,
+      "origin_city": "Herbolas"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Émeraude taillée",
+      "price": 70.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Soie brute",
+      "price": 18.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Livre ancien",
+      "price": 40.0,
+      "origin_city": "Parloa"
+    },
+    {
+      "city": "Byaku-Kan",
+      "resource": "Livre ancien",
+      "price": 40.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Khur-Maal",
+      "resource": "Poudre explosive",
+      "price": 35.0,
+      "origin_city": "Nabaga"
+    },
+    {
+      "city": "Corallin",
+      "resource": "Saphir taillé",
+      "price": 50.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Ponharilfei",
+      "resource": "Minerai de fer",
+      "price": 8.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Lugiar",
+      "resource": "Clous en fer",
+      "price": 9.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Lin",
+      "price": 3.0,
+      "origin_city": "Torgas"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Acier de damas",
+      "price": 40.0,
+      "origin_city": "Thornedhel"
+    },
+    {
+      "city": "Durkholm",
+      "resource": "Bois de chêne",
+      "price": 12.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Bronze",
+      "price": 15.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Couture de lin",
+      "price": 4.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Cuivre",
+      "price": 10.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Fer",
+      "price": 13.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Havre",
+      "resource": "Fer",
+      "price": 13.0,
+      "origin_city": "Ponharilfei"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Fromage salé",
+      "price": 5.0,
+      "origin_city": "Froumousse"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Houblon",
+      "price": 2.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Havre",
+      "resource": "Houblon",
+      "price": 2.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Froumousse",
+      "resource": "Houblon",
+      "price": 2.0,
+      "origin_city": "Lunebrèche"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Laine",
+      "price": 5.0,
+      "origin_city": "Froumousse"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Obsidienne noire",
+      "price": 50.0,
+      "origin_city": "Drughal'Mekh"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Or",
+      "price": 150.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Paladium",
+      "price": 100.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Fort-Gravelle",
+      "resource": "Pierre fortifiée",
+      "price": 15.0,
+      "origin_city": "Skarh-Tomul"
+    },
+    {
+      "city": "Herbolas",
+      "resource": "Soie brute",
+      "price": 10.0,
+      "origin_city": "Sylméris"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Tissu tropical",
+      "price": 18.0,
+      "origin_city": "Hin'Yaru"
+    },
+    {
+      "city": "Havre",
+      "resource": "Charbon",
+      "price": 2.0,
+      "origin_city": "Urag-Tor"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Bois de chêne",
+      "price": 11.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Lunebrèche",
+      "resource": "Bois de chêne",
+      "price": 8.0,
+      "origin_city": "Lugiar"
+    },
+    {
+      "city": "Cormautane",
+      "resource": "Livre ancien",
+      "price": 30.0,
+      "origin_city": "Luthmeris"
+    },
+    {
+      "city": "Arrakis",
+      "resource": "Livre ancien",
+      "price": 25.0,
+      "origin_city": "Byaku-Kan"
+    },
+    {
+      "city": "Crik'Nok",
+      "resource": "Perle d'eau douce",
+      "price": 15.0,
+      "origin_city": "Corallin"
+    },
+    {
+      "city": "Galquobrak",
+      "resource": "Saphir taillé",
+      "price": 30.0,
+      "origin_city": "Valdrémil"
+    },
+    {
+      "city": "Chordy",
+      "resource": "Luth enchanté",
+      "price": 40.0,
+      "origin_city": "Durkholm"
+    },
+    {
+      "city": "Vestiaire",
+      "resource": "Saphir taillé",
+      "price": 56.0,
+      "origin_city": ""
+    }
   ]
 }

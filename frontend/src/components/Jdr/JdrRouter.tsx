@@ -60,6 +60,14 @@ function JdrRouterInner({ hash }: { hash: string }) {
     )
   }
 
+  if (hash === '#/jdr/merchant') {
+    return (
+      <ProtectedRoute>
+        <MerchantPage />
+      </ProtectedRoute>
+    )
+  }
+
   // Fallback: redirect to JDR home
   return <JdrHomePage />
 }
