@@ -186,3 +186,8 @@ SIMPLE_JWT = {
 # Media files (avatars, etc.)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Nextcloud integration
+NEXTCLOUD_URL = os.environ.get('NEXTCLOUD_URL', 'https://cloud.automia.org')
+NEXTCLOUD_ADMIN_USER = os.environ.get('NEXTCLOUD_ADMIN_USER', '')
+NEXTCLOUD_ADMIN_PASSWORD = os.environ.get('NEXTCLOUD_ADMIN_PASSWORD', '')

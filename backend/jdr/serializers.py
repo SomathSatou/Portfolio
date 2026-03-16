@@ -2,8 +2,10 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import (
-    Campaign, CampaignMembership, Character, City, CityExport, CityImport,
-    MarketPrice, MerchantInventory, MerchantOrder, Notification, Resource, UserProfile,
+    AlchemyPlant, Campaign, CampaignMembership, Character, City, CityExport, CityImport,
+    GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory, MerchantOrder,
+    Notification, PlantUsage, Resource, RuneCollection, RuneDrawing, RuneTemplate,
+    SharedFolder, SharedFolderAccess, UserProfile,
 )
 
 
@@ -237,3 +239,205 @@ class MerchantInventorySerializer(serializers.ModelSerializer):
             'craft_type', 'quantity', 'average_buy_price',
         ]
         read_only_fields = ['id', 'character', 'resource']
+
+
+# ─── Garden / Alchemy ──────────────────────────────────────────────────────
+
+class PlantUsageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlantUsage
+        fields = ['id', 'recipe_name', 'quantity_needed']
+
+
+class AlchemyPlantSerializer(serializers.ModelSerializer):
+    usages = PlantUsageSerializer(many=True, read_only=True)
+    origin_city_name = serializers.CharField(source='origin_city.name', read_only=True, default=None)
+
+    class Meta:
+        model = AlchemyPlant
+        fields = [
+            'id', 'name', 'category', 'rarity', 'growth_time', 'yield_amount',
+            'special_conditions', 'description', 'sell_price', 'origin_city',
+            'origin_city_name', 'icon', 'usages',
+        ]
+
+
+class AlchemyPlantListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlchemyPlant
+        fields = [
+            'id', 'name', 'category', 'rarity', 'growth_time', 'yield_amount',
+            'special_conditions', 'sell_price', 'icon',
+        ]
+
+
+class GardenPlotSerializer(serializers.ModelSerializer):
+    plant_name = serializers.CharField(source='plant.name', read_only=True, default=None)
+    plant_icon = serializers.CharField(source='plant.icon', read_only=True, default=None)
+    plant_rarity = serializers.CharField(source='plant.rarity', read_only=True, default=None)
+    plant_growth_time = serializers.IntegerField(source='plant.growth_time', read_only=True, default=None)
+    plant_yield_amount = serializers.IntegerField(source='plant.yield_amount', read_only=True, default=None)
+
+    class Meta:
+        model = GardenPlot
+        fields = [
+            'id', 'character', 'plot_number', 'plant', 'plant_name', 'plant_icon',
+            'plant_rarity', 'plant_growth_time', 'plant_yield_amount',
+            'planted_at_session', 'sessions_grown', 'is_ready', 'status',
+        ]
+        read_only_fields = [
+            'id', 'character', 'plot_number', 'planted_at_session',
+            'sessions_grown', 'is_ready', 'status',
+        ]
+
+
+class GardenUpgradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GardenUpgrade
+        fields = ['id', 'character', 'max_plots', 'fertilizer_bonus', 'special_soils']
+        read_only_fields = ['id', 'character']
+
+
+class HarvestLogSerializer(serializers.ModelSerializer):
+    plant_name = serializers.CharField(source='plant.name', read_only=True)
+    plant_icon = serializers.CharField(source='plant.icon', read_only=True)
+
+    class Meta:
+        model = HarvestLog
+        fields = [
+            'id', 'character', 'plant', 'plant_name', 'plant_icon',
+            'quantity', 'harvested_at_session', 'sold', 'sell_price_total',
+        ]
+        read_only_fields = ['id', 'character', 'plant', 'quantity', 'harvested_at_session']
+
+
+class PlantActionSerializer(serializers.Serializer):
+    plant_id = serializers.IntegerField()
+
+
+class SellHarvestSerializer(serializers.Serializer):
+    plant_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+
+# ─── Enchanteur / Runes ──────────────────────────────────────────────────────
+
+class RuneTemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RuneTemplate
+        fields = [
+            'id', 'name', 'description', 'difficulty', 'category',
+            'reference_image', 'mana_cost', 'effect_description', 'required_materials',
+        ]
+
+
+class RuneTemplateListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RuneTemplate
+        fields = [
+            'id', 'name', 'difficulty', 'category', 'reference_image', 'mana_cost',
+        ]
+
+
+class RuneDrawingSerializer(serializers.ModelSerializer):
+    character_name = serializers.CharField(source='character.name', read_only=True)
+    player_name = serializers.CharField(source='character.player.username', read_only=True)
+    template_name = serializers.CharField(source='template.name', read_only=True, default=None)
+    template_reference_image = serializers.ImageField(
+        source='template.reference_image', read_only=True, default=None,
+    )
+
+    class Meta:
+        model = RuneDrawing
+        fields = [
+            'id', 'character', 'character_name', 'player_name', 'template', 'template_name',
+            'template_reference_image', 'image_data', 'title', 'notes', 'status',
+            'mj_feedback', 'submitted_at', 'reviewed_at', 'created_at', 'campaign',
+        ]
+        read_only_fields = [
+            'id', 'character', 'status', 'mj_feedback', 'submitted_at', 'reviewed_at', 'created_at',
+        ]
+
+
+class CreateRuneDrawingSerializer(serializers.Serializer):
+    template_id = serializers.IntegerField(required=False, allow_null=True)
+    title = serializers.CharField(max_length=200)
+    image_data = serializers.CharField()
+    notes = serializers.CharField(required=False, allow_blank=True, default='')
+    character_id = serializers.IntegerField()
+    campaign_id = serializers.IntegerField()
+
+
+class ReviewRuneDrawingSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(choices=['approved', 'rejected'])
+    feedback = serializers.CharField(required=False, allow_blank=True, default='')
+
+
+class RuneCollectionSerializer(serializers.ModelSerializer):
+    drawing_title = serializers.CharField(source='rune_drawing.title', read_only=True)
+    drawing_image = serializers.CharField(source='rune_drawing.image_data', read_only=True)
+    template_name = serializers.CharField(source='rune_drawing.template.name', read_only=True, default=None)
+    template_effect = serializers.CharField(
+        source='rune_drawing.template.effect_description', read_only=True, default=None,
+    )
+    template_category = serializers.CharField(
+        source='rune_drawing.template.category', read_only=True, default=None,
+    )
+
+    class Meta:
+        model = RuneCollection
+        fields = [
+            'id', 'character', 'rune_drawing', 'drawing_title', 'drawing_image',
+            'template_name', 'template_effect', 'template_category',
+            'acquired_at_session', 'uses_remaining',
+        ]
+        read_only_fields = ['id', 'character', 'rune_drawing', 'acquired_at_session']
+
+
+# ─── Nextcloud / Files ──────────────────────────────────────────────────────
+
+class SharedFolderAccessSerializer(serializers.ModelSerializer):
+    player_name = serializers.CharField(source='player.username', read_only=True)
+
+    class Meta:
+        model = SharedFolderAccess
+        fields = ['id', 'folder', 'player', 'player_name', 'can_edit', 'can_upload']
+        read_only_fields = ['id']
+
+
+class SharedFolderSerializer(serializers.ModelSerializer):
+    created_by_name = serializers.CharField(source='created_by.username', read_only=True)
+    campaign_name = serializers.CharField(source='campaign.name', read_only=True)
+    access_entries = SharedFolderAccessSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = SharedFolder
+        fields = [
+            'id', 'campaign', 'campaign_name', 'nextcloud_path', 'name', 'description',
+            'category', 'access_level', 'created_by', 'created_by_name', 'created_at',
+            'access_entries',
+        ]
+        read_only_fields = ['id', 'created_by', 'created_at']
+
+
+class CreateSharedFolderSerializer(serializers.Serializer):
+    campaign_id = serializers.IntegerField()
+    name = serializers.CharField(max_length=200)
+    description = serializers.CharField(required=False, allow_blank=True, default='')
+    category = serializers.ChoiceField(choices=SharedFolder.CATEGORY_CHOICES, default='other')
+    access_level = serializers.ChoiceField(
+        choices=SharedFolder.ACCESS_LEVEL_CHOICES, default='all_players',
+    )
+    player_ids = serializers.ListField(
+        child=serializers.IntegerField(), required=False, default=list,
+    )
+
+
+class UpdateSharedFolderSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=200, required=False)
+    description = serializers.CharField(required=False, allow_blank=True)
+    category = serializers.ChoiceField(choices=SharedFolder.CATEGORY_CHOICES, required=False)
+    access_level = serializers.ChoiceField(choices=SharedFolder.ACCESS_LEVEL_CHOICES, required=False)
+    player_ids = serializers.ListField(
+        child=serializers.IntegerField(), required=False,
+    )

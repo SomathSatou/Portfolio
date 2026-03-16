@@ -1,0 +1,857 @@
+[
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 1,
+    "fields": {
+      "name": "Lisserande",
+      "category": "Herbes",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 3,
+      "special_conditions": "",
+      "description": "Herbe souple aux reflets argentés, prisée des alchimistes pour ses propriétés apaisantes. Pousse en abondance dans les prairies d'Herbolas.",
+      "sell_price": "2.00",
+      "origin_city": null,
+      "icon": "🌿"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 2,
+    "fields": {
+      "name": "Menthe noire",
+      "category": "Herbes",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "",
+      "description": "Variété rare de menthe aux feuilles sombres, dégageant un arôme puissant. Utilisée dans les élixirs de concentration.",
+      "sell_price": "5.00",
+      "origin_city": null,
+      "icon": "🌿"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 3,
+    "fields": {
+      "name": "Cerfeuillu",
+      "category": "Herbes",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 4,
+      "special_conditions": "",
+      "description": "Plante aromatique très répandue, base de nombreuses potions de soin mineures.",
+      "sell_price": "1.50",
+      "origin_city": null,
+      "icon": "🌱"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 4,
+    "fields": {
+      "name": "Balmenduline",
+      "category": "Herbes",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "",
+      "description": "Herbe grasse aux propriétés régénérantes. Les guérisseurs d'Herbolas en font des cataplasmes miraculeux.",
+      "sell_price": "6.00",
+      "origin_city": null,
+      "icon": "🌿"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 5,
+    "fields": {
+      "name": "Ombreliane",
+      "category": "Fleurs",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Pousse uniquement à l'ombre",
+      "description": "Fleur délicate aux pétales translucides qui ne s'épanouit que dans l'obscurité. Les elfes de Sylméris la cultivent sous la canopée ancestrale.",
+      "sell_price": "18.00",
+      "origin_city": null,
+      "icon": "🌸"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 6,
+    "fields": {
+      "name": "Iris lunaire",
+      "category": "Fleurs",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite la lumière de la lune",
+      "description": "Iris iridescent qui ne fleurit que les nuits de pleine lune. Ses pétales concentrent l'énergie lunaire, essentielle aux potions de clairvoyance.",
+      "sell_price": "20.00",
+      "origin_city": null,
+      "icon": "🌙"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 7,
+    "fields": {
+      "name": "Fleur bocolique",
+      "category": "Fleurs",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 3,
+      "special_conditions": "",
+      "description": "Petite fleur champêtre aux couleurs vives. Simple mais efficace comme base de potions d'énergie.",
+      "sell_price": "2.00",
+      "origin_city": null,
+      "icon": "🌼"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 8,
+    "fields": {
+      "name": "Racine douce-miel",
+      "category": "Racines",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 3,
+      "special_conditions": "",
+      "description": "Racine au goût sucré, utilisée comme liant dans de nombreuses potions. Sa douceur masque l'amertume des ingrédients plus puissants.",
+      "sell_price": "2.00",
+      "origin_city": null,
+      "icon": "🫚"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 9,
+    "fields": {
+      "name": "Feu-piment",
+      "category": "Herbes",
+      "rarity": "Rare",
+      "growth_time": 3,
+      "yield_amount": 2,
+      "special_conditions": "Sol chaud requis",
+      "description": "Piment incandescent des forges de Morkhand. Son essence brûlante est utilisée dans les potions de résistance au froid et les explosifs alchimiques.",
+      "sell_price": "15.00",
+      "origin_city": null,
+      "icon": "🌶️"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 10,
+    "fields": {
+      "name": "Racine nerveuse",
+      "category": "Racines",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "",
+      "description": "Racine fibreuse et rétractile qui semble vibrer au toucher. Ingrédient clé des potions de réflexes et d'agilité.",
+      "sell_price": "5.50",
+      "origin_city": null,
+      "icon": "🫚"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 11,
+    "fields": {
+      "name": "Écorce d'éveil",
+      "category": "Racines",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "",
+      "description": "Fragment d'écorce vivante provenant des arbres sentinelles de Borr'Tanazh. Stimule la conscience et dissipe les enchantements de sommeil.",
+      "sell_price": "22.00",
+      "origin_city": null,
+      "icon": "🪵"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 12,
+    "fields": {
+      "name": "Champignon pâle",
+      "category": "Champignons",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 3,
+      "special_conditions": "Pousse dans l'obscurité",
+      "description": "Champignon blanchâtre luminescent des cavernes de Crik'Nok. Sa chair spongieuse est un puissant antidote.",
+      "sell_price": "4.50",
+      "origin_city": null,
+      "icon": "🍄"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 13,
+    "fields": {
+      "name": "Fleur de cerisier",
+      "category": "Fleurs",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "",
+      "description": "Pétales délicats des cerisiers éternels de Byaku-Kan. Ingrédient noble des potions de sérénité et de méditation.",
+      "sell_price": "7.00",
+      "origin_city": null,
+      "icon": "🌸"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 14,
+    "fields": {
+      "name": "Fleur de lotus",
+      "category": "Fleurs",
+      "rarity": "Peu commune",
+      "growth_time": 3,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite un sol humide",
+      "description": "Lotus sacré des marais de Kozan-Mura. Ses pétales renferment une essence purificatrice utilisée dans les rituels de guérison.",
+      "sell_price": "8.00",
+      "origin_city": null,
+      "icon": "🪷"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 15,
+    "fields": {
+      "name": "Cactus épineux",
+      "category": "Herbes",
+      "rarity": "Rare",
+      "growth_time": 3,
+      "yield_amount": 1,
+      "special_conditions": "Sol aride requis",
+      "description": "Cactus tenace des déserts de Nad'Rhima. Sa sève épaisse est un fortifiant puissant, prisé des guerriers nomades.",
+      "sell_price": "14.00",
+      "origin_city": null,
+      "icon": "🌵"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 16,
+    "fields": {
+      "name": "Mousse toxique",
+      "category": "Mousses",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 3,
+      "special_conditions": "Sol marécageux",
+      "description": "Mousse verdâtre aux reflets violets des marécages de Gargabulle. Toxique à l'état brut, elle devient un puissant catalyseur une fois distillée.",
+      "sell_price": "5.00",
+      "origin_city": null,
+      "icon": "🧪"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 17,
+    "fields": {
+      "name": "Herbe elfique",
+      "category": "Herbes",
+      "rarity": "Rare",
+      "growth_time": 5,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite une bénédiction elfique",
+      "description": "Herbe sacrée d'Aelthëanor, bénie par les druides elfes. Ingrédient indispensable des plus puissantes potions de régénération.",
+      "sell_price": "30.00",
+      "origin_city": null,
+      "icon": "✨"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 18,
+    "fields": {
+      "name": "Cristal de montagne",
+      "category": "Cristaux",
+      "rarity": "Très rare",
+      "growth_time": 6,
+      "yield_amount": 1,
+      "special_conditions": "Altitude élevée requise",
+      "description": "Cristal minéral qui pousse lentement dans les sommets de Khur-Maal. Concentre les énergies telluriques pour les enchantements de protection.",
+      "sell_price": "45.00",
+      "origin_city": null,
+      "icon": "💎"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 19,
+    "fields": {
+      "name": "Cristal de sable",
+      "category": "Cristaux",
+      "rarity": "Très rare",
+      "growth_time": 6,
+      "yield_amount": 1,
+      "special_conditions": "Sol désertique",
+      "description": "Formation cristalline dorée née de la fusion entre sable et magie. Les enchanteurs d'Arrakis l'utilisent pour canaliser la chaleur.",
+      "sell_price": "42.00",
+      "origin_city": null,
+      "icon": "✨"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 20,
+    "fields": {
+      "name": "Quartz bleu",
+      "category": "Cristaux",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite un sol minéral",
+      "description": "Quartz azuré de Ponharilfei, chargé d'énergie magique. Amplifie les propriétés des potions lorsqu'il est ajouté comme catalyseur.",
+      "sell_price": "25.00",
+      "origin_city": null,
+      "icon": "🔮"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 21,
+    "fields": {
+      "name": "Trèfle sanglant",
+      "category": "Herbes",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Sol fertilisé au sang de bête",
+      "description": "Trèfle écarlate qui ne pousse que dans un sol enrichi de sang. Ses feuilles sont l'ingrédient clé des potions de force brutale.",
+      "sell_price": "19.00",
+      "origin_city": null,
+      "icon": "☘️"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 22,
+    "fields": {
+      "name": "Algue abyssale",
+      "category": "Algues",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 2,
+      "special_conditions": "Nécessite un bassin d'eau salée",
+      "description": "Algue sombre des profondeurs océaniques, ramenée par les pêcheurs les plus intrépides. Ingrédient des potions de respiration aquatique.",
+      "sell_price": "16.00",
+      "origin_city": null,
+      "icon": "🫧"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 23,
+    "fields": {
+      "name": "Mousse de givre",
+      "category": "Mousses",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "Température froide requise",
+      "description": "Mousse bleutée qui ne survit que dans le froid. Ses cristaux de glace naturels servent d'ingrédient aux potions de résistance au feu.",
+      "sell_price": "6.00",
+      "origin_city": null,
+      "icon": "❄️"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 24,
+    "fields": {
+      "name": "Champignon siffleur",
+      "category": "Champignons",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 4,
+      "special_conditions": "",
+      "description": "Petit champignon brun qui émet un sifflement aigu quand on le cueille. Malgré son aspect banal, c'est un excellent exhausteur de goût pour les potions.",
+      "sell_price": "1.50",
+      "origin_city": null,
+      "icon": "🍄"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 25,
+    "fields": {
+      "name": "Résine d'ambre",
+      "category": "Résines",
+      "rarity": "Peu commune",
+      "growth_time": 3,
+      "yield_amount": 1,
+      "special_conditions": "",
+      "description": "Résine dorée exsudée par les pins millénaires. Sert de fixateur pour les enchantements temporaires et les potions à effet prolongé.",
+      "sell_price": "8.00",
+      "origin_city": null,
+      "icon": "🟡"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 26,
+    "fields": {
+      "name": "Fougère spectrale",
+      "category": "Herbes",
+      "rarity": "Très rare",
+      "growth_time": 6,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite un sol hanté",
+      "description": "Fougère translucide qui pousse sur les lieux marqués par la mort. Ingrédient des potions de communication avec les esprits.",
+      "sell_price": "40.00",
+      "origin_city": null,
+      "icon": "👻"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 27,
+    "fields": {
+      "name": "Algue dorée",
+      "category": "Algues",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 3,
+      "special_conditions": "Nécessite un sol humide",
+      "description": "Algue commune aux reflets dorés, trouvée dans les rivières calmes. Base de nombreuses teintures et potions de beauté.",
+      "sell_price": "2.50",
+      "origin_city": null,
+      "icon": "🌊"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 28,
+    "fields": {
+      "name": "Rose de sang",
+      "category": "Fleurs",
+      "rarity": "Très rare",
+      "growth_time": 7,
+      "yield_amount": 1,
+      "special_conditions": "Sol fertilisé avec de l'essence vitale",
+      "description": "Rose d'un rouge profond dont les épines sécrètent un nectar régénérant. Les alchimistes les plus habiles en tirent des élixirs de vie.",
+      "sell_price": "55.00",
+      "origin_city": null,
+      "icon": "🌹"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 29,
+    "fields": {
+      "name": "Résine de braise",
+      "category": "Résines",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Sol volcanique requis",
+      "description": "Résine incandescente récoltée sur les arbres pétrifiés des terres volcaniques. Brûle sans se consumer et sert aux potions de feu.",
+      "sell_price": "20.00",
+      "origin_city": null,
+      "icon": "🔥"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 30,
+    "fields": {
+      "name": "Champignon somnifère",
+      "category": "Champignons",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "Pousse dans l'obscurité",
+      "description": "Champignon violet aux spores sédatives. Un seul suffit à endormir un ogre, mais les alchimistes savent en doser l'effet.",
+      "sell_price": "6.50",
+      "origin_city": null,
+      "icon": "😴"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 31,
+    "fields": {
+      "name": "Liane de vent",
+      "category": "Herbes",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "",
+      "description": "Liane légère qui semble flotter au vent. Ses fibres servent à concocter des potions de légèreté et de vitesse.",
+      "sell_price": "5.00",
+      "origin_city": null,
+      "icon": "💨"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 32,
+    "fields": {
+      "name": "Mousse lumineuse",
+      "category": "Mousses",
+      "rarity": "Commune",
+      "growth_time": 1,
+      "yield_amount": 4,
+      "special_conditions": "",
+      "description": "Mousse phosphorescente qui éclaire les cavernes. Réduite en poudre, elle crée des potions de vision nocturne.",
+      "sell_price": "2.00",
+      "origin_city": null,
+      "icon": "💡"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 33,
+    "fields": {
+      "name": "Racine de fer",
+      "category": "Racines",
+      "rarity": "Rare",
+      "growth_time": 5,
+      "yield_amount": 1,
+      "special_conditions": "Sol riche en minerai",
+      "description": "Racine extraordinairement dure qui absorbe le métal du sol. Ingrédient des potions de peau de fer et des élixirs d'endurance.",
+      "sell_price": "28.00",
+      "origin_city": null,
+      "icon": "⚙️"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 34,
+    "fields": {
+      "name": "Algue de corail",
+      "category": "Algues",
+      "rarity": "Peu commune",
+      "growth_time": 2,
+      "yield_amount": 2,
+      "special_conditions": "Nécessite un bassin d'eau salée",
+      "description": "Algue rose qui pousse sur les récifs. Ses fibres absorbent les toxines, ce qui en fait un ingrédient précieux pour les antidotes.",
+      "sell_price": "5.50",
+      "origin_city": null,
+      "icon": "🪸"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 35,
+    "fields": {
+      "name": "Orchidée des cendres",
+      "category": "Fleurs",
+      "rarity": "Très rare",
+      "growth_time": 7,
+      "yield_amount": 1,
+      "special_conditions": "Sol volcanique requis",
+      "description": "Fleur majestueuse qui s'épanouit dans les cendres volcaniques. Son parfum envoûtant est la base des plus puissants philtres d'amour.",
+      "sell_price": "50.00",
+      "origin_city": null,
+      "icon": "🌺"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 36,
+    "fields": {
+      "name": "Cristal de lune",
+      "category": "Cristaux",
+      "rarity": "Légendaire",
+      "growth_time": 10,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite la lumière de la lune et un sol minéral béni",
+      "description": "Cristal opalescent d'une pureté inégalée, formé uniquement lors d'alignements stellaires. Les plus grands enchanteurs du monde de Lug s'arrachent ces joyaux.",
+      "sell_price": "150.00",
+      "origin_city": null,
+      "icon": "🌕"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 37,
+    "fields": {
+      "name": "Résine d'ombre",
+      "category": "Résines",
+      "rarity": "Rare",
+      "growth_time": 4,
+      "yield_amount": 1,
+      "special_conditions": "Pousse uniquement à l'ombre",
+      "description": "Résine noire comme la nuit, sécrétée par les arbres des forêts maudites. Utilisée dans les potions d'invisibilité et de discrétion.",
+      "sell_price": "22.00",
+      "origin_city": null,
+      "icon": "🖤"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 38,
+    "fields": {
+      "name": "Chardon de tonnerre",
+      "category": "Herbes",
+      "rarity": "Rare",
+      "growth_time": 3,
+      "yield_amount": 2,
+      "special_conditions": "Nécessite un sol exposé aux orages",
+      "description": "Chardon hérissé qui accumule l'énergie des éclairs. Ses épines crépitent d'électricité statique, base des potions de foudre.",
+      "sell_price": "17.00",
+      "origin_city": null,
+      "icon": "⚡"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 39,
+    "fields": {
+      "name": "Fleur du néant",
+      "category": "Fleurs",
+      "rarity": "Légendaire",
+      "growth_time": 12,
+      "yield_amount": 1,
+      "special_conditions": "Nécessite un sol imprégné de magie pure",
+      "description": "Fleur translucide qui semble exister entre deux plans de réalité. Seuls les plus grands alchimistes savent exploiter son potentiel pour des potions de téléportation.",
+      "sell_price": "200.00",
+      "origin_city": null,
+      "icon": "🕳️"
+    }
+  },
+  {
+    "model": "jdr.alchemyplant",
+    "pk": 40,
+    "fields": {
+      "name": "Champignon du chaos",
+      "category": "Champignons",
+      "rarity": "Très rare",
+      "growth_time": 5,
+      "yield_amount": 1,
+      "special_conditions": "Sol corrompu par la magie",
+      "description": "Champignon multicolore et imprévisible. Chaque récolte peut donner des propriétés différentes — un vrai défi pour les alchimistes téméraires.",
+      "sell_price": "35.00",
+      "origin_city": null,
+      "icon": "🌈"
+    }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 1,
+    "fields": { "plant": 1, "recipe_name": "Potion de calme", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 2,
+    "fields": { "plant": 1, "recipe_name": "Baume apaisant", "quantity_needed": 3 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 3,
+    "fields": { "plant": 2, "recipe_name": "Élixir de concentration", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 4,
+    "fields": { "plant": 3, "recipe_name": "Potion de soin mineure", "quantity_needed": 3 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 5,
+    "fields": { "plant": 4, "recipe_name": "Cataplasme régénérant", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 6,
+    "fields": { "plant": 5, "recipe_name": "Potion d'invisibilité", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 7,
+    "fields": { "plant": 6, "recipe_name": "Potion de clairvoyance", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 8,
+    "fields": { "plant": 7, "recipe_name": "Potion d'énergie", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 9,
+    "fields": { "plant": 8, "recipe_name": "Potion de soin mineure", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 10,
+    "fields": { "plant": 8, "recipe_name": "Potion de goût", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 11,
+    "fields": { "plant": 9, "recipe_name": "Potion de résistance au froid", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 12,
+    "fields": { "plant": 9, "recipe_name": "Bombe incendiaire", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 13,
+    "fields": { "plant": 10, "recipe_name": "Potion d'agilité", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 14,
+    "fields": { "plant": 11, "recipe_name": "Potion d'éveil", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 15,
+    "fields": { "plant": 12, "recipe_name": "Antidote universel", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 16,
+    "fields": { "plant": 13, "recipe_name": "Potion de sérénité", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 17,
+    "fields": { "plant": 14, "recipe_name": "Potion de purification", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 18,
+    "fields": { "plant": 15, "recipe_name": "Fortifiant du guerrier", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 19,
+    "fields": { "plant": 16, "recipe_name": "Catalyseur universel", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 20,
+    "fields": { "plant": 17, "recipe_name": "Potion de régénération majeure", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 21,
+    "fields": { "plant": 18, "recipe_name": "Enchantement de protection", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 22,
+    "fields": { "plant": 19, "recipe_name": "Enchantement de chaleur", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 23,
+    "fields": { "plant": 20, "recipe_name": "Catalyseur de mana", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 24,
+    "fields": { "plant": 21, "recipe_name": "Potion de force brutale", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 25,
+    "fields": { "plant": 22, "recipe_name": "Potion de respiration aquatique", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 26,
+    "fields": { "plant": 23, "recipe_name": "Potion de résistance au feu", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 27,
+    "fields": { "plant": 24, "recipe_name": "Potion de soin mineure", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 28,
+    "fields": { "plant": 25, "recipe_name": "Potion à effet prolongé", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 29,
+    "fields": { "plant": 26, "recipe_name": "Potion de communication spirituelle", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 30,
+    "fields": { "plant": 27, "recipe_name": "Potion de beauté", "quantity_needed": 3 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 31,
+    "fields": { "plant": 28, "recipe_name": "Élixir de vie", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 32,
+    "fields": { "plant": 29, "recipe_name": "Potion de feu", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 33,
+    "fields": { "plant": 30, "recipe_name": "Potion de sommeil", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 34,
+    "fields": { "plant": 31, "recipe_name": "Potion de légèreté", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 35,
+    "fields": { "plant": 32, "recipe_name": "Potion de vision nocturne", "quantity_needed": 3 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 36,
+    "fields": { "plant": 33, "recipe_name": "Potion de peau de fer", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 37,
+    "fields": { "plant": 34, "recipe_name": "Antidote de corail", "quantity_needed": 2 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 38,
+    "fields": { "plant": 35, "recipe_name": "Philtre d'amour", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 39,
+    "fields": { "plant": 36, "recipe_name": "Enchantement de puissance suprême", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 40,
+    "fields": { "plant": 37, "recipe_name": "Potion d'invisibilité", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 41,
+    "fields": { "plant": 38, "recipe_name": "Potion de foudre", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 42,
+    "fields": { "plant": 39, "recipe_name": "Potion de téléportation", "quantity_needed": 1 }
+  },
+  {
+    "model": "jdr.plantusage",
+    "pk": 43,
+    "fields": { "plant": 40, "recipe_name": "Potion du chaos", "quantity_needed": 1 }
+  }
+]

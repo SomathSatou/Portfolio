@@ -6,7 +6,9 @@ import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import JdrLayout from './JdrLayout'
 import { CampaignPage, CharacterSheet, DashboardPage } from './Dashboard'
+import { GardenPage } from './Garden'
 import { MerchantPage } from './Merchant'
+import { RunesPage } from './Runes'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -64,6 +66,22 @@ function JdrRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <MerchantPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/garden') {
+    return (
+      <ProtectedRoute>
+        <GardenPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/runes') {
+    return (
+      <ProtectedRoute>
+        <RunesPage />
       </ProtectedRoute>
     )
   }

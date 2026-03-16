@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from django.db import models as db_models
 from django.db.models import Q, Sum
+from django.utils import timezone
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,25 +11,43 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
-    Campaign, CampaignMembership, Character, City, CityExport, CityImport,
-    MarketPrice, MerchantInventory, MerchantOrder, Notification, Resource, UserProfile,
+    AlchemyPlant, Campaign, CampaignMembership, Character, City, CityExport, CityImport,
+    GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory, MerchantOrder,
+    Notification, Resource, RuneCollection, RuneDrawing, RuneTemplate,
+    SharedFolder, SharedFolderAccess, UserProfile,
 )
 from .permissions import IsCampaignMember, IsMJ, IsOwner
 from .serializers import (
+    AlchemyPlantListSerializer,
+    AlchemyPlantSerializer,
     CampaignMembershipSerializer,
     CampaignSerializer,
     CharacterSerializer,
     CityDetailSerializer,
     CityListSerializer,
     CreateOrderSerializer,
+    CreateRuneDrawingSerializer,
+    CreateSharedFolderSerializer,
+    GardenPlotSerializer,
+    GardenUpgradeSerializer,
+    HarvestLogSerializer,
     MarketPriceSerializer,
     MeSerializer,
     MerchantInventorySerializer,
     MerchantOrderSerializer,
     NotificationSerializer,
+    PlantActionSerializer,
     RegisterSerializer,
     ResourceSerializer,
+    ReviewRuneDrawingSerializer,
+    RuneCollectionSerializer,
+    RuneDrawingSerializer,
+    RuneTemplateListSerializer,
+    RuneTemplateSerializer,
+    SellHarvestSerializer,
     SellOrderSerializer,
+    SharedFolderSerializer,
+    UpdateSharedFolderSerializer,
 )
 
 
@@ -200,6 +219,11 @@ class CampaignViewSet(viewsets.ModelViewSet):
             ]
             if price_notifs:
                 Notification.objects.bulk_create(price_notifs)
+
+        # ── Garden inter-session logic ──
+        garden_notifs = advance_garden_session(campaign)
+        if garden_notifs:
+            Notification.objects.bulk_create(garden_notifs)
 
         # Notify all members
         members = campaign.memberships.filter(is_active=True)
@@ -649,3 +673,622 @@ class MerchantStatsView(APIView):
             'profit_by_session': profit_by_session,
             'best_routes': best_routes,
         })
+
+
+# ─── Garden / Alchemy ──────────────────────────────────────────────────────
+
+def _ensure_garden(character: Character) -> GardenUpgrade:
+    """Ensure a character has a GardenUpgrade and initial plots."""
+    upgrade, created = GardenUpgrade.objects.get_or_create(character=character)
+    existing_count = GardenPlot.objects.filter(character=character).count()
+    if existing_count < upgrade.max_plots:
+        plots_to_create = [
+            GardenPlot(character=character, plot_number=i)
+            for i in range(existing_count + 1, upgrade.max_plots + 1)
+        ]
+        GardenPlot.objects.bulk_create(plots_to_create)
+    return upgrade
+
+
+def advance_garden_session(campaign: Campaign) -> list[Notification]:
+    """Advance all garden plots in the campaign by one inter-session."""
+    notifications: list[Notification] = []
+
+    plots = GardenPlot.objects.filter(
+        character__campaign=campaign,
+        status__in=['growing', 'ready'],
+    ).select_related('plant', 'character')
+
+    for plot in plots:
+        if plot.status == 'growing' and plot.plant:
+            plot.sessions_grown += 1
+            if plot.sessions_grown >= plot.plant.growth_time:
+                plot.status = 'ready'
+                plot.is_ready = True
+                notifications.append(Notification(
+                    recipient=plot.character.player,
+                    title='Plante prête à récolter !',
+                    message=f'{plot.plant.icon} {plot.plant.name} est prête dans la parcelle {plot.plot_number}.',
+                    notification_type='info',
+                ))
+            plot.save(update_fields=['sessions_grown', 'status', 'is_ready'])
+
+        elif plot.status == 'ready' and plot.plant:
+            plot.sessions_grown += 1
+            if plot.sessions_grown >= plot.plant.growth_time + 3:
+                plot.status = 'withered'
+                plot.is_ready = False
+                notifications.append(Notification(
+                    recipient=plot.character.player,
+                    title='Plante flétrie !',
+                    message=f'{plot.plant.icon} {plot.plant.name} a flétri dans la parcelle {plot.plot_number}. Nettoyez-la.',
+                    notification_type='alert',
+                ))
+                plot.save(update_fields=['sessions_grown', 'status', 'is_ready'])
+
+    return notifications
+
+
+class AlchemyPlantViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = AlchemyPlant.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return AlchemyPlantSerializer
+        return AlchemyPlantListSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        category = self.request.query_params.get('category')
+        if category:
+            qs = qs.filter(category=category)
+        rarity = self.request.query_params.get('rarity')
+        if rarity:
+            qs = qs.filter(rarity=rarity)
+        search = self.request.query_params.get('search')
+        if search:
+            qs = qs.filter(name__icontains=search)
+        return qs
+
+
+class GardenPlotsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        upgrade = _ensure_garden(character)
+        plots = GardenPlot.objects.filter(character=character).select_related('plant')
+        serializer = GardenPlotSerializer(plots, many=True)
+
+        return Response({
+            'plots': serializer.data,
+            'max_plots': upgrade.max_plots,
+            'fertilizer_bonus': upgrade.fertilizer_bonus,
+            'special_soils': upgrade.special_soils,
+        })
+
+
+class GardenPlotPlantView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        ser = PlantActionSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+
+        try:
+            plot = GardenPlot.objects.select_related('character', 'character__campaign').get(
+                pk=pk, character__player=request.user,
+            )
+        except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.status != 'empty':
+            return Response(
+                {'detail': 'Cette parcelle n\'est pas vide.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            plant = AlchemyPlant.objects.get(pk=ser.validated_data['plant_id'])
+        except AlchemyPlant.DoesNotExist:
+            return Response({'detail': 'Plante introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        campaign = plot.character.campaign
+        plot.plant = plant
+        plot.planted_at_session = campaign.current_session_number
+        plot.sessions_grown = 0
+        plot.is_ready = False
+        plot.status = 'growing'
+        plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
+
+        serializer = GardenPlotSerializer(plot)
+        return Response(serializer.data)
+
+
+class GardenPlotHarvestView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            plot = GardenPlot.objects.select_related('plant', 'character', 'character__campaign').get(
+                pk=pk, character__player=request.user,
+            )
+        except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.status != 'ready' or not plot.plant:
+            return Response(
+                {'detail': 'Cette parcelle n\'est pas prête à être récoltée.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        plant = plot.plant
+        campaign = plot.character.campaign
+
+        HarvestLog.objects.create(
+            character=plot.character,
+            plant=plant,
+            quantity=plant.yield_amount,
+            harvested_at_session=campaign.current_session_number,
+        )
+
+        # Clear the plot
+        plot.plant = None
+        plot.planted_at_session = None
+        plot.sessions_grown = 0
+        plot.is_ready = False
+        plot.status = 'empty'
+        plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
+
+        return Response({
+            'detail': f'{plant.yield_amount}× {plant.name} récoltée(s) !',
+            'plant_name': plant.name,
+            'quantity': plant.yield_amount,
+        })
+
+
+class GardenPlotClearView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            plot = GardenPlot.objects.get(pk=pk, character__player=request.user)
+        except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.status != 'withered':
+            return Response(
+                {'detail': 'Seules les parcelles flétries peuvent être nettoyées.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        plot.plant = None
+        plot.planted_at_session = None
+        plot.sessions_grown = 0
+        plot.is_ready = False
+        plot.status = 'empty'
+        plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
+
+        return Response({'detail': 'Parcelle nettoyée.'})
+
+
+class GardenInventoryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        harvests = HarvestLog.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+            sold=False,
+        ).select_related('plant')
+
+        # Aggregate by plant
+        inventory: dict[int, dict] = {}
+        for h in harvests:
+            if h.plant_id not in inventory:
+                inventory[h.plant_id] = {
+                    'plant_id': h.plant_id,
+                    'plant_name': h.plant.name,
+                    'plant_icon': h.plant.icon,
+                    'plant_rarity': h.plant.rarity,
+                    'sell_price': float(h.plant.sell_price),
+                    'quantity': 0,
+                }
+            inventory[h.plant_id]['quantity'] += h.quantity
+
+        return Response(list(inventory.values()))
+
+
+class GardenSellView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        ser = SellHarvestSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        d = ser.validated_data
+
+        character_id = request.data.get('character_id')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character_id requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            plant = AlchemyPlant.objects.get(pk=d['plant_id'])
+        except AlchemyPlant.DoesNotExist:
+            return Response({'detail': 'Plante introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Find unsold harvest logs for this plant
+        unsold = HarvestLog.objects.filter(
+            character=character, plant=plant, sold=False,
+        ).order_by('harvested_at_session')
+
+        available = sum(h.quantity for h in unsold)
+        if available < d['quantity']:
+            return Response(
+                {'detail': f'Stock insuffisant. Disponible : {available}.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Mark as sold, consuming oldest first
+        remaining = d['quantity']
+        total_price = Decimal('0')
+        for h in unsold:
+            if remaining <= 0:
+                break
+            if h.quantity <= remaining:
+                remaining -= h.quantity
+                total_price += plant.sell_price * h.quantity
+                h.sold = True
+                h.sell_price_total = plant.sell_price * h.quantity
+                h.save(update_fields=['sold', 'sell_price_total'])
+            else:
+                # Split: mark partial as sold by creating a new sold log
+                sold_qty = remaining
+                h.quantity -= sold_qty
+                h.save(update_fields=['quantity'])
+                HarvestLog.objects.create(
+                    character=character,
+                    plant=plant,
+                    quantity=sold_qty,
+                    harvested_at_session=h.harvested_at_session,
+                    sold=True,
+                    sell_price_total=plant.sell_price * sold_qty,
+                )
+                total_price += plant.sell_price * sold_qty
+                remaining = 0
+
+        return Response({
+            'detail': f'{d["quantity"]}× {plant.name} vendu(es) pour {total_price} po.',
+            'total_price': float(total_price),
+        })
+
+
+class GardenStatsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        all_logs = HarvestLog.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+        ).select_related('plant')
+
+        total_harvested = sum(h.quantity for h in all_logs)
+        sold_logs = [h for h in all_logs if h.sold]
+        total_sold = sum(h.quantity for h in sold_logs)
+        total_revenue = sum(float(h.sell_price_total or 0) for h in sold_logs)
+
+        # Most harvested plants
+        plant_counts: dict[str, int] = {}
+        for h in all_logs:
+            name = f'{h.plant.icon} {h.plant.name}'
+            plant_counts[name] = plant_counts.get(name, 0) + h.quantity
+        top_plants = sorted(plant_counts.items(), key=lambda x: -x[1])[:5]
+
+        # Revenue by session
+        session_rev: dict[int, float] = {}
+        for h in sold_logs:
+            session_rev[h.harvested_at_session] = session_rev.get(h.harvested_at_session, 0) + float(h.sell_price_total or 0)
+        revenue_by_session = [
+            {'session': s, 'revenue': r}
+            for s, r in sorted(session_rev.items())
+        ]
+
+        return Response({
+            'total_harvested': total_harvested,
+            'total_sold': total_sold,
+            'total_revenue': total_revenue,
+            'top_plants': [{'name': n, 'count': c} for n, c in top_plants],
+            'revenue_by_session': revenue_by_session,
+        })
+
+
+class GardenHistoryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        logs = HarvestLog.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+        ).select_related('plant').order_by('-harvested_at_session')[:50]
+
+        serializer = HarvestLogSerializer(logs, many=True)
+        return Response(serializer.data)
+
+
+# ─── Enchanteur / Runes ──────────────────────────────────────────────────────
+
+class RuneTemplateViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = RuneTemplate.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return RuneTemplateSerializer
+        return RuneTemplateListSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        difficulty = self.request.query_params.get('difficulty')
+        if difficulty:
+            qs = qs.filter(difficulty=difficulty)
+        category = self.request.query_params.get('category')
+        if category:
+            qs = qs.filter(category=category)
+        search = self.request.query_params.get('search')
+        if search:
+            qs = qs.filter(name__icontains=search)
+        return qs
+
+
+class RuneDrawingListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        drawings = RuneDrawing.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+        ).select_related('template', 'character__player')
+        serializer = RuneDrawingSerializer(drawings, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        ser = CreateRuneDrawingSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        d = ser.validated_data
+
+        try:
+            character = Character.objects.get(pk=d['character_id'], player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            campaign = Campaign.objects.get(pk=d['campaign_id'])
+        except Campaign.DoesNotExist:
+            return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        template = None
+        if d.get('template_id'):
+            try:
+                template = RuneTemplate.objects.get(pk=d['template_id'])
+            except RuneTemplate.DoesNotExist:
+                return Response({'detail': 'Modèle de rune introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        drawing = RuneDrawing.objects.create(
+            character=character,
+            campaign=campaign,
+            template=template,
+            title=d['title'],
+            image_data=d['image_data'],
+            notes=d.get('notes', ''),
+            status='draft',
+        )
+
+        serializer = RuneDrawingSerializer(drawing)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RuneDrawingDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.get(pk=pk, character__player=request.user)
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if drawing.status not in ('draft', 'rejected'):
+            return Response(
+                {'detail': 'Seuls les brouillons ou dessins rejetés peuvent être modifiés.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        drawing.title = request.data.get('title', drawing.title)
+        drawing.notes = request.data.get('notes', drawing.notes)
+        if 'image_data' in request.data:
+            drawing.image_data = request.data['image_data']
+        if drawing.status == 'rejected':
+            drawing.status = 'draft'
+            drawing.mj_feedback = ''
+        drawing.save()
+
+        serializer = RuneDrawingSerializer(drawing)
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.get(pk=pk, character__player=request.user)
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if drawing.status not in ('draft', 'rejected'):
+            return Response(
+                {'detail': 'Seuls les brouillons ou dessins rejetés peuvent être supprimés.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        drawing.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class RuneDrawingSubmitView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.select_related('character', 'campaign').get(
+                pk=pk, character__player=request.user,
+            )
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if drawing.status not in ('draft', 'rejected'):
+            return Response(
+                {'detail': 'Ce dessin ne peut pas être soumis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        drawing.status = 'submitted'
+        drawing.submitted_at = timezone.now()
+        drawing.mj_feedback = ''
+        drawing.save(update_fields=['status', 'submitted_at', 'mj_feedback'])
+
+        # Notify the campaign MJ
+        Notification.objects.create(
+            recipient=drawing.campaign.game_master,
+            title='Nouvelle rune soumise',
+            message=f'{drawing.character.name} a soumis la rune "{drawing.title}" pour validation.',
+            notification_type='info',
+        )
+
+        serializer = RuneDrawingSerializer(drawing)
+        return Response(serializer.data)
+
+
+class RunePendingView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsMJ]
+
+    def get(self, request):
+        campaign_id = request.query_params.get('campaign')
+        qs = RuneDrawing.objects.filter(
+            status='submitted',
+        ).select_related('template', 'character__player', 'campaign')
+
+        if campaign_id:
+            qs = qs.filter(campaign_id=campaign_id, campaign__game_master=request.user)
+        else:
+            qs = qs.filter(campaign__game_master=request.user)
+
+        serializer = RuneDrawingSerializer(qs, many=True)
+        return Response(serializer.data)
+
+
+class RuneDrawingReviewView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsMJ]
+
+    def post(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.select_related(
+                'character', 'campaign', 'template',
+            ).get(pk=pk, campaign__game_master=request.user)
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if drawing.status != 'submitted':
+            return Response(
+                {'detail': 'Ce dessin n\'est pas en attente de validation.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        ser = ReviewRuneDrawingSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        d = ser.validated_data
+
+        drawing.status = d['status']
+        drawing.mj_feedback = d.get('feedback', '')
+        drawing.reviewed_at = timezone.now()
+        drawing.save(update_fields=['status', 'mj_feedback', 'reviewed_at'])
+
+        # If approved, add to collection
+        if d['status'] == 'approved':
+            RuneCollection.objects.create(
+                character=drawing.character,
+                rune_drawing=drawing,
+                acquired_at_session=drawing.campaign.current_session_number,
+            )
+
+        # Notify the player
+        status_label = 'approuvée ✓' if d['status'] == 'approved' else 'rejetée ✗'
+        feedback_text = f'\nCommentaire : {d["feedback"]}' if d.get('feedback') else ''
+        Notification.objects.create(
+            recipient=drawing.character.player,
+            title=f'Rune {status_label}',
+            message=f'Votre rune "{drawing.title}" a été {status_label} par le MJ.{feedback_text}',
+            notification_type='info',
+        )
+
+        serializer = RuneDrawingSerializer(drawing)
+        return Response(serializer.data)
+
+
+class RuneCollectionView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        collection = RuneCollection.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+        ).select_related('rune_drawing__template')
+        serializer = RuneCollectionSerializer(collection, many=True)
+        return Response(serializer.data)

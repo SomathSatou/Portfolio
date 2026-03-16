@@ -282,3 +282,279 @@ class MerchantInventory(models.Model):
 
     def __str__(self) -> str:
         return f'{self.character.name}: {self.quantity}× {self.resource.name}'
+
+
+# ─── Garden / Alchemy ──────────────────────────────────────────────────────
+
+class AlchemyPlant(models.Model):
+    CATEGORY_CHOICES = [
+        ('Herbes', 'Herbes'),
+        ('Fleurs', 'Fleurs'),
+        ('Racines', 'Racines'),
+        ('Champignons', 'Champignons'),
+        ('Algues', 'Algues'),
+        ('Résines', 'Résines'),
+        ('Mousses', 'Mousses'),
+        ('Cristaux', 'Cristaux'),
+    ]
+
+    RARITY_CHOICES = [
+        ('Commune', 'Commune'),
+        ('Peu commune', 'Peu commune'),
+        ('Rare', 'Rare'),
+        ('Très rare', 'Très rare'),
+        ('Légendaire', 'Légendaire'),
+    ]
+
+    name = models.CharField(max_length=200, unique=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    rarity = models.CharField(max_length=20, choices=RARITY_CHOICES)
+    growth_time = models.IntegerField(help_text='Nombre d\'inter-sessions pour pousser')
+    yield_amount = models.IntegerField(default=1, help_text='Unités récoltées par plant')
+    special_conditions = models.TextField(blank=True, default='')
+    description = models.TextField(blank=True, default='')
+    sell_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    origin_city = models.ForeignKey(
+        City, on_delete=models.SET_NULL, null=True, blank=True, related_name='alchemy_plants',
+    )
+    icon = models.CharField(max_length=10, default='🌿')
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Plante alchimique'
+        verbose_name_plural = 'Plantes alchimiques'
+
+    def __str__(self) -> str:
+        return f'{self.icon} {self.name} ({self.get_rarity_display()})'
+
+
+class PlantUsage(models.Model):
+    plant = models.ForeignKey(AlchemyPlant, on_delete=models.CASCADE, related_name='usages')
+    recipe_name = models.CharField(max_length=200)
+    quantity_needed = models.IntegerField(default=1)
+
+    class Meta:
+        ordering = ['recipe_name']
+        verbose_name = 'Utilisation de plante'
+        verbose_name_plural = 'Utilisations de plantes'
+
+    def __str__(self) -> str:
+        return f'{self.plant.name} → {self.recipe_name} (×{self.quantity_needed})'
+
+
+class GardenPlot(models.Model):
+    STATUS_CHOICES = [
+        ('empty', 'Vide'),
+        ('growing', 'En culture'),
+        ('ready', 'Prête'),
+        ('withered', 'Flétrie'),
+    ]
+
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='garden_plots')
+    plot_number = models.IntegerField()
+    plant = models.ForeignKey(
+        AlchemyPlant, on_delete=models.SET_NULL, null=True, blank=True, related_name='plots',
+    )
+    planted_at_session = models.IntegerField(null=True, blank=True)
+    sessions_grown = models.IntegerField(default=0)
+    is_ready = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='empty')
+
+    class Meta:
+        unique_together = ('character', 'plot_number')
+        ordering = ['plot_number']
+        verbose_name = 'Parcelle de jardin'
+        verbose_name_plural = 'Parcelles de jardin'
+
+    def __str__(self) -> str:
+        plant_info = self.plant.name if self.plant else 'vide'
+        return f'{self.character.name} - Parcelle {self.plot_number} ({plant_info})'
+
+
+class GardenUpgrade(models.Model):
+    character = models.OneToOneField(
+        Character, on_delete=models.CASCADE, related_name='garden_upgrade',
+    )
+    max_plots = models.IntegerField(default=4)
+    fertilizer_bonus = models.FloatField(default=0, help_text='Réduction du temps de culture en %')
+    special_soils = models.JSONField(default=list, blank=True, help_text='Sols spéciaux débloqués')
+
+    class Meta:
+        verbose_name = 'Amélioration de jardin'
+        verbose_name_plural = 'Améliorations de jardin'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} - {self.max_plots} parcelles'
+
+
+class HarvestLog(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='harvest_logs')
+    plant = models.ForeignKey(AlchemyPlant, on_delete=models.CASCADE, related_name='harvest_logs')
+    quantity = models.IntegerField()
+    harvested_at_session = models.IntegerField()
+    sold = models.BooleanField(default=False)
+    sell_price_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-harvested_at_session']
+        verbose_name = 'Récolte'
+        verbose_name_plural = 'Récoltes'
+
+    def __str__(self) -> str:
+        return f'{self.character.name}: {self.quantity}× {self.plant.name} (session {self.harvested_at_session})'
+
+
+# ─── Enchanteur / Runes ──────────────────────────────────────────────────────
+
+class RuneTemplate(models.Model):
+    DIFFICULTY_CHOICES = [
+        ('apprenti', 'Apprenti'),
+        ('adepte', 'Adepte'),
+        ('maître', 'Maître'),
+        ('archimage', 'Archimage'),
+    ]
+
+    CATEGORY_CHOICES = [
+        ('protection', 'Protection'),
+        ('attaque', 'Attaque'),
+        ('soin', 'Soin'),
+        ('utilité', 'Utilité'),
+        ('invocation', 'Invocation'),
+    ]
+
+    name = models.CharField(max_length=200)
+    description = models.TextField(help_text='Effet magique de la rune')
+    difficulty = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    reference_image = models.ImageField(upload_to='jdr/runes/templates/', blank=True, null=True)
+    mana_cost = models.IntegerField(default=0)
+    effect_description = models.TextField(blank=True, default='')
+    required_materials = models.JSONField(
+        default=dict, blank=True,
+        help_text='Matériaux nécessaires, ex: {"Encre magique": 1, "Parchemin rare": 1}',
+    )
+
+    class Meta:
+        ordering = ['difficulty', 'name']
+        verbose_name = 'Modèle de rune'
+        verbose_name_plural = 'Modèles de runes'
+
+    def __str__(self) -> str:
+        return f'{self.name} ({self.get_difficulty_display()}) — {self.get_category_display()}'
+
+
+class RuneDrawing(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'Brouillon'),
+        ('submitted', 'Soumis'),
+        ('approved', 'Approuvé'),
+        ('rejected', 'Rejeté'),
+    ]
+
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='rune_drawings')
+    template = models.ForeignKey(
+        RuneTemplate, on_delete=models.SET_NULL, null=True, blank=True, related_name='drawings',
+    )
+    image_data = models.TextField(help_text='Base64 du canvas PNG')
+    title = models.CharField(max_length=200)
+    notes = models.TextField(blank=True, default='')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    mj_feedback = models.TextField(blank=True, default='')
+    submitted_at = models.DateTimeField(null=True, blank=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='rune_drawings')
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Dessin de rune'
+        verbose_name_plural = 'Dessins de runes'
+
+    def __str__(self) -> str:
+        return f'{self.title} — {self.character.name} ({self.get_status_display()})'
+
+
+class RuneCollection(models.Model):
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='rune_collection')
+    rune_drawing = models.ForeignKey(
+        RuneDrawing, on_delete=models.CASCADE, related_name='collection_entries',
+    )
+    acquired_at_session = models.IntegerField()
+    uses_remaining = models.IntegerField(
+        null=True, blank=True, help_text='None = utilisations illimitées',
+    )
+
+    class Meta:
+        ordering = ['-acquired_at_session']
+        verbose_name = 'Rune en collection'
+        verbose_name_plural = 'Runes en collection'
+
+    def __str__(self) -> str:
+        uses = self.uses_remaining if self.uses_remaining is not None else '∞'
+        return f'{self.rune_drawing.title} — {self.character.name} ({uses} utilisations)'
+
+
+# ─── Nextcloud / Files ──────────────────────────────────────────────────────
+
+class SharedFolder(models.Model):
+    ACCESS_LEVEL_CHOICES = [
+        ('all_players', 'Tous les joueurs'),
+        ('mj_only', 'MJ uniquement'),
+        ('specific_players', 'Joueurs spécifiques'),
+    ]
+
+    CATEGORY_CHOICES = [
+        ('lore', 'Lore & Histoire'),
+        ('maps', 'Cartes'),
+        ('illustrations', 'Illustrations'),
+        ('music', 'Musiques & Ambiances'),
+        ('rules', 'Règles & Références'),
+        ('notes', 'Notes de session'),
+        ('other', 'Autre'),
+    ]
+
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='shared_folders',
+    )
+    nextcloud_path = models.CharField(max_length=500, help_text='Chemin du dossier dans Nextcloud')
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='other')
+    access_level = models.CharField(max_length=20, choices=ACCESS_LEVEL_CHOICES, default='all_players')
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_shared_folders',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['category', 'name']
+        verbose_name = 'Dossier partagé'
+        verbose_name_plural = 'Dossiers partagés'
+
+    def __str__(self) -> str:
+        return f'{self.name} ({self.campaign.name})'
+
+
+class SharedFolderAccess(models.Model):
+    folder = models.ForeignKey(
+        SharedFolder, on_delete=models.CASCADE, related_name='access_entries',
+    )
+    player = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shared_folder_access',
+    )
+    can_edit = models.BooleanField(default=False)
+    can_upload = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('folder', 'player')
+        verbose_name = 'Accès dossier partagé'
+        verbose_name_plural = 'Accès dossiers partagés'
+
+    def __str__(self) -> str:
+        perms = []
+        if self.can_edit:
+            perms.append('édition')
+        if self.can_upload:
+            perms.append('upload')
+        perm_str = ', '.join(perms) if perms else 'lecture'
+        return f'{self.player.username} → {self.folder.name} ({perm_str})'
