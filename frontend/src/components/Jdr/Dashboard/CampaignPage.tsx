@@ -1,6 +1,9 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
+import CampaignItemsPanel from './CampaignItemsPanel'
+import CampaignSpellsPanel from './CampaignSpellsPanel'
+import CampaignStatsPanel from './CampaignStatsPanel'
 import CharacterCard from './CharacterCard'
 import type { Campaign, CampaignMember, Character } from './types'
 
@@ -29,6 +32,9 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
   // Advance session
   const [advanceLoading, setAdvanceLoading] = React.useState(false)
   const [confirmAdvance, setConfirmAdvance] = React.useState(false)
+
+  // Tabs
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'spells' | 'items' | 'stats'>('overview')
 
   const isMJ = campaign?.game_master === user?.id
 
@@ -209,62 +215,96 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
       {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Characters */}
-        <div className="lg:col-span-2">
-          <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">
-            Personnages ({characters.length})
-          </h2>
-          {characters.length === 0 ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400">Aucun personnage dans cette campagne.</p>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {characters.map((char) => (
-                <CharacterCard key={char.id} character={char} />
-              ))}
-            </div>
-          )}
-        </div>
+      {/* Tabs */}
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-6">
+        {(['overview', 'spells', 'items', 'stats'] as const).map((tab) => {
+          const labels = { overview: 'Vue d\'ensemble', spells: 'Sorts', items: 'Objets', stats: 'Statistiques' }
+          return (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === tab
+                  ? 'border-primary text-primary dark:border-primaryLight dark:text-primaryLight'
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
+            >
+              {labels[tab]}
+            </button>
+          )
+        })}
+      </div>
 
-        {/* Sidebar: Members + Invite */}
-        <aside className="space-y-4">
-          <div className="card">
-            <h3 className="font-semibold text-primary dark:text-primaryLight mb-3">
-              Membres ({members.length})
-            </h3>
-            {members.length === 0 ? (
-              <p className="text-sm text-gray-500 dark:text-gray-400">Aucun membre.</p>
+      {activeTab === 'overview' && (
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Characters */}
+          <div className="lg:col-span-2">
+            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">
+              Personnages ({characters.length})
+            </h2>
+            {characters.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Aucun personnage dans cette campagne.</p>
             ) : (
-              <ul className="space-y-2">
-                {members.map((m) => (
-                  <li key={m.id} className="flex items-center gap-2 text-sm">
-                    <div className="w-7 h-7 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-xs font-bold text-primary dark:text-primaryLight">
-                      {m.player_name.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-gray-900 dark:text-gray-100">{m.player_name}</span>
-                  </li>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {characters.map((char) => (
+                  <CharacterCard key={char.id} character={char} />
                 ))}
-              </ul>
-            )}
-
-            {isMJ && (
-              <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                <button onClick={handleInvite} disabled={inviteLoading} className="btn btn-outline text-xs w-full">
-                  {inviteLoading ? 'Génération…' : 'Générer un code d\'invitation'}
-                </button>
-                {inviteCode && (
-                  <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-center">
-                    <span className="text-xs text-gray-500 dark:text-gray-400 block">Code :</span>
-                    <code className="text-sm font-mono text-primary dark:text-primaryLight select-all">
-                      {inviteCode}
-                    </code>
-                  </div>
-                )}
               </div>
             )}
           </div>
-        </aside>
-      </div>
+
+          {/* Sidebar: Members + Invite */}
+          <aside className="space-y-4">
+            <div className="card">
+              <h3 className="font-semibold text-primary dark:text-primaryLight mb-3">
+                Membres ({members.length})
+              </h3>
+              {members.length === 0 ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400">Aucun membre.</p>
+              ) : (
+                <ul className="space-y-2">
+                  {members.map((m) => (
+                    <li key={m.id} className="flex items-center gap-2 text-sm">
+                      <div className="w-7 h-7 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-xs font-bold text-primary dark:text-primaryLight">
+                        {m.player_name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-gray-900 dark:text-gray-100">{m.player_name}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {isMJ && (
+                <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <button onClick={handleInvite} disabled={inviteLoading} className="btn btn-outline text-xs w-full">
+                    {inviteLoading ? 'Génération…' : 'Générer un code d\'invitation'}
+                  </button>
+                  {inviteCode && (
+                    <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-center">
+                      <span className="text-xs text-gray-500 dark:text-gray-400 block">Code :</span>
+                      <code className="text-sm font-mono text-primary dark:text-primaryLight select-all">
+                        {inviteCode}
+                      </code>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </aside>
+        </div>
+      )}
+
+      {activeTab === 'spells' && (
+        <CampaignSpellsPanel campaignId={campaign.id} isMJ={isMJ} />
+      )}
+
+      {activeTab === 'items' && (
+        <CampaignItemsPanel campaignId={campaign.id} isMJ={isMJ} />
+      )}
+
+      {activeTab === 'stats' && (
+        <CampaignStatsPanel campaignId={campaign.id} isMJ={isMJ} />
+      )}
     </div>
   )
 }

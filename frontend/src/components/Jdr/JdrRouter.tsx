@@ -5,7 +5,7 @@ import JdrHomePage from './JdrHomePage'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import JdrLayout from './JdrLayout'
-import { CampaignPage, CharacterCreatePage, CharacterSheet, DashboardPage } from './Dashboard'
+import { CampaignPage, CampaignsListPage, CharacterCreatePage, CharactersListPage, CharacterSheet, DashboardPage } from './Dashboard'
 import { GardenPage } from './Garden'
 import { MerchantPage } from './Merchant'
 import { RunesPage } from './Runes'
@@ -67,6 +67,22 @@ function JdrRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <DashboardPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/campaigns') {
+    return (
+      <ProtectedRoute>
+        <CampaignsListPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/characters') {
+    return (
+      <ProtectedRoute>
+        <CharactersListPage />
       </ProtectedRoute>
     )
   }
