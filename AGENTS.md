@@ -146,6 +146,19 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 
 ## Conventions pour les agents
 
+- **Activation du venv backend** : Le `.venv` est dans le `.gitignore` et n'est pas visible via les outils de recherche de fichiers. Pour exécuter des commandes Django (migrations, runserver, etc.), activer d'abord le venv depuis la **racine du projet** :
+  ```powershell
+  # Windows PowerShell — depuis la racine du projet
+  .venv\Scripts\Activate.ps1
+  # Puis exécuter les commandes Django depuis backend/
+  cd backend
+  python manage.py makemigrations
+  python manage.py migrate
+  ```
+  Alternativement, utiliser le chemin complet vers le Python du venv :
+  ```powershell
+  .venv\Scripts\python.exe backend\manage.py makemigrations
+  ```
 - Toujours lancer `npm run lint` dans `frontend/` avant de proposer un commit
 - Vérifier `tsc -b` (via `npm run build`) pour les erreurs TypeScript
 - Ne pas modifier `db.sqlite3` directement — utiliser les migrations Django
