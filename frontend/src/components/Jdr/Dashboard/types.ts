@@ -45,3 +45,76 @@ export interface CampaignMember {
   joined_at: string
   is_active: boolean
 }
+
+export interface Spell {
+  id: number
+  campaign: number
+  name: string
+  description: string
+  level: number
+  mana_cost: number
+  damage: string
+  range_distance: string
+  casting_time: string
+  duration: string
+  school: string
+  extra: Record<string, unknown>
+  created_at: string
+}
+
+export interface Item {
+  id: number
+  campaign: number
+  name: string
+  description: string
+  rarity: string
+  item_type: string
+  weight: number
+  value: number
+  properties: Record<string, unknown>
+  is_magical: boolean
+  created_at: string
+}
+
+export interface Stat {
+  id: number
+  campaign: number
+  name: string
+  display_order: number
+}
+
+export interface CharacterStat {
+  id: number
+  character: number
+  stat: number
+  stat_name: string
+  value: number
+}
+
+export interface CharacterSpell {
+  id: number
+  character: number
+  spell: number
+  spell_name: string
+  spell_level: number
+  spell_description: string
+  spell_school: string
+  spell_mana_cost: number
+  notes: string
+  acquired_at: string
+}
+
+export interface CharacterItem {
+  id: number
+  character: number
+  item: number
+  item_name: string
+  item_rarity: string
+  item_type: string
+  item_description: string
+  item_is_magical: boolean
+  quantity: number
+  is_equipped: boolean
+  notes: string
+  acquired_at: string
+}
