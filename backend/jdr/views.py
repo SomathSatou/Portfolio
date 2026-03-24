@@ -261,13 +261,25 @@ class CampaignViewSet(viewsets.ModelViewSet):
         code = campaign.generate_invite_code()
         return Response({'invite_code': code})
 
-    @action(detail=True, methods=['post'], url_path='join')
-    def join(self, request, pk=None):
-        campaign = self.get_object()
-        code = request.data.get('invite_code', '')
-        if campaign.invite_code != code:
+    @action(detail=False, methods=['post'], url_path='join')
+    def join(self, request):
+        code = request.data.get('invite_code', '').strip()
+        if not code:
+            return Response(
+                {'detail': 'Code d\'invitation requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            campaign = Campaign.objects.get(invite_code=code)
+        except Campaign.DoesNotExist:
             return Response(
                 {'detail': 'Code d\'invitation invalide.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if campaign.game_master == request.user:
+            return Response(
+                {'detail': 'Vous êtes déjà le MJ de cette campagne.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -280,7 +292,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
             membership.is_active = True
             membership.save(update_fields=['is_active'])
 
-        return Response({'detail': 'Vous avez rejoint la campagne.'})
+        return Response({'detail': 'Vous avez rejoint la campagne.', 'campaign_id': campaign.id})
 
     @action(detail=True, methods=['get'], url_path='members')
     def members(self, request, pk=None):
