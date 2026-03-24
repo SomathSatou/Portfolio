@@ -2,10 +2,12 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignMembership, Character, City, CityExport, CityImport,
-    GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory, MerchantOrder,
-    Notification, PlantUsage, Resource, RuneCollection, RuneDrawing, RuneTemplate,
-    SharedFolder, SharedFolderAccess, UserProfile,
+    AlchemyPlant, Campaign, CampaignMembership, Character,
+    CharacterItem, CharacterSpell, CharacterStat,
+    City, CityExport, CityImport,
+    GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
+    MerchantOrder, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
+    RuneTemplate, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
 )
 
 
@@ -89,7 +91,7 @@ class CampaignMembershipSerializer(serializers.ModelSerializer):
 
 class CharacterSerializer(serializers.ModelSerializer):
     player_name = serializers.CharField(source='player.username', read_only=True)
-    campaign_name = serializers.CharField(source='campaign.name', read_only=True)
+    campaign_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Character
@@ -98,6 +100,10 @@ class CharacterSerializer(serializers.ModelSerializer):
             'class_type', 'level', 'description', 'avatar', 'stats', 'created_at',
         ]
         read_only_fields = ['id', 'player', 'created_at']
+        extra_kwargs = {'campaign': {'required': False, 'allow_null': True}}
+
+    def get_campaign_name(self, obj: Character) -> str:
+        return obj.campaign.name if obj.campaign else ''
 
 
 class NotificationSerializer(serializers.ModelSerializer):
@@ -108,6 +114,79 @@ class NotificationSerializer(serializers.ModelSerializer):
             'is_read', 'link', 'created_at',
         ]
         read_only_fields = ['id', 'recipient', 'created_at']
+
+
+# ─── Campaign Content (Spells, Items, Stats) ─────────────────────────────────
+
+class SpellSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spell
+        fields = [
+            'id', 'campaign', 'name', 'description', 'level', 'mana_cost',
+            'damage', 'range_distance', 'casting_time', 'duration', 'school',
+            'extra', 'created_at',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at']
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = [
+            'id', 'campaign', 'name', 'description', 'rarity', 'item_type',
+            'weight', 'value', 'properties', 'is_magical', 'created_at',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at']
+
+
+class StatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stat
+        fields = ['id', 'campaign', 'name', 'display_order']
+        read_only_fields = ['id', 'campaign']
+
+
+class CharacterStatSerializer(serializers.ModelSerializer):
+    stat_name = serializers.CharField(source='stat.name', read_only=True)
+
+    class Meta:
+        model = CharacterStat
+        fields = ['id', 'character', 'stat', 'stat_name', 'value']
+        read_only_fields = ['id', 'character']
+
+
+class CharacterSpellSerializer(serializers.ModelSerializer):
+    spell_name = serializers.CharField(source='spell.name', read_only=True)
+    spell_level = serializers.IntegerField(source='spell.level', read_only=True)
+    spell_description = serializers.CharField(source='spell.description', read_only=True)
+    spell_school = serializers.CharField(source='spell.school', read_only=True)
+    spell_mana_cost = serializers.IntegerField(source='spell.mana_cost', read_only=True)
+
+    class Meta:
+        model = CharacterSpell
+        fields = [
+            'id', 'character', 'spell', 'spell_name', 'spell_level',
+            'spell_description', 'spell_school', 'spell_mana_cost',
+            'notes', 'acquired_at',
+        ]
+        read_only_fields = ['id', 'character', 'acquired_at']
+
+
+class CharacterItemSerializer(serializers.ModelSerializer):
+    item_name = serializers.CharField(source='item.name', read_only=True)
+    item_rarity = serializers.CharField(source='item.rarity', read_only=True)
+    item_type = serializers.CharField(source='item.item_type', read_only=True)
+    item_description = serializers.CharField(source='item.description', read_only=True)
+    item_is_magical = serializers.BooleanField(source='item.is_magical', read_only=True)
+
+    class Meta:
+        model = CharacterItem
+        fields = [
+            'id', 'character', 'item', 'item_name', 'item_rarity', 'item_type',
+            'item_description', 'item_is_magical',
+            'quantity', 'is_equipped', 'notes', 'acquired_at',
+        ]
+        read_only_fields = ['id', 'character', 'acquired_at']
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────

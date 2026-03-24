@@ -86,8 +86,10 @@ class Character(models.Model):
     )
     campaign = models.ForeignKey(
         Campaign,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='characters',
+        null=True,
+        blank=True,
     )
     class_type = models.CharField(max_length=100, blank=True, default='')
     level = models.IntegerField(default=1)
@@ -133,6 +135,143 @@ class Notification(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title} → {self.recipient.username}'
+
+
+# ─── Campaign Content (Spells, Items, Stats) ─────────────────────────────────
+
+class Spell(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='spells',
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    level = models.IntegerField(default=1)
+    mana_cost = models.IntegerField(default=0)
+    damage = models.CharField(max_length=100, blank=True, default='')
+    range_distance = models.CharField(max_length=100, blank=True, default='')
+    casting_time = models.CharField(max_length=100, blank=True, default='')
+    duration = models.CharField(max_length=100, blank=True, default='')
+    school = models.CharField(max_length=100, blank=True, default='')
+    extra = models.JSONField(default=dict, blank=True, help_text='Champs libres supplémentaires')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['level', 'name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Sort'
+        verbose_name_plural = 'Sorts'
+
+    def __str__(self) -> str:
+        return f'{self.name} (niv. {self.level}) — {self.campaign.name}'
+
+
+class Item(models.Model):
+    RARITY_CHOICES = [
+        ('commun', 'Commun'),
+        ('peu_commun', 'Peu commun'),
+        ('rare', 'Rare'),
+        ('très_rare', 'Très rare'),
+        ('légendaire', 'Légendaire'),
+        ('artéfact', 'Artéfact'),
+    ]
+
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='items',
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    rarity = models.CharField(max_length=20, choices=RARITY_CHOICES, default='commun')
+    item_type = models.CharField(max_length=100, blank=True, default='', help_text='Arme, armure, potion, etc.')
+    weight = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    value = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text='Valeur en pièces d\'or')
+    properties = models.JSONField(default=dict, blank=True, help_text='Propriétés libres (ex: dégâts, bonus)')
+    is_magical = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Objet'
+        verbose_name_plural = 'Objets'
+
+    def __str__(self) -> str:
+        return f'{self.name} ({self.get_rarity_display()}) — {self.campaign.name}'
+
+
+class Stat(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='stats',
+    )
+    name = models.CharField(max_length=100)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Statistique'
+        verbose_name_plural = 'Statistiques'
+
+    def __str__(self) -> str:
+        return f'{self.name} — {self.campaign.name}'
+
+
+class CharacterStat(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='character_stats',
+    )
+    stat = models.ForeignKey(
+        Stat, on_delete=models.CASCADE, related_name='character_values',
+    )
+    value = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('character', 'stat')
+        ordering = ['stat__display_order', 'stat__name']
+        verbose_name = 'Statistique de personnage'
+        verbose_name_plural = 'Statistiques de personnage'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} — {self.stat.name}: {self.value}'
+
+
+class CharacterSpell(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='character_spells',
+    )
+    spell = models.ForeignKey(
+        Spell, on_delete=models.CASCADE, related_name='character_entries',
+    )
+    notes = models.TextField(blank=True, default='')
+    acquired_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('character', 'spell')
+        verbose_name = 'Sort de personnage'
+        verbose_name_plural = 'Sorts de personnage'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} — {self.spell.name}'
+
+
+class CharacterItem(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='character_items',
+    )
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, related_name='character_entries',
+    )
+    quantity = models.IntegerField(default=1)
+    is_equipped = models.BooleanField(default=False)
+    notes = models.TextField(blank=True, default='')
+    acquired_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('character', 'item')
+        verbose_name = 'Objet de personnage'
+        verbose_name_plural = 'Objets de personnage'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} — {self.item.name} (×{self.quantity})'
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────
