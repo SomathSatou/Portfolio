@@ -1,11 +1,8 @@
 import React from 'react'
 import api from '../api'
-import { useAuth } from '../useAuth'
 import type { Campaign } from './types'
 
 export default function CharacterCreatePage() {
-  const { user } = useAuth()
-
   const [campaigns, setCampaigns] = React.useState<Campaign[]>([])
   const [loading, setLoading] = React.useState(true)
   const [submitting, setSubmitting] = React.useState(false)
@@ -47,19 +44,18 @@ export default function CharacterCreatePage() {
       setError('Le nom du personnage est requis.')
       return
     }
-    if (!campaignId) {
-      setError('Veuillez sélectionner une campagne.')
-      return
-    }
 
     setSubmitting(true)
     try {
-      const res = await api.post('/characters/', {
+      const payload: Record<string, unknown> = {
         name: name.trim(),
-        campaign: campaignId,
         class_type: classType.trim(),
         description: description.trim(),
-      })
+      }
+      if (campaignId) {
+        payload.campaign = campaignId
+      }
+      const res = await api.post('/characters/', payload)
       // Redirect to the new character sheet
       window.location.hash = `#/jdr/character/${res.data.id}`
     } catch (err: unknown) {
@@ -82,8 +78,6 @@ export default function CharacterCreatePage() {
     }
   }
 
-  const isMJ = user?.role === 'mj'
-
   return (
     <div className="max-w-xl mx-auto">
       {/* Breadcrumb */}
@@ -102,17 +96,6 @@ export default function CharacterCreatePage() {
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
-        </div>
-      ) : campaigns.length === 0 ? (
-        <div className="card p-6 text-center">
-          <p className="text-gray-500 dark:text-gray-400 mb-4">
-            {isMJ
-              ? 'Vous devez d\'abord créer une campagne avant de créer un personnage.'
-              : 'Vous devez d\'abord rejoindre une campagne avant de créer un personnage.'}
-          </p>
-          <a href="#/jdr/dashboard" className="btn btn-outline">
-            Retour au dashboard
-          </a>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="card p-6 space-y-5">
@@ -139,25 +122,30 @@ export default function CharacterCreatePage() {
             />
           </div>
 
-          {/* Campaign */}
-          <div>
-            <label htmlFor="char-campaign" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Campagne <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="char-campaign"
-              value={campaignId}
-              onChange={(e) => setCampaignId(e.target.value ? Number(e.target.value) : '')}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary"
-            >
-              <option value="">— Sélectionner une campagne —</option>
-              {campaigns.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Campaign (optional) */}
+          {campaigns.length > 0 && (
+            <div>
+              <label htmlFor="char-campaign" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Campagne
+              </label>
+              <select
+                id="char-campaign"
+                value={campaignId}
+                onChange={(e) => setCampaignId(e.target.value ? Number(e.target.value) : '')}
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary"
+              >
+                <option value="">— Aucune campagne —</option>
+                {campaigns.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
+                Optionnel — vous pourrez associer le personnage à une campagne plus tard.
+              </p>
+            </div>
+          )}
 
           {/* Class type */}
           <div>

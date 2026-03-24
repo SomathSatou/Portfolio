@@ -1,8 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import StatsEditor from './StatsEditor'
-import type { Character } from './types'
+import type { Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
 
 interface CharacterSheetProps {
   characterId: string
@@ -19,7 +18,13 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   // Editable fields
   const [description, setDescription] = React.useState('')
   const [level, setLevel] = React.useState(1)
-  const [stats, setStats] = React.useState<Record<string, number | string>>({})
+
+  // Campaign stats, spells, items
+  const [charStats, setCharStats] = React.useState<CharacterStat[]>([])
+  const [charSpells, setCharSpells] = React.useState<CharacterSpell[]>([])
+  const [charItems, setCharItems] = React.useState<CharacterItem[]>([])
+  const [campaignSpells, setCampaignSpells] = React.useState<Spell[]>([])
+  const [campaignItems, setCampaignItems] = React.useState<Item[]>([])
 
   const isMJ = user?.role === 'mj'
   const isOwner = character?.player === user?.id
@@ -33,10 +38,24 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       .get<Character>(`/characters/${characterId}/`)
       .then((res) => {
         if (cancelled) return
-        setCharacter(res.data)
-        setDescription(res.data.description)
-        setLevel(res.data.level)
-        setStats(res.data.stats ?? {})
+        const c = res.data
+        setCharacter(c)
+        setDescription(c.description)
+        setLevel(c.level)
+        // Load campaign-related data
+        const promises: Promise<void>[] = []
+        promises.push(
+          api.get<CharacterStat[]>(`/character-stats/?character=${c.id}`).then((r) => { if (!cancelled) setCharStats(r.data) }),
+          api.get<CharacterSpell[]>(`/character-spells/?character=${c.id}`).then((r) => { if (!cancelled) setCharSpells(r.data) }),
+          api.get<CharacterItem[]>(`/character-items/?character=${c.id}`).then((r) => { if (!cancelled) setCharItems(r.data) }),
+        )
+        if (c.campaign) {
+          promises.push(
+            api.get<Spell[]>(`/spells/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSpells(r.data) }),
+            api.get<Item[]>(`/items/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignItems(r.data) }),
+          )
+        }
+        return Promise.all(promises).then(() => {})
       })
       .catch(() => {
         if (!cancelled) setError('Impossible de charger le personnage.')
@@ -55,7 +74,7 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
     setError('')
     setSuccessMsg('')
     try {
-      const payload: Partial<Character> = { description, stats }
+      const payload: Partial<Character> = { description }
       if (isMJ) {
         payload.level = level
       }
@@ -67,6 +86,59 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       setError('Erreur lors de la sauvegarde.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleStatChange = async (statId: number, value: number) => {
+    if (!character) return
+    const clamped = Math.max(0, Math.min(20, value))
+    setCharStats((prev) => prev.map((s) => s.stat === statId ? { ...s, value: clamped } : s))
+    try {
+      await api.patch('/character-stats/', { character: character.id, stats: [{ stat: statId, value: clamped }] })
+    } catch {
+      setError('Erreur lors de la mise à jour de la stat.')
+    }
+  }
+
+  const handleAddSpell = async (spellId: number) => {
+    if (!character) return
+    try {
+      const res = await api.post<CharacterSpell>('/character-spells/', { character: character.id, spell: spellId })
+      setCharSpells((prev) => [...prev, res.data])
+    } catch {
+      setError('Sort déjà connu ou erreur.')
+    }
+  }
+
+  const handleRemoveSpell = async (csId: number) => {
+    try {
+      await api.delete(`/character-spells/${csId}/`)
+      setCharSpells((prev) => prev.filter((s) => s.id !== csId))
+    } catch {
+      setError('Erreur lors du retrait du sort.')
+    }
+  }
+
+  const handleAddItem = async (itemId: number) => {
+    if (!character) return
+    try {
+      const res = await api.post<CharacterItem>('/character-items/', { character: character.id, item: itemId })
+      setCharItems((prev) => {
+        const existing = prev.find((i) => i.item === itemId)
+        if (existing) return prev.map((i) => i.item === itemId ? res.data : i)
+        return [...prev, res.data]
+      })
+    } catch {
+      setError('Erreur lors de l\'ajout de l\'objet.')
+    }
+  }
+
+  const handleRemoveItem = async (ciId: number) => {
+    try {
+      await api.delete(`/character-items/${ciId}/`)
+      setCharItems((prev) => prev.filter((i) => i.id !== ciId))
+    } catch {
+      setError('Erreur lors du retrait de l\'objet.')
     }
   }
 
@@ -160,10 +232,105 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
             )}
           </div>
 
-          {/* Stats */}
+          {/* Campaign Stats (0-20) */}
+          {charStats.length > 0 && (
+            <div className="card">
+              <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Statistiques</h2>
+              <div className="space-y-3">
+                {charStats.map((cs) => (
+                  <div key={cs.id} className="flex items-center gap-3">
+                    <span className="w-28 text-sm font-medium text-gray-700 dark:text-gray-300 shrink-0">{cs.stat_name}</span>
+                    {canEdit ? (
+                      <input
+                        type="range"
+                        min={0}
+                        max={20}
+                        value={cs.value}
+                        onChange={(e) => handleStatChange(cs.stat, +e.target.value)}
+                        className="flex-1 accent-primary"
+                      />
+                    ) : (
+                      <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-primary dark:bg-primaryLight h-2 rounded-full" style={{ width: `${(cs.value / 20) * 100}%` }} />
+                      </div>
+                    )}
+                    <span className="w-8 text-center text-sm font-bold text-primary dark:text-primaryLight">{cs.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Character Spells */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Statistiques</h2>
-            <StatsEditor stats={stats} editable={canEdit} onChange={setStats} />
+            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Sorts connus</h2>
+            {charSpells.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Aucun sort appris.</p>
+            ) : (
+              <div className="space-y-2">
+                {charSpells.map((cs) => (
+                  <div key={cs.id} className="flex items-center justify-between gap-2 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{cs.spell_name}</span>
+                      <span className="ml-2 text-xs text-gray-500">Niv. {cs.spell_level}</span>
+                      {cs.spell_school && <span className="ml-2 text-xs text-gray-500">{cs.spell_school}</span>}
+                    </div>
+                    {canEdit && (
+                      <button onClick={() => handleRemoveSpell(cs.id)} className="text-xs text-red-500 hover:underline shrink-0">Retirer</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            {canEdit && campaignSpells.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <select
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) handleAddSpell(+e.target.value); e.target.value = '' }}
+                  className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="" disabled>+ Ajouter un sort…</option>
+                  {campaignSpells
+                    .filter((s) => !charSpells.some((cs) => cs.spell === s.id))
+                    .map((s) => <option key={s.id} value={s.id}>{s.name} (Niv. {s.level})</option>)}
+                </select>
+              </div>
+            )}
+          </div>
+
+          {/* Character Items */}
+          <div className="card">
+            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Inventaire</h2>
+            {charItems.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Inventaire vide.</p>
+            ) : (
+              <div className="space-y-2">
+                {charItems.map((ci) => (
+                  <div key={ci.id} className="flex items-center justify-between gap-2 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{ci.item_name}</span>
+                      {ci.quantity > 1 && <span className="ml-1 text-xs text-gray-500">(x{ci.quantity})</span>}
+                      {ci.is_equipped && <span className="ml-2 badge text-xs">Équipé</span>}
+                    </div>
+                    {canEdit && (
+                      <button onClick={() => handleRemoveItem(ci.id)} className="text-xs text-red-500 hover:underline shrink-0">Retirer</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            {canEdit && campaignItems.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <select
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) handleAddItem(+e.target.value); e.target.value = '' }}
+                  className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="" disabled>+ Ajouter un objet…</option>
+                  {campaignItems.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Save button */}
