@@ -1,6 +1,8 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
+import CampaignCitiesPanel from './CampaignCitiesPanel'
+import CampaignEventsPanel from './CampaignEventsPanel'
 import CampaignItemsPanel from './CampaignItemsPanel'
 import CampaignSpellsPanel from './CampaignSpellsPanel'
 import CampaignStatsPanel from './CampaignStatsPanel'
@@ -34,7 +36,7 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
   const [confirmAdvance, setConfirmAdvance] = React.useState(false)
 
   // Tabs
-  const [activeTab, setActiveTab] = React.useState<'overview' | 'spells' | 'items' | 'stats'>('overview')
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats'>('overview')
 
   const isMJ = campaign?.game_master === user?.id
 
@@ -216,9 +218,9 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
       {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-6">
-        {(['overview', 'spells', 'items', 'stats'] as const).map((tab) => {
-          const labels = { overview: 'Vue d\'ensemble', spells: 'Sorts', items: 'Objets', stats: 'Statistiques' }
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
+        {(['overview', 'events', 'cities', 'spells', 'items', 'stats'] as const).map((tab) => {
+          const labels = { overview: 'Vue d\'ensemble', events: '\u00c9v\u00e9nements', cities: 'Villes', spells: 'Sorts', items: 'Objets', stats: 'Statistiques' }
           return (
             <button
               key={tab}
@@ -292,6 +294,14 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
             </div>
           </aside>
         </div>
+      )}
+
+      {activeTab === 'events' && (
+        <CampaignEventsPanel campaignId={campaign.id} />
+      )}
+
+      {activeTab === 'cities' && (
+        <CampaignCitiesPanel campaignId={campaign.id} isMJ={isMJ} />
       )}
 
       {activeTab === 'spells' && (

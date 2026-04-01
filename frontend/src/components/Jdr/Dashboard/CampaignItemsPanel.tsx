@@ -153,9 +153,25 @@ export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
             <div key={item.id} className="card">
               {editingId === item.id ? (
                 <form onSubmit={handleEdit} className="space-y-2">
-                  <input required value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                    className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
-                  <textarea rows={2} value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <input required placeholder="Nom" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                      className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <input placeholder="Type" value={editForm.item_type} onChange={(e) => setEditForm({ ...editForm, item_type: e.target.value })}
+                      className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <select value={editForm.rarity} onChange={(e) => setEditForm({ ...editForm, rarity: e.target.value })}
+                      className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary">
+                      {Object.entries(RARITY_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                    </select>
+                    <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <input type="checkbox" checked={editForm.is_magical} onChange={(e) => setEditForm({ ...editForm, is_magical: e.target.checked })} />
+                      Magique
+                    </label>
+                    <input type="number" min={0} step={0.01} placeholder="Poids (kg)" value={editForm.weight} onChange={(e) => setEditForm({ ...editForm, weight: +e.target.value })}
+                      className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
+                    <input type="number" min={0} step={0.01} placeholder="Valeur (PO)" value={editForm.value} onChange={(e) => setEditForm({ ...editForm, value: +e.target.value })}
+                      className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
+                  </div>
+                  <textarea rows={2} placeholder="Description" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                     className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
                   <div className="flex gap-2">
                     <button type="submit" disabled={saving} className="btn btn-primary text-xs">{saving ? '…' : 'Sauver'}</button>
@@ -175,6 +191,11 @@ export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
                           {RARITY_LABELS[item.rarity] ?? item.rarity}
                         </span>
                         {item.item_type && <span className="badge">{item.item_type}</span>}
+                        {item.resource_name && (
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                            Comptoir: {item.resource_name}
+                          </span>
+                        )}
                       </div>
                     </div>
                     {isMJ && (
@@ -191,6 +212,13 @@ export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
                     {item.weight > 0 && <span>Poids: {item.weight} kg</span>}
                     {item.value > 0 && <span>Valeur: {item.value} PO</span>}
                   </div>
+                  {item.properties && Object.keys(item.properties).length > 0 && (
+                    <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 space-y-0.5">
+                      {Object.entries(item.properties).map(([k, v]) => (
+                        <div key={k}><span className="font-medium">{k}:</span> {String(v)}</div>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
             </div>

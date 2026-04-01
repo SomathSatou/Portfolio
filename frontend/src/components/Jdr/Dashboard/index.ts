@@ -1,4 +1,6 @@
 export { default as DashboardPage } from './DashboardPage'
+export { default as CampaignCitiesPanel } from './CampaignCitiesPanel'
+export { default as CampaignEventsPanel } from './CampaignEventsPanel'
 export { default as CampaignPage } from './CampaignPage'
 export { default as CampaignsListPage } from './CampaignsListPage'
 export { default as CampaignSpellsPanel } from './CampaignSpellsPanel'

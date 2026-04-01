@@ -9,6 +9,15 @@ export interface Campaign {
   current_session_number: number
   invite_code: string | null
   member_count: number
+  city_count: number
+}
+
+export interface City {
+  id: number
+  name: string
+  description: string
+  export_count: number
+  import_count: number
 }
 
 export interface Character {
@@ -65,6 +74,8 @@ export interface Spell {
 export interface Item {
   id: number
   campaign: number
+  resource: number | null
+  resource_name: string
   name: string
   description: string
   rarity: string
@@ -117,4 +128,15 @@ export interface CharacterItem {
   is_equipped: boolean
   notes: string
   acquired_at: string
+}
+
+export interface CampaignEvent {
+  id: number
+  campaign: number
+  event_type: string
+  actor: number | null
+  actor_name: string
+  message: string
+  link_hash: string
+  created_at: string
 }

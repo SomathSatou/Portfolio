@@ -33,6 +33,7 @@ from .views import (
     MerchantOrderSellView,
     MerchantOrderView,
     MerchantStatsView,
+    SellEstimateView,
     NextcloudEmbedUrlView,
     NotificationViewSet,
     RegisterView,
@@ -83,6 +84,7 @@ urlpatterns = [
     path('merchant/inventory/', MerchantInventoryView.as_view(), name='merchant-inventory'),
     path('merchant/orders/', MerchantOrderView.as_view(), name='merchant-orders'),
     path('merchant/orders/<int:pk>/sell/', MerchantOrderSellView.as_view(), name='merchant-order-sell'),
+    path('merchant/sell-estimate/', SellEstimateView.as_view(), name='merchant-sell-estimate'),
     path('merchant/stats/', MerchantStatsView.as_view(), name='merchant-stats'),
     # Garden
     path('garden/plots/', GardenPlotsView.as_view(), name='garden-plots'),

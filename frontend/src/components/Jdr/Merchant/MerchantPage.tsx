@@ -4,11 +4,10 @@ import { useAuth } from '../useAuth.ts'
 import type { Character } from '../Dashboard/types.ts'
 import BuyModal from './BuyModal.tsx'
 import CitySelector from './CitySelector.tsx'
-import InventoryTable from './InventoryTable.tsx'
 import MarketTable from './MarketTable.tsx'
 import OrderCard from './OrderCard.tsx'
 import ProfitChart from './ProfitChart.tsx'
-import SellModal from './SellModal.tsx'
+import SellPanel from './SellPanel.tsx'
 import type {
   City,
   MarketPriceItem,
@@ -17,12 +16,13 @@ import type {
   MerchantStats,
 } from './types.ts'
 
-type Tab = 'market' | 'orders' | 'inventory' | 'stats'
+type Tab = 'market' | 'orders' | 'resell' | 'history' | 'stats'
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'market', label: 'Marché' },
   { key: 'orders', label: 'Commandes' },
-  { key: 'inventory', label: 'Inventaire' },
+  { key: 'resell', label: 'Revente' },
+  { key: 'history', label: 'Historique' },
   { key: 'stats', label: 'Statistiques' },
 ]
 
@@ -42,11 +42,16 @@ export default function MerchantPage() {
   const [marketItems, setMarketItems] = useState<MarketPriceItem[]>([])
   const [marketLoading, setMarketLoading] = useState(false)
 
-  // Orders
+  // Orders (active: pending/in_transit/delivered)
   const [orders, setOrders] = useState<MerchantOrderItem[]>([])
   const [ordersLoading, setOrdersLoading] = useState(false)
 
-  // Inventory
+  // History (all orders)
+  const [history, setHistory] = useState<MerchantOrderItem[]>([])
+  const [historyLoading, setHistoryLoading] = useState(false)
+  const [historyFilter, setHistoryFilter] = useState<'all' | 'pending' | 'in_transit' | 'delivered' | 'sold' | 'cancelled'>('all')
+
+  // Inventory (for resell tab)
   const [inventory, setInventory] = useState<MerchantInventoryItem[]>([])
   const [inventoryLoading, setInventoryLoading] = useState(false)
 
@@ -56,7 +61,6 @@ export default function MerchantPage() {
 
   // Modals
   const [buyItem, setBuyItem] = useState<MarketPriceItem | null>(null)
-  const [sellOrder, setSellOrder] = useState<MerchantOrderItem | null>(null)
   const [modalLoading, setModalLoading] = useState(false)
 
   // Load initial data
@@ -103,7 +107,7 @@ export default function MerchantPage() {
     if (tab === 'market') void loadMarket()
   }, [tab, loadMarket])
 
-  // Load orders
+  // Load orders (active only: pending, in_transit, delivered)
   const loadOrders = useCallback(async () => {
     if (!selectedCharacterId) return
     setOrdersLoading(true)
@@ -111,7 +115,9 @@ export default function MerchantPage() {
       const res = await api.get<MerchantOrderItem[]>('/merchant/orders/', {
         params: { character: selectedCharacterId },
       })
-      setOrders(res.data)
+      setOrders(res.data.filter((o) =>
+        o.status === 'pending' || o.status === 'in_transit' || o.status === 'delivered',
+      ))
     } catch { /* silent */ }
     finally { setOrdersLoading(false) }
   }, [selectedCharacterId])
@@ -119,6 +125,23 @@ export default function MerchantPage() {
   useEffect(() => {
     if (tab === 'orders') void loadOrders()
   }, [tab, loadOrders])
+
+  // Load history (all orders)
+  const loadHistory = useCallback(async () => {
+    if (!selectedCharacterId) return
+    setHistoryLoading(true)
+    try {
+      const res = await api.get<MerchantOrderItem[]>('/merchant/orders/', {
+        params: { character: selectedCharacterId },
+      })
+      setHistory(res.data)
+    } catch { /* silent */ }
+    finally { setHistoryLoading(false) }
+  }, [selectedCharacterId])
+
+  useEffect(() => {
+    if (tab === 'history') void loadHistory()
+  }, [tab, loadHistory])
 
   // Load inventory
   const loadInventory = useCallback(async () => {
@@ -134,7 +157,7 @@ export default function MerchantPage() {
   }, [selectedCharacterId])
 
   useEffect(() => {
-    if (tab === 'inventory') void loadInventory()
+    if (tab === 'resell') void loadInventory()
   }, [tab, loadInventory])
 
   // Load stats
@@ -173,20 +196,19 @@ export default function MerchantPage() {
     finally { setModalLoading(false) }
   }
 
-  // Sell action
-  const handleSell = async (sellCityId: number) => {
-    if (!sellOrder) return
-    setModalLoading(true)
-    try {
-      await api.post(`/merchant/orders/${sellOrder.id}/sell/`, {
-        sell_city_id: sellCityId,
-      })
-      setSellOrder(null)
-      void loadOrders()
-      void loadInventory()
-      void loadStats()
-    } catch { /* silent */ }
-    finally { setModalLoading(false) }
+  // Sell from inventory (resell tab)
+  const handleSellFromInventory = async (inventoryItemId: number, sellCityId: number, quantity: number) => {
+    if (!selectedCharacterId) return
+    const invItem = inventory.find((i) => i.id === inventoryItemId)
+    if (!invItem) return
+    await api.post('/merchant/inventory/', {
+      character_id: selectedCharacterId,
+      resource_id: invItem.resource,
+      quantity,
+      sell_city_id: sellCityId,
+    })
+    void loadInventory()
+    void loadStats()
   }
 
   if (characters.length === 0) {
@@ -285,23 +307,63 @@ export default function MerchantPage() {
           {ordersLoading ? (
             <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Chargement des commandes…</p>
           ) : orders.length === 0 ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Aucune commande.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Aucune commande en cours.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {orders.map((o) => (
-                <OrderCard
-                  key={o.id}
-                  order={o}
-                  onSell={(order) => setSellOrder(order)}
-                />
+                <OrderCard key={o.id} order={o} />
               ))}
             </div>
           )}
         </div>
       )}
 
-      {tab === 'inventory' && (
-        <InventoryTable items={inventory} loading={inventoryLoading} />
+      {tab === 'resell' && (
+        <SellPanel
+          items={inventory}
+          loading={inventoryLoading}
+          cities={cities}
+          onSellConfirm={handleSellFromInventory}
+        />
+      )}
+
+      {tab === 'history' && (
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            {(['all', 'pending', 'in_transit', 'delivered', 'sold', 'cancelled'] as const).map((f) => {
+              const labels: Record<string, string> = {
+                all: 'Tous', pending: 'En attente', in_transit: 'En transit',
+                delivered: 'Livrés', sold: 'Vendus', cancelled: 'Annulés',
+              }
+              return (
+                <button
+                  key={f}
+                  onClick={() => setHistoryFilter(f)}
+                  className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
+                    historyFilter === f
+                      ? 'bg-primary text-white dark:bg-primaryLight dark:text-gray-900'
+                      : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {labels[f]}
+                </button>
+              )
+            })}
+          </div>
+          {historyLoading ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Chargement…</p>
+          ) : history.filter((o) => historyFilter === 'all' || o.status === historyFilter).length === 0 ? (
+            <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Aucun historique.</p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {history
+                .filter((o) => historyFilter === 'all' || o.status === historyFilter)
+                .map((o) => (
+                  <OrderCard key={o.id} order={o} />
+                ))}
+            </div>
+          )}
+        </div>
       )}
 
       {tab === 'stats' && (
@@ -318,17 +380,6 @@ export default function MerchantPage() {
         />
       )}
 
-      {sellOrder && (
-        <SellModal
-          resourceName={sellOrder.resource_name}
-          quantity={sellOrder.quantity}
-          buyCost={sellOrder.total_cost}
-          cities={cities}
-          onConfirm={handleSell}
-          onClose={() => setSellOrder(null)}
-          loading={modalLoading}
-        />
-      )}
     </div>
   )
 }

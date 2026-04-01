@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignMembership, Character,
+    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, Character,
     CharacterItem, CharacterSpell, CharacterStat,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
@@ -66,18 +66,22 @@ class MeSerializer(serializers.ModelSerializer):
 class CampaignSerializer(serializers.ModelSerializer):
     game_master_name = serializers.CharField(source='game_master.username', read_only=True)
     member_count = serializers.SerializerMethodField()
+    city_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Campaign
         fields = [
             'id', 'name', 'description', 'game_master', 'game_master_name',
             'created_at', 'is_active', 'current_session_number', 'invite_code',
-            'member_count',
+            'member_count', 'city_count',
         ]
         read_only_fields = ['id', 'game_master', 'created_at', 'current_session_number', 'invite_code']
 
     def get_member_count(self, obj) -> int:
         return obj.memberships.filter(is_active=True).count()
+
+    def get_city_count(self, obj) -> int:
+        return obj.cities.count()
 
 
 class CampaignMembershipSerializer(serializers.ModelSerializer):
@@ -106,6 +110,16 @@ class CharacterSerializer(serializers.ModelSerializer):
         return obj.campaign.name if obj.campaign else ''
 
 
+class CampaignEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampaignEvent
+        fields = [
+            'id', 'campaign', 'event_type', 'actor', 'actor_name',
+            'message', 'link_hash', 'created_at',
+        ]
+        read_only_fields = fields
+
+
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
@@ -130,13 +144,16 @@ class SpellSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    resource_name = serializers.CharField(source='resource.name', read_only=True, default='')
+
     class Meta:
         model = Item
         fields = [
-            'id', 'campaign', 'name', 'description', 'rarity', 'item_type',
-            'weight', 'value', 'properties', 'is_magical', 'created_at',
+            'id', 'campaign', 'resource', 'resource_name', 'name', 'description',
+            'rarity', 'item_type', 'weight', 'value', 'properties', 'is_magical',
+            'created_at',
         ]
-        read_only_fields = ['id', 'campaign', 'created_at']
+        read_only_fields = ['id', 'campaign', 'resource', 'created_at']
 
 
 class StatSerializer(serializers.ModelSerializer):
@@ -303,6 +320,13 @@ class CreateOrderSerializer(serializers.Serializer):
 
 
 class SellOrderSerializer(serializers.Serializer):
+    sell_city_id = serializers.IntegerField()
+
+
+class SellFromInventorySerializer(serializers.Serializer):
+    character_id = serializers.IntegerField()
+    resource_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
     sell_city_id = serializers.IntegerField()
 
 

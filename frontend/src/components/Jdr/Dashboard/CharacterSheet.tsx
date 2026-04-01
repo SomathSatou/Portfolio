@@ -1,7 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import type { Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
+import type { Campaign, Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
 
 interface CharacterSheetProps {
   characterId: string
@@ -25,6 +25,8 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [charItems, setCharItems] = React.useState<CharacterItem[]>([])
   const [campaignSpells, setCampaignSpells] = React.useState<Spell[]>([])
   const [campaignItems, setCampaignItems] = React.useState<Item[]>([])
+  const [allCampaigns, setAllCampaigns] = React.useState<Campaign[]>([])
+  const [selectedCampaignId, setSelectedCampaignId] = React.useState<number | null>(null)
 
   const isMJ = user?.role === 'mj'
   const isOwner = character?.player === user?.id
@@ -42,6 +44,7 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
         setCharacter(c)
         setDescription(c.description)
         setLevel(c.level)
+        setSelectedCampaignId(c.campaign)
         // Load campaign-related data
         const promises: Promise<void>[] = []
         promises.push(
@@ -67,6 +70,25 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       cancelled = true
     }
   }, [characterId])
+
+  // Load all campaigns for MJ dropdown
+  React.useEffect(() => {
+    if (!isMJ) return
+    api.get<Campaign[]>('/campaigns/').then((res) => setAllCampaigns(res.data)).catch(() => {})
+  }, [isMJ])
+
+  const handleCampaignChange = async (campaignId: number | null) => {
+    if (!character) return
+    setSelectedCampaignId(campaignId)
+    try {
+      const res = await api.patch<Character>(`/characters/${character.id}/`, { campaign: campaignId })
+      setCharacter(res.data)
+      setSuccessMsg('Campagne mise à jour.')
+      setTimeout(() => setSuccessMsg(''), 3000)
+    } catch {
+      setError('Erreur lors du changement de campagne.')
+    }
+  }
 
   const handleSave = async () => {
     if (!character) return
@@ -352,9 +374,24 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
             <div>
               <dt className="text-gray-500 dark:text-gray-400">Campagne</dt>
               <dd>
-                <a href={`#/jdr/campaign/${character.campaign}`} className="hover:underline">
-                  {character.campaign_name}
-                </a>
+                {isMJ ? (
+                  <select
+                    value={selectedCampaignId ?? ''}
+                    onChange={(e) => handleCampaignChange(e.target.value ? Number(e.target.value) : null)}
+                    className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="">— Aucune —</option>
+                    {allCampaigns.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                ) : character.campaign ? (
+                  <a href={`#/jdr/campaign/${character.campaign}`} className="hover:underline">
+                    {character.campaign_name}
+                  </a>
+                ) : (
+                  <span className="text-gray-400">Aucune</span>
+                )}
               </dd>
             </div>
             <div>

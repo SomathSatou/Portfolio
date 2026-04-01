@@ -39,6 +39,7 @@ class Campaign(models.Model):
     is_active = models.BooleanField(default=True)
     current_session_number = models.IntegerField(default=0)
     invite_code = models.CharField(max_length=36, unique=True, blank=True, null=True)
+    cities = models.ManyToManyField('City', blank=True, related_name='campaigns')
 
     class Meta:
         ordering = ['-created_at']
@@ -137,6 +138,42 @@ class Notification(models.Model):
         return f'{self.title} → {self.recipient.username}'
 
 
+class CampaignEvent(models.Model):
+    EVENT_TYPE_CHOICES = [
+        ('order', 'Commande marchande'),
+        ('join', 'Nouveau membre'),
+        ('advance', 'Avancement de session'),
+        ('rune_submit', 'Soumission de rune'),
+        ('rune_review', 'Validation de rune'),
+        ('harvest', 'Récolte'),
+        ('character_create', 'Création de personnage'),
+        ('item_give', 'Attribution d\'objet'),
+        ('spell_learn', 'Apprentissage de sort'),
+        ('other', 'Autre'),
+    ]
+
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='events',
+    )
+    event_type = models.CharField(max_length=20, choices=EVENT_TYPE_CHOICES)
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+        null=True, blank=True, related_name='campaign_events',
+    )
+    actor_name = models.CharField(max_length=200, blank=True, default='')
+    message = models.TextField()
+    link_hash = models.CharField(max_length=300, blank=True, default='', help_text='Hash route pour naviguer vers la page liée')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Événement de campagne'
+        verbose_name_plural = 'Événements de campagne'
+
+    def __str__(self) -> str:
+        return f'[{self.event_type}] {self.message[:80]}'
+
+
 # ─── Campaign Content (Spells, Items, Stats) ─────────────────────────────────
 
 class Spell(models.Model):
@@ -177,6 +214,10 @@ class Item(models.Model):
 
     campaign = models.ForeignKey(
         Campaign, on_delete=models.CASCADE, related_name='items',
+    )
+    resource = models.ForeignKey(
+        'Resource', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='items', help_text='Ressource d\'origine (si créé via le comptoir)',
     )
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default='')

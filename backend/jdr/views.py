@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignMembership, Character,
+    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, Character,
     CharacterItem, CharacterSpell, CharacterStat,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
@@ -22,6 +22,7 @@ from .permissions import IsCampaignMember, IsMJ, IsOwner
 from .serializers import (
     AlchemyPlantListSerializer,
     AlchemyPlantSerializer,
+    CampaignEventSerializer,
     CampaignMembershipSerializer,
     CampaignSerializer,
     CharacterItemSerializer,
@@ -53,6 +54,7 @@ from .serializers import (
     RuneTemplateListSerializer,
     RuneTemplateSerializer,
     SellHarvestSerializer,
+    SellFromInventorySerializer,
     SellOrderSerializer,
     SharedFolderSerializer,
     UpdateSharedFolderSerializer,
@@ -200,6 +202,49 @@ class CampaignViewSet(viewsets.ModelViewSet):
                     ),
                     notification_type='info',
                 ))
+
+                # Auto-create Item from Resource + add to character inventory
+                availability_rarity = {
+                    'Abondant': 'commun', 'Commun': 'commun', 'Moyen': 'peu_commun',
+                    'Rare': 'rare', 'Légendaire': 'légendaire',
+                }
+                item, _created = Item.objects.get_or_create(
+                    campaign=campaign,
+                    resource=order.resource,
+                    defaults={
+                        'name': order.resource.name,
+                        'description': f'Ressource marchande ({order.resource.craft_type})',
+                        'item_type': order.resource.craft_type,
+                        'rarity': availability_rarity.get(order.resource.availability, 'commun'),
+                        'value': order.buy_price_unit,
+                    },
+                )
+                ci, ci_created = CharacterItem.objects.get_or_create(
+                    character=order.character,
+                    item=item,
+                    defaults={'quantity': order.quantity},
+                )
+                if not ci_created:
+                    ci.quantity += order.quantity
+                    ci.save(update_fields=['quantity'])
+
+                # Update MerchantInventory (weighted average buy price)
+                mi, mi_created = MerchantInventory.objects.get_or_create(
+                    character=order.character,
+                    resource=order.resource,
+                    defaults={
+                        'quantity': order.quantity,
+                        'average_buy_price': order.buy_price_unit,
+                    },
+                )
+                if not mi_created:
+                    old_total = mi.average_buy_price * mi.quantity
+                    new_total = order.buy_price_unit * order.quantity
+                    mi.quantity += order.quantity
+                    if mi.quantity > 0:
+                        mi.average_buy_price = (old_total + new_total) / mi.quantity
+                    mi.save(update_fields=['quantity', 'average_buy_price'])
+
             order.save(update_fields=['sessions_remaining', 'status'])
 
         # 4. Move pending orders to in_transit
@@ -245,6 +290,16 @@ class CampaignViewSet(viewsets.ModelViewSet):
             for m in members
         ]
         Notification.objects.bulk_create(notifications)
+
+        # Log event
+        CampaignEvent.objects.create(
+            campaign=campaign,
+            event_type='advance',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=f'Session avancée à #{new_session}.',
+            link_hash=f'#/jdr/campaign/{campaign.id}',
+        )
 
         return Response({
             'current_session_number': new_session,
@@ -292,6 +347,21 @@ class CampaignViewSet(viewsets.ModelViewSet):
             membership.is_active = True
             membership.save(update_fields=['is_active'])
 
+        # Log event + notify GM
+        CampaignEvent.objects.create(
+            campaign=campaign,
+            event_type='join',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=f'{request.user.username} a rejoint la campagne.',
+        )
+        Notification.objects.create(
+            recipient=campaign.game_master,
+            title='Nouveau joueur',
+            message=f'{request.user.username} a rejoint la campagne « {campaign.name} ».',
+            notification_type='info',
+        )
+
         return Response({'detail': 'Vous avez rejoint la campagne.', 'campaign_id': campaign.id})
 
     @action(detail=True, methods=['get'], url_path='members')
@@ -306,6 +376,37 @@ class CampaignViewSet(viewsets.ModelViewSet):
         campaign = self.get_object()
         characters = Character.objects.filter(campaign=campaign)
         serializer = CharacterSerializer(characters, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get', 'post', 'delete'], url_path='cities')
+    def cities(self, request, pk=None):
+        campaign = self.get_object()
+        if request.method == 'GET':
+            cities = campaign.cities.all()
+            serializer = CityListSerializer(cities, many=True)
+            return Response(serializer.data)
+        # POST: add cities, DELETE: remove cities
+        if campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut modifier les villes.'}, status=status.HTTP_403_FORBIDDEN)
+        city_ids = request.data.get('city_ids', [])
+        if not city_ids:
+            return Response({'detail': 'city_ids requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        cities_qs = City.objects.filter(pk__in=city_ids)
+        if request.method == 'POST':
+            campaign.cities.add(*cities_qs)
+        elif request.method == 'DELETE':
+            campaign.cities.remove(*cities_qs)
+        return Response(CityListSerializer(campaign.cities.all(), many=True).data)
+
+    @action(detail=True, methods=['get'], url_path='events')
+    def events(self, request, pk=None):
+        campaign = self.get_object()
+        qs = CampaignEvent.objects.filter(campaign=campaign)
+        event_type = request.query_params.get('type')
+        if event_type:
+            qs = qs.filter(event_type=event_type)
+        qs = qs[:100]
+        serializer = CampaignEventSerializer(qs, many=True)
         return Response(serializer.data)
 
 
@@ -897,6 +998,125 @@ class MerchantInventoryView(APIView):
         serializer = MerchantInventorySerializer(inventory, many=True)
         return Response(serializer.data)
 
+    def post(self, request):
+        """Sell a resource directly from merchant inventory."""
+        ser = SellFromInventorySerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        d = ser.validated_data
+
+        # Validate character ownership
+        try:
+            character = Character.objects.select_related('campaign').get(
+                pk=d['character_id'], player=request.user,
+            )
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        campaign = character.campaign
+        if not campaign:
+            return Response({'detail': 'Personnage sans campagne.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate resource
+        try:
+            resource = Resource.objects.get(pk=d['resource_id'])
+        except Resource.DoesNotExist:
+            return Response({'detail': 'Ressource introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Validate sell city
+        sell_city = City.objects.filter(pk=d['sell_city_id']).first()
+        if not sell_city:
+            return Response({'detail': 'Ville de vente introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Check merchant inventory stock
+        try:
+            inv = MerchantInventory.objects.get(character=character, resource=resource)
+        except MerchantInventory.DoesNotExist:
+            return Response(
+                {'detail': 'Vous ne possédez pas cette ressource.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if inv.quantity < d['quantity']:
+            return Response(
+                {'detail': f'Stock insuffisant ({inv.quantity} disponible(s)).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Calculate sell price (CityImport or fallback base_price + fluctuation)
+        city_import = CityImport.objects.filter(city=sell_city, resource=resource).first()
+        if city_import:
+            sell_price = city_import.price
+        else:
+            sell_price = resource.base_price
+
+        sell_price = compute_fluctuated_price(sell_price, resource.availability)
+
+        total_revenue = sell_price * d['quantity']
+        total_cost = inv.average_buy_price * d['quantity']
+        profit = total_revenue - total_cost
+
+        # Decrement MerchantInventory
+        inv.quantity -= d['quantity']
+        if inv.quantity <= 0:
+            inv.quantity = 0
+        inv.save(update_fields=['quantity'])
+
+        # Decrement CharacterItem
+        try:
+            item = Item.objects.get(campaign=campaign, resource=resource)
+            ci = CharacterItem.objects.get(character=character, item=item)
+            ci.quantity -= d['quantity']
+            if ci.quantity <= 0:
+                ci.delete()
+            else:
+                ci.save(update_fields=['quantity'])
+        except (Item.DoesNotExist, CharacterItem.DoesNotExist):
+            pass
+
+        # Create a MerchantOrder with status='sold' for history
+        order = MerchantOrder.objects.create(
+            character=character,
+            campaign=campaign,
+            resource=resource,
+            quantity=d['quantity'],
+            buy_city=sell_city,  # no original buy city — use sell city
+            buy_price_unit=inv.average_buy_price,
+            sell_city=sell_city,
+            sell_price_unit=sell_price,
+            status='sold',
+            transit_sessions=0,
+            sessions_remaining=0,
+            created_at_session=campaign.current_session_number,
+            total_cost=total_cost,
+            total_revenue=total_revenue,
+            profit=profit,
+        )
+
+        # Notify GM + CampaignEvent
+        profit_str = f'+{profit}' if profit >= 0 else str(profit)
+        sell_msg = (
+            f'{character.name} ({request.user.username}) a vendu '
+            f'{d["quantity"]}× {resource.name} à {sell_city.name} '
+            f'({profit_str} po de bénéfice).'
+        )
+        Notification.objects.create(
+            recipient=campaign.game_master,
+            title='Vente marchande (inventaire)',
+            message=sell_msg,
+            notification_type='info',
+        )
+        CampaignEvent.objects.create(
+            campaign=campaign,
+            event_type='order',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=sell_msg,
+            link_hash=f'#/jdr/character/{character.id}',
+        )
+
+        serializer = MerchantOrderSerializer(order)
+        return Response(serializer.data)
+
 
 class MerchantOrderView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -978,6 +1198,27 @@ class MerchantOrderView(APIView):
             total_cost=total_cost,
         )
 
+        # Notify GM + log campaign event
+        order_msg = (
+            f'{character.name} ({request.user.username}) a commandé '
+            f'{d["quantity"]}× {resource.name} à {city.name} '
+            f'pour {total_cost} po.'
+        )
+        Notification.objects.create(
+            recipient=campaign.game_master,
+            title='Nouvelle commande marchande',
+            message=order_msg,
+            notification_type='info',
+        )
+        CampaignEvent.objects.create(
+            campaign=campaign,
+            event_type='order',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=order_msg,
+            link_hash=f'#/jdr/character/{character.id}',
+        )
+
         serializer = MerchantOrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -1032,8 +1273,98 @@ class MerchantOrderSellView(APIView):
             'sell_city', 'sell_price_unit', 'total_revenue', 'profit', 'status',
         ])
 
+        # Decrement MerchantInventory
+        try:
+            mi = MerchantInventory.objects.get(
+                character=order.character, resource=order.resource,
+            )
+            mi.quantity -= order.quantity
+            if mi.quantity <= 0:
+                mi.quantity = 0
+            mi.save(update_fields=['quantity'])
+        except MerchantInventory.DoesNotExist:
+            pass
+
+        # Decrement CharacterItem inventory
+        try:
+            item = Item.objects.get(campaign=order.campaign, resource=order.resource)
+            ci = CharacterItem.objects.get(character=order.character, item=item)
+            ci.quantity -= order.quantity
+            if ci.quantity <= 0:
+                ci.delete()
+            else:
+                ci.save(update_fields=['quantity'])
+        except (Item.DoesNotExist, CharacterItem.DoesNotExist):
+            pass  # Item may not exist if order was created before this feature
+
+        profit_str = f'+{profit}' if profit >= 0 else str(profit)
+        sell_msg = (
+            f'{order.character.name} a vendu {order.quantity}× {order.resource.name} '
+            f'à {sell_city.name} ({profit_str} po de bénéfice).'
+        )
+        Notification.objects.create(
+            recipient=order.campaign.game_master,
+            title='Vente marchande',
+            message=sell_msg,
+            notification_type='info',
+        )
+        CampaignEvent.objects.create(
+            campaign=order.campaign,
+            event_type='order',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=sell_msg,
+            link_hash=f'#/jdr/character/{order.character.id}',
+        )
+
         serializer = MerchantOrderSerializer(order)
         return Response(serializer.data)
+
+
+class SellEstimateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        resource_id = request.query_params.get('resource_id')
+        sell_city_id = request.query_params.get('sell_city_id')
+        campaign_id = request.query_params.get('campaign_id')
+
+        if not resource_id or not sell_city_id or not campaign_id:
+            return Response(
+                {'detail': 'Paramètres resource_id, sell_city_id et campaign_id requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        campaign, _is_mj, err = _check_campaign_access(request, campaign_id)
+        if err:
+            return err
+
+        try:
+            resource = Resource.objects.get(pk=resource_id)
+        except Resource.DoesNotExist:
+            return Response({'detail': 'Ressource introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            sell_city = City.objects.get(pk=sell_city_id)
+        except City.DoesNotExist:
+            return Response({'detail': 'Ville introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        city_import = CityImport.objects.filter(
+            city=sell_city, resource=resource,
+        ).first()
+
+        if city_import:
+            sell_price = city_import.price
+        else:
+            sell_price = resource.base_price
+
+        sell_price = compute_fluctuated_price(sell_price, resource.availability)
+
+        return Response({
+            'sell_price_unit': str(sell_price),
+            'resource_name': resource.name,
+            'city_name': sell_city.name,
+        })
 
 
 class MerchantStatsView(APIView):
@@ -1263,6 +1594,16 @@ class GardenPlotHarvestView(APIView):
         plot.is_ready = False
         plot.status = 'empty'
         plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
+
+        if campaign:
+            CampaignEvent.objects.create(
+                campaign=campaign,
+                event_type='harvest',
+                actor=request.user,
+                actor_name=request.user.username,
+                message=f'{plot.character.name} a récolté {plant.yield_amount}× {plant.name}.',
+                link_hash=f'#/jdr/character/{plot.character.id}',
+            )
 
         return Response({
             'detail': f'{plant.yield_amount}× {plant.name} récoltée(s) !',
@@ -1618,6 +1959,15 @@ class RuneDrawingSubmitView(APIView):
             notification_type='info',
         )
 
+        CampaignEvent.objects.create(
+            campaign=drawing.campaign,
+            event_type='rune_submit',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=f'{drawing.character.name} a soumis la rune « {drawing.title} ».',
+            link_hash=f'#/jdr/character/{drawing.character.id}',
+        )
+
         serializer = RuneDrawingSerializer(drawing)
         return Response(serializer.data)
 
@@ -1682,6 +2032,15 @@ class RuneDrawingReviewView(APIView):
             title=f'Rune {status_label}',
             message=f'Votre rune "{drawing.title}" a été {status_label} par le MJ.{feedback_text}',
             notification_type='info',
+        )
+
+        CampaignEvent.objects.create(
+            campaign=drawing.campaign,
+            event_type='rune_review',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=f'Rune « {drawing.title} » de {drawing.character.name} {status_label}.',
+            link_hash=f'#/jdr/character/{drawing.character.id}',
         )
 
         serializer = RuneDrawingSerializer(drawing)

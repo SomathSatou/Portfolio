@@ -10,10 +10,9 @@ const statusConfig: Record<string, { label: string; color: string }> = {
 
 interface Props {
   order: MerchantOrderItem
-  onSell?: (order: MerchantOrderItem) => void
 }
 
-export default function OrderCard({ order, onSell }: Props) {
+export default function OrderCard({ order }: Props) {
   const cfg = statusConfig[order.status] ?? statusConfig.pending
   const progressPct = order.transit_sessions > 0
     ? Math.round(((order.transit_sessions - order.sessions_remaining) / order.transit_sessions) * 100)
@@ -77,12 +76,6 @@ export default function OrderCard({ order, onSell }: Props) {
         </>
       )}
 
-      {/* Sell button */}
-      {order.status === 'delivered' && onSell && (
-        <button onClick={() => onSell(order)} className="btn btn-accent text-xs w-full justify-center">
-          Vendre
-        </button>
-      )}
     </div>
   )
 }
