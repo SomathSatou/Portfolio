@@ -119,3 +119,32 @@
   @apply dark:bg-white/10 dark:text-white;   /* Mode sombre: bouton subtil */
   @apply hover:opacity-80 transition-all;
 }
+
+/* Chat scrollbar — themed */
+.chat-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-primaryLight);
+  border-radius: 3px;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+.dark .chat-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+}
+.dark .chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primaryLight);
+}
+/* Firefox */
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primaryLight) transparent;
+}
+.dark .chat-scrollbar {
+  scrollbar-color: var(--color-primary) transparent;
+}

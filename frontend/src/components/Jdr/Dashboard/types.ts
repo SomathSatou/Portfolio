@@ -32,7 +32,14 @@ export interface Character {
   description: string
   avatar: string | null
   stats: Record<string, number | string>
+  gold: number
+  silver: number
+  copper: number
   created_at: string
+}
+
+export interface CharacterWithStats extends Character {
+  character_stats: CharacterStat[]
 }
 
 export interface Notification {
@@ -138,5 +145,30 @@ export interface CampaignEvent {
   actor_name: string
   message: string
   link_hash: string
+  created_at: string
+}
+
+export interface SessionNote {
+  id: number
+  campaign: number
+  content: string
+  is_private: boolean
+  updated_at: string
+  created_at: string
+}
+
+export interface ChatMessage {
+  id: number
+  campaign: number
+  author: number
+  author_name: string
+  author_avatar: string | null
+  content: string
+  is_dice_roll: boolean
+  dice_result: {
+    command: string
+    rolls: number[]
+    total: number
+  } | null
   created_at: string
 }

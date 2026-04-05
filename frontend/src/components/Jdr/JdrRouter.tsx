@@ -10,6 +10,7 @@ import { GardenPage } from './Garden'
 import { MerchantPage } from './Merchant'
 import { RunesPage } from './Runes'
 import { FilesPage } from './Files'
+import { SessionPage } from './Session'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -37,6 +38,15 @@ function JdrRouterInner({ hash }: { hash: string }) {
   if (hash === '#/jdr/register') return <RegisterPage />
 
   // Protected routes
+  const sessionMatch = hash.match(/^#\/jdr\/campaign\/(\d+)\/session$/)
+  if (sessionMatch) {
+    return (
+      <ProtectedRoute>
+        <SessionPage campaignId={sessionMatch[1]} />
+      </ProtectedRoute>
+    )
+  }
+
   const campaignMatch = hash.match(/^#\/jdr\/campaign\/(\d+)/)
   if (campaignMatch) {
     return (

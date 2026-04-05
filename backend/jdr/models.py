@@ -97,6 +97,9 @@ class Character(models.Model):
     description = models.TextField(blank=True, default='')
     avatar = models.ImageField(upload_to='jdr/characters/', blank=True, null=True)
     stats = models.JSONField(default=dict, blank=True)
+    gold = models.IntegerField(default=0)
+    silver = models.IntegerField(default=0)
+    copper = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -738,3 +741,53 @@ class SharedFolderAccess(models.Model):
             perms.append('upload')
         perm_str = ', '.join(perms) if perms else 'lecture'
         return f'{self.player.username} → {self.folder.name} ({perm_str})'
+
+
+# ─── Session (Notes + Chat) ─────────────────────────────────────────────────
+
+class SessionNote(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='session_notes',
+    )
+    content = models.TextField(blank=True, default='')
+    is_private = models.BooleanField(
+        default=False, help_text='Si True, visible uniquement par le MJ',
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('campaign', 'is_private')
+        ordering = ['-updated_at']
+        verbose_name = 'Note de session'
+        verbose_name_plural = 'Notes de session'
+
+    def __str__(self) -> str:
+        kind = 'privée' if self.is_private else 'partagée'
+        return f'Note {kind} — {self.campaign.name}'
+
+
+class ChatMessage(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='chat_messages',
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+        related_name='jdr_chat_messages',
+    )
+    content = models.TextField()
+    is_dice_roll = models.BooleanField(default=False)
+    dice_result = models.JSONField(
+        null=True, blank=True,
+        help_text='Ex: {"command": "2d20", "rolls": [14, 7], "total": 21}',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = 'Message de chat'
+        verbose_name_plural = 'Messages de chat'
+
+    def __str__(self) -> str:
+        prefix = '🎲 ' if self.is_dice_roll else ''
+        return f'{prefix}{self.author.username}: {self.content[:80]}'

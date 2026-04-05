@@ -13,7 +13,7 @@ cd "$PROJECT_DIR"
 git pull >> $LOG 2>&1
 
 source "$VENV/activate"
-pip install -q django djangorestframework django-cors-headers gunicorn >> $LOG 2>&1
+pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn >> $LOG 2>&1
 
 cd "$BACKEND_DIR"
 python manage.py migrate --noinput >> $LOG 2>&1

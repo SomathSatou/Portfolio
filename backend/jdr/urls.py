@@ -5,12 +5,15 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     AlchemyPlantViewSet,
     CampaignViewSet,
+    CharacterAvatarUploadView,
     CharacterItemDetailView,
     CharacterItemsView,
     CharacterSpellRemoveView,
     CharacterSpellsView,
     CharacterStatsView,
+    CharactersWithStatsView,
     CharacterViewSet,
+    ChatMessageView,
     ItemDetailView,
     ItemListCreateView,
     SpellDetailView,
@@ -45,10 +48,12 @@ from .views import (
     RuneDrawingSubmitView,
     RunePendingView,
     RuneTemplateViewSet,
+    SessionNoteView,
     SharedFolderContentView,
     SharedFolderDetailView,
     SharedFolderListCreateView,
     SharedFolderUploadView,
+    WalletUpdateView,
 )
 
 router = DefaultRouter()
@@ -108,6 +113,12 @@ urlpatterns = [
     path('files/folders/<int:pk>/content/', SharedFolderContentView.as_view(), name='shared-folder-content'),
     path('files/folders/<int:pk>/upload/', SharedFolderUploadView.as_view(), name='shared-folder-upload'),
     path('files/embed-url/', NextcloudEmbedUrlView.as_view(), name='nextcloud-embed-url'),
+    # Session
+    path('characters/<int:pk>/avatar/', CharacterAvatarUploadView.as_view(), name='character-avatar-upload'),
+    path('campaigns/<int:pk>/characters-with-stats/', CharactersWithStatsView.as_view(), name='characters-with-stats'),
+    path('campaigns/<int:pk>/wallets/', WalletUpdateView.as_view(), name='wallet-update'),
+    path('session-notes/', SessionNoteView.as_view(), name='session-notes'),
+    path('chat-messages/', ChatMessageView.as_view(), name='chat-messages'),
     # Router
     path('', include(router.urls)),
 ]

@@ -187,29 +187,36 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
           )}
         </div>
 
-        {isMJ && !editing && (
+        {!editing && (
           <div className="flex flex-wrap gap-2 shrink-0">
-            <button onClick={() => setEditing(true)} className="btn btn-outline text-sm">
-              Modifier
-            </button>
-            {!confirmAdvance ? (
-              <button onClick={() => setConfirmAdvance(true)} className="btn btn-accent text-sm">
-                Avancer la session
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500">Confirmer ?</span>
-                <button
-                  onClick={handleAdvanceSession}
-                  disabled={advanceLoading}
-                  className="btn btn-accent text-sm"
-                >
-                  {advanceLoading ? '…' : 'Oui'}
+            <a href={`#/jdr/campaign/${campaignId}/session`} className="btn btn-primary text-sm">
+              🎮 Session en direct
+            </a>
+            {isMJ && (
+              <>
+                <button onClick={() => setEditing(true)} className="btn btn-outline text-sm">
+                  Modifier
                 </button>
-                <button onClick={() => setConfirmAdvance(false)} className="btn btn-outline text-sm">
-                  Non
-                </button>
-              </div>
+                {!confirmAdvance ? (
+                  <button onClick={() => setConfirmAdvance(true)} className="btn btn-accent text-sm">
+                    Avancer la session
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">Confirmer ?</span>
+                    <button
+                      onClick={handleAdvanceSession}
+                      disabled={advanceLoading}
+                      className="btn btn-accent text-sm"
+                    >
+                      {advanceLoading ? '…' : 'Oui'}
+                    </button>
+                    <button onClick={() => setConfirmAdvance(false)} className="btn btn-outline text-sm">
+                      Non
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}

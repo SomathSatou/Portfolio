@@ -3,11 +3,11 @@ from rest_framework import serializers
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, Character,
-    CharacterItem, CharacterSpell, CharacterStat,
+    CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
-    RuneTemplate, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
+    RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
 )
 
 
@@ -101,13 +101,18 @@ class CharacterSerializer(serializers.ModelSerializer):
         model = Character
         fields = [
             'id', 'name', 'player', 'player_name', 'campaign', 'campaign_name',
-            'class_type', 'level', 'description', 'avatar', 'stats', 'created_at',
+            'class_type', 'level', 'description', 'avatar', 'stats',
+            'gold', 'silver', 'copper', 'created_at',
         ]
         read_only_fields = ['id', 'player', 'created_at']
         extra_kwargs = {'campaign': {'required': False, 'allow_null': True}}
 
     def get_campaign_name(self, obj: Character) -> str:
         return obj.campaign.name if obj.campaign else ''
+
+
+class AvatarUploadSerializer(serializers.Serializer):
+    avatar = serializers.ImageField()
 
 
 class CampaignEventSerializer(serializers.ModelSerializer):
@@ -170,6 +175,24 @@ class CharacterStatSerializer(serializers.ModelSerializer):
         model = CharacterStat
         fields = ['id', 'character', 'stat', 'stat_name', 'value']
         read_only_fields = ['id', 'character']
+
+
+class CharacterWithStatsSerializer(serializers.ModelSerializer):
+    player_name = serializers.CharField(source='player.username', read_only=True)
+    campaign_name = serializers.SerializerMethodField()
+    character_stats = CharacterStatSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Character
+        fields = [
+            'id', 'name', 'player', 'player_name', 'campaign', 'campaign_name',
+            'class_type', 'level', 'description', 'avatar', 'stats',
+            'gold', 'silver', 'copper', 'created_at', 'character_stats',
+        ]
+        read_only_fields = fields
+
+    def get_campaign_name(self, obj: Character) -> str:
+        return obj.campaign.name if obj.campaign else ''
 
 
 class CharacterSpellSerializer(serializers.ModelSerializer):
@@ -544,3 +567,60 @@ class UpdateSharedFolderSerializer(serializers.Serializer):
     player_ids = serializers.ListField(
         child=serializers.IntegerField(), required=False,
     )
+
+
+# ─── Session (Notes + Chat) ─────────────────────────────────────────────────
+
+class SessionNoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SessionNote
+        fields = ['id', 'campaign', 'content', 'is_private', 'updated_at', 'created_at']
+        read_only_fields = ['id', 'campaign', 'is_private', 'created_at']
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    author_name = serializers.SerializerMethodField()
+    author_avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChatMessage
+        fields = [
+            'id', 'campaign', 'author', 'author_name', 'author_avatar', 'content',
+            'is_dice_roll', 'dice_result', 'created_at',
+        ]
+        read_only_fields = [
+            'id', 'campaign', 'author', 'is_dice_roll', 'dice_result', 'created_at',
+        ]
+
+    def _get_character(self, obj):
+        """Cache character lookup per message to avoid duplicate queries."""
+        if not hasattr(obj, '_cached_char'):
+            obj._cached_char = Character.objects.filter(
+                player=obj.author, campaign=obj.campaign,
+            ).first()
+        return obj._cached_char
+
+    def get_author_name(self, obj) -> str:
+        """Return character name for players, or 'username (MJ)' for the game master."""
+        if obj.campaign.game_master_id == obj.author_id:
+            return f'{obj.author.username} (MJ)'
+        char = self._get_character(obj)
+        if char:
+            return char.name
+        return obj.author.username
+
+    def get_author_avatar(self, obj) -> str | None:
+        """Return character avatar URL, or None."""
+        if obj.campaign.game_master_id == obj.author_id:
+            return None
+        char = self._get_character(obj)
+        if char and char.avatar:
+            return char.avatar.url
+        return None
+
+
+class WalletUpdateSerializer(serializers.Serializer):
+    character_id = serializers.IntegerField()
+    gold = serializers.IntegerField(min_value=0, required=False)
+    silver = serializers.IntegerField(min_value=0, required=False)
+    copper = serializers.IntegerField(min_value=0, required=False)
