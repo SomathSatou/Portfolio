@@ -5,6 +5,7 @@ import type { Campaign, CharacterWithStats, ChatMessage } from '../Dashboard/typ
 import CharacterSessionCard from './CharacterSessionCard'
 import SessionChat from './SessionChat'
 import SessionNotes from './SessionNotes'
+import SessionSidebar from './SessionSidebar'
 import useChat from './useChat'
 
 interface Props {
@@ -17,9 +18,16 @@ export default function SessionPage({ campaignId }: Props) {
   const [characters, setCharacters] = React.useState<CharacterWithStats[]>([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState('')
+  const [toggling, setToggling] = React.useState(false)
 
-  const isMJ = user?.role === 'mj'
-  const { messages, connected, sendMessage, setInitialMessages } = useChat({ campaignId })
+  const isMJ = campaign ? campaign.game_master === user?.id : user?.role === 'mj'
+  const myCharacterId = React.useMemo(() => {
+    if (!user || isMJ) return null
+    const myChar = characters.find((c) => c.player === user.id)
+    return myChar?.id ?? null
+  }, [characters, user, isMJ])
+  const sessionActive = campaign?.session_active ?? false
+  const { messages, connected, sendMessage, setInitialMessages } = useChat({ campaignId, enabled: sessionActive || isMJ })
 
   // Load campaign + characters with stats + chat history
   React.useEffect(() => {
@@ -44,6 +52,19 @@ export default function SessionPage({ campaignId }: Props) {
       })
     return () => { cancelled = true }
   }, [campaignId, setInitialMessages])
+
+  const handleToggleSession = async () => {
+    if (toggling) return
+    setToggling(true)
+    try {
+      const res = await api.post<Campaign>(`/campaigns/${campaignId}/toggle-session/`)
+      setCampaign(res.data)
+    } catch {
+      // ignore
+    } finally {
+      setToggling(false)
+    }
+  }
 
   const handleWalletChange = (characterId: number, field: 'gold' | 'silver' | 'copper', value: number) => {
     setCharacters((prev) =>
@@ -83,9 +104,36 @@ export default function SessionPage({ campaignId }: Props) {
         <span className="text-gray-700 dark:text-gray-300">Session en direct</span>
       </nav>
 
-      <h1 className="text-2xl font-bold text-primary dark:text-primaryLight mb-6">
-        🎮 Session — {campaign?.name}
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-primary dark:text-primaryLight">
+          🎮 Session — {campaign?.name}
+        </h1>
+        {isMJ && (
+          <button
+            onClick={handleToggleSession}
+            disabled={toggling}
+            className={`btn text-sm ${sessionActive ? 'bg-red-600 hover:bg-red-700 text-white' : 'btn-accent'}`}
+          >
+            {toggling
+              ? '...'
+              : sessionActive
+                ? '⏹ Arrêter la session'
+                : '▶ Lancer la session'}
+          </button>
+        )}
+      </div>
+      {sessionActive && (
+        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-sm font-medium text-green-800 dark:text-green-300">Session en cours</span>
+        </div>
+      )}
+      {!sessionActive && !isMJ && (
+        <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+          <span className="w-2 h-2 rounded-full bg-gray-400" />
+          <span className="text-sm text-gray-600 dark:text-gray-400">En attente du lancement de la session par le MJ</span>
+        </div>
+      )}
 
       {/* 3-column layout */}
       <div className="grid gap-6 lg:grid-cols-12">
@@ -123,6 +171,15 @@ export default function SessionPage({ campaignId }: Props) {
           <SessionNotes campaignId={campaignId} isMJ={isMJ} />
         </div>
       </div>
+
+      {/* Sidebar drawer for quick spell/item access */}
+      {!isMJ && (
+        <SessionSidebar
+          campaignId={campaignId}
+          characterId={myCharacterId}
+          onRoll={sendMessage}
+        />
+      )}
     </div>
   )
 }

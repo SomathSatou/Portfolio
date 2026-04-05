@@ -15,7 +15,7 @@ from .models import (
     CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
-    MerchantOrder, Notification, Resource, RuneCollection, RuneDrawing, RuneTemplate,
+    MerchantOrder, Monster, Notification, Resource, RuneCollection, RuneDrawing, RuneTemplate,
     SessionNote, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
 )
 from .permissions import IsCampaignMember, IsMJ, IsOwner
@@ -33,6 +33,7 @@ from .serializers import (
     CharacterWithStatsSerializer,
     ChatMessageSerializer,
     ItemSerializer,
+    MonsterSerializer,
     SpellSerializer,
     StatSerializer,
     CityDetailSerializer,
@@ -309,6 +310,56 @@ class CampaignViewSet(viewsets.ModelViewSet):
         return Response({
             'current_session_number': new_session,
         })
+
+    @action(detail=True, methods=['post'], url_path='toggle-session')
+    def toggle_session(self, request, pk=None):
+        campaign = self.get_object()
+        if campaign.game_master != request.user:
+            return Response(
+                {'detail': 'Seul le MJ peut lancer ou arrêter une session.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        campaign.session_active = not campaign.session_active
+        campaign.save(update_fields=['session_active'])
+
+        if campaign.session_active:
+            # Notify players who have a character in this campaign
+            players = Character.objects.filter(
+                campaign=campaign,
+            ).select_related('player').values_list('player', flat=True).distinct()
+
+            notifications = [
+                Notification(
+                    recipient_id=player_id,
+                    title='Session en direct !',
+                    message=f'Le MJ a lancé une session pour « {campaign.name} ». Rejoignez maintenant !',
+                    notification_type='info',
+                    link=f'#/jdr/session/{campaign.id}',
+                )
+                for player_id in players
+                if player_id != request.user.id
+            ]
+            if notifications:
+                Notification.objects.bulk_create(notifications)
+
+            CampaignEvent.objects.create(
+                campaign=campaign,
+                event_type='session_start',
+                actor=request.user,
+                actor_name=request.user.username,
+                message=f'Session en direct lancée.',
+                link_hash=f'#/jdr/session/{campaign.id}',
+            )
+        else:
+            CampaignEvent.objects.create(
+                campaign=campaign,
+                event_type='session_end',
+                actor=request.user,
+                actor_name=request.user.username,
+                message=f'Session en direct terminée.',
+            )
+
+        return Response(CampaignSerializer(campaign).data)
 
     @action(detail=True, methods=['post'], url_path='invite')
     def invite(self, request, pk=None):
@@ -638,6 +689,58 @@ class StatDetailView(APIView):
         if stat.campaign.game_master != request.user:
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         stat.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MonsterListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        campaign_id = request.query_params.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        campaign, _is_mj, err = _check_campaign_access(request, campaign_id)
+        if err:
+            return err
+        monsters = Monster.objects.filter(campaign=campaign)
+        return Response(MonsterSerializer(monsters, many=True).data)
+
+    def post(self, request):
+        campaign_id = request.data.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        campaign, err = _check_campaign_mj(request, campaign_id)
+        if err:
+            return err
+        serializer = MonsterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(campaign=campaign)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class MonsterDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, pk):
+        try:
+            monster = Monster.objects.get(pk=pk)
+        except Monster.DoesNotExist:
+            return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if monster.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = MonsterSerializer(monster, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        try:
+            monster = Monster.objects.get(pk=pk)
+        except Monster.DoesNotExist:
+            return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if monster.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
+        monster.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

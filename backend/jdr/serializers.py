@@ -6,7 +6,7 @@ from .models import (
     CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
-    MerchantOrder, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
+    MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
     RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
 )
 
@@ -72,10 +72,10 @@ class CampaignSerializer(serializers.ModelSerializer):
         model = Campaign
         fields = [
             'id', 'name', 'description', 'game_master', 'game_master_name',
-            'created_at', 'is_active', 'current_session_number', 'invite_code',
-            'member_count', 'city_count',
+            'created_at', 'is_active', 'session_active', 'current_session_number',
+            'invite_code', 'member_count', 'city_count',
         ]
-        read_only_fields = ['id', 'game_master', 'created_at', 'current_session_number', 'invite_code']
+        read_only_fields = ['id', 'game_master', 'created_at', 'current_session_number', 'session_active', 'invite_code']
 
     def get_member_count(self, obj) -> int:
         return obj.memberships.filter(is_active=True).count()
@@ -227,6 +227,19 @@ class CharacterItemSerializer(serializers.ModelSerializer):
             'quantity', 'is_equipped', 'notes', 'acquired_at',
         ]
         read_only_fields = ['id', 'character', 'acquired_at']
+
+
+# ─── Bestiary ───────────────────────────────────────────────────────────────
+
+class MonsterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Monster
+        fields = [
+            'id', 'campaign', 'name', 'description', 'hp', 'armor_class',
+            'attack', 'damage', 'special_abilities', 'challenge_rating',
+            'monster_type', 'image', 'stats', 'created_at',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at']
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────

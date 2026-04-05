@@ -6,6 +6,7 @@ export interface Campaign {
   game_master_name: string
   created_at: string
   is_active: boolean
+  session_active: boolean
   current_session_number: number
   invite_code: string | null
   member_count: number
@@ -135,6 +136,23 @@ export interface CharacterItem {
   is_equipped: boolean
   notes: string
   acquired_at: string
+}
+
+export interface Monster {
+  id: number
+  campaign: number
+  name: string
+  description: string
+  hp: number
+  armor_class: number
+  attack: string
+  damage: string
+  special_abilities: string
+  challenge_rating: string
+  monster_type: string
+  image: string | null
+  stats: Record<string, number>
+  created_at: string
 }
 
 export interface CampaignEvent {

@@ -38,6 +38,7 @@ class Campaign(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     current_session_number = models.IntegerField(default=0)
+    session_active = models.BooleanField(default=False)
     invite_code = models.CharField(max_length=36, unique=True, blank=True, null=True)
     cities = models.ManyToManyField('City', blank=True, related_name='campaigns')
 
@@ -53,6 +54,12 @@ class Campaign(models.Model):
         self.invite_code = uuid.uuid4().hex[:8]
         self.save(update_fields=['invite_code'])
         return self.invite_code
+
+    def save(self, *args, **kwargs):
+        # Auto-generate invite code on first save if not set
+        if not self.invite_code and not kwargs.get('update_fields'):
+            self.invite_code = uuid.uuid4().hex[:8]
+        super().save(*args, **kwargs)
 
 
 class CampaignMembership(models.Model):
@@ -316,6 +323,35 @@ class CharacterItem(models.Model):
 
     def __str__(self) -> str:
         return f'{self.character.name} — {self.item.name} (×{self.quantity})'
+
+
+# ─── Bestiary ───────────────────────────────────────────────────────────────
+
+class Monster(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='monsters',
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    hp = models.IntegerField(default=10, help_text='Points de vie')
+    armor_class = models.IntegerField(default=10, help_text='Classe d\'armure')
+    attack = models.CharField(max_length=200, blank=True, default='', help_text='Attaque principale (ex: 1d20+5)')
+    damage = models.CharField(max_length=200, blank=True, default='', help_text='Dégâts (ex: 2d6+3)')
+    special_abilities = models.TextField(blank=True, default='', help_text='Capacités spéciales')
+    challenge_rating = models.CharField(max_length=20, blank=True, default='', help_text='Niveau de défi')
+    monster_type = models.CharField(max_length=100, blank=True, default='', help_text='Type (bête, mort-vivant, dragon…)')
+    image = models.ImageField(upload_to='jdr/monsters/', blank=True, null=True)
+    stats = models.JSONField(default=dict, blank=True, help_text='Stats campagne: {stat_id: value}')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Monstre'
+        verbose_name_plural = 'Monstres'
+
+    def __str__(self) -> str:
+        return f'{self.name} — {self.campaign.name}'
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────

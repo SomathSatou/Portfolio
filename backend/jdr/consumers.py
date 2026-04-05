@@ -23,24 +23,26 @@ def _resolve_author_info(user, campaign_id) -> dict:
     return {'name': user.username, 'avatar': avatar_url}
 
 
-DICE_PATTERN = re.compile(r'^(\d{1,3})d(\d{1,4})$')
+DICE_PATTERN = re.compile(r'^(\d{1,3})d(\d{1,4})([+-]\d{1,6})?$')
 
 
 def parse_dice_command(text: str) -> dict | None:
-    """Parse a dice command like '2d20' and return roll results, or None."""
+    """Parse a dice command like '2d20', '1d20+5', '3d6-2' and return roll results, or None."""
     text = text.strip()
     match = DICE_PATTERN.match(text)
     if not match:
         return None
     count = int(match.group(1))
     sides = int(match.group(2))
+    modifier = int(match.group(3)) if match.group(3) else 0
     if count < 1 or count > 100 or sides < 1 or sides > 10000:
         return None
     rolls = [random.randint(1, sides) for _ in range(count)]
     return {
         'command': text,
         'rolls': rolls,
-        'total': sum(rolls),
+        'modifier': modifier,
+        'total': sum(rolls) + modifier,
     }
 
 

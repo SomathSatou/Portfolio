@@ -3,7 +3,8 @@ from django.contrib import admin
 from .models import (
     AlchemyPlant, Campaign, CampaignMembership, Character, City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory, MerchantOrder,
-    Notification, PlantUsage, Resource, RuneCollection, RuneDrawing, RuneTemplate, UserProfile,
+    Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing, RuneTemplate,
+    UserProfile,
 )
 
 admin.site.register(UserProfile)
@@ -53,6 +54,15 @@ class MerchantOrderAdmin(admin.ModelAdmin):
 @admin.register(MerchantInventory)
 class MerchantInventoryAdmin(admin.ModelAdmin):
     list_display = ('character', 'resource', 'quantity', 'average_buy_price')
+
+
+# ─── Bestiary ─────────────────────────────────────────────────────────────────
+
+@admin.register(Monster)
+class MonsterAdmin(admin.ModelAdmin):
+    list_display = ('name', 'campaign', 'monster_type', 'hp', 'armor_class', 'challenge_rating')
+    list_filter = ('campaign', 'monster_type')
+    search_fields = ('name',)
 
 
 # ─── Garden / Alchemy ──────────────────────────────────────────────────────

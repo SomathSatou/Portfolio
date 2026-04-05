@@ -1,6 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
+import CampaignBestiaryPanel from './CampaignBestiaryPanel'
 import CampaignCitiesPanel from './CampaignCitiesPanel'
 import CampaignEventsPanel from './CampaignEventsPanel'
 import CampaignItemsPanel from './CampaignItemsPanel'
@@ -36,7 +37,7 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
   const [confirmAdvance, setConfirmAdvance] = React.useState(false)
 
   // Tabs
-  const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats'>('overview')
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats' | 'bestiary'>('overview')
 
   const isMJ = campaign?.game_master === user?.id
 
@@ -226,8 +227,8 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
       {/* Tabs */}
       <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
-        {(['overview', 'events', 'cities', 'spells', 'items', 'stats'] as const).map((tab) => {
-          const labels = { overview: 'Vue d\'ensemble', events: '\u00c9v\u00e9nements', cities: 'Villes', spells: 'Sorts', items: 'Objets', stats: 'Statistiques' }
+        {(['overview', 'events', 'cities', 'spells', 'items', 'stats', ...(isMJ ? ['bestiary' as const] : [])] as const).map((tab) => {
+          const labels: Record<string, string> = { overview: 'Vue d\'ensemble', events: '\u00c9v\u00e9nements', cities: 'Villes', spells: 'Sorts', items: 'Objets', stats: 'Statistiques', bestiary: 'Bestiaire' }
           return (
             <button
               key={tab}
@@ -285,16 +286,30 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
               {isMJ && (
                 <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                  <button onClick={handleInvite} disabled={inviteLoading} className="btn btn-outline text-xs w-full">
-                    {inviteLoading ? 'Génération…' : 'Générer un code d\'invitation'}
-                  </button>
-                  {inviteCode && (
-                    <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400 block">Code :</span>
-                      <code className="text-sm font-mono text-primary dark:text-primaryLight select-all">
-                        {inviteCode}
-                      </code>
+                  {inviteCode ? (
+                    <div className="space-y-2">
+                      <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded text-center">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 block">Code d'invitation :</span>
+                        <code className="text-sm font-mono text-primary dark:text-primaryLight select-all">
+                          {inviteCode}
+                        </code>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => navigator.clipboard.writeText(inviteCode)}
+                          className="btn btn-outline text-xs flex-1"
+                        >
+                          Copier
+                        </button>
+                        <button onClick={handleInvite} disabled={inviteLoading} className="btn btn-outline text-xs flex-1">
+                          {inviteLoading ? '…' : 'Régénérer'}
+                        </button>
+                      </div>
                     </div>
+                  ) : (
+                    <button onClick={handleInvite} disabled={inviteLoading} className="btn btn-outline text-xs w-full">
+                      {inviteLoading ? 'Génération…' : 'Générer un code d\'invitation'}
+                    </button>
                   )}
                 </div>
               )}
@@ -321,6 +336,10 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
       {activeTab === 'stats' && (
         <CampaignStatsPanel campaignId={campaign.id} isMJ={isMJ} />
+      )}
+
+      {activeTab === 'bestiary' && (
+        <CampaignBestiaryPanel campaignId={campaign.id} isMJ={isMJ} />
       )}
     </div>
   )

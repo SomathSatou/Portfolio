@@ -16,6 +16,8 @@ from .views import (
     ChatMessageView,
     ItemDetailView,
     ItemListCreateView,
+    MonsterDetailView,
+    MonsterListCreateView,
     SpellDetailView,
     SpellListCreateView,
     StatDetailView,
@@ -78,6 +80,9 @@ urlpatterns = [
     path('items/<int:pk>/', ItemDetailView.as_view(), name='item-detail'),
     path('stats/', StatListCreateView.as_view(), name='stats'),
     path('stats/<int:pk>/', StatDetailView.as_view(), name='stat-detail'),
+    # Bestiary
+    path('monsters/', MonsterListCreateView.as_view(), name='monsters'),
+    path('monsters/<int:pk>/', MonsterDetailView.as_view(), name='monster-detail'),
     path('character-stats/', CharacterStatsView.as_view(), name='character-stats'),
     path('character-spells/', CharacterSpellsView.as_view(), name='character-spells'),
     path('character-spells/<int:pk>/', CharacterSpellRemoveView.as_view(), name='character-spell-remove'),

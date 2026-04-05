@@ -40,9 +40,9 @@ export default function CampaignsListPage() {
     setJoining(true)
     setJoinError('')
     try {
-      await api.post('/campaigns/join/', { invite_code: joinCode.trim() })
+      const res = await api.post<{ campaign_id: number }>('/campaigns/join/', { invite_code: joinCode.trim() })
       setJoinCode('')
-      await fetchCampaigns()
+      window.location.hash = `#/jdr/campaign/${res.data.campaign_id}`
     } catch {
       setJoinError('Code invalide ou campagne introuvable.')
     } finally {
