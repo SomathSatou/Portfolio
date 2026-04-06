@@ -827,3 +827,30 @@ class ChatMessage(models.Model):
     def __str__(self) -> str:
         prefix = '🎲 ' if self.is_dice_roll else ''
         return f'{prefix}{self.author.username}: {self.content[:80]}'
+
+
+# ─── Campaign Settings ────────────────────────────────────────────────────
+
+class CampaignSettings(models.Model):
+    campaign = models.OneToOneField(
+        Campaign, on_delete=models.CASCADE, related_name='settings',
+    )
+    stat_min = models.IntegerField(
+        default=0, help_text='Valeur minimum autorisée par statistique',
+    )
+    stat_max = models.IntegerField(
+        default=20, help_text='Valeur maximum autorisée par statistique',
+    )
+    base_points = models.IntegerField(
+        default=10, help_text='Nombre de points de statistique au niveau 1',
+    )
+    points_per_level = models.IntegerField(
+        default=5, help_text='Nombre de points de statistique gagnés par niveau supplémentaire',
+    )
+
+    class Meta:
+        verbose_name = 'Paramètres de campagne'
+        verbose_name_plural = 'Paramètres de campagne'
+
+    def __str__(self) -> str:
+        return f'Paramètres — {self.campaign.name}'

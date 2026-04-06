@@ -1,7 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import type { Campaign, Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
+import type { Campaign, CampaignSettings, Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
 
 interface CharacterSheetProps {
   characterId: string
@@ -25,6 +25,7 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [charItems, setCharItems] = React.useState<CharacterItem[]>([])
   const [campaignSpells, setCampaignSpells] = React.useState<Spell[]>([])
   const [campaignItems, setCampaignItems] = React.useState<Item[]>([])
+  const [campaignSettings, setCampaignSettings] = React.useState<CampaignSettings | null>(null)
   const [allCampaigns, setAllCampaigns] = React.useState<Campaign[]>([])
   const [selectedCampaignId, setSelectedCampaignId] = React.useState<number | null>(null)
   const [uploadingAvatar, setUploadingAvatar] = React.useState(false)
@@ -64,6 +65,7 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
           promises.push(
             api.get<Spell[]>(`/spells/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSpells(r.data) }),
             api.get<Item[]>(`/items/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignItems(r.data) }),
+            api.get<CampaignSettings>(`/campaigns/${c.campaign}/settings/`).then((r) => { if (!cancelled) setCampaignSettings(r.data) }),
           )
         }
         return Promise.all(promises).then(() => {})
@@ -140,14 +142,28 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
     }
   }
 
+  const statMin = campaignSettings?.stat_min ?? 0
+  const statMax = campaignSettings?.stat_max ?? 20
+  const basePoints = campaignSettings?.base_points ?? 10
+  const pointsPerLevel = campaignSettings?.points_per_level ?? 5
+  const totalAllowed = basePoints + ((character?.level ?? 1) - 1) * pointsPerLevel
+  const totalUsed = charStats.reduce((sum, s) => sum + s.value, 0)
+  const pointsRemaining = totalAllowed - totalUsed
+
   const handleStatChange = async (statId: number, value: number) => {
     if (!character) return
-    const clamped = Math.max(0, Math.min(20, value))
+    const clamped = Math.max(statMin, Math.min(statMax, value))
+    // Check total constraint before applying
+    const currentValue = charStats.find((s) => s.stat === statId)?.value ?? 0
+    const delta = clamped - currentValue
+    if (delta > 0 && totalUsed + delta > totalAllowed) return
     setCharStats((prev) => prev.map((s) => s.stat === statId ? { ...s, value: clamped } : s))
     try {
       await api.patch('/character-stats/', { character: character.id, stats: [{ stat: statId, value: clamped }] })
     } catch {
       setError('Erreur lors de la mise à jour de la stat.')
+      // Revert optimistic update
+      setCharStats((prev) => prev.map((s) => s.stat === statId ? { ...s, value: currentValue } : s))
     }
   }
 
@@ -366,7 +382,21 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
           {/* Campaign Stats (0-20) */}
           {charStats.length > 0 && (
             <div className="card">
-              <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Statistiques</h2>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold text-primary dark:text-primaryLight">Statistiques</h2>
+                <div className="text-sm">
+                  <span className={`font-bold ${pointsRemaining < 0 ? 'text-red-500' : pointsRemaining === 0 ? 'text-accent2' : 'text-accent3'}`}>
+                    {totalUsed}
+                  </span>
+                  <span className="text-gray-500 dark:text-gray-400"> / {totalAllowed} points</span>
+                  {pointsRemaining > 0 && (
+                    <span className="ml-2 text-xs text-gray-400 dark:text-gray-500">({pointsRemaining} restants)</span>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+                Min {statMin} — Max {statMax} par stat · {basePoints} pts de base + {pointsPerLevel} pts/niveau
+              </p>
               <div className="space-y-3">
                 {charStats.map((cs) => (
                   <div key={cs.id} className="flex items-center gap-3">
@@ -374,15 +404,15 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
                     {canEdit ? (
                       <input
                         type="range"
-                        min={0}
-                        max={20}
+                        min={statMin}
+                        max={statMax}
                         value={cs.value}
                         onChange={(e) => handleStatChange(cs.stat, +e.target.value)}
                         className="flex-1 accent-primary"
                       />
                     ) : (
                       <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div className="bg-primary dark:bg-primaryLight h-2 rounded-full" style={{ width: `${(cs.value / 20) * 100}%` }} />
+                        <div className="bg-primary dark:bg-primaryLight h-2 rounded-full" style={{ width: `${statMax > 0 ? (cs.value / statMax) * 100 : 0}%` }} />
                       </div>
                     )}
                     <span className="w-8 text-center text-sm font-bold text-primary dark:text-primaryLight">{cs.value}</span>

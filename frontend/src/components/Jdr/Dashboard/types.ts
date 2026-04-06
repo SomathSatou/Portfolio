@@ -175,6 +175,15 @@ export interface SessionNote {
   created_at: string
 }
 
+export interface CampaignSettings {
+  id: number
+  campaign: number
+  stat_min: number
+  stat_max: number
+  base_points: number
+  points_per_level: number
+}
+
 export interface ChatMessage {
   id: number
   campaign: number

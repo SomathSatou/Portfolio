@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, Character,
+    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
     CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
@@ -637,3 +637,12 @@ class WalletUpdateSerializer(serializers.Serializer):
     gold = serializers.IntegerField(min_value=0, required=False)
     silver = serializers.IntegerField(min_value=0, required=False)
     copper = serializers.IntegerField(min_value=0, required=False)
+
+
+# ─── Campaign Settings ────────────────────────────────────────────────────
+
+class CampaignSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampaignSettings
+        fields = ['id', 'campaign', 'stat_min', 'stat_max', 'base_points', 'points_per_level']
+        read_only_fields = ['id', 'campaign']
