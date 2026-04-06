@@ -95,7 +95,8 @@ Le frontend proxy `/api` vers `http://127.0.0.1:8000` via Vite (`vite.config.ts`
 - Langue par défaut : `fr`, timezone `Europe/Paris`
 - Config email via variables d'environnement (fallback console en dev)
 - CORS ouvert en dev (`CORS_ALLOW_ALL_ORIGINS = True`), à restreindre en prod
-- DB SQLite en dev, PostgreSQL recommandé en prod
+- DB SQLite en dev, **MariaDB en prod** (config via env vars `DB_ENGINE`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`)
+- `python-dotenv` charge `backend/.env` en dev ; en prod les vars viennent de `/etc/portfolio.env` (systemd `EnvironmentFile`)
 
 ## Theme & design tokens
 
@@ -135,7 +136,7 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 - En prod : `DEBUG=False`, `ALLOWED_HOSTS` restreint, CORS restreint
 - Honeypot anti-spam sur le formulaire de contact
 - Fichiers `.env` ignorés par `.gitignore`
-- Préférer PostgreSQL et un reverse-proxy (Nginx) en production
+- MariaDB en prod derrière Nginx reverse-proxy
 
 ## Deployment
 
