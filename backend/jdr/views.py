@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, Character,
+    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
     CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
@@ -26,6 +26,7 @@ from .serializers import (
     CampaignEventSerializer,
     CampaignMembershipSerializer,
     CampaignSerializer,
+    CampaignSettingsSerializer,
     CharacterItemSerializer,
     CharacterSerializer,
     CharacterSpellSerializer,
@@ -838,6 +839,27 @@ class MonsterDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class CampaignSettingsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        campaign, _is_mj, err = _check_campaign_access(request, pk)
+        if err:
+            return err
+        settings, _ = CampaignSettings.objects.get_or_create(campaign=campaign)
+        return Response(CampaignSettingsSerializer(settings).data)
+
+    def patch(self, request, pk):
+        campaign, err = _check_campaign_mj(request, pk)
+        if err:
+            return err
+        settings, _ = CampaignSettings.objects.get_or_create(campaign=campaign)
+        serializer = CampaignSettingsSerializer(settings, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
 class CharacterStatsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -882,13 +904,47 @@ class CharacterStatsView(APIView):
         is_mj = character.campaign and character.campaign.game_master == request.user
         if not is_owner and not is_mj:
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        # Load campaign settings for constraints
+        settings = None
+        if character.campaign:
+            settings, _ = CampaignSettings.objects.get_or_create(campaign=character.campaign)
+
+        stat_min = settings.stat_min if settings else 0
+        stat_max = settings.stat_max if settings else 20
+        base_points = settings.base_points if settings else 10
+        points_per_level = settings.points_per_level if settings else 5
+        total_allowed = base_points + (character.level - 1) * points_per_level
+
+        # Build proposed values: start from current, apply changes
+        current_stats = {
+            cs.stat_id: cs.value
+            for cs in CharacterStat.objects.filter(character=character)
+        }
+        proposed = dict(current_stats)
         for stat_entry in stats_data:
             stat_id = stat_entry.get('stat')
-            value = max(0, min(20, int(stat_entry.get('value', 0))))
-            CharacterStat.objects.update_or_create(
-                character=character, stat_id=stat_id,
-                defaults={'value': value},
+            value = int(stat_entry.get('value', 0))
+            value = max(stat_min, min(stat_max, value))
+            proposed[stat_id] = value
+
+        # Validate total points
+        proposed_total = sum(proposed.values())
+        if proposed_total > total_allowed:
+            return Response(
+                {
+                    'detail': f'Total de points ({proposed_total}) d\u00e9passe le maximum autoris\u00e9 ({total_allowed}) pour le niveau {character.level}.',
+                    'total_allowed': total_allowed,
+                    'total_proposed': proposed_total,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
+
+        for stat_id, value in proposed.items():
+            if stat_id in {e.get('stat') for e in stats_data}:
+                CharacterStat.objects.update_or_create(
+                    character=character, stat_id=stat_id,
+                    defaults={'value': value},
+                )
         stats = CharacterStat.objects.filter(character=character).select_related('stat')
         return Response(CharacterStatSerializer(stats, many=True).data)
 

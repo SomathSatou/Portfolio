@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignMembership, Character, City, CityExport, CityImport,
-    GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory, MerchantOrder,
-    Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing, RuneTemplate,
-    UserProfile,
+    AlchemyPlant, Campaign, CampaignMembership, CampaignSettings, Character, City, CityExport,
+    CityImport, GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory,
+    MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
+    RuneTemplate, UserProfile,
 )
 
 admin.site.register(UserProfile)
@@ -12,6 +12,7 @@ admin.site.register(Campaign)
 admin.site.register(CampaignMembership)
 admin.site.register(Character)
 admin.site.register(Notification)
+admin.site.register(CampaignSettings)
 
 
 @admin.register(City)

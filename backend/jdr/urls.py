@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
     AlchemyPlantViewSet,
+    CampaignSettingsView,
     CampaignViewSet,
     CharacterAvatarUploadView,
     CharacterItemDetailView,
@@ -120,6 +121,7 @@ urlpatterns = [
     path('files/embed-url/', NextcloudEmbedUrlView.as_view(), name='nextcloud-embed-url'),
     # Session
     path('characters/<int:pk>/avatar/', CharacterAvatarUploadView.as_view(), name='character-avatar-upload'),
+    path('campaigns/<int:pk>/settings/', CampaignSettingsView.as_view(), name='campaign-settings'),
     path('campaigns/<int:pk>/characters-with-stats/', CharactersWithStatsView.as_view(), name='characters-with-stats'),
     path('campaigns/<int:pk>/wallets/', WalletUpdateView.as_view(), name='wallet-update'),
     path('session-notes/', SessionNoteView.as_view(), name='session-notes'),
