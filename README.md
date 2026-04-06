@@ -170,8 +170,29 @@ curl -X POST http://localhost:8000/api/contact/ \
 ```
 
 ### Admin Django
-- URL: `http://localhost:8000/admin/`
-- Créez un superuser: `python manage.py createsuperuser`
+
+- URL: `http://localhost:8000/admin/` (prod: `https://automia.org/admin/`)
+
+- Créer un superuser :
+
+  ```bash
+  python manage.py createsuperuser
+  ```
+
+- Modifier le mot de passe d'un admin existant :
+
+  ```bash
+  python manage.py changepassword admin
+  ```
+
+- Sur le serveur de production :
+
+  ```bash
+  cd /var/www/Portfolio/backend
+  source .venv/bin/activate
+  python manage.py createsuperuser        # première fois
+  python manage.py changepassword admin   # changer le mot de passe
+  ```
 
 ### Intégration Front/Back en dev (CORS/proxy)
 - CORS est ouvert en dev (`CORS_ALLOW_ALL_ORIGINS=True`). Restreindre en prod.

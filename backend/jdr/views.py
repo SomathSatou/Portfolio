@@ -491,9 +491,103 @@ class CharacterViewSet(viewsets.ModelViewSet):
         # Allow owner or campaign MJ to edit
         if obj.player == request.user:
             return
-        if obj.campaign.game_master == request.user:
+        if obj.campaign and obj.campaign.game_master == request.user:
             return
         self.permission_denied(request)
+
+    @action(detail=True, methods=['post'], url_path='join-campaign')
+    def join_campaign(self, request, pk=None):
+        """Assign a character to a campaign using an invite code."""
+        character = self.get_object()
+        if character.player != request.user:
+            return Response(
+                {'detail': 'Seul le propriétaire du personnage peut rejoindre une campagne.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if character.campaign is not None:
+            return Response(
+                {'detail': 'Ce personnage est déjà dans une campagne. Retirez-le d\'abord.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        code = request.data.get('invite_code', '').strip()
+        if not code:
+            return Response(
+                {'detail': 'Code d\'invitation requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            campaign = Campaign.objects.get(invite_code=code)
+        except Campaign.DoesNotExist:
+            return Response(
+                {'detail': 'Code d\'invitation invalide.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if campaign.game_master == request.user:
+            return Response(
+                {'detail': 'Vous êtes le MJ de cette campagne, vous ne pouvez pas la rejoindre en tant que joueur.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        # Assign character to campaign
+        character.campaign = campaign
+        character.save(update_fields=['campaign'])
+        # Create/reactivate membership
+        membership, created = CampaignMembership.objects.get_or_create(
+            campaign=campaign,
+            player=request.user,
+            defaults={'is_active': True},
+        )
+        if not created and not membership.is_active:
+            membership.is_active = True
+            membership.save(update_fields=['is_active'])
+        # Auto-create CharacterStat entries for campaign stats
+        from .models import Stat, CharacterStat as CharStatModel
+        campaign_stats = Stat.objects.filter(campaign=campaign)
+        CharStatModel.objects.bulk_create([
+            CharStatModel(character=character, stat=s, value=0)
+            for s in campaign_stats
+        ], ignore_conflicts=True)
+        # Log event + notify GM
+        CampaignEvent.objects.create(
+            campaign=campaign,
+            event_type='join',
+            actor=request.user,
+            actor_name=request.user.username,
+            message=f'{character.name} ({request.user.username}) a rejoint la campagne.',
+        )
+        Notification.objects.create(
+            recipient=campaign.game_master,
+            title='Nouveau personnage',
+            message=f'{character.name} ({request.user.username}) a rejoint « {campaign.name} ».',
+            notification_type='info',
+        )
+        return Response(CharacterSerializer(character).data)
+
+    @action(detail=True, methods=['post'], url_path='leave-campaign')
+    def leave_campaign(self, request, pk=None):
+        """Remove a character from its campaign."""
+        character = self.get_object()
+        if character.player != request.user:
+            return Response(
+                {'detail': 'Seul le propriétaire peut retirer le personnage.'},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if character.campaign is None:
+            return Response(
+                {'detail': 'Ce personnage n\'est dans aucune campagne.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        old_campaign = character.campaign
+        character.campaign = None
+        character.save(update_fields=['campaign'])
+        # Check if player has other characters in this campaign
+        has_other = Character.objects.filter(
+            player=request.user, campaign=old_campaign,
+        ).exists()
+        if not has_other:
+            CampaignMembership.objects.filter(
+                campaign=old_campaign, player=request.user,
+            ).update(is_active=False)
+        return Response(CharacterSerializer(character).data)
 
 
 # ─── Campaign Content (Spells, Items, Stats) ─────────────────────────────────

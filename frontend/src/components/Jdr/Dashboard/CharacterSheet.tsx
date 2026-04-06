@@ -30,6 +30,12 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [uploadingAvatar, setUploadingAvatar] = React.useState(false)
   const avatarInputRef = React.useRef<HTMLInputElement>(null)
 
+  // Join campaign by invite code
+  const [inviteCode, setInviteCode] = React.useState('')
+  const [joining, setJoining] = React.useState(false)
+  const [joinError, setJoinError] = React.useState('')
+  const [leaving, setLeaving] = React.useState(false)
+
   const isMJ = user?.role === 'mj'
   const isOwner = character?.player === user?.id
   const canEdit = isOwner || isMJ
@@ -184,6 +190,56 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       setCharItems((prev) => prev.filter((i) => i.id !== ciId))
     } catch {
       setError('Erreur lors du retrait de l\'objet.')
+    }
+  }
+
+  const handleJoinCampaign = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!character || !inviteCode.trim()) return
+    setJoining(true)
+    setJoinError('')
+    try {
+      const res = await api.post<Character>(`/characters/${character.id}/join-campaign/`, {
+        invite_code: inviteCode.trim(),
+      })
+      setCharacter(res.data)
+      setSelectedCampaignId(res.data.campaign)
+      setInviteCode('')
+      setSuccessMsg('Personnage ajouté à la campagne !')
+      setTimeout(() => setSuccessMsg(''), 3000)
+      // Reload page to get campaign data (stats, spells, items)
+      window.location.reload()
+    } catch (err: unknown) {
+      if (
+        typeof err === 'object' && err !== null && 'response' in err &&
+        typeof (err as Record<string, unknown>).response === 'object'
+      ) {
+        const resp = (err as { response: { data?: { detail?: string } } }).response
+        setJoinError(resp.data?.detail || 'Code invalide.')
+      } else {
+        setJoinError('Code invalide ou campagne introuvable.')
+      }
+    } finally {
+      setJoining(false)
+    }
+  }
+
+  const handleLeaveCampaign = async () => {
+    if (!character) return
+    setLeaving(true)
+    try {
+      const res = await api.post<Character>(`/characters/${character.id}/leave-campaign/`)
+      setCharacter(res.data)
+      setSelectedCampaignId(null)
+      setCampaignSpells([])
+      setCampaignItems([])
+      setCharStats([])
+      setSuccessMsg('Personnage retiré de la campagne.')
+      setTimeout(() => setSuccessMsg(''), 3000)
+    } catch {
+      setError('Erreur lors du retrait de la campagne.')
+    } finally {
+      setLeaving(false)
     }
   }
 
@@ -439,14 +495,52 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
                     ))}
                   </select>
                 ) : character.campaign ? (
-                  <a href={`#/jdr/campaign/${character.campaign}`} className="hover:underline">
-                    {character.campaign_name}
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <a href={`#/jdr/campaign/${character.campaign}`} className="hover:underline">
+                      {character.campaign_name}
+                    </a>
+                    {isOwner && (
+                      <button
+                        onClick={handleLeaveCampaign}
+                        disabled={leaving}
+                        className="text-xs text-red-500 hover:underline"
+                      >
+                        {leaving ? '…' : 'Quitter'}
+                      </button>
+                    )}
+                  </div>
                 ) : (
                   <span className="text-gray-400">Aucune</span>
                 )}
               </dd>
             </div>
+            {/* Join campaign via invite code */}
+            {isOwner && !character.campaign && (
+              <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <dt className="text-gray-500 dark:text-gray-400 mb-1">Rejoindre une campagne</dt>
+                <dd>
+                  <form onSubmit={handleJoinCampaign} className="space-y-2">
+                    <input
+                      type="text"
+                      value={inviteCode}
+                      onChange={(e) => setInviteCode(e.target.value)}
+                      placeholder="Code d'invitation"
+                      className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm font-mono text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                    <button
+                      type="submit"
+                      disabled={joining || !inviteCode.trim()}
+                      className="btn btn-primary text-xs w-full"
+                    >
+                      {joining ? 'Envoi…' : 'Rejoindre'}
+                    </button>
+                    {joinError && (
+                      <p className="text-xs text-red-500">{joinError}</p>
+                    )}
+                  </form>
+                </dd>
+              </div>
+            )}
             <div>
               <dt className="text-gray-500 dark:text-gray-400">Classe</dt>
               <dd className="text-gray-900 dark:text-gray-100">{character.class_type || '—'}</dd>

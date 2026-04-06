@@ -139,7 +139,7 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 
 ## Deployment
 
-- **Script** : `deploy.sh` (Linux) — git pull, pip install, migrate, collectstatic, npm ci + build, restart systemd + nginx
+- **Script** : `cd ?? ` (Linux) — git pull, pip install, migrate, collectstatic, npm ci + build, restart systemd + nginx
 - **Domaine** : `automia.org`
 - Frontend servi comme fichiers statiques depuis `frontend/dist/`
 - Backend servi via Gunicorn derrière Nginx

@@ -9,11 +9,6 @@ export default function CampaignsListPage() {
   const [campaigns, setCampaigns] = React.useState<Campaign[]>([])
   const [loading, setLoading] = React.useState(true)
 
-  // Join campaign
-  const [joinCode, setJoinCode] = React.useState('')
-  const [joinError, setJoinError] = React.useState('')
-  const [joining, setJoining] = React.useState(false)
-
   // Create campaign (MJ only)
   const isMJ = user?.role === 'mj'
   const [showCreate, setShowCreate] = React.useState(false)
@@ -34,21 +29,7 @@ export default function CampaignsListPage() {
 
   React.useEffect(() => { fetchCampaigns() }, [fetchCampaigns])
 
-  const handleJoin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!joinCode.trim()) return
-    setJoining(true)
-    setJoinError('')
-    try {
-      const res = await api.post<{ campaign_id: number }>('/campaigns/join/', { invite_code: joinCode.trim() })
-      setJoinCode('')
-      window.location.hash = `#/jdr/campaign/${res.data.campaign_id}`
-    } catch {
-      setJoinError('Code invalide ou campagne introuvable.')
-    } finally {
-      setJoining(false)
-    }
-  }
+  const [createError, setCreateError] = React.useState('')
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -61,7 +42,7 @@ export default function CampaignsListPage() {
       setShowCreate(false)
       window.location.hash = `#/jdr/campaign/${res.data.id}`
     } catch {
-      setJoinError('Erreur lors de la création.')
+      setCreateError('Erreur lors de la création.')
     } finally {
       setCreating(false)
     }
@@ -109,23 +90,11 @@ export default function CampaignsListPage() {
         </form>
       )}
 
-      {/* Join campaign */}
-      <form onSubmit={handleJoin} className="card flex flex-col sm:flex-row gap-2">
-        <input
-          placeholder="Code d'invitation"
-          value={joinCode}
-          onChange={(e) => setJoinCode(e.target.value)}
-          className="flex-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
-        />
-        <button type="submit" disabled={joining} className="btn btn-outline text-sm">
-          {joining ? '…' : 'Rejoindre'}
-        </button>
-      </form>
-      {joinError && <p className="text-sm text-red-500">{joinError}</p>}
+      {createError && <p className="text-sm text-red-500">{createError}</p>}
 
       {/* Campaign list */}
       {campaigns.length === 0 ? (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Aucune campagne. Rejoignez-en une avec un code d'invitation.</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Aucune campagne. Rejoignez-en une via la fiche de votre personnage avec un code d'invitation.</p>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {campaigns.map((c) => (
