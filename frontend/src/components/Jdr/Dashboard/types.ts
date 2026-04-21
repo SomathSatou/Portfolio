@@ -32,7 +32,6 @@ export interface Character {
   level: number
   description: string
   avatar: string | null
-  stats: Record<string, number | string>
   gold: number
   silver: number
   copper: number

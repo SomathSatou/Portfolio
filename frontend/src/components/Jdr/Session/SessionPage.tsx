@@ -27,7 +27,7 @@ export default function SessionPage({ campaignId }: Props) {
     return myChar?.id ?? null
   }, [characters, user, isMJ])
   const sessionActive = campaign?.session_active ?? false
-  const { messages, connected, sendMessage, setInitialMessages } = useChat({ campaignId, enabled: sessionActive || isMJ })
+  const { messages, connected, sendMessage, setInitialMessages, reconnect, retryCount } = useChat({ campaignId, enabled: sessionActive || isMJ })
 
   // Load campaign + characters with stats + chat history
   React.useEffect(() => {
@@ -163,6 +163,8 @@ export default function SessionPage({ campaignId }: Props) {
             connected={connected}
             onSend={sendMessage}
             currentUserId={user?.id}
+            onReconnect={reconnect}
+            retryCount={retryCount}
           />
         </div>
 

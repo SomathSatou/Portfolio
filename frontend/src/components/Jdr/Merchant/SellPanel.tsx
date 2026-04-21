@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import type { City, MerchantInventoryItem } from './types.ts'
+import type { City } from '../Dashboard/types'
+import type { MerchantInventoryItem } from './types'
 import CitySelector from './CitySelector.tsx'
 import InventoryTable from './InventoryTable.tsx'
 

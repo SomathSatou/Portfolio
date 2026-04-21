@@ -1,3 +1,4 @@
+import { Bell, Flag, Gamepad2, User, Users } from 'lucide-react'
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
@@ -101,8 +102,36 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">Chargement du dashboard…</p>
+      <div className="space-y-8 animate-fadeIn">
+        <div>
+          <div className="skeleton h-8 w-64 mb-2" />
+          <div className="skeleton h-4 w-40" />
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="card-glass p-5 space-y-3">
+              <div className="skeleton h-6 w-48" />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="skeleton h-20 rounded-xl" />
+                <div className="skeleton h-20 rounded-xl" />
+              </div>
+            </div>
+            <div className="card-glass p-5 space-y-3">
+              <div className="skeleton h-6 w-40" />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="skeleton h-24 rounded-xl" />
+                <div className="skeleton h-24 rounded-xl" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="card-glass p-5 space-y-3">
+              <div className="skeleton h-6 w-36" />
+              <div className="skeleton h-12 rounded-lg" />
+              <div className="skeleton h-12 rounded-lg" />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -136,11 +165,7 @@ export default function DashboardPage() {
           {/* My Characters */}
           <DashboardCard
             title="Mes Personnages"
-            icon={
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-              </svg>
-            }
+            icon={<User className="w-5 h-5" />}
             action={
               <a href="#/jdr/character/new" className="btn btn-primary text-xs py-1 px-2">
                 + Créer
@@ -150,7 +175,7 @@ export default function DashboardPage() {
             {myCharacters.length === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400">Aucun personnage pour le moment.</p>
             ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 stagger-children">
                 {myCharacters.map((c) => (
                   <CharacterCard key={c.id} character={c} />
                 ))}
@@ -161,16 +186,12 @@ export default function DashboardPage() {
           {/* My Campaigns */}
           <DashboardCard
             title="Mes Campagnes"
-            icon={
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2z" />
-              </svg>
-            }
+            icon={<Flag className="w-5 h-5" />}
           >
             {campaigns.length === 0 ? (
               <p className="text-sm text-gray-500 dark:text-gray-400">Aucune campagne active.</p>
             ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 stagger-children">
                 {campaigns.map((c) => (
                   <CampaignCard key={c.id} campaign={c} />
                 ))}
@@ -182,11 +203,7 @@ export default function DashboardPage() {
           {(availableMiniGames.length > 0 || isMJ) && (
             <DashboardCard
               title="Mini-jeux inter-session"
-              icon={
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.491 48.491 0 01-4.163-.3c.186 1.613.466 3.193.835 4.736 1.14-.177 2.323-.27 3.535-.27 1.212 0 2.394.093 3.535.27a44.544 44.544 0 00.835-4.736 48.488 48.488 0 01-4.163.3.64.64 0 01-.657-.643v0z" />
-                </svg>
-              }
+              icon={<Gamepad2 className="w-5 h-5" />}
             >
               {isMJ ? (
                 // MJ sees a summary of all mini-games for all players
@@ -241,11 +258,7 @@ export default function DashboardPage() {
           {isMJ && (
             <DashboardCard
               title="Vue d'ensemble des joueurs"
-              icon={
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                </svg>
-              }
+              icon={<Users className="w-5 h-5" />}
             >
               {characters.length === 0 ? (
                 <p className="text-sm text-gray-500 dark:text-gray-400">Aucun personnage dans vos campagnes.</p>
@@ -282,11 +295,7 @@ export default function DashboardPage() {
         <div className="space-y-6">
           <DashboardCard
             title="Notifications"
-            icon={
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-              </svg>
-            }
+            icon={<Bell className="w-5 h-5" />}
             action={
               unreadNotifs.length > 0 ? (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent3 text-[10px] font-bold text-gray-900">

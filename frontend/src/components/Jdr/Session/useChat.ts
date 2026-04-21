@@ -6,12 +6,18 @@ interface UseChatOptions {
   enabled?: boolean
 }
 
+const MAX_RETRIES = 10
+const BASE_DELAY = 1000
+const MAX_DELAY = 30000
+
 export default function useChat({ campaignId, enabled = true }: UseChatOptions) {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [connected, setConnected] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const closedIntentionally = useRef(false)
+  const retriesRef = useRef(0)
 
   const connect = useCallback(() => {
     if (!enabled) return
@@ -31,6 +37,8 @@ export default function useChat({ campaignId, enabled = true }: UseChatOptions) 
 
     ws.onopen = () => {
       setConnected(true)
+      retriesRef.current = 0
+      setRetryCount(0)
     }
 
     ws.onmessage = (event) => {
@@ -49,9 +57,12 @@ export default function useChat({ campaignId, enabled = true }: UseChatOptions) 
     ws.onclose = () => {
       setConnected(false)
       wsRef.current = null
-      // Only auto-reconnect if not intentionally closed
-      if (!closedIntentionally.current) {
-        reconnectTimer.current = setTimeout(connect, 3000)
+      // Only auto-reconnect if not intentionally closed and under max retries
+      if (!closedIntentionally.current && retriesRef.current < MAX_RETRIES) {
+        const delay = Math.min(BASE_DELAY * 2 ** retriesRef.current, MAX_DELAY)
+        retriesRef.current += 1
+        setRetryCount(retriesRef.current)
+        reconnectTimer.current = setTimeout(connect, delay)
       }
     }
 
@@ -70,6 +81,17 @@ export default function useChat({ campaignId, enabled = true }: UseChatOptions) 
     }
   }, [connect])
 
+  const reconnect = useCallback(() => {
+    closedIntentionally.current = true
+    clearTimeout(reconnectTimer.current)
+    wsRef.current?.close()
+    wsRef.current = null
+    retriesRef.current = 0
+    setRetryCount(0)
+    closedIntentionally.current = false
+    connect()
+  }, [connect])
+
   const sendMessage = useCallback((message: string) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({ message }))
@@ -80,5 +102,5 @@ export default function useChat({ campaignId, enabled = true }: UseChatOptions) 
     setMessages(msgs)
   }, [])
 
-  return { messages, connected, sendMessage, setInitialMessages }
+  return { messages, connected, sendMessage, setInitialMessages, reconnect, retryCount }
 }

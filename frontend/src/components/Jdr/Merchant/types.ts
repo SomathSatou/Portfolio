@@ -1,11 +1,3 @@
-export interface City {
-  id: number
-  name: string
-  description: string
-  export_count: number
-  import_count: number
-}
-
 export interface CityDetail {
   id: number
   name: string

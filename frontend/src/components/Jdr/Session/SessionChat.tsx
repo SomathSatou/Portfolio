@@ -7,9 +7,11 @@ interface Props {
   connected: boolean
   onSend: (message: string) => void
   currentUserId?: number
+  onReconnect?: () => void
+  retryCount?: number
 }
 
-export default function SessionChat({ messages, connected, onSend, currentUserId }: Props) {
+export default function SessionChat({ messages, connected, onSend, currentUserId, onReconnect, retryCount = 0 }: Props) {
   const [input, setInput] = React.useState('')
   const bottomRef = React.useRef<HTMLDivElement>(null)
 
@@ -26,20 +28,29 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
   }
 
   return (
-    <div className="card flex flex-col h-full">
+    <div className="card-glass flex flex-col h-full animate-slideUp">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-semibold text-primary dark:text-primaryLight">Chat</h2>
-        <span className={`inline-flex items-center gap-1 text-xs ${connected ? 'text-green-600' : 'text-red-500'}`}>
-          <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`} />
-          {connected ? 'Connecté' : 'Déconnecté'}
+        <span className={`inline-flex items-center gap-1.5 text-xs ${connected ? 'text-green-600' : 'text-red-500'}`}>
+          <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+          {connected ? 'Connecté' : retryCount > 0 ? `Reconnexion (${retryCount})…` : 'Déconnecté'}
+          {!connected && onReconnect && (
+            <button
+              type="button"
+              onClick={onReconnect}
+              className="ml-1 underline hover:text-red-700 dark:hover:text-red-400"
+            >
+              Reconnecter
+            </button>
+          )}
         </span>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2 mb-3 min-h-0 max-h-[60vh] chat-scrollbar">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2.5 mb-3 min-h-0 max-h-[60vh] chat-scrollbar">
         {messages.length === 0 && (
-          <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8">
+          <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8 animate-fadeIn">
             Aucun message. Écrivez quelque chose ou lancez des dés (ex: 2d20)
           </p>
         )}
@@ -48,14 +59,14 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
           return (
             <div
               key={msg.id}
-              className={`flex items-start gap-2 ${isMe ? 'flex-row-reverse ml-auto' : 'mr-auto'}`}
+              className={`flex items-start gap-2 animate-slideInRight ${isMe ? 'flex-row-reverse ml-auto' : 'mr-auto'}`}
             >
               {/* Avatar */}
               {msg.author_avatar ? (
                 <img
                   src={msg.author_avatar}
                   alt={msg.author_name}
-                  className="w-7 h-7 rounded-full object-cover shrink-0"
+                  className="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-primary/20"
                 />
               ) : (
                 <div className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center bg-primary/20 dark:bg-primaryLight/20 text-[11px] font-bold text-primary dark:text-primaryLight">
@@ -66,17 +77,17 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
               <div className={`flex flex-col min-w-0 ${isMe ? 'items-end' : 'items-start'}`}>
                 <span className="text-[10px] text-gray-400 mb-0.5">{msg.author_name}</span>
                 {msg.is_dice_roll && msg.dice_result ? (
-                  <div className="px-3 py-2 rounded-lg bg-accent3/20 border border-accent3/30 text-sm">
+                  <div className="px-3 py-2 rounded-2xl bg-accent3/15 border border-accent3/25 text-sm backdrop-blur-sm">
                     <span className="font-semibold text-yellow-800 dark:text-accent3">
                       {formatDiceResult(msg.dice_result)}
                     </span>
                   </div>
                 ) : (
                   <div
-                    className={`px-3 py-1.5 rounded-lg text-sm max-w-full break-words overflow-hidden ${
+                    className={`px-3 py-1.5 text-sm max-w-full break-words overflow-hidden ${
                       isMe
-                        ? 'bg-primary text-white dark:bg-primaryLight dark:text-gray-900'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        ? 'bg-primary text-white dark:bg-primaryLight dark:text-gray-900 rounded-2xl rounded-tr-md'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-2xl rounded-tl-md'
                     }`}
                   >
                     {msg.content}
@@ -99,12 +110,12 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={isDiceCommand(input) ? '🎲 Lancer de dés…' : 'Message…'}
-          className="flex-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+          className="flex-1 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
         />
         <button
           type="submit"
           disabled={!connected || !input.trim()}
-          className="btn btn-primary text-sm px-4"
+          className="btn btn-primary text-sm px-4 rounded-xl"
         >
           Envoyer
         </button>

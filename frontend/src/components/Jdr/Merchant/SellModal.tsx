@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { City } from './types'
+import type { City } from '../Dashboard/types'
 import CitySelector from './CitySelector.tsx'
 
 interface Props {

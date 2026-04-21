@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import api from '../api.ts'
 import CitySelector from './CitySelector.tsx'
-import type { City, MerchantInventoryItem } from './types'
+import type { City } from '../Dashboard/types'
+import type { MerchantInventoryItem } from './types'
 
 interface Props {
   item: MerchantInventoryItem

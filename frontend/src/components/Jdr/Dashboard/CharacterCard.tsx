@@ -1,3 +1,4 @@
+import { User } from 'lucide-react'
 import type { Character } from './types'
 
 interface CharacterCardProps {
@@ -8,20 +9,18 @@ export default function CharacterCard({ character }: CharacterCardProps) {
   return (
     <a
       href={`#/jdr/character/${character.id}`}
-      className="card block no-underline hover:shadow-md transition-shadow"
+      className="card-glass block no-underline animate-fadeIn"
     >
       <div className="flex items-center gap-3">
         {character.avatar ? (
           <img
             src={character.avatar}
             alt={character.name}
-            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/30"
+            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/40 dark:ring-primaryLight/40"
           />
         ) : (
           <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-            <svg className="w-6 h-6 text-primary dark:text-primaryLight" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-            </svg>
+            <User className="w-6 h-6 text-primary dark:text-primaryLight" />
           </div>
         )}
         <div className="min-w-0 flex-1">

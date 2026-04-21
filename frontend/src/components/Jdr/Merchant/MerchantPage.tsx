@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import api from '../api.ts'
 import { useAuth } from '../useAuth.ts'
-import type { Character } from '../Dashboard/types.ts'
+import type { Character, City } from '../Dashboard/types.ts'
 import BuyModal from './BuyModal.tsx'
 import CitySelector from './CitySelector.tsx'
 import MarketTable from './MarketTable.tsx'
@@ -9,7 +9,6 @@ import OrderCard from './OrderCard.tsx'
 import ProfitChart from './ProfitChart.tsx'
 import SellPanel from './SellPanel.tsx'
 import type {
-  City,
   MarketPriceItem,
   MerchantInventoryItem,
   MerchantOrderItem,

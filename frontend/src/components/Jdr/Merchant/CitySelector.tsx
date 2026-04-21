@@ -1,4 +1,4 @@
-import type { City } from './types'
+import type { City } from '../Dashboard/types'
 
 interface Props {
   cities: City[]
