@@ -103,7 +103,6 @@ class Character(models.Model):
     level = models.IntegerField(default=1)
     description = models.TextField(blank=True, default='')
     avatar = models.ImageField(upload_to='jdr/characters/', blank=True, null=True)
-    stats = models.JSONField(default=dict, blank=True)
     gold = models.IntegerField(default=0)
     silver = models.IntegerField(default=0)
     copper = models.IntegerField(default=0)

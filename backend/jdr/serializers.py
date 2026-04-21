@@ -101,7 +101,7 @@ class CharacterSerializer(serializers.ModelSerializer):
         model = Character
         fields = [
             'id', 'name', 'player', 'player_name', 'campaign', 'campaign_name',
-            'class_type', 'level', 'description', 'avatar', 'stats',
+            'class_type', 'level', 'description', 'avatar',
             'gold', 'silver', 'copper', 'created_at',
         ]
         read_only_fields = ['id', 'player', 'created_at']
@@ -186,7 +186,7 @@ class CharacterWithStatsSerializer(serializers.ModelSerializer):
         model = Character
         fields = [
             'id', 'name', 'player', 'player_name', 'campaign', 'campaign_name',
-            'class_type', 'level', 'description', 'avatar', 'stats',
+            'class_type', 'level', 'description', 'avatar',
             'gold', 'silver', 'copper', 'created_at', 'character_stats',
         ]
         read_only_fields = fields
