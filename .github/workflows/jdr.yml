@@ -1,5 +1,5 @@
 name: portfolio-build
-run-name: Fake full deployment on POC automia
+run-name: full deployment for portfolio on automia
 on: [push]
 jobs:
   automia-deploy-portfolio:
@@ -15,7 +15,7 @@ jobs:
           echo "Trying a ssh-keyscan on {{ vars.SSH_AUTOMIA_HOST }}"
           ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Test Backup
+      - name: Deploy 
         run: |
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
           set -e
