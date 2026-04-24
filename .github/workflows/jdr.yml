@@ -1,0 +1,46 @@
+name: jdr-build
+run-name: Fake full deployment on POC automia
+on: [push]
+jobs:
+  automia-build-jdr:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build JDR projet
+        run: |
+          pwd
+          echo "Coucou je build le fichier de test" > test.txt 
+       
+      - name: Verify build is successful on local
+        run: |
+          cat test.txt 
+
+  ############################################################
+
+  automia-deploy-jdr:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Init SSH on runner
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_AUTOMIA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Trying a ssh-keyscan on {{ vars.SSH_AUTOMIA_HOST }}"
+          ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts
+
+      - name: LS current home
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
+            echo "Connexion réussie via le user ${{ vars.SSH_AUTOMIA_USER }}"
+            ls -la ~/
+          EOF
+        
+      - name: Create file at current home
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
+            echo "Connexion réussie via le user ${{ vars.SSH_AUTOMIA_USER }}"
+            touch ~/test-ssh.proz
+          EOF
