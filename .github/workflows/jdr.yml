@@ -1,13 +1,13 @@
-name: jdr-build
+name: portfolio-build
 run-name: Fake full deployment on POC automia
 on: [push]
 jobs:
-  automia-build-jdr:
+  automia-build-portfolio:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build JDR projet
+      - name: Build portfolio projet
         run: |
           pwd
           echo "Coucou je build le fichier de test" > test.txt 
@@ -18,7 +18,7 @@ jobs:
 
   ############################################################
 
-  automia-deploy-jdr:
+  automia-deploy-portfolio:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
@@ -34,13 +34,8 @@ jobs:
       - name: LS current home
         run: |
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
-            echo "Connexion réussie via le user ${{ vars.SSH_AUTOMIA_USER }}"
-            ls -la ~/
-          EOF
-        
-      - name: Create file at current home
-        run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
-            echo "Connexion réussie via le user ${{ vars.SSH_AUTOMIA_USER }}"
-            touch ~/test-ssh.proz
+            mysqldump -u root -p portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
+            cd /var/www/Portfolio
+            ./deploy.sh
+            mysqldump -u root -p /var/www/Backup/$(date +%Y%m%d)_backup.sql > portfolio            
           EOF
