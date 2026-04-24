@@ -18,7 +18,7 @@ jobs:
       - name: Test Backup
         run: |
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
-            mysqldump -u root -p${{ secrets.MYSQL_AUTOMIA_PASSWORD }} portfolio > /home/somath/$(date +%Y%m%d)_backup.sql
+            mysqldump -u root -p${{ secrets.MYSQL_AUTOMIA_PASSWORD }} portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
           EOF
       
     #  - name: LS current home
