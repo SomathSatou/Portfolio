@@ -51,6 +51,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/jdr/', include('jdr.urls')),
+    path('api/muscu/', include('muscu.urls')),
     # Frontend assets (JS, CSS, images) — keep 'assets/' in the path
     re_path(r'^(?P<path>assets/.+)$', frontend_file),
     # Public files copied by Vite to dist root (logos, svg, pdf, etc.)

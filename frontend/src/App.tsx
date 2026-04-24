@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from './components/Layout'
 import JdrRouter from './components/Jdr/JdrRouter'
+import MuscuRouter from './components/Muscu/MuscuRouter'
 import { categories as projectCategories } from './data/projects'
 import { projectBySlug } from './data/projectIndex'
 import { teachingResearchCategories } from './data/teachingResearch'
@@ -281,6 +282,11 @@ export default function App() {
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+
+  // IRL RPG routes — rendered outside of the portfolio Layout
+  if (hash.startsWith('#/irlrpg')) {
+    return <MuscuRouter hash={hash} />
+  }
 
   // JDR routes — rendered outside of the portfolio Layout
   if (hash.startsWith('#/jdr')) {

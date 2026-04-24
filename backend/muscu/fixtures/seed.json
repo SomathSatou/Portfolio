@@ -1,0 +1,141 @@
+[
+  {"model": "muscu.musclegroup", "pk": 1, "fields": {"name": "Poitrine", "icon": "💪", "order": 1}},
+  {"model": "muscu.musclegroup", "pk": 2, "fields": {"name": "Dos", "icon": "🔙", "order": 2}},
+  {"model": "muscu.musclegroup", "pk": 3, "fields": {"name": "Épaules", "icon": "🤷", "order": 3}},
+  {"model": "muscu.musclegroup", "pk": 4, "fields": {"name": "Bras", "icon": "💪", "order": 4}},
+  {"model": "muscu.musclegroup", "pk": 5, "fields": {"name": "Jambes", "icon": "🦵", "order": 5}},
+  {"model": "muscu.musclegroup", "pk": 6, "fields": {"name": "Mollets", "icon": "🦶", "order": 6}},
+  {"model": "muscu.musclegroup", "pk": 7, "fields": {"name": "Abdominaux", "icon": "🔥", "order": 7}},
+  {"model": "muscu.musclegroup", "pk": 8, "fields": {"name": "Cardio", "icon": "❤️", "order": 8}},
+
+  {"model": "muscu.muscle", "pk": 1, "fields": {"name": "Grand pectoral", "group": 1}},
+  {"model": "muscu.muscle", "pk": 2, "fields": {"name": "Petit pectoral", "group": 1}},
+
+  {"model": "muscu.muscle", "pk": 3, "fields": {"name": "Grand dorsal", "group": 2}},
+  {"model": "muscu.muscle", "pk": 4, "fields": {"name": "Trapèzes", "group": 2}},
+  {"model": "muscu.muscle", "pk": 5, "fields": {"name": "Rhomboïdes", "group": 2}},
+  {"model": "muscu.muscle", "pk": 6, "fields": {"name": "Érecteurs du rachis", "group": 2}},
+
+  {"model": "muscu.muscle", "pk": 7, "fields": {"name": "Deltoïde antérieur", "group": 3}},
+  {"model": "muscu.muscle", "pk": 8, "fields": {"name": "Deltoïde moyen", "group": 3}},
+  {"model": "muscu.muscle", "pk": 9, "fields": {"name": "Deltoïde postérieur", "group": 3}},
+
+  {"model": "muscu.muscle", "pk": 10, "fields": {"name": "Biceps", "group": 4}},
+  {"model": "muscu.muscle", "pk": 11, "fields": {"name": "Triceps", "group": 4}},
+  {"model": "muscu.muscle", "pk": 12, "fields": {"name": "Avant-bras", "group": 4}},
+
+  {"model": "muscu.muscle", "pk": 13, "fields": {"name": "Quadriceps", "group": 5}},
+  {"model": "muscu.muscle", "pk": 14, "fields": {"name": "Ischio-jambiers", "group": 5}},
+  {"model": "muscu.muscle", "pk": 15, "fields": {"name": "Fessiers", "group": 5}},
+  {"model": "muscu.muscle", "pk": 16, "fields": {"name": "Adducteurs", "group": 5}},
+  {"model": "muscu.muscle", "pk": 17, "fields": {"name": "Abducteurs", "group": 5}},
+
+  {"model": "muscu.muscle", "pk": 18, "fields": {"name": "Soléaire", "group": 6}},
+  {"model": "muscu.muscle", "pk": 19, "fields": {"name": "Gastrocnémien", "group": 6}},
+
+  {"model": "muscu.muscle", "pk": 20, "fields": {"name": "Grand droit", "group": 7}},
+  {"model": "muscu.muscle", "pk": 21, "fields": {"name": "Obliques", "group": 7}},
+  {"model": "muscu.muscle", "pk": 22, "fields": {"name": "Transverse", "group": 7}},
+
+  {"model": "muscu.muscle", "pk": 23, "fields": {"name": "Cœur (cardio-vasculaire)", "group": 8}},
+
+  {"model": "muscu.gym", "pk": 1, "fields": {"name": "Basic Fit Angers - Saint Serge", "address": "Rue Saint-Serge, 49100 Angers", "city": "Angers"}},
+  {"model": "muscu.gym", "pk": 2, "fields": {"name": "Basic Fit Angers - Atoll", "address": "Avenue de la Fraternité, 49000 Angers", "city": "Angers"}},
+  {"model": "muscu.gym", "pk": 3, "fields": {"name": "Basic Fit Angers - Grand Maine", "address": "Avenue du Général Patton, 49000 Angers", "city": "Angers"}},
+
+  {"model": "muscu.machine", "pk": 1, "fields": {"name": "Presse horizontale", "gym": 1, "description": "Presse à jambes horizontale"}},
+  {"model": "muscu.machine", "pk": 2, "fields": {"name": "Lat Pull-Down", "gym": 1, "description": "Tirage vertical poulie haute"}},
+  {"model": "muscu.machine", "pk": 3, "fields": {"name": "Leg Extension", "gym": 1, "description": "Extension des jambes"}},
+  {"model": "muscu.machine", "pk": 4, "fields": {"name": "Leg Curl", "gym": 1, "description": "Flexion des jambes"}},
+  {"model": "muscu.machine", "pk": 5, "fields": {"name": "Chest Press", "gym": 1, "description": "Développé couché machine"}},
+  {"model": "muscu.machine", "pk": 6, "fields": {"name": "Shoulder Press", "gym": 1, "description": "Développé épaules machine"}},
+  {"model": "muscu.machine", "pk": 7, "fields": {"name": "Pull-over machine", "gym": 1, "description": "Pull-over guidé"}},
+  {"model": "muscu.machine", "pk": 8, "fields": {"name": "Dip Assist", "gym": 1, "description": "Dips assistés"}},
+  {"model": "muscu.machine", "pk": 9, "fields": {"name": "Extensions mollets", "gym": 1, "description": "Machine mollets debout/assis"}},
+  {"model": "muscu.machine", "pk": 10, "fields": {"name": "Hip Abduction", "gym": 1, "description": "Abduction des hanches"}},
+  {"model": "muscu.machine", "pk": 11, "fields": {"name": "Hip Adduction", "gym": 1, "description": "Adduction des hanches"}},
+  {"model": "muscu.machine", "pk": 12, "fields": {"name": "Cable machine / Poulie", "gym": 1, "description": "Poulie polyvalente"}},
+
+  {"model": "muscu.machine", "pk": 13, "fields": {"name": "Presse horizontale", "gym": 2, "description": "Presse à jambes horizontale"}},
+  {"model": "muscu.machine", "pk": 14, "fields": {"name": "Lat Pull-Down", "gym": 2, "description": "Tirage vertical poulie haute"}},
+  {"model": "muscu.machine", "pk": 15, "fields": {"name": "Leg Extension", "gym": 2, "description": "Extension des jambes"}},
+  {"model": "muscu.machine", "pk": 16, "fields": {"name": "Leg Curl", "gym": 2, "description": "Flexion des jambes"}},
+  {"model": "muscu.machine", "pk": 17, "fields": {"name": "Chest Press", "gym": 2, "description": "Développé couché machine"}},
+  {"model": "muscu.machine", "pk": 18, "fields": {"name": "Shoulder Press", "gym": 2, "description": "Développé épaules machine"}},
+  {"model": "muscu.machine", "pk": 19, "fields": {"name": "Pull-over machine", "gym": 2, "description": "Pull-over guidé"}},
+  {"model": "muscu.machine", "pk": 20, "fields": {"name": "Dip Assist", "gym": 2, "description": "Dips assistés"}},
+  {"model": "muscu.machine", "pk": 21, "fields": {"name": "Extensions mollets", "gym": 2, "description": "Machine mollets debout/assis"}},
+  {"model": "muscu.machine", "pk": 22, "fields": {"name": "Hip Abduction", "gym": 2, "description": "Abduction des hanches"}},
+  {"model": "muscu.machine", "pk": 23, "fields": {"name": "Hip Adduction", "gym": 2, "description": "Adduction des hanches"}},
+  {"model": "muscu.machine", "pk": 24, "fields": {"name": "Cable machine / Poulie", "gym": 2, "description": "Poulie polyvalente"}},
+
+  {"model": "muscu.machine", "pk": 25, "fields": {"name": "Presse horizontale", "gym": 3, "description": "Presse à jambes horizontale"}},
+  {"model": "muscu.machine", "pk": 26, "fields": {"name": "Lat Pull-Down", "gym": 3, "description": "Tirage vertical poulie haute"}},
+  {"model": "muscu.machine", "pk": 27, "fields": {"name": "Leg Extension", "gym": 3, "description": "Extension des jambes"}},
+  {"model": "muscu.machine", "pk": 28, "fields": {"name": "Leg Curl", "gym": 3, "description": "Flexion des jambes"}},
+  {"model": "muscu.machine", "pk": 29, "fields": {"name": "Chest Press", "gym": 3, "description": "Développé couché machine"}},
+  {"model": "muscu.machine", "pk": 30, "fields": {"name": "Shoulder Press", "gym": 3, "description": "Développé épaules machine"}},
+  {"model": "muscu.machine", "pk": 31, "fields": {"name": "Pull-over machine", "gym": 3, "description": "Pull-over guidé"}},
+  {"model": "muscu.machine", "pk": 32, "fields": {"name": "Dip Assist", "gym": 3, "description": "Dips assistés"}},
+  {"model": "muscu.machine", "pk": 33, "fields": {"name": "Extensions mollets", "gym": 3, "description": "Machine mollets debout/assis"}},
+  {"model": "muscu.machine", "pk": 34, "fields": {"name": "Hip Abduction", "gym": 3, "description": "Abduction des hanches"}},
+  {"model": "muscu.machine", "pk": 35, "fields": {"name": "Hip Adduction", "gym": 3, "description": "Adduction des hanches"}},
+  {"model": "muscu.machine", "pk": 36, "fields": {"name": "Cable machine / Poulie", "gym": 3, "description": "Poulie polyvalente"}},
+
+  {"model": "muscu.exercise", "pk": 1, "fields": {"name": "Presse horizontale", "description": "Presse à jambes horizontale", "machine": 1, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 2, "fields": {"name": "Lat Pull-Down", "description": "Tirage vertical poulie haute", "machine": 2, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 3, "fields": {"name": "Leg Extension", "description": "Extension des jambes", "machine": 3, "is_public": true, "created_by": 1, "difficulty_factor": 0.8, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 4, "fields": {"name": "Leg Curl", "description": "Flexion des jambes", "machine": 4, "is_public": true, "created_by": 1, "difficulty_factor": 0.8, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 5, "fields": {"name": "Chest Press", "description": "Développé couché machine", "machine": 5, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 6, "fields": {"name": "Shoulder Press", "description": "Développé épaules machine", "machine": 6, "is_public": true, "created_by": 1, "difficulty_factor": 1.1, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 7, "fields": {"name": "Pull-over machine", "description": "Pull-over guidé", "machine": 7, "is_public": true, "created_by": 1, "difficulty_factor": 0.9, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 8, "fields": {"name": "Dip Assist", "description": "Dips assistés", "machine": 8, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 9, "fields": {"name": "Extensions mollets", "description": "Machine mollets debout/assis", "machine": 9, "is_public": true, "created_by": 1, "difficulty_factor": 0.7, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 10, "fields": {"name": "Hip Abduction", "description": "Abduction des hanches", "machine": 10, "is_public": true, "created_by": 1, "difficulty_factor": 0.7, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 11, "fields": {"name": "Hip Adduction", "description": "Adduction des hanches", "machine": 11, "is_public": true, "created_by": 1, "difficulty_factor": 0.7, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 12, "fields": {"name": "Cable machine / Poulie", "description": "Poulie polyvalente", "machine": 12, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "created_at": "2025-01-01T00:00:00Z"}},
+
+  {"model": "muscu.exercisemuscle", "pk": 1, "fields": {"exercise": 1, "muscle": 13, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 2, "fields": {"exercise": 1, "muscle": 15, "involvement": 0.7}},
+  {"model": "muscu.exercisemuscle", "pk": 3, "fields": {"exercise": 1, "muscle": 14, "involvement": 0.5}},
+
+  {"model": "muscu.exercisemuscle", "pk": 4, "fields": {"exercise": 2, "muscle": 3, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 5, "fields": {"exercise": 2, "muscle": 9, "involvement": 0.5}},
+
+  {"model": "muscu.exercisemuscle", "pk": 6, "fields": {"exercise": 3, "muscle": 13, "involvement": 1.0}},
+
+  {"model": "muscu.exercisemuscle", "pk": 7, "fields": {"exercise": 4, "muscle": 14, "involvement": 1.0}},
+
+  {"model": "muscu.exercisemuscle", "pk": 8, "fields": {"exercise": 5, "muscle": 1, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 9, "fields": {"exercise": 5, "muscle": 11, "involvement": 0.5}},
+
+  {"model": "muscu.exercisemuscle", "pk": 10, "fields": {"exercise": 6, "muscle": 7, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 11, "fields": {"exercise": 6, "muscle": 8, "involvement": 0.8}},
+
+  {"model": "muscu.exercisemuscle", "pk": 12, "fields": {"exercise": 7, "muscle": 3, "involvement": 1.0}},
+
+  {"model": "muscu.exercisemuscle", "pk": 13, "fields": {"exercise": 8, "muscle": 1, "involvement": 0.8}},
+  {"model": "muscu.exercisemuscle", "pk": 14, "fields": {"exercise": 8, "muscle": 11, "involvement": 1.0}},
+
+  {"model": "muscu.exercisemuscle", "pk": 15, "fields": {"exercise": 9, "muscle": 18, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 16, "fields": {"exercise": 9, "muscle": 19, "involvement": 0.8}},
+
+  {"model": "muscu.exercisemuscle", "pk": 17, "fields": {"exercise": 10, "muscle": 17, "involvement": 1.0}},
+
+  {"model": "muscu.exercisemuscle", "pk": 18, "fields": {"exercise": 11, "muscle": 16, "involvement": 1.0}},
+
+  {"model": "muscu.badge", "pk": 1, "fields": {"name": "Première Séance", "description": "Terminer sa première séance", "icon": "🎉", "trigger_type": "first_workout", "trigger_value": 1, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 2, "fields": {"name": "Assidu", "description": "7 jours d'entraînement consécutifs", "icon": "🔥", "trigger_type": "streak", "trigger_value": 7, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 3, "fields": {"name": "Machine", "description": "30 jours d'affilée", "icon": "⚙️", "trigger_type": "streak", "trigger_value": 30, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 4, "fields": {"name": "Volume Bronze", "description": "Soulever 10 tonnes au total", "icon": "🥉", "trigger_type": "total_volume", "trigger_value": 10000, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 5, "fields": {"name": "Volume Argent", "description": "Soulever 100 tonnes au total", "icon": "🥈", "trigger_type": "total_volume", "trigger_value": 100000, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 6, "fields": {"name": "Volume Or", "description": "Soulever 1000 tonnes au total", "icon": "🥇", "trigger_type": "total_volume", "trigger_value": 1000000, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 7, "fields": {"name": "Habitué", "description": "50 séances terminées", "icon": "🏋️", "trigger_type": "total_workouts", "trigger_value": 50, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 8, "fields": {"name": "Vétéran", "description": "200 séances terminées", "icon": "🎖️", "trigger_type": "total_workouts", "trigger_value": 200, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 9, "fields": {"name": "Spécialiste", "description": "Un muscle au niveau 10", "icon": "⭐", "trigger_type": "muscle_level", "trigger_value": 10, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 10, "fields": {"name": "Expert", "description": "Un muscle au niveau 25", "icon": "🌟", "trigger_type": "muscle_level", "trigger_value": 25, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 11, "fields": {"name": "Maître", "description": "Un muscle au niveau 50", "icon": "👑", "trigger_type": "muscle_level", "trigger_value": 50, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 12, "fields": {"name": "Niveau 10", "description": "Atteindre le niveau global 10", "icon": "🔟", "trigger_type": "total_level", "trigger_value": 10, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 13, "fields": {"name": "Niveau 25", "description": "Atteindre le niveau global 25", "icon": "📈", "trigger_type": "total_level", "trigger_value": 25, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.badge", "pk": 14, "fields": {"name": "Diamant", "description": "Atteindre le niveau global 50", "icon": "💎", "trigger_type": "total_level", "trigger_value": 50, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}}
+]
