@@ -1,0 +1,41 @@
+name: portfolio-build
+run-name: Fake full deployment on POC automia
+on: [push]
+jobs:
+  automia-build-portfolio:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build portfolio projet
+        run: |
+          pwd
+          echo "Coucou je build le fichier de test" > test.txt 
+       
+      - name: Verify build is successful on local
+        run: |
+          cat test.txt 
+
+  ############################################################
+
+  automia-deploy-portfolio:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Init SSH on runner
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_AUTOMIA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Trying a ssh-keyscan on {{ vars.SSH_AUTOMIA_HOST }}"
+          ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts
+
+      - name: LS current home
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
+            mysqldump -u root -p portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
+            cd /var/www/Portfolio
+            ./deploy.sh
+            mysqldump -u root -p /var/www/Backup/$(date +%Y%m%d)_backup.sql > portfolio            
+          EOF
