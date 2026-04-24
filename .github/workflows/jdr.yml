@@ -23,6 +23,6 @@ jobs:
           sudo mysqldump -u root portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
           echo "Backup OK"
           cd /var/www/Portfolio
-          ./deploy.sh
+          sudo /var/www/Portfolio/deploy.sh
           sudo mysqldump -u root portfolio < /var/www/Backup/$(date +%Y%m%d)_backup.sql 
           EOF
