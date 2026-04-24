@@ -20,7 +20,7 @@ jobs:
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
           set -e
           mkdir -p /var/www/Backup
-          mysqldump -u root -p'${{ secrets.MYSQL_AUTOMIA_PASSWORD }}' portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
+          sudo mysqldump -u root portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
           echo "Backup OK"
           EOF
       
