@@ -22,13 +22,7 @@ jobs:
           mkdir -p /var/www/Backup
           sudo mysqldump -u root portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
           echo "Backup OK"
+          cd /var/www/Portfolio
+          ./deploy.sh
+          sudo mysqldump -u root portfolio < /var/www/Backup/$(date +%Y%m%d)_backup.sql 
           EOF
-      
-    #  - name: LS current home
-    #    run: |
-    #      ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} << 'EOF'
-    #        mysqldump -u root -p${{ secrets.MYSQL_AUTOMIA_PASSWORD }} portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
-    #        cd /var/www/Portfolio
-    #        ./deploy.sh
-    #        mysqldump -u root -p${{ secrets.MYSQL_AUTOMIA_PASSWORD }} portfolio < /var/www/Backup/$(date +%Y%m%d)_backup.sql         
-    #      EOF
