@@ -12,11 +12,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
-    CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
+    CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, Resource, RuneCollection, RuneDrawing, RuneTemplate,
-    SessionNote, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
+    SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
 )
 from .permissions import IsCampaignMember, IsMJ, IsOwner
 from .serializers import (
@@ -29,12 +29,14 @@ from .serializers import (
     CampaignSettingsSerializer,
     CharacterItemSerializer,
     CharacterSerializer,
+    CharacterSkillSerializer,
     CharacterSpellSerializer,
     CharacterStatSerializer,
     CharacterWithStatsSerializer,
     ChatMessageSerializer,
     ItemSerializer,
     MonsterSerializer,
+    SkillSerializer,
     SpellSerializer,
     StatSerializer,
     CityDetailSerializer,
@@ -1001,6 +1003,125 @@ class CharacterSpellRemoveView(APIView):
         try:
             cs = CharacterSpell.objects.select_related('character__campaign').get(pk=pk)
         except CharacterSpell.DoesNotExist:
+            return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = cs.character.player == request.user
+        is_mj = cs.character.campaign and cs.character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        cs.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SkillListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        campaign_id = request.query_params.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        skills = Skill.objects.filter(campaign_id=campaign_id)
+        return Response(SkillSerializer(skills, many=True).data)
+
+    def post(self, request):
+        campaign_id = request.data.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            campaign = Campaign.objects.get(pk=campaign_id)
+        except Campaign.DoesNotExist:
+            return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut créer des compétences.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = SkillSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(campaign=campaign)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SkillDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            skill = Skill.objects.get(pk=pk)
+        except Skill.DoesNotExist:
+            return Response({'detail': 'Compétence introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(SkillSerializer(skill).data)
+
+    def patch(self, request, pk):
+        try:
+            skill = Skill.objects.select_related('campaign').get(pk=pk)
+        except Skill.DoesNotExist:
+            return Response({'detail': 'Compétence introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if skill.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut modifier les compétences.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = SkillSerializer(skill, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        try:
+            skill = Skill.objects.select_related('campaign').get(pk=pk)
+        except Skill.DoesNotExist:
+            return Response({'detail': 'Compétence introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if skill.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut supprimer les compétences.'}, status=status.HTTP_403_FORBIDDEN)
+        skill.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CharacterSkillsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response({'detail': 'Paramètre character requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            character = Character.objects.select_related('campaign').get(pk=character_id)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = character.player == request.user
+        is_mj = character.campaign and character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        skills = CharacterSkill.objects.filter(character=character).select_related('skill')
+        return Response(CharacterSkillSerializer(skills, many=True).data)
+
+    def post(self, request):
+        character_id = request.data.get('character')
+        skill_id = request.data.get('skill')
+        if not character_id or not skill_id:
+            return Response({'detail': 'Paramètres character et skill requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            character = Character.objects.select_related('campaign').get(pk=character_id)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = character.player == request.user
+        is_mj = character.campaign and character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            skill = Skill.objects.get(pk=skill_id, campaign=character.campaign)
+        except Skill.DoesNotExist:
+            return Response({'detail': 'Compétence introuvable dans cette campagne.'}, status=status.HTTP_404_NOT_FOUND)
+        cs, created = CharacterSkill.objects.get_or_create(
+            character=character, skill=skill,
+            defaults={'notes': request.data.get('notes', '')},
+        )
+        if not created:
+            return Response({'detail': 'Cette compétence est déjà connue.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(CharacterSkillSerializer(cs).data, status=status.HTTP_201_CREATED)
+
+
+class CharacterSkillRemoveView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            cs = CharacterSkill.objects.select_related('character__campaign').get(pk=pk)
+        except CharacterSkill.DoesNotExist:
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = cs.character.player == request.user
         is_mj = cs.character.campaign and cs.character.campaign.game_master == request.user

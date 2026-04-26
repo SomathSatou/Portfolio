@@ -3,11 +3,11 @@ from rest_framework import serializers
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
-    CharacterItem, CharacterSpell, CharacterStat, ChatMessage,
+    CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
-    RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Spell, Stat, UserProfile,
+    RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
 )
 
 
@@ -225,6 +225,31 @@ class CharacterItemSerializer(serializers.ModelSerializer):
             'id', 'character', 'item', 'item_name', 'item_rarity', 'item_type',
             'item_description', 'item_is_magical',
             'quantity', 'is_equipped', 'notes', 'acquired_at',
+        ]
+        read_only_fields = ['id', 'character', 'acquired_at']
+
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = [
+            'id', 'campaign', 'name', 'description', 'category',
+            'extra', 'created_at',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at']
+
+
+class CharacterSkillSerializer(serializers.ModelSerializer):
+    skill_name = serializers.CharField(source='skill.name', read_only=True)
+    skill_description = serializers.CharField(source='skill.description', read_only=True)
+    skill_category = serializers.CharField(source='skill.category', read_only=True)
+
+    class Meta:
+        model = CharacterSkill
+        fields = [
+            'id', 'character', 'skill', 'skill_name',
+            'skill_description', 'skill_category',
+            'notes', 'acquired_at',
         ]
         read_only_fields = ['id', 'character', 'acquired_at']
 

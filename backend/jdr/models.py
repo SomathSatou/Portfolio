@@ -324,6 +324,83 @@ class CharacterItem(models.Model):
         return f'{self.character.name} — {self.item.name} (×{self.quantity})'
 
 
+class Skill(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='skills',
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    category = models.CharField(max_length=100, blank=True, default='', help_text='Catégorie (passif, actif, racial…)')
+    extra = models.JSONField(default=dict, blank=True, help_text='Champs libres supplémentaires')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['category', 'name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Compétence'
+        verbose_name_plural = 'Compétences'
+
+    def __str__(self) -> str:
+        return f'{self.name} — {self.campaign.name}'
+
+
+class CharacterSkill(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='character_skills',
+    )
+    skill = models.ForeignKey(
+        Skill, on_delete=models.CASCADE, related_name='character_entries',
+    )
+    notes = models.TextField(blank=True, default='')
+    acquired_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('character', 'skill')
+        verbose_name = 'Compétence de personnage'
+        verbose_name_plural = 'Compétences de personnage'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} — {self.skill.name}'
+
+
+class PassiveSkill(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='passive_skills',
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    extra = models.JSONField(default=dict, blank=True, help_text='Champs libres supplémentaires')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name']
+        unique_together = ('campaign', 'name')
+        verbose_name = 'Compétence passive'
+        verbose_name_plural = 'Compétences passives'
+
+    def __str__(self) -> str:
+        return f'{self.name} — {self.campaign.name}'
+
+
+class CharacterPassiveSkill(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='character_passive_skills',
+    )
+    passive_skill = models.ForeignKey(
+        PassiveSkill, on_delete=models.CASCADE, related_name='character_entries',
+    )
+    notes = models.TextField(blank=True, default='')
+    acquired_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('character', 'passive_skill')
+        verbose_name = 'Compétence passive de personnage'
+        verbose_name_plural = 'Compétences passives de personnage'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} — {self.passive_skill.name}'
+
+
 # ─── Bestiary ───────────────────────────────────────────────────────────────
 
 class Monster(models.Model):

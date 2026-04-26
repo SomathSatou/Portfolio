@@ -1,0 +1,49 @@
+{
+  "session": "2002",
+  "description": "Activités nocturnes — session 20/02",
+  "patches": [
+    {
+      "target": "Paul Tron né SOFA",
+      "actions": [
+        {
+          "type": "add_spell",
+          "spell": {
+            "name": "Magmarto",
+            "description": "<p>Paul Tron frappe le sol du poing, faisant jaillir une éruption de roche en fusion à l'endroit ciblé. La zone reste recouverte de magma brûlant pendant 2 tours, infligeant des dégâts à toute créature qui y pénètre ou y termine son tour.</p><p><br></p><p><u>Effet :</u> 2d8 feu + terrain de magma (zone 3m, 1d4/tour pendant 2 tours)</p>",
+            "characteristic": {
+              "tag": "fire",
+              "castingTime": "1",
+              "range": "8",
+              "unitCT": "-",
+              "energyCost": [
+                {
+                  "target": "gauge0_1",
+                  "cost": "15"
+                }
+              ]
+            },
+            "effect": "2d8"
+          }
+        },
+        {
+          "type": "update_currency",
+          "gold": 132,
+          "silver": 0,
+          "copper": 0
+        }
+      ]
+    },
+    {
+      "target": "Ellmor Tadelle",
+      "actions": [
+        {
+          "type": "add_skill",
+          "skill": {
+            "name": "Fauchage Raisonné",
+            "desc": "<p>Compétence de combat multi-cibles à la faux. Ellmor effectue un mouvement rotatif ample avec sa faux, touchant toutes les créatures dans un rayon de 2m autour d'elle.</p><p><br></p><p><u>Effets :</u></p><ul><li>Touche jusqu'à 3 cibles adjacentes en un seul tour</li><li>Dégâts répartis : dégâts de base de la faux divisés équitablement entre les cibles touchées</li><li>Synergie combo : si une cible est immobilisée (par K. ou autre), les dégâts sur cette cible ne sont pas réduits</li></ul><p><br></p><p><em>Issu de l'entraînement nocturne du « tourbilol » à la faux.</em></p>"
+          }
+        }
+      ]
+    }
+  ]
+}

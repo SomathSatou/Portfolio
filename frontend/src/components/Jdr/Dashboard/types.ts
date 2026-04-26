@@ -137,6 +137,27 @@ export interface CharacterItem {
   acquired_at: string
 }
 
+export interface Skill {
+  id: number
+  campaign: number
+  name: string
+  description: string
+  category: string
+  extra: Record<string, unknown>
+  created_at: string
+}
+
+export interface CharacterSkill {
+  id: number
+  character: number
+  skill: number
+  skill_name: string
+  skill_description: string
+  skill_category: string
+  notes: string
+  acquired_at: string
+}
+
 export interface Monster {
   id: number
   campaign: number

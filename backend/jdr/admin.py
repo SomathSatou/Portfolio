@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignMembership, CampaignSettings, Character, City, CityExport,
+    AlchemyPlant, Campaign, CampaignMembership, CampaignSettings, Character, CharacterSkill,
+    City, CityExport,
     CityImport, GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
-    RuneTemplate, UserProfile,
+    RuneTemplate, Skill, UserProfile,
 )
 
 admin.site.register(UserProfile)
@@ -13,6 +14,16 @@ admin.site.register(CampaignMembership)
 admin.site.register(Character)
 admin.site.register(Notification)
 admin.site.register(CampaignSettings)
+
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('name', 'campaign', 'category')
+    list_filter = ('campaign', 'category')
+    search_fields = ('name',)
+
+
+admin.site.register(CharacterSkill)
 
 
 @admin.register(City)

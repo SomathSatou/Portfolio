@@ -1,7 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import type { Campaign, CampaignSettings, Character, CharacterItem, CharacterSpell, CharacterStat, Item, Spell } from './types'
+import type { Campaign, CampaignSettings, Character, CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, Item, Skill, Spell } from './types'
 
 interface CharacterSheetProps {
   characterId: string
@@ -23,7 +23,9 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [charStats, setCharStats] = React.useState<CharacterStat[]>([])
   const [charSpells, setCharSpells] = React.useState<CharacterSpell[]>([])
   const [charItems, setCharItems] = React.useState<CharacterItem[]>([])
+  const [charSkills, setCharSkills] = React.useState<CharacterSkill[]>([])
   const [campaignSpells, setCampaignSpells] = React.useState<Spell[]>([])
+  const [campaignSkills, setCampaignSkills] = React.useState<Skill[]>([])
   const [campaignItems, setCampaignItems] = React.useState<Item[]>([])
   const [campaignSettings, setCampaignSettings] = React.useState<CampaignSettings | null>(null)
   const [allCampaigns, setAllCampaigns] = React.useState<Campaign[]>([])
@@ -59,11 +61,13 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
         promises.push(
           api.get<CharacterStat[]>(`/character-stats/?character=${c.id}`).then((r) => { if (!cancelled) setCharStats(r.data) }),
           api.get<CharacterSpell[]>(`/character-spells/?character=${c.id}`).then((r) => { if (!cancelled) setCharSpells(r.data) }),
+          api.get<CharacterSkill[]>(`/character-skills/?character=${c.id}`).then((r) => { if (!cancelled) setCharSkills(r.data) }),
           api.get<CharacterItem[]>(`/character-items/?character=${c.id}`).then((r) => { if (!cancelled) setCharItems(r.data) }),
         )
         if (c.campaign) {
           promises.push(
             api.get<Spell[]>(`/spells/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSpells(r.data) }),
+            api.get<Skill[]>(`/skills/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSkills(r.data) }),
             api.get<Item[]>(`/items/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignItems(r.data) }),
             api.get<CampaignSettings>(`/campaigns/${c.campaign}/settings/`).then((r) => { if (!cancelled) setCampaignSettings(r.data) }),
           )
@@ -183,6 +187,25 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       setCharSpells((prev) => prev.filter((s) => s.id !== csId))
     } catch {
       setError('Erreur lors du retrait du sort.')
+    }
+  }
+
+  const handleAddSkill = async (skillId: number) => {
+    if (!character) return
+    try {
+      const res = await api.post<CharacterSkill>('/character-skills/', { character: character.id, skill: skillId })
+      setCharSkills((prev) => [...prev, res.data])
+    } catch {
+      setError('Compétence déjà connue ou erreur.')
+    }
+  }
+
+  const handleRemoveSkill = async (csId: number) => {
+    try {
+      await api.delete(`/character-skills/${csId}/`)
+      setCharSkills((prev) => prev.filter((s) => s.id !== csId))
+    } catch {
+      setError('Erreur lors du retrait de la compétence.')
     }
   }
 
@@ -421,6 +444,43 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
               </div>
             </div>
           )}
+
+          {/* Character Skills */}
+          <div className="card">
+            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Compétences</h2>
+            {charSkills.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Aucune compétence acquise.</p>
+            ) : (
+              <div className="space-y-2">
+                {charSkills.map((cs) => (
+                  <div key={cs.id} className="flex items-center justify-between gap-2 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{cs.skill_name}</span>
+                      {cs.skill_category && <span className="ml-2 text-xs text-gray-500">{cs.skill_category}</span>}
+                      {cs.skill_description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{cs.skill_description}</p>}
+                    </div>
+                    {canEdit && (
+                      <button onClick={() => handleRemoveSkill(cs.id)} className="text-xs text-red-500 hover:underline shrink-0">Retirer</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            {canEdit && campaignSkills.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <select
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) handleAddSkill(+e.target.value); e.target.value = '' }}
+                  className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="" disabled>+ Ajouter une compétence…</option>
+                  {campaignSkills
+                    .filter((s) => !charSkills.some((cs) => cs.skill === s.id))
+                    .map((s) => <option key={s.id} value={s.id}>{s.name}{s.category ? ` (${s.category})` : ''}</option>)}
+                </select>
+              </div>
+            )}
+          </div>
 
           {/* Character Spells */}
           <div className="card">
