@@ -57,8 +57,9 @@ export default function WorkoutPage() {
         api.get<Gym[]>('/gyms/'),
         api.get<Exercise[]>('/exercises/'),
       ])
-      const open = workoutsRes.data.find((w) => w.status === 'open')
-      setWorkout(open || null)
+      const list = Array.isArray(workoutsRes.data) ? workoutsRes.data : []
+      const open = list.find((w) => w.status === 'open')
+      setWorkout(open ? { ...open, sets: open.sets ?? [] } : null)
       setGyms(gymsRes.data)
       setExercises(exercisesRes.data)
       if (exercisesRes.data.length > 0) setSelExercise(exercisesRes.data[0].id)
@@ -77,7 +78,7 @@ export default function WorkoutPage() {
       const res = await api.post<Workout>('/workouts/', {
         gym: selGym || null,
       })
-      setWorkout(res.data)
+      setWorkout({ ...res.data, sets: res.data.sets ?? [] })
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail
       setError(msg || 'Impossible de démarrer la séance.')
@@ -92,7 +93,7 @@ export default function WorkoutPage() {
         exercise: selExercise,
         weight_kg: parseFloat(weight),
         reps: parseInt(reps, 10),
-        order: workout.sets.length,
+        order: (workout.sets ?? []).length,
       })
       // Refresh workout
       const res = await api.get<Workout>(`/workouts/${workout.id}/`)
@@ -142,9 +143,9 @@ export default function WorkoutPage() {
         <div className="card text-center">
           <h2 className="text-2xl font-bold text-primary dark:text-primaryLight">Séance terminée !</h2>
           <p className="mt-4 text-4xl font-bold text-accent1">+{totalXP} XP</p>
-          {closeResult.new_badges.length > 0 && (
+          {(closeResult.new_badges ?? []).length > 0 && (
             <p className="mt-2 text-accent3 font-semibold">
-              🏆 {closeResult.new_badges.length} nouveau(x) badge(s) débloqué(s) !
+              🏆 {(closeResult.new_badges ?? []).length} nouveau(x) badge(s) débloqué(s) !
             </p>
           )}
           <button
@@ -201,7 +202,7 @@ export default function WorkoutPage() {
         <button
           onClick={closeWorkout}
           className="btn btn-accent"
-          disabled={workout.sets.length === 0}
+          disabled={(workout.sets ?? []).length === 0}
         >
           Terminer
         </button>
@@ -256,13 +257,13 @@ export default function WorkoutPage() {
       </div>
 
       {/* Sets list */}
-      {workout.sets.length > 0 && (
+      {(workout.sets ?? []).length > 0 && (
         <div className="card">
           <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
-            Séries ({workout.sets.length})
+            Séries ({(workout.sets ?? []).length})
           </h2>
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {workout.sets.map((s, i) => (
+            {(workout.sets ?? []).map((s, i) => (
               <div key={s.id} className="flex items-center justify-between py-2">
                 <div className="text-sm">
                   <span className="text-gray-400 mr-2">#{i + 1}</span>
@@ -282,7 +283,7 @@ export default function WorkoutPage() {
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400">
-            Volume total : {workout.sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0).toFixed(0)} kg
+            Volume total : {(workout.sets ?? []).reduce((acc, s) => acc + s.weight_kg * s.reps, 0).toFixed(0)} kg
           </div>
         </div>
       )}

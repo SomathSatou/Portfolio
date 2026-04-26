@@ -33,7 +33,8 @@ export default function DashboardPage() {
       api.get<RecentWorkout[]>('/workouts/'),
     ]).then(([statsRes, workoutsRes]) => {
       setStats(statsRes.data)
-      setRecent(workoutsRes.data.filter((w) => w.status === 'closed').slice(0, 5))
+      const workouts = Array.isArray(workoutsRes.data) ? workoutsRes.data : []
+      setRecent(workouts.filter((w) => w.status === 'closed').slice(0, 5))
     }).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
@@ -108,7 +109,8 @@ export default function DashboardPage() {
           <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Dernières séances</h2>
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {recent.map((w) => {
-              const volume = w.sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
+              const sets = w.sets ?? []
+              const volume = sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
               return (
                 <div key={w.id} className="flex items-center justify-between py-2">
                   <div>
@@ -116,7 +118,7 @@ export default function DashboardPage() {
                       {new Date(w.started_at).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {w.gym_name || 'Pas de salle'} — {w.sets.length} série{w.sets.length > 1 ? 's' : ''}
+                      {w.gym_name || 'Pas de salle'} — {(w.sets ?? []).length} série{(w.sets ?? []).length > 1 ? 's' : ''}
                     </p>
                   </div>
                   <span className="text-sm text-gray-600 dark:text-gray-400">{volume.toFixed(0)} kg</span>

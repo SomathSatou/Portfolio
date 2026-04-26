@@ -144,10 +144,13 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
 
 class WorkoutCreateSerializer(serializers.ModelSerializer):
+    sets = WorkoutSetSerializer(many=True, read_only=True)
+    gym_name = serializers.CharField(source='gym.name', read_only=True, default=None)
+
     class Meta:
         model = Workout
-        fields = ['id', 'gym', 'notes']
-        read_only_fields = ['id']
+        fields = ['id', 'gym', 'gym_name', 'started_at', 'status', 'notes', 'sets']
+        read_only_fields = ['id', 'started_at', 'status']
 
 
 class WorkoutSetCreateSerializer(serializers.ModelSerializer):

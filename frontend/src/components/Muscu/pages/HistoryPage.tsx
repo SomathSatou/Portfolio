@@ -24,7 +24,10 @@ export default function HistoryPage() {
 
   React.useEffect(() => {
     api.get<Workout[]>('/workouts/')
-      .then((res) => setWorkouts(res.data.filter((w) => w.status === 'closed')))
+      .then((res) => {
+        const list = Array.isArray(res.data) ? res.data : []
+        setWorkouts(list.filter((w) => w.status === 'closed'))
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
@@ -45,7 +48,8 @@ export default function HistoryPage() {
       <h1 className="text-2xl font-bold text-primary dark:text-primaryLight mb-6">Historique</h1>
       <div className="space-y-3">
         {workouts.map((w) => {
-          const volume = w.sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
+          const sets = w.sets ?? []
+          const volume = sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
           const isExpanded = expandedId === w.id
           return (
             <div key={w.id} className="card">
@@ -58,7 +62,7 @@ export default function HistoryPage() {
                     {new Date(w.started_at).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {w.gym_name || 'Pas de salle'} — {w.sets.length} série{w.sets.length > 1 ? 's' : ''} — {volume.toFixed(0)} kg
+                    {w.gym_name || 'Pas de salle'} — {sets.length} série{sets.length > 1 ? 's' : ''} — {volume.toFixed(0)} kg
                   </p>
                 </div>
                 <svg
@@ -70,7 +74,7 @@ export default function HistoryPage() {
               </button>
               {isExpanded && (
                 <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800">
-                  {w.sets.map((s, i) => (
+                  {(w.sets ?? []).map((s, i) => (
                     <div key={s.id} className="flex justify-between py-1 text-sm">
                       <span>
                         <span className="text-gray-400">#{i + 1}</span>{' '}
