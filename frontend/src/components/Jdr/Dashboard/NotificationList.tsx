@@ -45,7 +45,7 @@ export default function NotificationList({ notifications, onMarkAllRead, onMarkR
   }
 
   return (
-    <div>
+    <div className="flex flex-col h-full min-h-0">
       {unreadCount > 0 && (
         <div className="flex items-center justify-between px-1 pb-3">
           <span className="text-xs text-gray-500 dark:text-gray-400">
@@ -60,7 +60,7 @@ export default function NotificationList({ notifications, onMarkAllRead, onMarkR
         </div>
       )}
 
-      <ul className="space-y-2 max-h-80 overflow-y-auto">
+      <ul className="space-y-2 flex-1 overflow-y-auto chat-scrollbar pr-1 min-h-0">
         {notifications.map((notif) => (
           <li key={notif.id}>
             <button

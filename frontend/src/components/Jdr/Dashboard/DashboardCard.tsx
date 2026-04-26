@@ -10,7 +10,7 @@ interface DashboardCardProps {
 
 export default function DashboardCard({ title, icon, children, href, action }: DashboardCardProps) {
   const content = (
-    <div className="card-glass flex flex-col gap-3 h-full animate-slideUp">
+    <div className="card-glass flex flex-col gap-3 h-full flex-1 animate-slideUp">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-primary dark:text-primaryLight">{icon}</span>
@@ -18,7 +18,7 @@ export default function DashboardCard({ title, icon, children, href, action }: D
         </div>
         {action}
       </div>
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 min-h-0">{children}</div>
     </div>
   )
 
