@@ -13,6 +13,12 @@ interface Exercise {
   muscle_targets: { muscle_name: string; involvement: number }[]
 }
 
+interface MuscleGroup {
+  id: number
+  name: string
+  muscles: { id: number; name: string }[]
+}
+
 interface WorkoutSet {
   id: number
   exercise: number
@@ -47,21 +53,31 @@ export default function WorkoutPage() {
   // Start form
   const [selGym, setSelGym] = React.useState<number>(0)
 
+  // Create exercise form
+  const [showNewExercise, setShowNewExercise] = React.useState(false)
+  const [newExName, setNewExName] = React.useState('')
+  const [newExDesc, setNewExDesc] = React.useState('')
+  const [newExMuscleIds, setNewExMuscleIds] = React.useState<number[]>([])
+  const [muscleGroups, setMuscleGroups] = React.useState<MuscleGroup[]>([])
+  const [creatingExercise, setCreatingExercise] = React.useState(false)
+
   // Close result
   const [closeResult, setCloseResult] = React.useState<{ xp_gained: Record<string, number>; new_badges: number[] } | null>(null)
 
   const fetchData = React.useCallback(async () => {
     try {
-      const [workoutsRes, gymsRes, exercisesRes] = await Promise.all([
+      const [workoutsRes, gymsRes, exercisesRes, muscleGroupsRes] = await Promise.all([
         api.get<Workout[]>('/workouts/'),
         api.get<Gym[]>('/gyms/'),
         api.get<Exercise[]>('/exercises/'),
+        api.get<MuscleGroup[]>('/muscle-groups/'),
       ])
       const list = Array.isArray(workoutsRes.data) ? workoutsRes.data : []
       const open = list.find((w) => w.status === 'open')
       setWorkout(open ? { ...open, sets: open.sets ?? [] } : null)
-      setGyms(gymsRes.data)
-      setExercises(exercisesRes.data)
+      setGyms(Array.isArray(gymsRes.data) ? gymsRes.data : [])
+      setExercises(Array.isArray(exercisesRes.data) ? exercisesRes.data : [])
+      setMuscleGroups(Array.isArray(muscleGroupsRes.data) ? muscleGroupsRes.data : [])
       if (exercisesRes.data.length > 0) setSelExercise(exercisesRes.data[0].id)
     } catch {
       setError('Erreur de chargement.')
@@ -216,13 +232,22 @@ export default function WorkoutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
           <div className="sm:col-span-2">
             <select
-              value={selExercise}
-              onChange={(e) => setSelExercise(Number(e.target.value))}
+              value={showNewExercise ? -1 : selExercise}
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                if (v === -1) {
+                  setShowNewExercise(true)
+                } else {
+                  setShowNewExercise(false)
+                  setSelExercise(v)
+                }
+              }}
               className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
             >
               {exercises.map((ex) => (
                 <option key={ex.id} value={ex.id}>{ex.name}</option>
               ))}
+              <option value={-1}>➕ Créer un exercice…</option>
             </select>
           </div>
           <div>
@@ -247,13 +272,100 @@ export default function WorkoutPage() {
             />
             <button
               onClick={addSet}
-              disabled={addingSet || !weight || !reps}
+              disabled={addingSet || !weight || !reps || showNewExercise}
               className="btn btn-primary text-sm px-3 py-2 flex-shrink-0"
             >
               +
             </button>
           </div>
         </div>
+
+        {/* Inline create exercise form */}
+        {showNewExercise && (
+          <div className="mt-4 p-4 rounded-md border border-primary/30 dark:border-primaryLight/30 bg-primary/5 dark:bg-primaryLight/5 space-y-3">
+            <h3 className="text-sm font-semibold text-primary dark:text-primaryLight">Nouvel exercice</h3>
+            <input
+              type="text"
+              placeholder="Nom de l'exercice *"
+              value={newExName}
+              onChange={(e) => setNewExName(e.target.value)}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+            />
+            <input
+              type="text"
+              placeholder="Description (optionnel)"
+              value={newExDesc}
+              onChange={(e) => setNewExDesc(e.target.value)}
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+            />
+            <div>
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Muscles ciblés :</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
+                {muscleGroups.map((g) => (
+                  <div key={g.id}>
+                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">{g.name}</p>
+                    {g.muscles.map((m) => (
+                      <label key={m.id} className="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={newExMuscleIds.includes(m.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setNewExMuscleIds([...newExMuscleIds, m.id])
+                            } else {
+                              setNewExMuscleIds(newExMuscleIds.filter((id) => id !== m.id))
+                            }
+                          }}
+                          className="rounded border-gray-300 dark:border-gray-600"
+                        />
+                        {m.name}
+                      </label>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={async () => {
+                  if (!newExName.trim()) return
+                  setCreatingExercise(true)
+                  try {
+                    const res = await api.post<Exercise>('/exercises/', {
+                      name: newExName.trim(),
+                      description: newExDesc.trim() || undefined,
+                      muscle_ids: newExMuscleIds,
+                    })
+                    const created = res.data
+                    setExercises((prev) => [...prev, created])
+                    setSelExercise(created.id)
+                    setShowNewExercise(false)
+                    setNewExName('')
+                    setNewExDesc('')
+                    setNewExMuscleIds([])
+                  } catch {
+                    setError('Erreur lors de la création de l\u2019exercice.')
+                  } finally {
+                    setCreatingExercise(false)
+                  }
+                }}
+                disabled={creatingExercise || !newExName.trim()}
+                className="btn btn-primary text-sm"
+              >
+                {creatingExercise ? 'Création…' : 'Créer'}
+              </button>
+              <button
+                onClick={() => {
+                  setShowNewExercise(false)
+                  if (exercises.length > 0) setSelExercise(exercises[0].id)
+                }}
+                className="btn btn-outline text-sm"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Sets list */}

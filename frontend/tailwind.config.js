@@ -10,6 +10,14 @@ export default {
           accent1: "#a0de59",
           accent2: "#466b5a",
           accent3: "#f5c024",
+          /* IRL RPG */
+          irlrpgPrimary: "#dc2626",
+          irlrpgLight: "#2563eb",
+          irlrpgAccent: "#3b82f6",
+          /* JDR */
+          jdrPrimary: "#92400e",
+          jdrLight: "#ea580c",
+          jdrAccent: "#f59e0b",
         },
         fontFamily: {
           display: ["Souvenir", "Georgia", "Times New Roman", "serif"],

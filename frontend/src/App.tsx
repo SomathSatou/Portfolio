@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from './components/Layout'
 import JdrRouter from './components/Jdr/JdrRouter'
 import MuscuRouter from './components/Muscu/MuscuRouter'
+import HubPerso from './components/HubPerso'
 import { categories as projectCategories } from './data/projects'
 import { projectBySlug } from './data/projectIndex'
 import { teachingResearchCategories } from './data/teachingResearch'
@@ -9,13 +10,13 @@ import { teachingResearchCategories } from './data/teachingResearch'
 function SectionCV() {
   return (
     <section id="cv">
-      <div className="section flex flex-col items-center text-center gap-6">
+      <div className="section flex flex-col items-center text-center gap-6 animate-fadeIn">
         <img
           src="/assets/avatar.jpg"
           alt="Avatar"
-          className="w-80 h-80 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-primaryLight/60 shadow-lg"
+          className="w-40 h-40 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-primaryLight/60 shadow-lg"
         />
-        <div className="max-w-3xl">
+        <div className="max-w-3xl animate-slideUp">
           <h1 className="text-3xl md:text-4xl font-bold text-primary">Développeur logiciel et web</h1>
           <p className="mt-4 text-base leading-relaxed text-justify">
             Développeur logiciel et web, j'évolue à l'interface entre recherche, ingénierie et applications métiers. 
@@ -49,15 +50,15 @@ function SectionCV() {
 function SectionProjects() {
   return (
     <section id="projects">
-      <div className="section">
+      <div className="section animate-fadeIn">
         <h2 className="text-2xl md:text-3xl font-bold text-primary">Projets</h2>
-        <p className="mt-2 text-gray-600">Un aperçu de mes travaux et domaines d’expertise.</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">Un aperçu de mes travaux et domaines d’expertise.</p>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {projectCategories.map((cat) => (
-            <div key={cat.name} className="card">
+            <div key={cat.name} className="card-glass animate-slideUp">
               <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
-              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700">
+              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
                 {cat.projectSlugs.map((slug) => {
                   const p = projectBySlug[slug]
                   if (!p) return null
@@ -86,15 +87,15 @@ function SectionProjects() {
 function SectionTeachingResearch() {
   return (
     <section id="teaching-research">
-      <div className="section">
+      <div className="section animate-fadeIn">
         <h2 className="text-2xl md:text-3xl font-bold text-primary">Enseignement et Recherche</h2>
-        <p className="mt-2 text-gray-600">Travaux académiques, publications et supports liés à la formation.</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">Travaux académiques, publications et supports liés à la formation.</p>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {teachingResearchCategories.map((cat) => (
-            <div key={cat.name} className="card">
+            <div key={cat.name} className="card-glass animate-slideUp">
               <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
-              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700">
+              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
                 {cat.projectSlugs.map((slug) => {
                   const p = projectBySlug[slug]
                   if (!p) return null
@@ -162,22 +163,22 @@ function SectionContact() {
 
   return (
     <section id="contact">
-      <div className="section">
+      <div className="section animate-fadeIn">
         <h2 className="text-2xl md:text-3xl font-bold text-primary">Contact</h2>
-        <p className="mt-2 text-gray-600">Envoyez-moi un message, je vous répondrai rapidement.</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">Envoyez-moi un message, je vous répondrai rapidement.</p>
 
-        <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <form onSubmit={onSubmit} className="mt-6 card-glass p-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700">Nom</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre nom" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre nom" />
           </div>
           <div className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="votremail@example.com" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="votremail@example.com" />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">Message</label>
-            <textarea rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre message"></textarea>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+            <textarea rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre message"></textarea>
           </div>
           {/* Honeypot field (should stay empty) */}
           <input type="text" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
@@ -236,8 +237,8 @@ function ProjectPage({ slug }: { slug: string }) {
 
   return (
     <section>
-      <div className="section">
-        <nav className="text-sm text-gray-500 mb-4">
+      <div className="section animate-fadeIn">
+        <nav className="text-sm text-gray-500 dark:text-gray-400 mb-4">
           <a href="#/" className="hover:underline">Accueil</a>
           <span className="mx-2">/</span>
           <a href="#/projects" className="hover:underline">Projets</a>
@@ -246,13 +247,13 @@ function ProjectPage({ slug }: { slug: string }) {
         </nav>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <h1 className="text-3xl font-bold text-primary">{project.title}</h1>
-            <div className="mt-4 text-gray-700 space-y-4">
+          <div className="lg:col-span-2 animate-slideUp">
+            <h1 className="text-2xl md:text-3xl font-bold text-primary">{project.title}</h1>
+            <div className="mt-4 text-gray-700 dark:text-gray-300 space-y-4">
               {project.description}
             </div>
           </div>
-          <aside className="card">
+          <aside className="card-glass animate-slideInRight">
             {project.image && (
               <img src={project.image} alt={project.title} className="w-full rounded-md mb-4" />
             )}
@@ -283,14 +284,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
+  // Hub Perso — gateway to apps
+  if (hash === '#/perso') {
+    return <HubPerso />
+  }
+
   // IRL RPG routes — rendered outside of the portfolio Layout
   if (hash.startsWith('#/irlrpg')) {
-    return <MuscuRouter hash={hash} />
+    return <div className="theme-irlrpg"><MuscuRouter hash={hash} /></div>
   }
 
   // JDR routes — rendered outside of the portfolio Layout
   if (hash.startsWith('#/jdr')) {
-    return <JdrRouter hash={hash} />
+    return <div className="theme-jdr"><JdrRouter hash={hash} /></div>
   }
 
   // Simple hash router: #/ for home, #/project/:slug for project page
