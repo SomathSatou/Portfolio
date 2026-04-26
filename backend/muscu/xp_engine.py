@@ -12,19 +12,19 @@ from .models import (
 # ─── Level / Rank helpers ────────────────────────────────────────────────────
 
 RANK_THRESHOLDS = [
-    (500_000, 'legende'),
-    (150_000, 'master'),
-    (50_000, 'diamant'),
-    (15_000, 'platine'),
-    (5_000, 'or'),
-    (1_000, 'argent'),
+    (200_000, 'legende'),
+    (80_000, 'master'),
+    (30_000, 'diamant'),
+    (12_000, 'platine'),
+    (4_000, 'or'),
+    (1_500, 'argent'),
     (0, 'bronze'),
 ]
 
 
 def xp_for_level(level: int) -> int:
     """XP cumulé nécessaire pour atteindre le niveau donné."""
-    return int(100 * (level ** 1.5))
+    return int(200 * (level ** 1.8))
 
 
 def level_from_xp(xp: int) -> int:
@@ -54,7 +54,8 @@ def distribute_xp_for_workout(workout: Workout) -> dict:
 
     for wset in workout.sets.select_related('exercise').all():
         exercise = wset.exercise
-        xp_brut = wset.weight_kg * wset.reps
+        volume = wset.weight_kg * wset.reps
+        xp_brut = math.log2(volume + 1) * 10
 
         for em in exercise.muscle_targets.select_related('muscle').all():
             xp_muscle = xp_brut * exercise.difficulty_factor * em.involvement
