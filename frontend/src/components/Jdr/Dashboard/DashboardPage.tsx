@@ -292,7 +292,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Right column: Notifications */}
-        <div className="space-y-6">
+        <div className="flex flex-col">
           <DashboardCard
             title="Notifications"
             icon={<Bell className="w-5 h-5" />}
