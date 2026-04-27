@@ -36,11 +36,14 @@ Production:
 """
 import json
 import re
+from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from typing import TextIO
 
 from django.core.management.base import BaseCommand, CommandError
+
+NOW = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
 # ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -377,6 +380,7 @@ class FixtureBuilder:
             'gold': gold,
             'silver': silver,
             'copper': copper,
+            'created_at': NOW,
         })
 
         # ── Items ─────────────────────────────────────────────────────────
@@ -429,6 +433,7 @@ class FixtureBuilder:
                     'value': price,
                     'properties': properties,
                     'is_magical': is_magical,
+                    'created_at': NOW,
                 })
             else:
                 item_pk = self._items[item_name]
@@ -444,6 +449,7 @@ class FixtureBuilder:
                     'quantity': quantity,
                     'is_equipped': is_equipped,
                     'notes': '',
+                    'acquired_at': NOW,
                 })
 
             self.stdout.write(
@@ -490,6 +496,7 @@ class FixtureBuilder:
                     'duration': '',
                     'school': school,
                     'extra': extra,
+                    'created_at': NOW,
                 })
             else:
                 spell_pk = self._spells[spell_name]
@@ -502,6 +509,7 @@ class FixtureBuilder:
                     'character': char_pk,
                     'spell': spell_pk,
                     'notes': '',
+                    'acquired_at': NOW,
                 })
 
             self.stdout.write(
@@ -532,6 +540,7 @@ class FixtureBuilder:
                     'name': sk_name,
                     'description': sk_desc,
                     'extra': {},
+                    'created_at': NOW,
                 })
             else:
                 ps_pk = self._passive_skills[sk_name]
@@ -544,6 +553,7 @@ class FixtureBuilder:
                     'character': char_pk,
                     'passive_skill': ps_pk,
                     'notes': '',
+                    'acquired_at': NOW,
                 })
 
             self.stdout.write(f'    PassiveSkill: {sk_name}')
@@ -658,6 +668,7 @@ class FixtureBuilder:
                 'duration': '',
                 'school': school,
                 'extra': extra,
+                'created_at': NOW,
             })
         else:
             spell_pk = self._spells[spell_name]
@@ -672,6 +683,7 @@ class FixtureBuilder:
             'character': char_pk,
             'spell': spell_pk,
             'notes': '',
+            'acquired_at': NOW,
         })
         self.stdout.write(f'    + Spell: {spell_name}')
 
@@ -706,6 +718,7 @@ class FixtureBuilder:
                 'value': price,
                 'properties': properties,
                 'is_magical': is_magical,
+                'created_at': NOW,
             })
         else:
             item_pk = self._items[item_name]
@@ -722,6 +735,7 @@ class FixtureBuilder:
             'quantity': quantity,
             'is_equipped': is_equipped,
             'notes': '',
+            'acquired_at': NOW,
         })
         self.stdout.write(f'    + Item: {item_name}')
 
@@ -741,6 +755,7 @@ class FixtureBuilder:
                 'name': sk_name,
                 'description': sk_desc,
                 'extra': {},
+                'created_at': NOW,
             })
         else:
             ps_pk = self._passive_skills[sk_name]
@@ -755,6 +770,7 @@ class FixtureBuilder:
             'character': char_pk,
             'passive_skill': ps_pk,
             'notes': '',
+            'acquired_at': NOW,
         })
         self.stdout.write(f'    + PassiveSkill: {sk_name}')
 

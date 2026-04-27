@@ -11,7 +11,8 @@
       "description": "Origine : Elfe sylvain\n\nElmor est née dans une famille mixte : son père, un Orc aussi fort que bête, l’a éduquée dans le respect du combat, de la mort et de l’adversaire. Sa mère, une elfe sylvaine pas beaucoup plus maligne, mais infiniment plus belle, l’a éduquée dans le respect de la nature et de l’ordre des choses. \nTrès tôt, Elmor montre une fascination pour la chasse et le cycle de la vie, et observe attentivement les animaux interagir. Ele fut très marquée, dans sa jeune enfance, par la capacité de la mante religieuse à chasser en utilisant les grandes faux de ses pattes. Elle a tenté mainte fois d’observer et de dessiner sur le fait ce glorieux insecte pendant sa chasse, avec quelques succès notables. Il découle de cette fascination une capacité étonnante à rester immobile des heures, anticiper les mouvements des animaux, et à trouver des insectes. \nEn grandissant, Elmor poussa sa fascination jusqu’à tenter de contacter Ermina elle-même, dont elle avait vu l’illustration dans un livre. Quoi de mieux que cette forme sombre, armée d’une faux, pour lui enseigner ce qui lui manquait tant d’un point de vue guerrier qu’intellectuel ? \nElle y travailla avec acharnement, et c’est enfin après de longues négociations avec ses parents et un rituel particulièrement gore à base de venin de mamba noir et de morceaux de mantes qu’elle parvint à contacter la déesse. Celle-ci, contre toute attente, accepta de la prendre en stage dans l’objectif de lui transmettre une partie de son travail. Malheureusement, Elmor aimait trop les animaux, et leur accordait bien souvent une autre chance. Par ailleurs, de nombreuses âmes de sont plaintes de son langage grossier et de ses blagues salaces, et la jeune femme fut remerciée après 10 ans de formation, très loin des 96 ans nécessaires à former une nouvelle mini divinité des récoltes et de la mort. \nRetour à la case départ donc pour la jeune femme, âgée de 26 ans. Plutôt bien formée au maniement de la faux, elle a d’abord voulu se reconvertir dans l’agriculture, mais son aspect blafard, ses yeux sombres enfoncés dans leurs orbites, et les cicatrices sur sa peau du rituel de contact d'Ermina ne donnent pas vraiment l’impression qu’elle ait la main verte. C’est finalement en tant que videuse de boite de nuit que la jeune femme gagnait sa vie pendant quelques années, jusqu’à se retrouver dans une rixe avec deux aventuriers il y a quelques semaines. C’est lors de cette rixe qu’Elmor prit une vie pour la première fois. L’autre aventurier, visiblement peu gêné par la mort de son compagnon de beuverie, pris le temps de signaler à la jeune fille qu’une vie d’aventurière pourrait très bien lui convenir, avant de prendre tant bien que mal ses jambes à son cou (qu’il avait encore, lui).",
       "gold": 21,
       "silver": 0,
-      "copper": 0
+      "copper": 0,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -30,7 +31,8 @@
         "range": "2",
         "icon": "t-weapon1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -41,7 +43,8 @@
       "item": 1000,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -51,7 +54,8 @@
       "campaign": 1,
       "name": "🦗 Mandibule Verte Lv.3",
       "description": "Fruit de longues années d'observation des mantes religieuses et de son apprentissage auprès de l'apôtre d'🌾Ermina, Elmor a développé un style de combat à la faux unique en son genre. Inspirée des mouvements fulgurants des mandibules de la mante — l'attente immobile, l'anticipation du mouvement, puis la frappe tranchante et définitive — elle manie sa faux avec une précision chirurgicale. Sa patience d'insecte et sa capacité à rester parfaitement immobile avant de frapper font d'elle une combattante redoutable en embuscade. \n\nBonus :\n+1 aux attaques de faux+1 aux embuscades et aux attaques depuis une position d'immobilité prolongée.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -60,7 +64,8 @@
     "fields": {
       "character": 1000,
       "passive_skill": 1000,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -70,7 +75,8 @@
       "campaign": 1,
       "name": "🌾 Bénédiction d'Ermina Lv.1",
       "description": "Ayant échoué à devenir la prochaine apôtre de🌾Ermina, Elmor n'occupe pas une place privilégiée dans le cœur de la Griffe Verte. Mais la déesse n'oublie pas ceux qui ont touché à son cycle. Elmor conserve un lien ténu avec Ermina un écho lointain de la voix de Celle-qui-Reprend. \n\nSi Elmor aide à maintenir le cycle de la vie dans le monde de Lug — en fauchant ce qui doit l'être, en laissant pousser ce qui doit croître — cette bénédiction pourrait grandir à nouveau.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -79,7 +85,8 @@
     "fields": {
       "character": 1000,
       "passive_skill": 1001,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -89,7 +96,8 @@
       "campaign": 1,
       "name": "🪓 Lutte Orc Lv.1",
       "description": "Son père, un Orc de la vieille école, lui a transmis les bases du combat orc avant même qu'elle ne sache lire. Prises brutales, coups de tête, balayages de jambes, et cette philosophie simple : « Si ça bouge encore, t'as pas frappé assez fort. » Ce style de lutte est brut, direct, sans fioritures — l'opposé total de sa technique de faux. Mais quand la faux est hors de portée et que le combat se rapproche, les réflexes orcs d'Elmor prennent le relais. Bonus aux prises au corps à corps, aux tentatives de déséquilibre, et aux coups portés à mains nues. Particulièrement efficace dans les espaces confinés où la faux ne peut pas être maniée.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -98,7 +106,8 @@
     "fields": {
       "character": 1000,
       "passive_skill": 1002,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -108,7 +117,8 @@
       "campaign": 1,
       "name": "Fauchage Raisonné",
       "description": "Compétence de combat multi-cibles à la faux. Ellmor effectue un mouvement rotatif ample avec sa faux, touchant toutes les créatures dans un rayon de 2m autour d'elle.\nEffets :Touche jusqu'à 3 cibles adjacentes en un seul tourDégâts répartis : dégâts de base de la faux divisés équitablement entre les cibles touchéesSynergie combo : si une cible est immobilisée (par K. ou autre), les dégâts sur cette cible ne sont pas réduits\nIssu de l'entraînement nocturne du « tourbilol » à la faux.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -117,7 +127,8 @@
     "fields": {
       "character": 1000,
       "passive_skill": 1003,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -258,7 +269,8 @@
       "description": "Origine : Semi-Homme",
       "gold": 926,
       "silver": 0,
-      "copper": 2
+      "copper": 2,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -277,7 +289,8 @@
         "range": "10",
         "icon": "t-weapon6"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -288,7 +301,8 @@
       "item": 1001,
       "quantity": 6,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -305,7 +319,8 @@
       "properties": {
         "icon": "t-misc6"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -316,7 +331,8 @@
       "item": 1002,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -334,7 +350,8 @@
         "armor_point": "10",
         "icon": "t-armor4"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -345,7 +362,8 @@
       "item": 1003,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -362,7 +380,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -373,7 +392,8 @@
       "item": 1004,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -390,7 +410,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -401,7 +422,8 @@
       "item": 1005,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -418,7 +440,8 @@
       "properties": {
         "icon": "t-misc3"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -429,7 +452,8 @@
       "item": 1006,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -448,7 +472,8 @@
         "range": "1",
         "icon": "t-weapon5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -459,7 +484,8 @@
       "item": 1007,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -477,7 +503,8 @@
         "armor_point": "5",
         "icon": "t-armor1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -488,7 +515,8 @@
       "item": 1008,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -507,7 +535,8 @@
         "range": "2",
         "icon": "t-weapon5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -518,7 +547,8 @@
       "item": 1009,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -538,7 +568,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -547,7 +578,8 @@
     "fields": {
       "character": 1001,
       "spell": 1000,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -567,7 +599,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -576,7 +609,8 @@
     "fields": {
       "character": 1001,
       "spell": 1001,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -595,7 +629,8 @@
       "school": "moon",
       "extra": {
         "components": ""
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -604,7 +639,8 @@
     "fields": {
       "character": 1001,
       "spell": 1002,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -624,7 +660,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -633,7 +670,8 @@
     "fields": {
       "character": 1001,
       "spell": 1003,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -643,7 +681,8 @@
       "campaign": 1,
       "name": "🥷 Pas des Ombres Lv.2",
       "description": "K. maîtrise un art ancestral lui permettant de prendre appui… dans le vide. Grâce à un subtil contrôle de son centre de gravité et à une ancienne technique de canalisation d’énergie par les pieds, il peut effectuer un second bond en l’air, comme s’il s’élançait depuis une marche invisible.\n\nEffet : Une fois en l’air, K. peut utiliser un appui spectral pour effectuer un second saut. Cette capacité se recharge chaque fois que ses deux pieds touchent une surface en contact avec le sol naturel (sol, pierre, bois, etc. – mais pas un mur ou un ennemi).\n\nCela lui permet d’atteindre des hauteurs insoupçonnées ou d’échapper à un adversaire d’un bond imprévu.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -652,7 +691,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1004,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -662,7 +702,8 @@
       "campaign": 1,
       "name": "🐾 Discrétion des Ombres Lv.2",
       "description": "Né à la lisière de la lumière et de l’ombre, K. sait instinctivement se fondre dans les zones sombres. Qu’il s’agisse de l’ombre d’un arbre, d’une ruelle ou de son propre pan de cape, il devient plus silencieux, moins perceptible, presque flou.Effet de la compétence : \n\nLorsqu’il se trouve dans une zone partiellement ou totalement ombragée, K. bénéficie d’un bonus important à ses jets de Discrétion ou Furtivité.Les sens non-visuels (odorat, ouïe) sont également affectés : ses mouvements deviennent presque imperceptibles tant qu'elle reste dans la pénombre.\nLes sens non-visuels (odorat, ouïe) sont également affectés : ses mouvements deviennent presque imperceptibles tant qu’il reste dans la pénombre.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -671,7 +712,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1005,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -681,7 +723,8 @@
       "campaign": 1,
       "name": "🌑 Ninjutsu des Ombres Lv.4",
       "description": "Discipliné, K. a appris à canaliser l’énergie de l’ombre elle-même pour en faire une arme. Par un mudra ancien, il peut donner forme à l’obscurité, la modeler en aiguilles, en voiles ou en illusions brèves.\nK. ne se contente plus de convoquer l’ombre : elle la guide. Par la concentration et les gestes ancestraux du mudra, il imprime à l’obscurité une volonté propre — la sienne.\nSous ses doigts, les ténèbres deviennent matière : aiguilles fugitives, rideaux impénétrables, ou leurres trompeurs.\nLà où K. regarde, l'ombre suit.\nEffet de la compétence : \n\nPermet à K. de lancer de petits sorts d’ombre, à condition qu’une source d’ombre ou de faible lumière soit présente à proximité.Les ombres bougent et glissent à sur le sol, les murs ou l'air comme si elle étaits conscientes.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -690,7 +733,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1006,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -700,7 +744,8 @@
       "campaign": 1,
       "name": "🐀Bénédiction de Nyj Lv.4",
       "description": "Tu ne portes aucun symbole. Tu ne prononces aucun serment à voix haute.Et pourtant, dans le sillage de tes pas, les ombres s’allongent plus lentement, les témoins détournent les yeux, et les détails de ta présence s’estompent dans les souvenirs.\nNyj, dieu des ruelles sans nom, des secrets qu’on ne pose jamais à voix haute, t’a effleuré de son manteau d’oubli.Il n’offre ni gloire ni miracle visible, mais un avantage constant tant que tu restes invisible.\nEffets de la compétence :\nSi tes actions restent non revendiquées ou attribuables à un autre, Nyj renforce leur efficacité.Tu es plus difficile à pister, interroger ou même mémoriser quand tu le souhaites.Tu inspires la crainte discrète des autres affiliés aux milieux de l’ombre : voleurs, assassins, informateurs, mendiants, espions.Nouveau : chaque aube, lance 1d20. Un petit rat messager de Nyj t’apporte un secret cryptique. La qualité du secret dépend du jet.\n→ « Ce que tu gagnes en silence vaut plus que ce que tu cries. »",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -709,7 +754,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1007,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -719,7 +765,8 @@
       "campaign": 1,
       "name": "🤸🏽‍♀️Acrobatie lv.2",
       "description": "Description :Le corps trouve son équilibre, les appuis deviennent plus légers, et chaque mouvement semble guidé par une intuition instinctive. Cette compétence représente les bases de l’art acrobatique : roulades fluides, petits sauts contrôlés, pirouettes rapides et esquives agiles. Rien d’extraordinaire, mais assez pour que votre personnage paraisse plus sûr de ses gestes… et surtout pour éviter les chutes ridicules.\nEffet :Bonus de +1 à toutes les actions liées aux pirouettes, roulades, cabrioles, sauts légers et déplacements acrobatiques.Peut permettre d’éviter certains obstacles ou d’adopter une position avantageuse en combat selon le contexte.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -728,7 +775,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1008,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -738,7 +786,8 @@
       "campaign": 1,
       "name": "🎣Pêche lv.1",
       "description": "Description :La patience devient une arme, et l’observation un instinct. Avec cette compétence, votre personnage maîtrise les bases de l’art délicat de la pêche : choisir un bon emplacement, reconnaître les remous d’un poisson curieux, ajuster la ligne pour éviter qu’elle ne casse, et tirer avec justesse quand ça mord. Ce n’est pas encore la pêche miraculeuse, mais suffisamment pour ramener un repas décent… ou une surprise tirée du fond de l’eau.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -747,7 +796,8 @@
     "fields": {
       "character": 1001,
       "passive_skill": 1009,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -825,7 +875,8 @@
       "description": "Origine : Nain\n\nBiographie !",
       "gold": 307,
       "silver": 20,
-      "copper": 28
+      "copper": 28,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -842,7 +893,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -853,7 +905,8 @@
       "item": 1010,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -870,7 +923,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -881,7 +935,8 @@
       "item": 1011,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -898,7 +953,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -909,7 +965,8 @@
       "item": 1012,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -926,7 +983,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -937,7 +995,8 @@
       "item": 1013,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -954,7 +1013,8 @@
       "properties": {
         "icon": "t-misc2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -965,7 +1025,8 @@
       "item": 1014,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -982,7 +1043,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -993,7 +1055,8 @@
       "item": 1015,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1011,7 +1074,8 @@
         "armor_point": "20",
         "icon": "t-armor6"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1022,7 +1086,8 @@
       "item": 1016,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1039,7 +1104,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1050,7 +1116,8 @@
       "item": 1017,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1067,7 +1134,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1078,7 +1146,8 @@
       "item": 1018,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1089,7 +1158,8 @@
       "item": 1005,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1107,7 +1177,8 @@
         "armor_point": "20",
         "icon": "t-armor1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1118,7 +1189,8 @@
       "item": 1019,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1137,7 +1209,8 @@
         "range": "2",
         "icon": "t-weapon2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1148,7 +1221,8 @@
       "item": 1020,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1159,7 +1233,8 @@
       "item": 1006,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1176,7 +1251,8 @@
       "properties": {
         "icon": "t-misc5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1187,7 +1263,8 @@
       "item": 1021,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1198,7 +1275,8 @@
       "item": 1002,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1215,7 +1293,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1226,7 +1305,8 @@
       "item": 1022,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1243,7 +1323,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1254,7 +1335,8 @@
       "item": 1023,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1272,7 +1354,8 @@
         "armor_point": "15",
         "icon": "t-armor4"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1283,7 +1366,8 @@
       "item": 1024,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1303,7 +1387,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1312,7 +1397,8 @@
     "fields": {
       "character": 1002,
       "spell": 1004,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1332,7 +1418,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1341,7 +1428,8 @@
     "fields": {
       "character": 1002,
       "spell": 1005,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1361,7 +1449,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1370,7 +1459,8 @@
     "fields": {
       "character": 1002,
       "spell": 1006,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1389,7 +1479,8 @@
       "school": "fire",
       "extra": {
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1398,7 +1489,8 @@
     "fields": {
       "character": 1002,
       "spell": 1007,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1408,7 +1500,8 @@
       "campaign": 1,
       "name": "🥋Art Martial Sexton Lv.3",
       "description": "Issu de sa première victoire contre un gobelin adulte, ce style de combat mêle instinct, mauvaise foi et usage créatif des articulations basses. Permet à Paul d'utiliser des prises vicieuses et des techniques de déséquilibre improvisées. Bonus aux luttes de rue, bagarres de taverne ou prises au corps à corps non conventionnelles.\n\nEffets de la compétence : \nbonus +1 au jet de déstabilisationbonus +1 au jet de soumission physiquebonus +1 au jet d'attaque a main nue",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1417,7 +1510,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1010,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1427,7 +1521,8 @@
       "campaign": 1,
       "name": "🪙 Négociation Opportune Lv.3",
       "description": "Paul sait flairer la faille : hésitation, fatigue, ou avidité. Il peut, une fois par échange, proposer un prix ou une contrepartie qui semble trop belle pour être refusée… jusqu’à ce qu’on réalise qu’il a pris le dessus. Bonus aux transactions commerciales ou aux tentatives de persuasion liées à un échange.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1436,7 +1531,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1011,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1446,7 +1542,8 @@
       "campaign": 1,
       "name": "🎭 Marchand de Mirages Lv.1",
       "description": "Spécialiste de l’emballage plus que du contenu, Paul peut vendre un objet sans réelle valeur comme s’il s’agissait d’une relique. Permet de masquer temporairement l’inefficacité d’un objet ou de convaincre une personne de sa rareté. Bonus aux ventes frauduleuses, fausses rumeurs et montages commerciaux douteux.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1455,7 +1552,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1012,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1465,7 +1563,8 @@
       "campaign": 1,
       "name": "🐦‍🔥Bénédiction de Fyrän Lv.4",
       "description": "Au début, Anuki, jeune renard céleste à deux queues, voyait en Paul Tron un simple Alpha, une figure dominante à craindre. Mais au fil des veilles, des tresses dans les poils, et des nuits passées à dormir côte à côte, la peur s’est muée en confiance, puis en lien sacré.Cette complicité silencieuse, née dans la chaleur partagée et les gestes doux, a attiré l’attention du dieu Fyrän, maître du Feu Silencieux. Par le biais de son avatar, Paul a reçu une bénédiction discrète, mais profonde, marquant son âme d’un éclat intérieur.\nEffets de la compétence :\n\n+20 PR (Protection Résistante) contre les dégâts de feu.\nAffinité élémentaire latente avec la magie de feu : si un jour Paul devait apprendre à manipuler la magie, le feu lui répondra avec plus de souplesse qu’à un nain ordinaire.\nAnuki ressent cette bénédiction, et se montre plus loyal, attentif et protecteur envers PaulL'appel a Anuki bénéficie d'un bonus de +1 au jet de charisme\n→ « La chaleur guérit et les flames permettent de rebâtir  »",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1474,7 +1573,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1013,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1484,7 +1584,8 @@
       "campaign": 1,
       "name": "💰Bénédiction d’Avarinn Lv.3",
       "description": "Tu sens le poids discret d’une pièce invisible dans ta paume, tiède comme la main d’un banquier.La Bénédiction d’Avarinn, dieu des échanges justes, des balances truquées, et de la valeur subjective des choses, se manifeste moins par des miracles que par des opportunités étrangement favorables, des silences bien placés, et des prix qui penchent sans raison en ta faveur.\nCeux qui portent sa marque parlent avec des mots qui brillent comme de l’or — non pas toujours sincères, mais toujours convaincants. Ils sentent le profit latent, évaluent les gens comme des stocks fluctuants, et concluent toujours la transaction la plus avantageuse… pour eux.\nEffets de la compétence :\nLes marchands sont souvent plus enclins à écouter ou à marchander avec le porteur.Une impression subtile de respect ou de méfiance bienveillante peut émaner de lui dans les cercles commerciaux ou religieux.Si le porteur trahit systématiquement l’idée d’un échange équitable, Avarinn peut retirer sa faveur sans prévenir\n→ « Toute chose a un prix. Même ce que tu n’as pas voulu obtenir. »",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1493,7 +1594,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1014,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1503,7 +1605,8 @@
       "campaign": 1,
       "name": "🎲Dés pipés lv.2",
       "description": "Description :Un clin d’œil, un souffle, un geste presque imperceptible… et le hasard semble soudain moins hasardeux.Cette compétence représente un subtil talent pour influencer la chance elle-même — pas assez pour tricher ouvertement, mais juste assez pour « redresser » un destin capricieux. L’utilisateur apprend à lire l’élan d’un jet, la logique d’un tirage, et à y glisser une once de volonté, comme si le monde acceptait de plier légèrement les règles pour lui.\nEffet :Le joueur peut effectuer un jet de “Chance” et en cas de réussite, il peut modifier la valeur d’un dé de ±1 (après l’avoir lancé).Ne peut être utilisé qu’une fois par session",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1512,7 +1615,8 @@
     "fields": {
       "character": 1002,
       "passive_skill": 1015,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1590,7 +1694,8 @@
       "description": "Origine : Semi-Homme",
       "gold": 64,
       "silver": 1,
-      "copper": 0
+      "copper": 0,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1608,7 +1713,8 @@
         "armor_point": "2",
         "icon": "t-armor6"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1619,7 +1725,8 @@
       "item": 1025,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1630,7 +1737,8 @@
       "item": 1002,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1641,7 +1749,8 @@
       "item": 1004,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1652,7 +1761,8 @@
       "item": 1005,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1671,7 +1781,8 @@
         "range": "1",
         "icon": "t-weapon1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1682,7 +1793,8 @@
       "item": 1026,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1700,7 +1812,8 @@
         "armor_point": "30",
         "icon": "t-armor2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1711,7 +1824,8 @@
       "item": 1027,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1729,7 +1843,8 @@
         "armor_point": "25",
         "icon": "t-armor4"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1740,7 +1855,8 @@
       "item": 1028,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1758,7 +1874,8 @@
         "armor_point": "10",
         "icon": "t-armor5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1769,7 +1886,8 @@
       "item": 1029,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1789,7 +1907,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1798,7 +1917,8 @@
     "fields": {
       "character": 1003,
       "spell": 1008,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1818,7 +1938,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1827,7 +1948,8 @@
     "fields": {
       "character": 1003,
       "spell": 1009,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1847,7 +1969,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1856,7 +1979,8 @@
     "fields": {
       "character": 1003,
       "spell": 1010,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1876,7 +2000,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1885,7 +2010,8 @@
     "fields": {
       "character": 1003,
       "spell": 1011,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1905,7 +2031,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1914,7 +2041,8 @@
     "fields": {
       "character": 1003,
       "spell": 1012,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1934,7 +2062,8 @@
       "extra": {
         "components": "",
         "unitCT": ""
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1943,7 +2072,8 @@
     "fields": {
       "character": 1003,
       "spell": 1013,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1953,7 +2083,8 @@
       "campaign": 1,
       "name": "⚔️ Manipulation du Métal Lv.5",
       "description": "Drunmör répond à l’appel de son fidèle. Par une prière brève ou un simple contact de la main avec le sol ou son arme, Prozengan peut faire émerger des éclats de métal brut. Ces fragments, aux reflets froids et tranchants, flottent autour de lui, prêts à être projetés ou à former une défense.\nEffet :Génère jusqu'à 5 éclats de métal durant un combat ou une scène intensePeut fusionner 3 éclats pour créer un objet simple temporaire (cuillère, clou, petite lame, etc.)Les éclats peuvent être attachés à son arme pour +1 dégât pendant 3 toursLes éclats disparaissent au bout de quelques minutes, redevenant poussière ou limaille\nRequiert un bref contact avec une source solide (sol, pierre, métal) et une prière silencieuse.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1962,7 +2093,8 @@
     "fields": {
       "character": 1003,
       "passive_skill": 1016,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1972,7 +2104,8 @@
       "campaign": 1,
       "name": "🛡️ Lourdeur d’Enclume Lv.1",
       "description": "Porté par la volonté de Drunmör, Prozengan ancre ses appuis comme s’il pesait le poids d’une forge entière. Il devient plus difficile à renverser, bousculer ou déstabiliser.\n\nEffet : Bénéficie d’un bonus de +2 à ses jets de sauvegarde ou de résistance contre les tentatives de renversement, de déséquilibre ou de recul.\nDe plus, s’il plante son arme dans le sol ou prend une posture défensive, ce bonus est doublé pour un tour.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1981,7 +2114,8 @@
     "fields": {
       "character": 1003,
       "passive_skill": 1017,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -1991,7 +2125,8 @@
       "campaign": 1,
       "name": "🔨 Bénédiction de Drunmör Lv.6",
       "description": "Lié à Drunmör par un serment sacré, Prozengan manie les armes métalliques avec une aisance forgée dans la foi et la discipline. Ses coups ne sont pas seulement forts, ils sont justes, équilibrés, portés avec l’autorité du métal béni.\n\nSuite a son serment, scellé dans l’acier, Prozengan n’est plus un simple porteur d’arme — il est un vecteur de volonté divine, une enclume vivante sur laquelle se frappent les destinées. Chaque mouvement de son bras, chaque frappe de son arme, résonne comme un écho des batailles anciennes que Drunmör chérit, celles où la bravoure fut plus forte que la peur.\nCette bénédiction n’accorde pas seulement la force, elle exige la noblesse d’âme : l’affrontement frontal, l’honneur du duel, la lutte pour un peuple ou un serment. Car Drunmör ne bénit pas les lâches, ni les traîtres — il observe depuis sa montagne de métal, et forge dans la gloire les noms dignes d’être chantés.\nEffet de la compétence : \nDrunmör donne un niveau supplémentaire dans le niveau de manipulation du métalLes effet positif de cette bénédiction permette de contrôlé un éclat suplémentairebonus modéré +1 aux jets d’attaque et de maîtrise lorsqu’il utilise une arme en métal (épée, hache, marteau, etc.).\nUn bonus de +1 au jet d'intuition\n→ « Le sang juge mieux que les mots. »",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2000,7 +2135,8 @@
     "fields": {
       "character": 1003,
       "passive_skill": 1018,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2010,7 +2146,8 @@
       "campaign": 1,
       "name": "🗡️Maniement de l'épée Lv.4",
       "description": "L’arme devient familière — son poids, sa longueur, son rythme. L’utilisateur commence à ressentir les ouvertures, à anticiper les reculs, à sentir l’instant où un coup pourrait en appeler un autre.\nCe n’est pas encore un enchaînement fulgurant, mais parfois, le combat s’ouvre comme une faille, et le guerrier sait s’y engouffrer.\nC’est le premier lien entre le bras et la lame, la promesse d’un art qui dépasse la force brute.\n\nEffet de la compétence : \nbonus au maniement des épées +(niveau de compétence)d5 au dégât des coups d'épée",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2019,7 +2156,8 @@
     "fields": {
       "character": 1003,
       "passive_skill": 1019,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2097,7 +2235,8 @@
       "description": "Origine : Haut Elfe\n\nSuite aux nombreux désaccords sur l'hypothèse de l'existence potentielle de Lug. Le Père Baltrou a continué de tout faire pour me ridiculiser.Malgré des tentatives d'excuses, en essayant de lui expliquer que je ne reniait rien de ce culte, mais que je me posait des questions, qui me semblaient légitimes.\nRien ne s'est réglé, au contraire.\nEn continuant de faire de moi une ennemie de son culte.\nJe me suis demandée, si son dieu existe vraiment, comment il pourrait laisser un homme qui humilie des enfants en être son représentant.\nPeut être alors que c'est ces représentants actuels sont la raison du déclin de Lug.\nComment se comportent les autres cités ? les autres dirigeants de cultes sont ils aussi bornés que notre Père Baltrou ?\nLug, réelle divinité ou construction sociale visant à contrôler la société par la peur de l'inconnue supérieure ?\nJ'ai tenté pendant toute la fin de mon enfance à faire le moins de vagues possibles. De garder pour moi ces questionnements, et en parler avec Mme Ghetto.\nMême avec mes parents je ne pouvais pas me permettre d'évoquer la moindre interrogation.\nMa mère, fabriquant de petits bijoux, et petits objets en bois, souvent pour offrir à l'église du village des petites idoles.\nMon père lui libraire de la ville, se retrouverai peut être capable de comprendre mon questionnement, mais ayant parcouru tout les livres de sa boutique.\nRien, pas même un ouvrage ne semble poser la question des réelles intentions de Lug ou de sa non existence potentielle.\nAprès que le Père Balesyeucou, eut  perdu officiellement la tête, enfin plus qu'avant\nLe confronter a son comportement, ou a ses propres contradictions n'avait plus aucun sens.\nA continuer (reste les gros évènements d'adolescence / D'adulte)\nLe Jour de la fête du Village (10 ans après), je confronte le père Baltrou, et lui parle de ses méthodes !",
       "gold": 103,
       "silver": 4,
-      "copper": 0
+      "copper": 0,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2108,7 +2247,8 @@
       "item": 1004,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2125,7 +2265,8 @@
       "properties": {
         "icon": "t-misc6"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2136,7 +2277,8 @@
       "item": 1030,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2153,7 +2295,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2164,7 +2307,8 @@
       "item": 1031,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2181,7 +2325,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2192,7 +2337,8 @@
       "item": 1032,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2209,7 +2355,8 @@
       "properties": {
         "icon": "t-misc2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2220,7 +2367,8 @@
       "item": 1033,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2237,7 +2385,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2248,7 +2397,8 @@
       "item": 1034,
       "quantity": 0,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2259,7 +2409,8 @@
       "item": 1005,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2276,7 +2427,8 @@
       "properties": {
         "icon": "t-misc1"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2287,7 +2439,8 @@
       "item": 1035,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2298,7 +2451,8 @@
       "item": 1002,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2316,7 +2470,8 @@
         "armor_point": "10",
         "icon": "t-armor4"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2327,7 +2482,8 @@
       "item": 1036,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2344,7 +2500,8 @@
       "properties": {
         "icon": "t-misc2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2355,7 +2512,8 @@
       "item": 1037,
       "quantity": 1,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2372,7 +2530,8 @@
       "properties": {
         "icon": "t-misc5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2383,7 +2542,8 @@
       "item": 1038,
       "quantity": 2,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2401,7 +2561,8 @@
         "armor_point": "12",
         "icon": "t-armor2"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2412,7 +2573,8 @@
       "item": 1039,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2429,7 +2591,8 @@
       "properties": {
         "icon": "t-misc5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2440,7 +2603,8 @@
       "item": 1040,
       "quantity": 2,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2457,7 +2621,8 @@
       "properties": {
         "icon": "t-misc5"
       },
-      "is_magical": false
+      "is_magical": false,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2468,7 +2633,8 @@
       "item": 1041,
       "quantity": 5,
       "is_equipped": false,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2489,7 +2655,8 @@
         },
         "icon": "t-magic2"
       },
-      "is_magical": true
+      "is_magical": true,
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2500,7 +2667,8 @@
       "item": 1042,
       "quantity": 1,
       "is_equipped": true,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2520,7 +2688,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2529,7 +2698,8 @@
     "fields": {
       "character": 1004,
       "spell": 1014,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2549,7 +2719,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2558,7 +2729,8 @@
     "fields": {
       "character": 1004,
       "spell": 1015,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2578,7 +2750,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2587,7 +2760,8 @@
     "fields": {
       "character": 1004,
       "spell": 1016,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2607,7 +2781,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2616,7 +2791,8 @@
     "fields": {
       "character": 1004,
       "spell": 1017,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2636,7 +2812,8 @@
       "extra": {
         "components": "",
         "unitCT": "-"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2645,7 +2822,8 @@
     "fields": {
       "character": 1004,
       "spell": 1018,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2665,7 +2843,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2674,7 +2853,8 @@
     "fields": {
       "character": 1004,
       "spell": 1019,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2694,7 +2874,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2703,7 +2884,8 @@
     "fields": {
       "character": 1004,
       "spell": 1020,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2723,7 +2905,8 @@
       "extra": {
         "components": "",
         "unitCT": "turn"
-      }
+      },
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2732,7 +2915,8 @@
     "fields": {
       "character": 1004,
       "spell": 1021,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2742,7 +2926,8 @@
       "campaign": 1,
       "name": "🌊 Magie d’Eau Mineure Lv.5",
       "description": "Premiers pas vers la magie, cette compétence permet à Soria de créer ou manipuler de petites quantités d’eau (une flaque, un jet fin, quelques gouttelettes flottantes). Elle s’accorde parfaitement à sa nature calme et introspective. Utile pour l’exploration, l’extinction de petites flammes, ou des effets visuels subtils.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2751,7 +2936,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1020,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2761,7 +2947,8 @@
       "campaign": 1,
       "name": "🏛️ Connaissance des Cités Lv.1",
       "description": "L’esprit curieux de Soria et ses nombreuses lectures l’ont rendue familière avec la géographie, les systèmes politiques et certaines cultures des cités majeures du continent. Elle est capable d’identifier un accent, de comprendre les us et coutumes locaux, ou de reconnaître les factions importantes d’une ville, même sans y être allée.\n\nSoria a pris des notes dans son grimoires il est de sa responsabilité d'enrichir ces pages au grés des informations récolté dans ses aventures.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2770,7 +2957,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1021,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2780,7 +2968,8 @@
       "campaign": 1,
       "name": "📖 Théologie Basique Lv.2",
       "description": "Ses lectures comparatives et ses échanges avec Mme Ghetto ont offert à Soria une vue d’ensemble du panthéon, de ses contradictions internes, de ses zones floues et des dérives humaines qui l'entourent. Cette compétence lui donne accès aux doctrines officielles, aux dogmes majeurs, aux rivalités divines, et aux origines des différents cultes. Elle peut identifier les symboles, les fêtes et les figures religieuses même si elle les remet en question.\n\nSoria a pris des notes dans son grimoires il est de sa responsabilité d'enrichir ces pages au grés des informations récolté dans ses aventures. \n\nUne étude approfondi et de nombreuse discutions avec Clémence on fait germer un graine dans l'esprit de Soria et si le panthéon de Lug n'étais pas le seul.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2789,7 +2978,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1022,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2799,7 +2989,8 @@
       "campaign": 1,
       "name": "💧 Méditation de la Mare Lv.3",
       "description": "« Toute surface d’eau est un miroir. Et certains reflets contiennent des réponses plus anciennes que les mots. »\nAvec le temps, Soria ne se contente plus de se calmer dans la présence de l’eau : elle entre en syntonie avec elle. Sa méditation ne puise plus seulement dans la paix de la mare, mais dans la mémoire liquide du monde. Chaque vaguelette, chaque frisson sur la surface, lui murmure quelque chose d’ancien, de profond — un flux de magie plus pur, plus dense.\nSon corps et son esprit s’accordent désormais à la pulsation de l’eau vivante, lui permettant de récupérer son mana avec une efficacité accrue… et une stabilité mentale presque surnaturelle.\nEffets de la compétence :\nRégénération de mana renforcée lors d’une méditation au contact ou à proximité immédiate d’une source d’eau naturelle (ruisseau, mare, source, pluie pure…).+9 points de mana récupérés par cycle de méditation.La concentration devient plus difficile à briser : résistance accrue aux intrusions mentales ou perturbations magiques durant l’état méditatif Soria peut ressentir des intuitions élémentaires lors de méditations prolongées — des sensations ou pressentiments liés à l’eau, au climat ou aux émotions proches.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2808,7 +2999,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1023,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2818,7 +3010,8 @@
       "campaign": 1,
       "name": "🐋 Bénédiction d’Aquaïos Lv.2",
       "description": "Soria a reçu la bénédiction du dieu Aquaïos, gardien des eaux tranquilles et des marées intérieures. Même lorsque les tempêtes grondent autour d’elle, son esprit reste limpide, comme la surface d’un lac immobile. Cette bénédiction ne lui offre pas de pouvoir spectaculaire, mais un don rare : la stabilité émotionnelle et mentale, un ancrage calme dans un monde agité.\n\nEffets de la compétence :\nSoria peut entrer en méditation ou rester concentrée même en situation de stress, de danger ou de chaos (bataille, effondrement, pression magique, etc.).Elle bénéficie d’un bonus aux jets de concentration, de sang-froid ou de résistance mentale.Permet de réduire ou ignorer temporairement les effets de peur, de panique ou de confusion.\n→ « Dans le tumulte, une étendue paisible subsiste. »",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2827,7 +3020,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1024,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2837,7 +3031,8 @@
       "campaign": 1,
       "name": "✴️ Enchantement runique Lv.3",
       "description": "L’art de l’Enchantement runique est une discipline ancienne transmise  les érudits du Collège des Arcanes.Celui qui la maîtrise apprend à lier le flux magique aux symboles gravés, transformant ainsi un simple objet en réceptacle de pouvoir.\nGrâce à une concentration profonde et l’usage d’un burin d’argent ou d’un stylet d’onyx, l’enchanteur trace des glyphes de pouvoir sur la surface d’un objet :\nLa réussite d’un enchantement dépend de la qualité du matériau, de la précision du trait et de la stabilité magique du lieu.\nUne erreur peut transformer l’objet en coquille inerte… ou en explosion runique incontrôlée.\nEffets de la compétence :\nPermet de graver des runes magiques sur la plupart des objets non vivants.\nTu as découvert que les effets de l'enchantement de n'active uniquement en combinant un minimum de deux rune\nles règles de combinaison ne sont pas encore très clair pour toi.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2846,7 +3041,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1025,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2856,7 +3052,8 @@
       "campaign": 1,
       "name": "🚢Navigation marine lv.1",
       "description": "Description : \nVous possédez les connaissances fondamentales de la navigation en mer. Vous savez lire les courants, interpréter la position des étoiles pour vous orienter, et comprendre les bases de la manœuvre d'un navire. Vous êtes capable d'assister efficacement un équipage dans les tâches courantes : hisser les voiles, tenir la barre par temps calme, et effectuer les manœuvres simples au port.Effet : \nVous bénéficiez d'un bonus lors de vos jets liés à la navigation maritime, que ce soit pour maintenir le cap, éviter des obstacles en mer calme, ou participer aux manœuvres de base d'un navire.",
-      "extra": {}
+      "extra": {},
+      "created_at": "2026-04-27T11:18:15Z"
     }
   },
   {
@@ -2865,7 +3062,8 @@
     "fields": {
       "character": 1004,
       "passive_skill": 1026,
-      "notes": ""
+      "notes": "",
+      "acquired_at": "2026-04-27T11:18:15Z"
     }
   },
   {
