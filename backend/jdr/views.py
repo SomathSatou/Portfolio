@@ -12,11 +12,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
-    CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
+    CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, Resource, RuneCollection, RuneDrawing, RuneTemplate,
-    SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
+    PassiveSkill, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
 )
 from .permissions import IsCampaignMember, IsMJ, IsOwner
 from .serializers import (
@@ -29,6 +29,7 @@ from .serializers import (
     CampaignSettingsSerializer,
     CharacterItemSerializer,
     CharacterSerializer,
+    CharacterPassiveSkillSerializer,
     CharacterSkillSerializer,
     CharacterSpellSerializer,
     CharacterStatSerializer,
@@ -1128,6 +1129,67 @@ class CharacterSkillRemoveView(APIView):
         if not is_owner and not is_mj:
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         cs.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CharacterPassiveSkillsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response({'detail': 'Paramètre character requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            character = Character.objects.select_related('campaign').get(pk=character_id)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = character.player == request.user
+        is_mj = character.campaign and character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        ps = CharacterPassiveSkill.objects.filter(character=character).select_related('passive_skill')
+        return Response(CharacterPassiveSkillSerializer(ps, many=True).data)
+
+    def post(self, request):
+        """Add a passive skill to a character. MJ or owner can do this."""
+        character_id = request.data.get('character')
+        passive_skill_id = request.data.get('passive_skill')
+        if not character_id or not passive_skill_id:
+            return Response({'detail': 'Paramètres character et passive_skill requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            character = Character.objects.select_related('campaign').get(pk=character_id)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = character.player == request.user
+        is_mj = character.campaign and character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        try:
+            passive_skill = PassiveSkill.objects.get(pk=passive_skill_id, campaign=character.campaign)
+        except PassiveSkill.DoesNotExist:
+            return Response({'detail': 'Compétence passive introuvable dans cette campagne.'}, status=status.HTTP_404_NOT_FOUND)
+        cps, created = CharacterPassiveSkill.objects.get_or_create(
+            character=character, passive_skill=passive_skill,
+            defaults={'notes': request.data.get('notes', '')},
+        )
+        if not created:
+            return Response({'detail': 'Cette compétence passive est déjà connue.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(CharacterPassiveSkillSerializer(cps).data, status=status.HTTP_201_CREATED)
+
+
+class CharacterPassiveSkillRemoveView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            cps = CharacterPassiveSkill.objects.select_related('character__campaign').get(pk=pk)
+        except CharacterPassiveSkill.DoesNotExist:
+            return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        is_owner = cps.character.player == request.user
+        is_mj = cps.character.campaign and cps.character.campaign.game_master == request.user
+        if not is_owner and not is_mj:
+            return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
+        cps.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

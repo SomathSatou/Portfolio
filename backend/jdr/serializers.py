@@ -3,11 +3,11 @@ from rest_framework import serializers
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
-    CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
+    CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
-    RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
+    PassiveSkill, RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
 )
 
 
@@ -249,6 +249,30 @@ class CharacterSkillSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'character', 'skill', 'skill_name',
             'skill_description', 'skill_category',
+            'notes', 'acquired_at',
+        ]
+        read_only_fields = ['id', 'character', 'acquired_at']
+
+
+class PassiveSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PassiveSkill
+        fields = [
+            'id', 'campaign', 'name', 'description',
+            'extra', 'created_at',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at']
+
+
+class CharacterPassiveSkillSerializer(serializers.ModelSerializer):
+    passive_skill_name = serializers.CharField(source='passive_skill.name', read_only=True)
+    passive_skill_description = serializers.CharField(source='passive_skill.description', read_only=True)
+
+    class Meta:
+        model = CharacterPassiveSkill
+        fields = [
+            'id', 'character', 'passive_skill', 'passive_skill_name',
+            'passive_skill_description',
             'notes', 'acquired_at',
         ]
         read_only_fields = ['id', 'character', 'acquired_at']

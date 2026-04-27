@@ -9,6 +9,8 @@ from .views import (
     CharacterAvatarUploadView,
     CharacterItemDetailView,
     CharacterItemsView,
+    CharacterPassiveSkillRemoveView,
+    CharacterPassiveSkillsView,
     CharacterSkillRemoveView,
     CharacterSkillsView,
     CharacterSpellRemoveView,
@@ -95,6 +97,8 @@ urlpatterns = [
     path('skills/<int:pk>/', SkillDetailView.as_view(), name='skill-detail'),
     path('character-skills/', CharacterSkillsView.as_view(), name='character-skills'),
     path('character-skills/<int:pk>/', CharacterSkillRemoveView.as_view(), name='character-skill-remove'),
+    path('character-passive-skills/', CharacterPassiveSkillsView.as_view(), name='character-passive-skills'),
+    path('character-passive-skills/<int:pk>/', CharacterPassiveSkillRemoveView.as_view(), name='character-passive-skill-remove'),
     path('character-items/', CharacterItemsView.as_view(), name='character-items'),
     path('character-items/<int:pk>/', CharacterItemDetailView.as_view(), name='character-item-detail'),
     # Economy

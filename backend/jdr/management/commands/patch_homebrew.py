@@ -425,28 +425,44 @@ class Command(BaseCommand):
             self.stdout.write(f'    [DB] Linked item to {char.name}')
 
     def _db_add_skill(self, target_name: str, action: dict, campaign, dry_run: bool):
-        from jdr.models import Character
+        from jdr.models import Character, CharacterPassiveSkill, PassiveSkill
 
         skill_def = action.get('skill', {})
         name = skill_def.get('name', '')
         desc = strip_html(skill_def.get('desc', ''))
 
-        self.stdout.write(f'    [DB] Skill: {name} (appended to character description)')
-
         if dry_run:
+            self.stdout.write(f'    [DB] PassiveSkill: {name} (dry run)')
             return
 
         characters = Character.objects.filter(name=target_name, campaign=campaign)
         if not characters.exists():
             characters = Character.objects.filter(name=target_name)
-        for char in characters:
-            skill_line = f'\n\n🎯 {name}\n{desc}'
-            if name not in char.description:
-                char.description += skill_line
-                char.save(update_fields=['description'])
-                self.stdout.write(f'    [DB] Appended skill to {char.name} description')
-            else:
-                self.stdout.write(f'    [DB] Skill already in {char.name} description')
+
+        if campaign:
+            db_skill, _ = PassiveSkill.objects.update_or_create(
+                campaign=campaign, name=name,
+                defaults={'description': desc},
+            )
+            self.stdout.write(f'    [DB] PassiveSkill: {name}')
+            for char in characters:
+                _, created = CharacterPassiveSkill.objects.get_or_create(
+                    character=char, passive_skill=db_skill,
+                )
+                if created:
+                    self.stdout.write(f'    [DB] Linked passive skill to {char.name}')
+                else:
+                    self.stdout.write(f'    [DB] Passive skill already on {char.name}')
+        else:
+            # Fallback: append to description when no campaign
+            for char in characters:
+                skill_line = f'\n\n🎯 {name}\n{desc}'
+                if name not in char.description:
+                    char.description += skill_line
+                    char.save(update_fields=['description'])
+                    self.stdout.write(f'    [DB] Appended skill to {char.name} description (no campaign)')
+                else:
+                    self.stdout.write(f'    [DB] Skill already in {char.name} description')
 
     def _db_update_currency(self, target_name: str, action: dict, campaign, dry_run: bool):
         from jdr.models import Character

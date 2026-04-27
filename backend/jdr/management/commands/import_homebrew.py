@@ -16,8 +16,8 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandError
 
 from jdr.models import (
-    Campaign, Character, CharacterItem, CharacterSpell, CharacterStat,
-    Item, Spell, Stat,
+    Campaign, Character, CharacterItem, CharacterPassiveSkill, CharacterSpell,
+    CharacterStat, Item, PassiveSkill, Spell, Stat,
 )
 
 # ─── Constants ────────────────────────────────────────────────────────────────
@@ -182,11 +182,12 @@ class Command(BaseCommand):
         if biography:
             description_parts.append(biography)
 
-        # Passive skills
-        passive_skills = co.get('passiveSkills', {}).get('passiveSkills1', {})
-        if passive_skills:
+        # Passive skills — collected for later DB import
+        passive_skills_data = co.get('passiveSkills', {}).get('passiveSkills1', {})
+        if passive_skills_data and not campaign:
+            # Fallback: append to description when no campaign
             skills_lines = ['── Compétences passives ──']
-            for sk_id, sk in passive_skills.items():
+            for sk_id, sk in passive_skills_data.items():
                 if not isinstance(sk, dict):
                     continue
                 sk_name = sk.get('name', '')
@@ -195,7 +196,7 @@ class Command(BaseCommand):
                     skills_lines.append(f'\n🎯 {sk_name}')
                     if sk_desc:
                         skills_lines.append(sk_desc)
-                    self.stdout.write(f'    Skill: {sk_name}')
+                    self.stdout.write(f'    Skill: {sk_name} (in description fallback)')
             description_parts.append('\n'.join(skills_lines))
 
         description = '\n\n'.join(description_parts)
@@ -245,15 +246,19 @@ class Command(BaseCommand):
             spells_data = co.get('spellBook', {}).get('spells', {})
             self._import_spells(spells_data, campaign, character, dry_run)
 
+            # ── Passive Skills ────────────────────────────────────────────
+            self._import_passive_skills(passive_skills_data, campaign, character, dry_run)
+
             # ── Stats ─────────────────────────────────────────────────────
             self._import_stats(co, template, campaign, character, dry_run)
         else:
             items_count = len(co.get('inventory', {}).get('items', {}))
             spells_count = len(co.get('spellBook', {}).get('spells', {}))
-            if items_count or spells_count:
+            passive_count = len(passive_skills_data)
+            if items_count or spells_count or passive_count:
                 self.stdout.write(self.style.WARNING(
-                    f'    ⚠ Skipping {items_count} items, {spells_count} spells '
-                    f'(no --campaign specified)'
+                    f'    ⚠ Skipping {items_count} items, {spells_count} spells, '
+                    f'{passive_count} passive skills (no --campaign specified)'
                 ))
 
     # ─── Items ────────────────────────────────────────────────────────────
@@ -363,6 +368,40 @@ class Command(BaseCommand):
             count += 1
 
         self.stdout.write(f'    → {count} spells processed')
+
+    # ─── Passive Skills ──────────────────────────────────────────────────
+
+    def _import_passive_skills(self, passive_skills_data: dict, campaign, character, dry_run: bool):
+        count = 0
+        for sk_id, sk in passive_skills_data.items():
+            if not isinstance(sk, dict):
+                continue
+            sk_name = sk.get('name', '').strip()
+            if not sk_name:
+                continue
+
+            sk_desc = strip_html(sk.get('desc', ''))
+
+            self.stdout.write(f'    PassiveSkill: {sk_name}')
+
+            if dry_run:
+                count += 1
+                continue
+
+            db_skill, created = PassiveSkill.objects.update_or_create(
+                campaign=campaign, name=sk_name,
+                defaults={
+                    'description': sk_desc,
+                },
+            )
+
+            if character:
+                CharacterPassiveSkill.objects.get_or_create(
+                    character=character, passive_skill=db_skill,
+                )
+            count += 1
+
+        self.stdout.write(f'    → {count} passive skills processed')
 
     # ─── Stats ────────────────────────────────────────────────────────────
 
