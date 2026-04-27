@@ -168,8 +168,22 @@ class ExerciseListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        exercise = Exercise.objects.select_related(
+            'machine', 'created_by',
+        ).prefetch_related(
+            'muscle_targets__muscle__group',
+        ).get(pk=serializer.instance.pk)
+        return Response(
+            ExerciseSerializer(exercise).data,
+            status=status.HTTP_201_CREATED,
+        )
 
-class ExerciseDetailView(generics.RetrieveAPIView):
+
+class ExerciseDetailView(generics.RetrieveDestroyAPIView):
     permission_classes = [HasMuscuAccess]
     serializer_class = ExerciseSerializer
 
@@ -180,6 +194,12 @@ class ExerciseDetailView(generics.RetrieveAPIView):
         ).select_related('machine', 'created_by').prefetch_related(
             'muscle_targets__muscle__group',
         )
+
+    def perform_destroy(self, instance):
+        if instance.created_by != self.request.user and not self.request.user.is_staff:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('Vous ne pouvez supprimer que vos propres exercices.')
+        instance.delete()
 
 
 # ─── Workouts ────────────────────────────────────────────────────────────────

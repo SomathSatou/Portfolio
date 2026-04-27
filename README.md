@@ -104,6 +104,14 @@ Le projet utilise `i18next` et `react-i18next`.
 - `npm run preview` — prévisualise le build local.
 - `npm run lint` — exécute ESLint.
 
+## peupler la DB muscu 
+
+```bash
+cd /var/www/Portfolio/backend
+source .venv/bin/activate
+python manage.py loaddata muscu/fixtures/seed.json
+```
+
 ## Backend (Django API)
 
 - **Stack**: Django 5, Django REST Framework, django-cors-headers.

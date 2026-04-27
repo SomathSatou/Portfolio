@@ -11,6 +11,8 @@ import GoalsPage from './pages/GoalsPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import ProfilePage from './pages/ProfilePage'
 import AdminPage from './pages/AdminPage'
+import ExercisesPage from './pages/ExercisesPage'
+import GymsPage from './pages/GymsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -123,6 +125,22 @@ function MuscuRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <ProfilePage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/irlrpg/exercises') {
+    return (
+      <ProtectedRoute>
+        <ExercisesPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/irlrpg/gyms') {
+    return (
+      <ProtectedRoute>
+        <GymsPage />
       </ProtectedRoute>
     )
   }

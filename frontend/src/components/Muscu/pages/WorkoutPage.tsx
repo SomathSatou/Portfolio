@@ -333,7 +333,7 @@ export default function WorkoutPage() {
                   try {
                     const res = await api.post<Exercise>('/exercises/', {
                       name: newExName.trim(),
-                      description: newExDesc.trim() || undefined,
+                      description: newExDesc.trim(),
                       muscle_ids: newExMuscleIds,
                     })
                     const created = res.data
