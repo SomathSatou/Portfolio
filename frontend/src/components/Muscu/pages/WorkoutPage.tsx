@@ -340,11 +340,11 @@ export default function WorkoutPage() {
                     setExercises((prev) => [...prev, created])
                     setSelExercise(created.id)
                     setShowNewExercise(false)
-                    setNewExName('')
-                    setNewExDesc('')
+                    setNewExName("")
+                    setNewExDesc("")
                     setNewExMuscleIds([])
                   } catch {
-                    setError('Erreur lors de la création de l\u2019exercice.')
+                    setError("Erreur lors de la création de l'exercice.")
                   } finally {
                     setCreatingExercise(false)
                   }

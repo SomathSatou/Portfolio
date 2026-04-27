@@ -104,12 +104,21 @@ Le projet utilise `i18next` et `react-i18next`.
 - `npm run preview` — prévisualise le build local.
 - `npm run lint` — exécute ESLint.
 
-## peupler la DB muscu 
+## Peupler la DB muscu
 
 ```bash
 cd /var/www/Portfolio/backend
 source .venv/bin/activate
 python manage.py loaddata muscu/fixtures/seed.json
+```
+
+## Peupler la DB JDR
+
+```bash
+cd /var/www/Portfolio/backend
+source .venv/bin/activate
+python manage.py loaddata jdr/fixtures/economy.json
+python manage.py loaddata jdr/fixtures/garden.json
 ```
 
 ## Backend (Django API)

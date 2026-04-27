@@ -1,0 +1,2934 @@
+[
+  {
+    "model": "jdr.character",
+    "pk": 1000,
+    "fields": {
+      "name": "Ellmor Tadelle",
+      "player": 1,
+      "campaign": 1,
+      "class_type": "",
+      "level": 8,
+      "description": "Origine : Elfe sylvain\n\nElmor est née dans une famille mixte : son père, un Orc aussi fort que bête, l’a éduquée dans le respect du combat, de la mort et de l’adversaire. Sa mère, une elfe sylvaine pas beaucoup plus maligne, mais infiniment plus belle, l’a éduquée dans le respect de la nature et de l’ordre des choses. \nTrès tôt, Elmor montre une fascination pour la chasse et le cycle de la vie, et observe attentivement les animaux interagir. Ele fut très marquée, dans sa jeune enfance, par la capacité de la mante religieuse à chasser en utilisant les grandes faux de ses pattes. Elle a tenté mainte fois d’observer et de dessiner sur le fait ce glorieux insecte pendant sa chasse, avec quelques succès notables. Il découle de cette fascination une capacité étonnante à rester immobile des heures, anticiper les mouvements des animaux, et à trouver des insectes. \nEn grandissant, Elmor poussa sa fascination jusqu’à tenter de contacter Ermina elle-même, dont elle avait vu l’illustration dans un livre. Quoi de mieux que cette forme sombre, armée d’une faux, pour lui enseigner ce qui lui manquait tant d’un point de vue guerrier qu’intellectuel ? \nElle y travailla avec acharnement, et c’est enfin après de longues négociations avec ses parents et un rituel particulièrement gore à base de venin de mamba noir et de morceaux de mantes qu’elle parvint à contacter la déesse. Celle-ci, contre toute attente, accepta de la prendre en stage dans l’objectif de lui transmettre une partie de son travail. Malheureusement, Elmor aimait trop les animaux, et leur accordait bien souvent une autre chance. Par ailleurs, de nombreuses âmes de sont plaintes de son langage grossier et de ses blagues salaces, et la jeune femme fut remerciée après 10 ans de formation, très loin des 96 ans nécessaires à former une nouvelle mini divinité des récoltes et de la mort. \nRetour à la case départ donc pour la jeune femme, âgée de 26 ans. Plutôt bien formée au maniement de la faux, elle a d’abord voulu se reconvertir dans l’agriculture, mais son aspect blafard, ses yeux sombres enfoncés dans leurs orbites, et les cicatrices sur sa peau du rituel de contact d'Ermina ne donnent pas vraiment l’impression qu’elle ait la main verte. C’est finalement en tant que videuse de boite de nuit que la jeune femme gagnait sa vie pendant quelques années, jusqu’à se retrouver dans une rixe avec deux aventuriers il y a quelques semaines. C’est lors de cette rixe qu’Elmor prit une vie pour la première fois. L’autre aventurier, visiblement peu gêné par la mort de son compagnon de beuverie, pris le temps de signaler à la jeune fille qu’une vie d’aventurière pourrait très bien lui convenir, avant de prendre tant bien que mal ses jambes à son cou (qu’il avait encore, lui).",
+      "gold": 21,
+      "silver": 0,
+      "copper": 0
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1000,
+    "fields": {
+      "campaign": 1,
+      "name": "La Mandibule Verte",
+      "description": "La Mandibule Verte n'a rien d'une arme forgée. Son manche est une branche tordue, noueuse, arrachée à un arbre qui n'existe probablement plus — un bois sombre et dur comme de la pierre, parcouru de nervures qui semblent encore vivantes. La branche se courbe naturellement à son extrémité, comme le bras levé d'une mante en position de chasse, formant l'arc parfait pour accueillir la lame.\n\nEt la lame est ce qui frappe en premier. D'un vert profond — le vert des feuilles juste avant qu'elles ne pourrissent, le vert des mousses qui recouvrent les tombes oubliées — elle ne brille pas : elle absorbe la lumière. Son tranchant est irrégulier, dentelé par endroits comme la mandibule d'un insecte géant, lisse et chirurgical à d'autres. Des veinures plus claires la parcourent, semblables aux nervures d'une feuille ou aux canaux d'une plante carnivore.",
+      "rarity": "très_rare",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "100.00",
+      "properties": {
+        "damage": "1d150",
+        "range": "2",
+        "icon": "t-weapon1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1000,
+    "fields": {
+      "character": 1000,
+      "item": 1000,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1000,
+    "fields": {
+      "campaign": 1,
+      "name": "🦗 Mandibule Verte Lv.3",
+      "description": "Fruit de longues années d'observation des mantes religieuses et de son apprentissage auprès de l'apôtre d'🌾Ermina, Elmor a développé un style de combat à la faux unique en son genre. Inspirée des mouvements fulgurants des mandibules de la mante — l'attente immobile, l'anticipation du mouvement, puis la frappe tranchante et définitive — elle manie sa faux avec une précision chirurgicale. Sa patience d'insecte et sa capacité à rester parfaitement immobile avant de frapper font d'elle une combattante redoutable en embuscade. \n\nBonus :\n+1 aux attaques de faux+1 aux embuscades et aux attaques depuis une position d'immobilité prolongée.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1000,
+    "fields": {
+      "character": 1000,
+      "passive_skill": 1000,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1001,
+    "fields": {
+      "campaign": 1,
+      "name": "🌾 Bénédiction d'Ermina Lv.1",
+      "description": "Ayant échoué à devenir la prochaine apôtre de🌾Ermina, Elmor n'occupe pas une place privilégiée dans le cœur de la Griffe Verte. Mais la déesse n'oublie pas ceux qui ont touché à son cycle. Elmor conserve un lien ténu avec Ermina un écho lointain de la voix de Celle-qui-Reprend. \n\nSi Elmor aide à maintenir le cycle de la vie dans le monde de Lug — en fauchant ce qui doit l'être, en laissant pousser ce qui doit croître — cette bénédiction pourrait grandir à nouveau.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1001,
+    "fields": {
+      "character": 1000,
+      "passive_skill": 1001,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1002,
+    "fields": {
+      "campaign": 1,
+      "name": "🪓 Lutte Orc Lv.1",
+      "description": "Son père, un Orc de la vieille école, lui a transmis les bases du combat orc avant même qu'elle ne sache lire. Prises brutales, coups de tête, balayages de jambes, et cette philosophie simple : « Si ça bouge encore, t'as pas frappé assez fort. » Ce style de lutte est brut, direct, sans fioritures — l'opposé total de sa technique de faux. Mais quand la faux est hors de portée et que le combat se rapproche, les réflexes orcs d'Elmor prennent le relais. Bonus aux prises au corps à corps, aux tentatives de déséquilibre, et aux coups portés à mains nues. Particulièrement efficace dans les espaces confinés où la faux ne peut pas être maniée.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1002,
+    "fields": {
+      "character": 1000,
+      "passive_skill": 1002,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1003,
+    "fields": {
+      "campaign": 1,
+      "name": "Fauchage Raisonné",
+      "description": "Compétence de combat multi-cibles à la faux. Ellmor effectue un mouvement rotatif ample avec sa faux, touchant toutes les créatures dans un rayon de 2m autour d'elle.\nEffets :Touche jusqu'à 3 cibles adjacentes en un seul tourDégâts répartis : dégâts de base de la faux divisés équitablement entre les cibles touchéesSynergie combo : si une cible est immobilisée (par K. ou autre), les dégâts sur cette cible ne sont pas réduits\nIssu de l'entraînement nocturne du « tourbilol » à la faux.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1003,
+    "fields": {
+      "character": 1000,
+      "passive_skill": 1003,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1000,
+    "fields": {
+      "campaign": 1,
+      "name": "Intuition",
+      "display_order": 0
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1000,
+    "fields": {
+      "character": 1000,
+      "stat": 1000,
+      "value": 14
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1001,
+    "fields": {
+      "campaign": 1,
+      "name": "Intelligence",
+      "display_order": 1
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1001,
+    "fields": {
+      "character": 1000,
+      "stat": 1001,
+      "value": 10
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1002,
+    "fields": {
+      "campaign": 1,
+      "name": "Charisme",
+      "display_order": 2
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1002,
+    "fields": {
+      "character": 1000,
+      "stat": 1002,
+      "value": 3
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1003,
+    "fields": {
+      "campaign": 1,
+      "name": "Adresse",
+      "display_order": 3
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1003,
+    "fields": {
+      "character": 1000,
+      "stat": 1003,
+      "value": 16
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1004,
+    "fields": {
+      "campaign": 1,
+      "name": "Force",
+      "display_order": 4
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1004,
+    "fields": {
+      "character": 1000,
+      "stat": 1004,
+      "value": 8
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1005,
+    "fields": {
+      "campaign": 1,
+      "name": "Chance",
+      "display_order": 5
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1005,
+    "fields": {
+      "character": 1000,
+      "stat": 1005,
+      "value": 6
+    }
+  },
+  {
+    "model": "jdr.stat",
+    "pk": 1006,
+    "fields": {
+      "campaign": 1,
+      "name": "Constitution",
+      "display_order": 6
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1006,
+    "fields": {
+      "character": 1000,
+      "stat": 1006,
+      "value": 8
+    }
+  },
+  {
+    "model": "jdr.character",
+    "pk": 1001,
+    "fields": {
+      "name": "K.",
+      "player": 1,
+      "campaign": 1,
+      "class_type": "Ninja/Assassin",
+      "level": 8,
+      "description": "Origine : Semi-Homme",
+      "gold": 926,
+      "silver": 0,
+      "copper": 2
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1001,
+    "fields": {
+      "campaign": 1,
+      "name": "Stylet de lancer",
+      "description": "petit stylet de métal \nidéal pour lancer sur l'ennemie",
+      "rarity": "commun",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "0.01",
+      "properties": {
+        "damage": "1d20",
+        "range": "10",
+        "icon": "t-weapon6"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1001,
+    "fields": {
+      "character": 1001,
+      "item": 1001,
+      "quantity": 6,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1002,
+    "fields": {
+      "campaign": 1,
+      "name": "Carte d'aventurier",
+      "description": "Carte de membre de rang D de la guilde d'aventurier de Lunebrèche\n\nID : Kassandria Ratzeyra Belladonna Valmirelli di Sorezzano Venticello Liranzetta della Notte Fiorenza Romanzari Calvignani di Ombreciello Valcorazza Nerina di Ryj’Altomare\n\nSemi-homme",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc6"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1002,
+    "fields": {
+      "character": 1001,
+      "item": 1002,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1003,
+    "fields": {
+      "campaign": 1,
+      "name": "Gants de la Traque Silencieuse",
+      "description": "Gants\nFaits de cuir sombre, renforcés au bout des doigts par des griffes d’obsidienne. Lorsqu’ils entaillent un adversaire, une marque invisible se pose sur lui, révélée aux yeux de tous les alliés. Même dissimulé par la magie, l’ennemi reste visible aux porteurs de volonté claire.\n\nEffets :  Permet de voir à travers illusions/invisibilité la cible marquée.  Bonus d’attaque +1 contre cette cible pour tous les alliés.La marque disparaît après de nouveaux dégâts.\n\nUne note noir est glissé a l'intérieur, \"Nyj a grandement appréciés votre offrande\"",
+      "rarity": "artéfact",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "1000.00",
+      "properties": {
+        "armor_point": "10",
+        "icon": "t-armor4"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1003,
+    "fields": {
+      "character": 1001,
+      "item": 1003,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1004,
+    "fields": {
+      "campaign": 1,
+      "name": "Gourde",
+      "description": "Gourde remplie d'eau",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.01",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1004,
+    "fields": {
+      "character": 1001,
+      "item": 1004,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1005,
+    "fields": {
+      "campaign": 1,
+      "name": "poncho de soie en ver des sable",
+      "description": "protège efficacement de la chaleur du déserrt",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "1.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1005,
+    "fields": {
+      "character": 1001,
+      "item": 1005,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1006,
+    "fields": {
+      "campaign": 1,
+      "name": "Potion de Soin Mineure",
+      "description": "Restaure légèrement les points de vie (1D60+20 ou effet narratif léger, selon le système). Peut accélérer la cicatrisation de plaies récentes.",
+      "rarity": "peu_commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "5.00",
+      "properties": {
+        "icon": "t-misc3"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1006,
+    "fields": {
+      "character": 1001,
+      "item": 1006,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1007,
+    "fields": {
+      "campaign": 1,
+      "name": "Dague silencieuse",
+      "description": "",
+      "rarity": "très_rare",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "100.00",
+      "properties": {
+        "damage": "8d30",
+        "range": "1",
+        "icon": "t-weapon5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1007,
+    "fields": {
+      "character": 1001,
+      "item": 1007,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1008,
+    "fields": {
+      "campaign": 1,
+      "name": "Capuche de la Traque Silencieuse",
+      "description": "Capuche de la Traque Silencieuse\nTissée dans un cuir noirci au feu lent et assouplie par des huiles inconnues, cette capuche épouse la tête comme une seconde ombre. À l’intérieur, des fibres sombres, presque animales, semblent vibrer faiblement lorsque son porteur retient son souffle.Le bord interne est marqué de symboles minuscules, gravés si finement qu’on croirait qu’ils se déplacent selon la lumière — des runes de chasse, liées non à la traque des bêtes, mais à celle des secrets.\nUne fois abaissée, la capuche efface la présence du porteur, comme si l’air lui-même hésitait à mémoriser sa silhouette. Les sons se voilent, les pas se fondent, et même les ombres paraissent oublier de s’écarter.\nAu fond, glissée contre la doublure, une petite note noire repose, l’encre d’un gris métallique :« Tu as donnée la visibilité au démunis Nyj te récompense avec un secret qui t'aideras a disparaitre aux yeux des autres »\nEffets :\n+1 au jet de Discrétion tant que la capuche est portée.Lorsque vous ou un allié fait disparaître la marque laissée par les Gants de la Traque silencieuse : +1d20 dégâts d'ombre supplémentaires.",
+      "rarity": "artéfact",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "1000.00",
+      "properties": {
+        "armor_point": "5",
+        "icon": "t-armor1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1008,
+    "fields": {
+      "character": 1001,
+      "item": 1008,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1009,
+    "fields": {
+      "campaign": 1,
+      "name": "Poignard noir",
+      "description": "",
+      "rarity": "peu_commun",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "0.50",
+      "properties": {
+        "damage": "1D40+1",
+        "range": "2",
+        "icon": "t-weapon5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1009,
+    "fields": {
+      "character": 1001,
+      "item": 1009,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1000,
+    "fields": {
+      "campaign": 1,
+      "name": "Pointe D'ombre",
+      "description": "petits projectiles infligeant des dégâts modérés\n\ndégât : (2x niveau de ninjutsu)d20",
+      "level": 1,
+      "mana_cost": 6,
+      "damage": "6d20",
+      "range_distance": "20",
+      "casting_time": "1",
+      "duration": "",
+      "school": "moon",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1000,
+    "fields": {
+      "character": 1001,
+      "spell": 1000,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1001,
+    "fields": {
+      "campaign": 1,
+      "name": "Clone d'ombre",
+      "description": "Une  clone d'ombre, trés discret mais disparait au moindre coup.",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "",
+      "range_distance": "5",
+      "casting_time": "1",
+      "duration": "",
+      "school": "moon",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1001,
+    "fields": {
+      "character": 1001,
+      "spell": 1001,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1002,
+    "fields": {
+      "campaign": 1,
+      "name": "Substitution",
+      "description": "K. peut échanger sa place avec ces armes, ses ombres ou avec un coéquipier",
+      "level": 1,
+      "mana_cost": 8,
+      "damage": "",
+      "range_distance": "20",
+      "casting_time": "1",
+      "duration": "",
+      "school": "moon",
+      "extra": {
+        "components": ""
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1002,
+    "fields": {
+      "character": 1001,
+      "spell": 1002,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1003,
+    "fields": {
+      "campaign": 1,
+      "name": "Immobilisation des Ombres",
+      "description": "Si K. ou un de ses clones est en contact avec l’ombre d’une cible, elle peut tenter de l’immobiliser.\nJet de Constitution de la cible pour résister. La peur générer par cette emprise assure que la cible soit apeuré un tour même en cas de réussite au jet de résistance.\nEn cas d’échec : paralysie temporaire (1-2 tours).",
+      "level": 1,
+      "mana_cost": 20,
+      "damage": "",
+      "range_distance": "5",
+      "casting_time": "0",
+      "duration": "",
+      "school": "moon",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1003,
+    "fields": {
+      "character": 1001,
+      "spell": 1003,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1004,
+    "fields": {
+      "campaign": 1,
+      "name": "🥷 Pas des Ombres Lv.2",
+      "description": "K. maîtrise un art ancestral lui permettant de prendre appui… dans le vide. Grâce à un subtil contrôle de son centre de gravité et à une ancienne technique de canalisation d’énergie par les pieds, il peut effectuer un second bond en l’air, comme s’il s’élançait depuis une marche invisible.\n\nEffet : Une fois en l’air, K. peut utiliser un appui spectral pour effectuer un second saut. Cette capacité se recharge chaque fois que ses deux pieds touchent une surface en contact avec le sol naturel (sol, pierre, bois, etc. – mais pas un mur ou un ennemi).\n\nCela lui permet d’atteindre des hauteurs insoupçonnées ou d’échapper à un adversaire d’un bond imprévu.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1004,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1004,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1005,
+    "fields": {
+      "campaign": 1,
+      "name": "🐾 Discrétion des Ombres Lv.2",
+      "description": "Né à la lisière de la lumière et de l’ombre, K. sait instinctivement se fondre dans les zones sombres. Qu’il s’agisse de l’ombre d’un arbre, d’une ruelle ou de son propre pan de cape, il devient plus silencieux, moins perceptible, presque flou.Effet de la compétence : \n\nLorsqu’il se trouve dans une zone partiellement ou totalement ombragée, K. bénéficie d’un bonus important à ses jets de Discrétion ou Furtivité.Les sens non-visuels (odorat, ouïe) sont également affectés : ses mouvements deviennent presque imperceptibles tant qu'elle reste dans la pénombre.\nLes sens non-visuels (odorat, ouïe) sont également affectés : ses mouvements deviennent presque imperceptibles tant qu’il reste dans la pénombre.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1005,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1005,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1006,
+    "fields": {
+      "campaign": 1,
+      "name": "🌑 Ninjutsu des Ombres Lv.4",
+      "description": "Discipliné, K. a appris à canaliser l’énergie de l’ombre elle-même pour en faire une arme. Par un mudra ancien, il peut donner forme à l’obscurité, la modeler en aiguilles, en voiles ou en illusions brèves.\nK. ne se contente plus de convoquer l’ombre : elle la guide. Par la concentration et les gestes ancestraux du mudra, il imprime à l’obscurité une volonté propre — la sienne.\nSous ses doigts, les ténèbres deviennent matière : aiguilles fugitives, rideaux impénétrables, ou leurres trompeurs.\nLà où K. regarde, l'ombre suit.\nEffet de la compétence : \n\nPermet à K. de lancer de petits sorts d’ombre, à condition qu’une source d’ombre ou de faible lumière soit présente à proximité.Les ombres bougent et glissent à sur le sol, les murs ou l'air comme si elle étaits conscientes.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1006,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1006,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1007,
+    "fields": {
+      "campaign": 1,
+      "name": "🐀Bénédiction de Nyj Lv.4",
+      "description": "Tu ne portes aucun symbole. Tu ne prononces aucun serment à voix haute.Et pourtant, dans le sillage de tes pas, les ombres s’allongent plus lentement, les témoins détournent les yeux, et les détails de ta présence s’estompent dans les souvenirs.\nNyj, dieu des ruelles sans nom, des secrets qu’on ne pose jamais à voix haute, t’a effleuré de son manteau d’oubli.Il n’offre ni gloire ni miracle visible, mais un avantage constant tant que tu restes invisible.\nEffets de la compétence :\nSi tes actions restent non revendiquées ou attribuables à un autre, Nyj renforce leur efficacité.Tu es plus difficile à pister, interroger ou même mémoriser quand tu le souhaites.Tu inspires la crainte discrète des autres affiliés aux milieux de l’ombre : voleurs, assassins, informateurs, mendiants, espions.Nouveau : chaque aube, lance 1d20. Un petit rat messager de Nyj t’apporte un secret cryptique. La qualité du secret dépend du jet.\n→ « Ce que tu gagnes en silence vaut plus que ce que tu cries. »",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1007,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1007,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1008,
+    "fields": {
+      "campaign": 1,
+      "name": "🤸🏽‍♀️Acrobatie lv.2",
+      "description": "Description :Le corps trouve son équilibre, les appuis deviennent plus légers, et chaque mouvement semble guidé par une intuition instinctive. Cette compétence représente les bases de l’art acrobatique : roulades fluides, petits sauts contrôlés, pirouettes rapides et esquives agiles. Rien d’extraordinaire, mais assez pour que votre personnage paraisse plus sûr de ses gestes… et surtout pour éviter les chutes ridicules.\nEffet :Bonus de +1 à toutes les actions liées aux pirouettes, roulades, cabrioles, sauts légers et déplacements acrobatiques.Peut permettre d’éviter certains obstacles ou d’adopter une position avantageuse en combat selon le contexte.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1008,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1008,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1009,
+    "fields": {
+      "campaign": 1,
+      "name": "🎣Pêche lv.1",
+      "description": "Description :La patience devient une arme, et l’observation un instinct. Avec cette compétence, votre personnage maîtrise les bases de l’art délicat de la pêche : choisir un bon emplacement, reconnaître les remous d’un poisson curieux, ajuster la ligne pour éviter qu’elle ne casse, et tirer avec justesse quand ça mord. Ce n’est pas encore la pêche miraculeuse, mais suffisamment pour ramener un repas décent… ou une surprise tirée du fond de l’eau.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1009,
+    "fields": {
+      "character": 1001,
+      "passive_skill": 1009,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1007,
+    "fields": {
+      "character": 1001,
+      "stat": 1000,
+      "value": 4
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1008,
+    "fields": {
+      "character": 1001,
+      "stat": 1001,
+      "value": 10
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1009,
+    "fields": {
+      "character": 1001,
+      "stat": 1002,
+      "value": 11
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1010,
+    "fields": {
+      "character": 1001,
+      "stat": 1003,
+      "value": 16
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1011,
+    "fields": {
+      "character": 1001,
+      "stat": 1004,
+      "value": 3
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1012,
+    "fields": {
+      "character": 1001,
+      "stat": 1005,
+      "value": 11
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1013,
+    "fields": {
+      "character": 1001,
+      "stat": 1006,
+      "value": 10
+    }
+  },
+  {
+    "model": "jdr.character",
+    "pk": 1002,
+    "fields": {
+      "name": "Paul Tron né SOFA",
+      "player": 1,
+      "campaign": 1,
+      "class_type": "Marchand",
+      "level": 8,
+      "description": "Origine : Nain\n\nBiographie !",
+      "gold": 307,
+      "silver": 20,
+      "copper": 28
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1010,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac",
+      "description": "",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.01",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1010,
+    "fields": {
+      "character": 1002,
+      "item": 1010,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1011,
+    "fields": {
+      "campaign": 1,
+      "name": "Silex",
+      "description": "idéal pour allumer un feux",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1011,
+    "fields": {
+      "character": 1002,
+      "item": 1011,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1012,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac a dos de randonnés en peau de loup",
+      "description": "Un très grand sac de randonné, pratique pour transporter diverse marchandise, contient un volume d'environ 60L\n\ncontiens : \n3.3 kg de viande séché\n5 Kg de viande de bœuf10 kg d'os de loupune gourde\nCorde de chanvre (15 mètres)Crochet de grappin ou pitonsBriquet à amadouPetite lanterne à huile3 Craies4 torches",
+      "rarity": "peu_commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.20",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1012,
+    "fields": {
+      "character": 1002,
+      "item": 1012,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1013,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac de luxe",
+      "description": "Un beau sac avec des fanfreluche au tour, l'intérieur est doublé de coton et les contour semble doré, deux pierre précieuse orne le cordons",
+      "rarity": "rare",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.08",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1013,
+    "fields": {
+      "character": 1002,
+      "item": 1013,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1014,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac pierres précieuses",
+      "description": "deux petites pierres de la taille d'un bille, taillé mais non polis, la plus petite est rouge vif",
+      "rarity": "peu_commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.10",
+      "properties": {
+        "icon": "t-misc2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1014,
+    "fields": {
+      "character": 1002,
+      "item": 1014,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1015,
+    "fields": {
+      "campaign": 1,
+      "name": "Carte de marchand",
+      "description": "Description :Un morceau de cuir souple, usé aux bords, frappé du sceau de la Guilde Marchande Libre. En son centre, une lettre \"E\" gravée à la main dans un cercle à demi effacé.La carte sent la poussière, le cuivre, et l’espoir. Elle est fournie à quiconque s’enregistre officiellement comme marchand itinérant ou artisan libre, quel que soit son capital de départ.\nAu verso, quelques lignes sont prévues pour noter :\nLe nom du porteurSon premier métier déclaréfait à Ponharilfei\nFonction :- Permet d’acheter ou de vendre légalement dans les marchés affiliés à la guilde (souvent en périphérie ou dans des quartiers pauvres).- Peut être exigée pour accéder à certaines routes commerciales, salons artisanaux, ou auberges de transit.\n\nEffet : \n- permet d'effectuer des échange pour un équivalent de 20 kilos par jour ou équivalent avec Alexander\nBénéfice cumulée : 682 po",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.20",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1015,
+    "fields": {
+      "character": 1002,
+      "item": 1015,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1016,
+    "fields": {
+      "campaign": 1,
+      "name": "Bouclier Rutilant d’Embarod",
+      "description": "Bouclier lourd Un imposant bouclier de parade, orné de gemmes multicolores serties dans un alliage d’or pâle et de fer clair. Son éclat aveuglant reflète la lumière avec intensité, au point de troubler parfois les assaillants. Jadis utilisé dans des cortèges impériaux, il allie prestige et protection.\n&gt; Peut détourner certains sorts de lumière ou éblouir dans de bonnes conditions.  &gt; On dit qu’il fait hésiter les plus cupides des attaquants.",
+      "rarity": "rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "20.00",
+      "properties": {
+        "armor_point": "20",
+        "icon": "t-armor6"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1016,
+    "fields": {
+      "character": 1002,
+      "item": 1016,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1017,
+    "fields": {
+      "campaign": 1,
+      "name": "bon porteur",
+      "description": "échangeable dans les lieux de culte d'Avarinn contre 487 PO",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "487.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1017,
+    "fields": {
+      "character": 1002,
+      "item": 1017,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1018,
+    "fields": {
+      "campaign": 1,
+      "name": "bon de commande",
+      "description": "une commande de 1kg d'houblon et 1kg de tissus de Lunebrèche vers Ponharilfei. \n\nTemps restant : 83 jour",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "1.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1018,
+    "fields": {
+      "character": 1002,
+      "item": 1018,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1019,
+    "fields": {
+      "character": 1002,
+      "item": 1005,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1019,
+    "fields": {
+      "campaign": 1,
+      "name": "Casque de garde de Pangore",
+      "description": "Forgé dans les forges profondes de Pangore, ce casque massif fut jadis réservé aux gardes royaux chargés de veiller sur les portes du Haut-Trône.Son métal noirci, presque mat, a été trempé sept fois dans l’eau glaciale du Mont Drun, symbole de pureté et de résistance.\n\nPorteur d'une rune de protection +5PA",
+      "rarity": "rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "30.00",
+      "properties": {
+        "armor_point": "20",
+        "icon": "t-armor1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1020,
+    "fields": {
+      "character": 1002,
+      "item": 1019,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1020,
+    "fields": {
+      "campaign": 1,
+      "name": "Masse d'Embarod",
+      "description": "Cette masse sertie de rubis est une véritable œuvre d’art, à la fois redoutable et somptueuse. Son manche massif, forgé dans un métal sombre et dense, se prolonge jusqu’à une tête imposante dont chaque facette a été poli avec une précision de maître, reflétant la lumière comme un miroir d’acier.\nAutour du noyau principal, des rubis éclatants sont sertis avec une minutie exceptionnelle, leurs teintes rouge sang semblant vibrer sous la lumière. Ces gemmes ne sont pas de simples ornements : elles confèrent à l’arme une aura envoûtante, presque mystique, où l’élégance du bijou rencontre la puissance brute de la forge.\nLes bords polies comme des miroirs reflètent le monde alentour avec une netteté saisissante, contrastant avec la chaleur incandescente des pierres précieuses. L’ensemble dégage une impression de puissance contenue et de noblesse, comme si cette masse n’était pas seulement une arme, mais un symbole d’autorité et de prestige.",
+      "rarity": "légendaire",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "150.00",
+      "properties": {
+        "damage": "28d12",
+        "range": "2",
+        "icon": "t-weapon2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1021,
+    "fields": {
+      "character": 1002,
+      "item": 1020,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1022,
+    "fields": {
+      "character": 1002,
+      "item": 1006,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1021,
+    "fields": {
+      "campaign": 1,
+      "name": "Broche orné de saphir",
+      "description": "Un bijou magnifique avec un saphir taillé en goutte d'eau et des ornements en forme de vague.",
+      "rarity": "rare",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "25.00",
+      "properties": {
+        "icon": "t-misc5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1023,
+    "fields": {
+      "character": 1002,
+      "item": 1021,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1024,
+    "fields": {
+      "character": 1002,
+      "item": 1002,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1022,
+    "fields": {
+      "campaign": 1,
+      "name": "Jeu de Dés",
+      "description": "",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1025,
+    "fields": {
+      "character": 1002,
+      "item": 1022,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1023,
+    "fields": {
+      "campaign": 1,
+      "name": "Balle de cuir",
+      "description": "",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1026,
+    "fields": {
+      "character": 1002,
+      "item": 1023,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1024,
+    "fields": {
+      "campaign": 1,
+      "name": "Gants de plaque plaqué or",
+      "description": "Des beaux gants doré\n\n+1 en Charisme",
+      "rarity": "légendaire",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "150.00",
+      "properties": {
+        "armor_point": "15",
+        "icon": "t-armor4"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1027,
+    "fields": {
+      "character": 1002,
+      "item": 1024,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1004,
+    "fields": {
+      "campaign": 1,
+      "name": "Frappe de Fyrän",
+      "description": "Paul Tron canalise l’impulsion de Fyrän dans un mouvement martial à la fois instinctif et ancien. Son bras se tend, ses appuis s’enracinent, et, dans un cri guttural ou un murmure vibrant, il libère la Frappe du Feu Silencieux.\n\nSon arme (ou son poing) s’entoure alors d’une flamme vive mais maîtrisée, ajoutant +1d5(niveau de bénédiction) dégâts de feu aux dégâts de l’arme.\n\nIl bénéficie également d’un bonus de +1 en précision pour ses jets d’attaque.\n\nl'effet de ce sort se dissipe au bout de 3 tour.",
+      "level": 1,
+      "mana_cost": 6,
+      "damage": "",
+      "range_distance": "2",
+      "casting_time": "0",
+      "duration": "",
+      "school": "fire",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1004,
+    "fields": {
+      "character": 1002,
+      "spell": 1004,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1005,
+    "fields": {
+      "campaign": 1,
+      "name": "Dé magique  d'Avarinn",
+      "description": "Une fois par jour vous pouvez lancer un dé de chance si le jet réussi vous pouvez lancer 1d (2 puissance de la différence de réussite divisé par deux arrondis au supérieur)\n\npar exemple je vais 1d20&lt;10 et je fais 9 je lance 1d2, si je fait un 6 je lance 1d4, si je fais 1 c'est 1d32\n\nvous gagnez le montant d'or du dernier dés.",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "",
+      "range_distance": "1",
+      "casting_time": "",
+      "duration": "",
+      "school": "merchant",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1005,
+    "fields": {
+      "character": 1002,
+      "spell": 1005,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1006,
+    "fields": {
+      "campaign": 1,
+      "name": "Tourbillon renversant enflammé",
+      "description": "attaque circulaire enflammée. Sur un échec de sauvegarde Constitution des ennemis : ils sont projetés au sol.",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "5d15",
+      "range_distance": "1",
+      "casting_time": "0",
+      "duration": "",
+      "school": "fire",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1006,
+    "fields": {
+      "character": 1002,
+      "spell": 1006,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1007,
+    "fields": {
+      "campaign": 1,
+      "name": "Magmarto",
+      "description": "Paul Tron frappe le sol du poing, faisant jaillir une éruption de roche en fusion à l'endroit ciblé. La zone reste recouverte de magma brûlant pendant 2 tours, infligeant des dégâts à toute créature qui y pénètre ou y termine son tour.\nEffet : 2d8 feu + terrain de magma (zone 3m, 1d4/tour pendant 2 tours)",
+      "level": 1,
+      "mana_cost": 15,
+      "damage": "2d8",
+      "range_distance": "8",
+      "casting_time": "1",
+      "duration": "",
+      "school": "fire",
+      "extra": {
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1007,
+    "fields": {
+      "character": 1002,
+      "spell": 1007,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1010,
+    "fields": {
+      "campaign": 1,
+      "name": "🥋Art Martial Sexton Lv.3",
+      "description": "Issu de sa première victoire contre un gobelin adulte, ce style de combat mêle instinct, mauvaise foi et usage créatif des articulations basses. Permet à Paul d'utiliser des prises vicieuses et des techniques de déséquilibre improvisées. Bonus aux luttes de rue, bagarres de taverne ou prises au corps à corps non conventionnelles.\n\nEffets de la compétence : \nbonus +1 au jet de déstabilisationbonus +1 au jet de soumission physiquebonus +1 au jet d'attaque a main nue",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1010,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1010,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1011,
+    "fields": {
+      "campaign": 1,
+      "name": "🪙 Négociation Opportune Lv.3",
+      "description": "Paul sait flairer la faille : hésitation, fatigue, ou avidité. Il peut, une fois par échange, proposer un prix ou une contrepartie qui semble trop belle pour être refusée… jusqu’à ce qu’on réalise qu’il a pris le dessus. Bonus aux transactions commerciales ou aux tentatives de persuasion liées à un échange.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1011,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1011,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1012,
+    "fields": {
+      "campaign": 1,
+      "name": "🎭 Marchand de Mirages Lv.1",
+      "description": "Spécialiste de l’emballage plus que du contenu, Paul peut vendre un objet sans réelle valeur comme s’il s’agissait d’une relique. Permet de masquer temporairement l’inefficacité d’un objet ou de convaincre une personne de sa rareté. Bonus aux ventes frauduleuses, fausses rumeurs et montages commerciaux douteux.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1012,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1012,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1013,
+    "fields": {
+      "campaign": 1,
+      "name": "🐦‍🔥Bénédiction de Fyrän Lv.4",
+      "description": "Au début, Anuki, jeune renard céleste à deux queues, voyait en Paul Tron un simple Alpha, une figure dominante à craindre. Mais au fil des veilles, des tresses dans les poils, et des nuits passées à dormir côte à côte, la peur s’est muée en confiance, puis en lien sacré.Cette complicité silencieuse, née dans la chaleur partagée et les gestes doux, a attiré l’attention du dieu Fyrän, maître du Feu Silencieux. Par le biais de son avatar, Paul a reçu une bénédiction discrète, mais profonde, marquant son âme d’un éclat intérieur.\nEffets de la compétence :\n\n+20 PR (Protection Résistante) contre les dégâts de feu.\nAffinité élémentaire latente avec la magie de feu : si un jour Paul devait apprendre à manipuler la magie, le feu lui répondra avec plus de souplesse qu’à un nain ordinaire.\nAnuki ressent cette bénédiction, et se montre plus loyal, attentif et protecteur envers PaulL'appel a Anuki bénéficie d'un bonus de +1 au jet de charisme\n→ « La chaleur guérit et les flames permettent de rebâtir  »",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1013,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1013,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1014,
+    "fields": {
+      "campaign": 1,
+      "name": "💰Bénédiction d’Avarinn Lv.3",
+      "description": "Tu sens le poids discret d’une pièce invisible dans ta paume, tiède comme la main d’un banquier.La Bénédiction d’Avarinn, dieu des échanges justes, des balances truquées, et de la valeur subjective des choses, se manifeste moins par des miracles que par des opportunités étrangement favorables, des silences bien placés, et des prix qui penchent sans raison en ta faveur.\nCeux qui portent sa marque parlent avec des mots qui brillent comme de l’or — non pas toujours sincères, mais toujours convaincants. Ils sentent le profit latent, évaluent les gens comme des stocks fluctuants, et concluent toujours la transaction la plus avantageuse… pour eux.\nEffets de la compétence :\nLes marchands sont souvent plus enclins à écouter ou à marchander avec le porteur.Une impression subtile de respect ou de méfiance bienveillante peut émaner de lui dans les cercles commerciaux ou religieux.Si le porteur trahit systématiquement l’idée d’un échange équitable, Avarinn peut retirer sa faveur sans prévenir\n→ « Toute chose a un prix. Même ce que tu n’as pas voulu obtenir. »",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1014,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1014,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1015,
+    "fields": {
+      "campaign": 1,
+      "name": "🎲Dés pipés lv.2",
+      "description": "Description :Un clin d’œil, un souffle, un geste presque imperceptible… et le hasard semble soudain moins hasardeux.Cette compétence représente un subtil talent pour influencer la chance elle-même — pas assez pour tricher ouvertement, mais juste assez pour « redresser » un destin capricieux. L’utilisateur apprend à lire l’élan d’un jet, la logique d’un tirage, et à y glisser une once de volonté, comme si le monde acceptait de plier légèrement les règles pour lui.\nEffet :Le joueur peut effectuer un jet de “Chance” et en cas de réussite, il peut modifier la valeur d’un dé de ±1 (après l’avoir lancé).Ne peut être utilisé qu’une fois par session",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1015,
+    "fields": {
+      "character": 1002,
+      "passive_skill": 1015,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1014,
+    "fields": {
+      "character": 1002,
+      "stat": 1000,
+      "value": 5
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1015,
+    "fields": {
+      "character": 1002,
+      "stat": 1001,
+      "value": 7
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1016,
+    "fields": {
+      "character": 1002,
+      "stat": 1002,
+      "value": 13
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1017,
+    "fields": {
+      "character": 1002,
+      "stat": 1003,
+      "value": 6
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1018,
+    "fields": {
+      "character": 1002,
+      "stat": 1004,
+      "value": 13
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1019,
+    "fields": {
+      "character": 1002,
+      "stat": 1005,
+      "value": 10
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1020,
+    "fields": {
+      "character": 1002,
+      "stat": 1006,
+      "value": 11
+    }
+  },
+  {
+    "model": "jdr.character",
+    "pk": 1003,
+    "fields": {
+      "name": "Prozengan Tchar",
+      "player": 1,
+      "campaign": 1,
+      "class_type": "Paladin",
+      "level": 8,
+      "description": "Origine : Semi-Homme",
+      "gold": 64,
+      "silver": 1,
+      "copper": 0
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1025,
+    "fields": {
+      "campaign": 1,
+      "name": "Ecu",
+      "description": "un simple écu au armoirie de l'orbe bleu, s'attache au poignet",
+      "rarity": "commun",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "0.05",
+      "properties": {
+        "armor_point": "2",
+        "icon": "t-armor6"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1028,
+    "fields": {
+      "character": 1003,
+      "item": 1025,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1029,
+    "fields": {
+      "character": 1003,
+      "item": 1002,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1030,
+    "fields": {
+      "character": 1003,
+      "item": 1004,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1031,
+    "fields": {
+      "character": 1003,
+      "item": 1005,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1026,
+    "fields": {
+      "campaign": 1,
+      "name": "Epée batarde de fer ardent",
+      "description": "",
+      "rarity": "très_rare",
+      "item_type": "Arme",
+      "weight": "0.00",
+      "value": "100.00",
+      "properties": {
+        "damage": "10d25+4d5",
+        "range": "1",
+        "icon": "t-weapon1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1032,
+    "fields": {
+      "character": 1003,
+      "item": 1026,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1027,
+    "fields": {
+      "campaign": 1,
+      "name": "Torse de plaque bleuté",
+      "description": "Un torse de plaque fait sur mesure pour Prozengan, la hache de Drunmör est gravé sur les épaulettes et sur le torse au niveau du cœur. Le métal a des reflets bleutés grace à la technique de manipulation du métal employé pour façonner l'armure. \n\nCrée par Niglinucus",
+      "rarity": "très_rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "100.00",
+      "properties": {
+        "armor_point": "30",
+        "icon": "t-armor2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1033,
+    "fields": {
+      "character": 1003,
+      "item": 1027,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1028,
+    "fields": {
+      "campaign": 1,
+      "name": "Gantelet de l'orbe bleu",
+      "description": "Gant de plaque de fer bleuté, permettant a Prozengan de sortir et rétracté librement ces griffes.",
+      "rarity": "très_rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "50.00",
+      "properties": {
+        "armor_point": "25",
+        "icon": "t-armor4"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1034,
+    "fields": {
+      "character": 1003,
+      "item": 1028,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1029,
+    "fields": {
+      "campaign": 1,
+      "name": "Bottes de 7 Bleu",
+      "description": "Des botte de plaques de fer bleutés, adapté a la morphologie particulière d'un semi-homme félin",
+      "rarity": "très_rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "40.00",
+      "properties": {
+        "armor_point": "10",
+        "icon": "t-armor5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1035,
+    "fields": {
+      "character": 1003,
+      "item": 1029,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1008,
+    "fields": {
+      "campaign": 1,
+      "name": "Bouclier magnétique II",
+      "description": "Des éclats de métal apparaissent et se colle sur l'armure au niveau de l'avant bras.\nGrace a une inspiration de 🪓Drunmör Prozengan peut désormais placer ce bouclier sur ces alliés.",
+      "level": 1,
+      "mana_cost": 6,
+      "damage": "+35PR",
+      "range_distance": "10",
+      "casting_time": "1",
+      "duration": "",
+      "school": "artisan",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1008,
+    "fields": {
+      "character": 1003,
+      "spell": 1008,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1009,
+    "fields": {
+      "campaign": 1,
+      "name": "Eclats magnétique",
+      "description": "magnétise un éclat de métal et le lance sur la cible. \n\n2(niveau de magie de métal)d7+10",
+      "level": 1,
+      "mana_cost": 5,
+      "damage": "8d7+10",
+      "range_distance": "10",
+      "casting_time": "1",
+      "duration": "",
+      "school": "artisan",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1009,
+    "fields": {
+      "character": 1003,
+      "spell": 1009,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1010,
+    "fields": {
+      "campaign": 1,
+      "name": "Bénédiction de l'enclume",
+      "description": "Une aura protège les alliées de Prozengan de la déstabilisation, +1 au jets de sauvegarde de renversement",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "",
+      "range_distance": "20",
+      "casting_time": "1",
+      "duration": "",
+      "school": "artisan",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1010,
+    "fields": {
+      "character": 1003,
+      "spell": 1010,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1011,
+    "fields": {
+      "campaign": 1,
+      "name": "Provocation Bestiale",
+      "description": "Un rugissement bestial attire l'attention des ennemis dans un rayon de 5m, suite a un jet de charisme réussi. \n\nPeut aussi effrayé les ennemi en cas de jet de sauvegarde de charisme +5 échoué.",
+      "level": 1,
+      "mana_cost": 6,
+      "damage": "Attire l'attention",
+      "range_distance": "5",
+      "casting_time": "0",
+      "duration": "",
+      "school": "druid",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1011,
+    "fields": {
+      "character": 1003,
+      "spell": 1011,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1012,
+    "fields": {
+      "campaign": 1,
+      "name": "Lien de fer",
+      "description": "Pendant 5 tour la cible reçoit 20% des Pa de Prozengan, qui voit ces PA diminuer de ce même montant. \n\nsi la cible devrait voir ces PV tombé a 0 suite a une attaque elle garde 1 PV et Prozengan subis le restant de dégât sous forme de dégât Brut (pas réduis par les PA)",
+      "level": 1,
+      "mana_cost": 25,
+      "damage": "partage dégat",
+      "range_distance": "10",
+      "casting_time": "0",
+      "duration": "",
+      "school": "paladin",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1012,
+    "fields": {
+      "character": 1003,
+      "spell": 1012,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1013,
+    "fields": {
+      "campaign": 1,
+      "name": "Tourbilol",
+      "description": "Frappe toute les cibles a 1m de Prozengan pour la moitié des dégâts habituel",
+      "level": 1,
+      "mana_cost": 5,
+      "damage": "Dégât d'arme/2",
+      "range_distance": "1",
+      "casting_time": "",
+      "duration": "",
+      "school": "warrior",
+      "extra": {
+        "components": "",
+        "unitCT": ""
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1013,
+    "fields": {
+      "character": 1003,
+      "spell": 1013,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1016,
+    "fields": {
+      "campaign": 1,
+      "name": "⚔️ Manipulation du Métal Lv.5",
+      "description": "Drunmör répond à l’appel de son fidèle. Par une prière brève ou un simple contact de la main avec le sol ou son arme, Prozengan peut faire émerger des éclats de métal brut. Ces fragments, aux reflets froids et tranchants, flottent autour de lui, prêts à être projetés ou à former une défense.\nEffet :Génère jusqu'à 5 éclats de métal durant un combat ou une scène intensePeut fusionner 3 éclats pour créer un objet simple temporaire (cuillère, clou, petite lame, etc.)Les éclats peuvent être attachés à son arme pour +1 dégât pendant 3 toursLes éclats disparaissent au bout de quelques minutes, redevenant poussière ou limaille\nRequiert un bref contact avec une source solide (sol, pierre, métal) et une prière silencieuse.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1016,
+    "fields": {
+      "character": 1003,
+      "passive_skill": 1016,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1017,
+    "fields": {
+      "campaign": 1,
+      "name": "🛡️ Lourdeur d’Enclume Lv.1",
+      "description": "Porté par la volonté de Drunmör, Prozengan ancre ses appuis comme s’il pesait le poids d’une forge entière. Il devient plus difficile à renverser, bousculer ou déstabiliser.\n\nEffet : Bénéficie d’un bonus de +2 à ses jets de sauvegarde ou de résistance contre les tentatives de renversement, de déséquilibre ou de recul.\nDe plus, s’il plante son arme dans le sol ou prend une posture défensive, ce bonus est doublé pour un tour.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1017,
+    "fields": {
+      "character": 1003,
+      "passive_skill": 1017,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1018,
+    "fields": {
+      "campaign": 1,
+      "name": "🔨 Bénédiction de Drunmör Lv.6",
+      "description": "Lié à Drunmör par un serment sacré, Prozengan manie les armes métalliques avec une aisance forgée dans la foi et la discipline. Ses coups ne sont pas seulement forts, ils sont justes, équilibrés, portés avec l’autorité du métal béni.\n\nSuite a son serment, scellé dans l’acier, Prozengan n’est plus un simple porteur d’arme — il est un vecteur de volonté divine, une enclume vivante sur laquelle se frappent les destinées. Chaque mouvement de son bras, chaque frappe de son arme, résonne comme un écho des batailles anciennes que Drunmör chérit, celles où la bravoure fut plus forte que la peur.\nCette bénédiction n’accorde pas seulement la force, elle exige la noblesse d’âme : l’affrontement frontal, l’honneur du duel, la lutte pour un peuple ou un serment. Car Drunmör ne bénit pas les lâches, ni les traîtres — il observe depuis sa montagne de métal, et forge dans la gloire les noms dignes d’être chantés.\nEffet de la compétence : \nDrunmör donne un niveau supplémentaire dans le niveau de manipulation du métalLes effet positif de cette bénédiction permette de contrôlé un éclat suplémentairebonus modéré +1 aux jets d’attaque et de maîtrise lorsqu’il utilise une arme en métal (épée, hache, marteau, etc.).\nUn bonus de +1 au jet d'intuition\n→ « Le sang juge mieux que les mots. »",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1018,
+    "fields": {
+      "character": 1003,
+      "passive_skill": 1018,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1019,
+    "fields": {
+      "campaign": 1,
+      "name": "🗡️Maniement de l'épée Lv.4",
+      "description": "L’arme devient familière — son poids, sa longueur, son rythme. L’utilisateur commence à ressentir les ouvertures, à anticiper les reculs, à sentir l’instant où un coup pourrait en appeler un autre.\nCe n’est pas encore un enchaînement fulgurant, mais parfois, le combat s’ouvre comme une faille, et le guerrier sait s’y engouffrer.\nC’est le premier lien entre le bras et la lame, la promesse d’un art qui dépasse la force brute.\n\nEffet de la compétence : \nbonus au maniement des épées +(niveau de compétence)d5 au dégât des coups d'épée",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1019,
+    "fields": {
+      "character": 1003,
+      "passive_skill": 1019,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1021,
+    "fields": {
+      "character": 1003,
+      "stat": 1000,
+      "value": 3
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1022,
+    "fields": {
+      "character": 1003,
+      "stat": 1001,
+      "value": 3
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1023,
+    "fields": {
+      "character": 1003,
+      "stat": 1002,
+      "value": 15
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1024,
+    "fields": {
+      "character": 1003,
+      "stat": 1003,
+      "value": 6
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1025,
+    "fields": {
+      "character": 1003,
+      "stat": 1004,
+      "value": 16
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1026,
+    "fields": {
+      "character": 1003,
+      "stat": 1005,
+      "value": 7
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1027,
+    "fields": {
+      "character": 1003,
+      "stat": 1006,
+      "value": 14
+    }
+  },
+  {
+    "model": "jdr.character",
+    "pk": 1004,
+    "fields": {
+      "name": "Soria Stellan",
+      "player": 1,
+      "campaign": 1,
+      "class_type": "Mage/Sorcier",
+      "level": 8,
+      "description": "Origine : Haut Elfe\n\nSuite aux nombreux désaccords sur l'hypothèse de l'existence potentielle de Lug. Le Père Baltrou a continué de tout faire pour me ridiculiser.Malgré des tentatives d'excuses, en essayant de lui expliquer que je ne reniait rien de ce culte, mais que je me posait des questions, qui me semblaient légitimes.\nRien ne s'est réglé, au contraire.\nEn continuant de faire de moi une ennemie de son culte.\nJe me suis demandée, si son dieu existe vraiment, comment il pourrait laisser un homme qui humilie des enfants en être son représentant.\nPeut être alors que c'est ces représentants actuels sont la raison du déclin de Lug.\nComment se comportent les autres cités ? les autres dirigeants de cultes sont ils aussi bornés que notre Père Baltrou ?\nLug, réelle divinité ou construction sociale visant à contrôler la société par la peur de l'inconnue supérieure ?\nJ'ai tenté pendant toute la fin de mon enfance à faire le moins de vagues possibles. De garder pour moi ces questionnements, et en parler avec Mme Ghetto.\nMême avec mes parents je ne pouvais pas me permettre d'évoquer la moindre interrogation.\nMa mère, fabriquant de petits bijoux, et petits objets en bois, souvent pour offrir à l'église du village des petites idoles.\nMon père lui libraire de la ville, se retrouverai peut être capable de comprendre mon questionnement, mais ayant parcouru tout les livres de sa boutique.\nRien, pas même un ouvrage ne semble poser la question des réelles intentions de Lug ou de sa non existence potentielle.\nAprès que le Père Balesyeucou, eut  perdu officiellement la tête, enfin plus qu'avant\nLe confronter a son comportement, ou a ses propres contradictions n'avait plus aucun sens.\nA continuer (reste les gros évènements d'adolescence / D'adulte)\nLe Jour de la fête du Village (10 ans après), je confronte le père Baltrou, et lui parle de ses méthodes !",
+      "gold": 103,
+      "silver": 4,
+      "copper": 0
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1036,
+    "fields": {
+      "character": 1004,
+      "item": 1004,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1030,
+    "fields": {
+      "campaign": 1,
+      "name": "Grimoire intime",
+      "description": "Compile l'intégralité des connaissance qui y sont inscrit par son détenteur.",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.01",
+      "properties": {
+        "icon": "t-misc6"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1037,
+    "fields": {
+      "character": 1004,
+      "item": 1030,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1031,
+    "fields": {
+      "campaign": 1,
+      "name": "Encrier a plumes",
+      "description": "kit de voyage pour les écrivains amateur",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.01",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1038,
+    "fields": {
+      "character": 1004,
+      "item": 1031,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1032,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac a dos en peau de loup",
+      "description": "Un grand sac pouvant contenir un volume de 40L, fait par Niglinucus lui même",
+      "rarity": "peu_commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.10",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1039,
+    "fields": {
+      "character": 1004,
+      "item": 1032,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1033,
+    "fields": {
+      "campaign": 1,
+      "name": "Boucle d’Ondelune",
+      "description": "Bijou (oreille)\nFine boucle d’oreille argentée prenant la forme d’une goutte d’eau en suspension, toujours fraîche au toucher. Lorsqu’elle est portée, un léger ruissellement s’entend parfois aux creux du silence, comme un écho venu d’un lac ancien.\n\nEffet : +1 niveau à la magie d’eau.",
+      "rarity": "rare",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "15.00",
+      "properties": {
+        "icon": "t-misc2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1040,
+    "fields": {
+      "character": 1004,
+      "item": 1033,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1034,
+    "fields": {
+      "campaign": 1,
+      "name": "Potion de mana",
+      "description": "rend 20 points de mana\n(Vide)",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1041,
+    "fields": {
+      "character": 1004,
+      "item": 1034,
+      "quantity": 0,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1042,
+    "fields": {
+      "character": 1004,
+      "item": 1005,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1035,
+    "fields": {
+      "campaign": 1,
+      "name": "Sac de Lug",
+      "description": "« Quand nul élu ne le porte, il veille seul. »\n✨ ApparenceCe sac semble, à première vue, n’être qu’un robuste baluchon de toile noire tissée de fil d’argent, aux coutures étrangement parfaites. Le cuir qui en renforce les lanières est souple mais inusable, et l’intérieur paraît toujours plus grand qu’il ne devrait l’être. Une lumière douce, semblable à celle d’un astre tamisé, émane discrètement de ses coutures dès qu’on l’ouvre.\n🔮 Propriétés magiques🌟 Lueur du GardienTant qu’il est porté par un élu (ou reconnu comme tel par l’enchantement du sac), une lumière constante et apaisante émane doucement de l’intérieur — suffisante pour éclairer une pièce, mais jamais agressive. Elle repousse les ténèbres magiques de faible niveau, et offre un confort mental contre les effets d’isolement ou de terreur.\n🕯️ Rune de Veille SilencieuseLorsqu’aucun porteur désigné ne l’emporte (qu’il soit posé, oublié ou abandonné), le sac s’ancre au sol par une magie discrète :\nUne rune d’invisibilité est tracée sur le sol autour de lui, le rendant totalement indétectable aux regards ordinaires et à la plupart des détections simples.\nUne barrière de protection (domaine d’abjuration) empêche toute ouverture ou déplacement par une créature non reconnue.\nSi quelqu’un tente de le violer de force, le sac réagit par une poussée magique de dissuasion, semblable à un souffle léger, mais suffisamment intense pour repousser la main d’un curieux.\n🔁 Lien d’AttachementLe sac reconnaît ses porteurs. Il ne se laisse déverrouiller que par ceux qu’il a déjà \"acceptés\", ou par un rituel de résonance (souvent long, parfois douloureux). Chaque élu reconnu laisse une trace subtile dans la toile du sac — des motifs qui ne sont visibles qu’à la lumière de certaines étoiles ou sous un clair de lune bien précis.",
+      "rarity": "artéfact",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.00",
+      "properties": {
+        "icon": "t-misc1"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1043,
+    "fields": {
+      "character": 1004,
+      "item": 1035,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1044,
+    "fields": {
+      "character": 1004,
+      "item": 1002,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1036,
+    "fields": {
+      "campaign": 1,
+      "name": "Gantelets de la pierre mouvantes",
+      "description": "Protège le porteur des dégâts des secousse sismiques",
+      "rarity": "très_rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "150.00",
+      "properties": {
+        "armor_point": "10",
+        "icon": "t-armor4"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1045,
+    "fields": {
+      "character": 1004,
+      "item": 1036,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1037,
+    "fields": {
+      "campaign": 1,
+      "name": "Collier de L'hippocampe",
+      "description": "Donne un bonus de 1d50 au dégâts d'eau",
+      "rarity": "très_rare",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "100.00",
+      "properties": {
+        "icon": "t-misc2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1046,
+    "fields": {
+      "character": 1004,
+      "item": 1037,
+      "quantity": 1,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1038,
+    "fields": {
+      "campaign": 1,
+      "name": "anneau de fer simple",
+      "description": "un anneau de fer de bonne manufacture, il ne manquerais qu'une ou deux pierre précieuse pour en faire un bijou mémorable.",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.10",
+      "properties": {
+        "icon": "t-misc5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1047,
+    "fields": {
+      "character": 1004,
+      "item": 1038,
+      "quantity": 2,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1039,
+    "fields": {
+      "campaign": 1,
+      "name": "Corset de cuir fin",
+      "description": "Un corset qui peut être porté sous une  robe et qui protège efficacement le haut du corp sans interférer avec la magie de son porteur.",
+      "rarity": "rare",
+      "item_type": "Armure",
+      "weight": "0.00",
+      "value": "15.00",
+      "properties": {
+        "armor_point": "12",
+        "icon": "t-armor2"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1048,
+    "fields": {
+      "character": 1004,
+      "item": 1039,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1040,
+    "fields": {
+      "campaign": 1,
+      "name": "Anneau de fer simple \"Magique\"",
+      "description": "un rune est gravé mais pas de dessus mais aucun effet suplémentaire",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "0.11",
+      "properties": {
+        "icon": "t-misc5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1049,
+    "fields": {
+      "character": 1004,
+      "item": 1040,
+      "quantity": 2,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1041,
+    "fields": {
+      "campaign": 1,
+      "name": "Anneau d'argent",
+      "description": "un simple anneau en argent",
+      "rarity": "commun",
+      "item_type": "Divers",
+      "weight": "0.00",
+      "value": "1.00",
+      "properties": {
+        "icon": "t-misc5"
+      },
+      "is_magical": false
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1050,
+    "fields": {
+      "character": 1004,
+      "item": 1041,
+      "quantity": 5,
+      "is_equipped": false,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 1042,
+    "fields": {
+      "campaign": 1,
+      "name": "Anneau de l'Hippocampe en fer simple",
+      "description": "Un anneau de fer simple, travaillé avec patience durant les heures silencieuses de la nuit. Sur sa surface intérieure, gravée avec une précision minutieuse, s'enroule la Rune de l'Hippocampe\nEffet :- +5 Mana maximum",
+      "rarity": "rare",
+      "item_type": "Objet magique",
+      "weight": "0.00",
+      "value": "5.00",
+      "properties": {
+        "charges": {
+          "base": "0",
+          "value": "0"
+        },
+        "icon": "t-magic2"
+      },
+      "is_magical": true
+    }
+  },
+  {
+    "model": "jdr.characteritem",
+    "pk": 1051,
+    "fields": {
+      "character": 1004,
+      "item": 1042,
+      "quantity": 1,
+      "is_equipped": true,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1014,
+    "fields": {
+      "campaign": 1,
+      "name": "Bulle d'o",
+      "description": "Lance une bulle d'eau sur la cible, cette bulle fait la taille d'une balle de baseball.\n\nfait (4xniveau magie d'eau)d5+5",
+      "level": 1,
+      "mana_cost": 5,
+      "damage": "24d5+5",
+      "range_distance": "10",
+      "casting_time": "1",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1014,
+    "fields": {
+      "character": 1004,
+      "spell": 1014,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1015,
+    "fields": {
+      "campaign": 1,
+      "name": "Mur d'eau",
+      "description": "Protège le lanceur ou ces alliés de (5 x niveau de magie d'eau) PR pendant 3 tours",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "Barrière",
+      "range_distance": "20",
+      "casting_time": "1",
+      "duration": "",
+      "school": "paladin",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1015,
+    "fields": {
+      "character": 1004,
+      "spell": 1015,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1016,
+    "fields": {
+      "campaign": 1,
+      "name": "Eau de vie",
+      "description": "Permet de soigne ((4xniveau magie eau)+ 2)  d8+5, l'abus de cette eau peut vous faire tourner la tête",
+      "level": 1,
+      "mana_cost": 8,
+      "damage": "26d8+5",
+      "range_distance": "20",
+      "casting_time": "1",
+      "duration": "",
+      "school": "medicine",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1016,
+    "fields": {
+      "character": 1004,
+      "spell": 1016,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1017,
+    "fields": {
+      "campaign": 1,
+      "name": "Vague d'eau",
+      "description": "En présence d'une source d'eau ou si la magie d'eau mineur est de niveau 5, peut envoyé une vague qui a 1d20&lt;10 chance de renverser l'adversaire (il a le droit a un jet de constitution pour résister).\n\nFait 4(niveau magie d'eau)d9+5 de dégats",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "24d9+5",
+      "range_distance": "15m",
+      "casting_time": "1",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1017,
+    "fields": {
+      "character": 1004,
+      "spell": 1017,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1018,
+    "fields": {
+      "campaign": 1,
+      "name": "Yameit-eau",
+      "description": "Par la force fluide de l’eau, le lanceur invoque une série de tentacules translucides et mouvants jaillissant d’une flaque, d’un bassin ou de l’humidité ambiante. Ces bras liquides s’élancent avec une souplesse sinistre pour entraver, soulever ou clouer au sol une cible.\nLes tentacules d’Yameit-eau ne blessent pas directement, mais leur étreinte est froide, impitoyable, et presque consciente. Lorsqu'elles enserrent un adversaire, elles absorbent sa chaleur, le ralentissent et le privent de sa mobilité comme si la mer elle-même voulait le garder.\n\nL'adversaire a le droit a un jet de sagesse par tour pour s'en délivrer, sinon la compétence dure un maximun de 3 tour.",
+      "level": 1,
+      "mana_cost": 10,
+      "damage": "Imobilisation",
+      "range_distance": "20",
+      "casting_time": "2",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "-"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1018,
+    "fields": {
+      "character": 1004,
+      "spell": 1018,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1019,
+    "fields": {
+      "campaign": 1,
+      "name": "Razenctus",
+      "description": "Concentre sa magie dans l’eau d’un récipient clos.\nSi le contenant est fragile (cruche, cactus, fiole), il éclate en une explosion d’éclats et d’eau sous pression.\nPeut infliger des dégâts ou créer une diversion.",
+      "level": 1,
+      "mana_cost": 15,
+      "damage": "variable",
+      "range_distance": "10",
+      "casting_time": "0",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1019,
+    "fields": {
+      "character": 1004,
+      "spell": 1019,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1020,
+    "fields": {
+      "campaign": 1,
+      "name": "Scaphandre aqueux",
+      "description": "Un sort puissant qui demande d'être canaliser pendant au minimum 3 tour, mais qui permet de tuer la plupart des créature non-amphibie. \n\nAttention certaine créature avec une forte constitution peuvent résister plus de 3 tour,  ce sort nécessite 10 de mana par tour pour être maintenu.",
+      "level": 1,
+      "mana_cost": 40,
+      "damage": "suffocation",
+      "range_distance": "5",
+      "casting_time": "0",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1020,
+    "fields": {
+      "character": 1004,
+      "spell": 1020,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.spell",
+    "pk": 1021,
+    "fields": {
+      "campaign": 1,
+      "name": "Lame aqueuse",
+      "description": "Une puissante lame d'eau obtenus en fouettant l'air avec un fouet aqueux\n\nDégat : 5(niveau magie d'eaux + 3)d10 +20",
+      "level": 1,
+      "mana_cost": 30,
+      "damage": "45d10+20",
+      "range_distance": "10",
+      "casting_time": "1",
+      "duration": "",
+      "school": "water",
+      "extra": {
+        "components": "",
+        "unitCT": "turn"
+      }
+    }
+  },
+  {
+    "model": "jdr.characterspell",
+    "pk": 1021,
+    "fields": {
+      "character": 1004,
+      "spell": 1021,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1020,
+    "fields": {
+      "campaign": 1,
+      "name": "🌊 Magie d’Eau Mineure Lv.5",
+      "description": "Premiers pas vers la magie, cette compétence permet à Soria de créer ou manipuler de petites quantités d’eau (une flaque, un jet fin, quelques gouttelettes flottantes). Elle s’accorde parfaitement à sa nature calme et introspective. Utile pour l’exploration, l’extinction de petites flammes, ou des effets visuels subtils.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1020,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1020,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1021,
+    "fields": {
+      "campaign": 1,
+      "name": "🏛️ Connaissance des Cités Lv.1",
+      "description": "L’esprit curieux de Soria et ses nombreuses lectures l’ont rendue familière avec la géographie, les systèmes politiques et certaines cultures des cités majeures du continent. Elle est capable d’identifier un accent, de comprendre les us et coutumes locaux, ou de reconnaître les factions importantes d’une ville, même sans y être allée.\n\nSoria a pris des notes dans son grimoires il est de sa responsabilité d'enrichir ces pages au grés des informations récolté dans ses aventures.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1021,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1021,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1022,
+    "fields": {
+      "campaign": 1,
+      "name": "📖 Théologie Basique Lv.2",
+      "description": "Ses lectures comparatives et ses échanges avec Mme Ghetto ont offert à Soria une vue d’ensemble du panthéon, de ses contradictions internes, de ses zones floues et des dérives humaines qui l'entourent. Cette compétence lui donne accès aux doctrines officielles, aux dogmes majeurs, aux rivalités divines, et aux origines des différents cultes. Elle peut identifier les symboles, les fêtes et les figures religieuses même si elle les remet en question.\n\nSoria a pris des notes dans son grimoires il est de sa responsabilité d'enrichir ces pages au grés des informations récolté dans ses aventures. \n\nUne étude approfondi et de nombreuse discutions avec Clémence on fait germer un graine dans l'esprit de Soria et si le panthéon de Lug n'étais pas le seul.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1022,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1022,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1023,
+    "fields": {
+      "campaign": 1,
+      "name": "💧 Méditation de la Mare Lv.3",
+      "description": "« Toute surface d’eau est un miroir. Et certains reflets contiennent des réponses plus anciennes que les mots. »\nAvec le temps, Soria ne se contente plus de se calmer dans la présence de l’eau : elle entre en syntonie avec elle. Sa méditation ne puise plus seulement dans la paix de la mare, mais dans la mémoire liquide du monde. Chaque vaguelette, chaque frisson sur la surface, lui murmure quelque chose d’ancien, de profond — un flux de magie plus pur, plus dense.\nSon corps et son esprit s’accordent désormais à la pulsation de l’eau vivante, lui permettant de récupérer son mana avec une efficacité accrue… et une stabilité mentale presque surnaturelle.\nEffets de la compétence :\nRégénération de mana renforcée lors d’une méditation au contact ou à proximité immédiate d’une source d’eau naturelle (ruisseau, mare, source, pluie pure…).+9 points de mana récupérés par cycle de méditation.La concentration devient plus difficile à briser : résistance accrue aux intrusions mentales ou perturbations magiques durant l’état méditatif Soria peut ressentir des intuitions élémentaires lors de méditations prolongées — des sensations ou pressentiments liés à l’eau, au climat ou aux émotions proches.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1023,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1023,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1024,
+    "fields": {
+      "campaign": 1,
+      "name": "🐋 Bénédiction d’Aquaïos Lv.2",
+      "description": "Soria a reçu la bénédiction du dieu Aquaïos, gardien des eaux tranquilles et des marées intérieures. Même lorsque les tempêtes grondent autour d’elle, son esprit reste limpide, comme la surface d’un lac immobile. Cette bénédiction ne lui offre pas de pouvoir spectaculaire, mais un don rare : la stabilité émotionnelle et mentale, un ancrage calme dans un monde agité.\n\nEffets de la compétence :\nSoria peut entrer en méditation ou rester concentrée même en situation de stress, de danger ou de chaos (bataille, effondrement, pression magique, etc.).Elle bénéficie d’un bonus aux jets de concentration, de sang-froid ou de résistance mentale.Permet de réduire ou ignorer temporairement les effets de peur, de panique ou de confusion.\n→ « Dans le tumulte, une étendue paisible subsiste. »",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1024,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1024,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1025,
+    "fields": {
+      "campaign": 1,
+      "name": "✴️ Enchantement runique Lv.3",
+      "description": "L’art de l’Enchantement runique est une discipline ancienne transmise  les érudits du Collège des Arcanes.Celui qui la maîtrise apprend à lier le flux magique aux symboles gravés, transformant ainsi un simple objet en réceptacle de pouvoir.\nGrâce à une concentration profonde et l’usage d’un burin d’argent ou d’un stylet d’onyx, l’enchanteur trace des glyphes de pouvoir sur la surface d’un objet :\nLa réussite d’un enchantement dépend de la qualité du matériau, de la précision du trait et de la stabilité magique du lieu.\nUne erreur peut transformer l’objet en coquille inerte… ou en explosion runique incontrôlée.\nEffets de la compétence :\nPermet de graver des runes magiques sur la plupart des objets non vivants.\nTu as découvert que les effets de l'enchantement de n'active uniquement en combinant un minimum de deux rune\nles règles de combinaison ne sont pas encore très clair pour toi.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1025,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1025,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.passiveskill",
+    "pk": 1026,
+    "fields": {
+      "campaign": 1,
+      "name": "🚢Navigation marine lv.1",
+      "description": "Description : \nVous possédez les connaissances fondamentales de la navigation en mer. Vous savez lire les courants, interpréter la position des étoiles pour vous orienter, et comprendre les bases de la manœuvre d'un navire. Vous êtes capable d'assister efficacement un équipage dans les tâches courantes : hisser les voiles, tenir la barre par temps calme, et effectuer les manœuvres simples au port.Effet : \nVous bénéficiez d'un bonus lors de vos jets liés à la navigation maritime, que ce soit pour maintenir le cap, éviter des obstacles en mer calme, ou participer aux manœuvres de base d'un navire.",
+      "extra": {}
+    }
+  },
+  {
+    "model": "jdr.characterpassiveskill",
+    "pk": 1026,
+    "fields": {
+      "character": 1004,
+      "passive_skill": 1026,
+      "notes": ""
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1028,
+    "fields": {
+      "character": 1004,
+      "stat": 1000,
+      "value": 14
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1029,
+    "fields": {
+      "character": 1004,
+      "stat": 1001,
+      "value": 16
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1030,
+    "fields": {
+      "character": 1004,
+      "stat": 1002,
+      "value": 13
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1031,
+    "fields": {
+      "character": 1004,
+      "stat": 1003,
+      "value": 7
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1032,
+    "fields": {
+      "character": 1004,
+      "stat": 1004,
+      "value": 3
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1033,
+    "fields": {
+      "character": 1004,
+      "stat": 1005,
+      "value": 7
+    }
+  },
+  {
+    "model": "jdr.characterstat",
+    "pk": 1034,
+    "fields": {
+      "character": 1004,
+      "stat": 1006,
+      "value": 5
+    }
+  }
+]
