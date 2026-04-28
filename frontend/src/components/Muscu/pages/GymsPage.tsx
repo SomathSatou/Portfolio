@@ -66,7 +66,7 @@ export default function GymsPage() {
       const res = await api.get<Membership[]>('/my-gyms/')
       setMemberships(res.data)
     } catch {
-      setError("Erreur lors de l\u2019adh\u00e9sion.")
+      setError("Erreur lors de l'adhésion.")
     }
   }
 
@@ -78,7 +78,7 @@ export default function GymsPage() {
       await api.delete(`/my-gyms/${membershipId}/`)
       setMemberships((prev) => prev.filter((m) => m.id !== membershipId))
     } catch {
-      setError('Erreur lors du d\u00e9sabonnement.')
+      setError('Erreur lors du désabonnement.')
     }
   }
 
@@ -95,7 +95,7 @@ export default function GymsPage() {
     }
   }
 
-  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement\u2026</p>
+  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
 
   // Gym detail view
   if (selectedGym) {
@@ -105,7 +105,7 @@ export default function GymsPage() {
           onClick={() => setSelectedGym(null)}
           className="text-sm text-primary dark:text-primaryLight hover:underline"
         >
-          \u2190 Retour aux salles
+          ← Retour aux salles
         </button>
 
         <div className="card">
@@ -122,14 +122,14 @@ export default function GymsPage() {
                 onClick={() => leaveGym(selectedGym.id)}
                 className="btn btn-outline text-sm text-red-500 border-red-300 hover:bg-red-50 dark:border-red-700 dark:hover:bg-red-900/20"
               >
-                Se d\u00e9sabonner
+                Se désabonner
               </button>
             ) : (
               <button
                 onClick={() => joinGym(selectedGym.id)}
                 className="btn btn-primary text-sm"
               >
-                S\u2019abonner
+                S'abonner
               </button>
             )}
           </div>
@@ -141,9 +141,9 @@ export default function GymsPage() {
           <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">
             Machines ({gymMachines.length})
           </h2>
-          {loadingMachines && <p className="text-sm text-gray-500 dark:text-gray-400">Chargement\u2026</p>}
+          {loadingMachines && <p className="text-sm text-gray-500 dark:text-gray-400">Chargement…</p>}
           {!loadingMachines && gymMachines.length === 0 && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">Aucune machine enregistr\u00e9e.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Aucune machine enregistrée.</p>
           )}
           {!loadingMachines && gymMachines.length > 0 && (
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -210,7 +210,7 @@ export default function GymsPage() {
                   onClick={() => viewGymDetail(g)}
                   className="btn btn-outline text-xs"
                 >
-                  D\u00e9tails
+                  Détails
                 </button>
                 {isMember(g.id) ? (
                   <button

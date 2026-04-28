@@ -116,7 +116,7 @@ export default function ExercisesPage() {
       setNewMuscleIds([])
       setNewGymId(0)
     } catch {
-      setError("Erreur lors de la cr\u00e9ation de l\u2019exercice.")
+      setError("Erreur lors de la création de l'exercice.")
     } finally {
       setCreating(false)
     }
@@ -139,7 +139,7 @@ export default function ExercisesPage() {
     return true
   })
 
-  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement\u2026</p>
+  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -158,7 +158,7 @@ export default function ExercisesPage() {
       {/* Create form */}
       {showCreate && (
         <div className="card space-y-4 border border-primary/20 dark:border-primaryLight/20">
-          <h2 className="font-semibold text-primary dark:text-primaryLight">Cr\u00e9er un exercice</h2>
+          <h2 className="font-semibold text-primary dark:text-primaryLight">Créer un exercice</h2>
           <input
             type="text"
             placeholder="Nom de l'exercice *"
@@ -183,7 +183,7 @@ export default function ExercisesPage() {
                 onChange={(e) => { setNewGymId(Number(e.target.value)); setNewMachineId(0) }}
                 className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
               >
-                <option value={0}>\u2014 Aucune salle \u2014</option>
+                <option value={0}>— Aucune salle —</option>
                 {gyms.map((g) => (
                   <option key={g.id} value={g.id}>{g.name}</option>
                 ))}
@@ -197,7 +197,7 @@ export default function ExercisesPage() {
                 disabled={!newGymId}
                 className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 disabled:opacity-50"
               >
-                <option value={0}>\u2014 Aucune machine \u2014</option>
+                <option value={0}>— Aucune machine —</option>
                 {machines.map((m) => (
                   <option key={m.id} value={m.id}>{m.name}</option>
                 ))}
@@ -207,7 +207,7 @@ export default function ExercisesPage() {
 
           {/* Muscle targets */}
           <div>
-            <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Muscles cibl\u00e9s :</p>
+            <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Muscles ciblés :</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1 max-h-60 overflow-y-auto">
               {muscleGroups.map((g) => (
                 <div key={g.id}>
@@ -240,7 +240,7 @@ export default function ExercisesPage() {
               disabled={creating || !newName.trim()}
               className="btn btn-primary text-sm"
             >
-              {creating ? 'Cr\u00e9ation\u2026' : 'Cr\u00e9er'}
+              {creating ? 'Création…' : 'Créer'}
             </button>
             <button
               onClick={() => setShowCreate(false)}
@@ -256,7 +256,7 @@ export default function ExercisesPage() {
       <div className="flex flex-wrap gap-3">
         <input
           type="text"
-          placeholder="Rechercher\u2026"
+          placeholder="Rechercher…"
           value={filterSearch}
           onChange={(e) => setFilterSearch(e.target.value)}
           className="flex-1 min-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
@@ -277,7 +277,7 @@ export default function ExercisesPage() {
       <div className="space-y-3">
         {filtered.length === 0 && (
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-            Aucun exercice trouv\u00e9.
+            Aucun exercice trouvé.
           </p>
         )}
         {filtered.map((ex) => (
@@ -290,7 +290,7 @@ export default function ExercisesPage() {
                     <span className="text-xs px-1.5 py-0.5 rounded bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">Public</span>
                   )}
                   {!ex.is_public && (
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Priv\u00e9</span>
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Privé</span>
                   )}
                 </div>
                 {ex.description && (
@@ -312,7 +312,7 @@ export default function ExercisesPage() {
                   </div>
                 )}
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                  Par {ex.created_by_name} \u00b7 Difficult\u00e9 \u00d7{ex.difficulty_factor}
+                  Par {ex.created_by_name} · Difficulté ×{ex.difficulty_factor}
                 </p>
               </div>
               {(ex.created_by === user?.id || user?.is_staff) && !ex.is_public && (
