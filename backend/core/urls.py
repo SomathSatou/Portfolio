@@ -50,6 +50,7 @@ def frontend_file(request, path):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('api/auth/', include('accounts.urls')),
     path('api/jdr/', include('jdr.urls')),
     path('api/muscu/', include('muscu.urls')),
     # Frontend assets (JS, CSS, images) — keep 'assets/' in the path

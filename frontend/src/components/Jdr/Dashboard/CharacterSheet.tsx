@@ -1,7 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import type { Campaign, CampaignSettings, Character, CharacterItem, CharacterSkill, CharacterSpell, CharacterStat, Item, Skill, Spell } from './types'
+import type { Campaign, CampaignSettings, Character, CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell, CharacterStat, Item, PassiveSkill, Skill, Spell } from './types'
 
 interface CharacterSheetProps {
   characterId: string
@@ -24,14 +24,23 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [charSpells, setCharSpells] = React.useState<CharacterSpell[]>([])
   const [charItems, setCharItems] = React.useState<CharacterItem[]>([])
   const [charSkills, setCharSkills] = React.useState<CharacterSkill[]>([])
+  const [charPassiveSkills, setCharPassiveSkills] = React.useState<CharacterPassiveSkill[]>([])
   const [campaignSpells, setCampaignSpells] = React.useState<Spell[]>([])
   const [campaignSkills, setCampaignSkills] = React.useState<Skill[]>([])
   const [campaignItems, setCampaignItems] = React.useState<Item[]>([])
+  const [campaignPassiveSkills, setCampaignPassiveSkills] = React.useState<PassiveSkill[]>([])
   const [campaignSettings, setCampaignSettings] = React.useState<CampaignSettings | null>(null)
   const [allCampaigns, setAllCampaigns] = React.useState<Campaign[]>([])
   const [selectedCampaignId, setSelectedCampaignId] = React.useState<number | null>(null)
   const [uploadingAvatar, setUploadingAvatar] = React.useState(false)
   const avatarInputRef = React.useRef<HTMLInputElement>(null)
+
+  // Detail slide-in panel
+  type PanelItem =
+    | { type: 'spell'; data: CharacterSpell }
+    | { type: 'item'; data: CharacterItem }
+    | { type: 'passive'; data: CharacterPassiveSkill }
+  const [panelItem, setPanelItem] = React.useState<PanelItem | null>(null)
 
   // Join campaign by invite code
   const [inviteCode, setInviteCode] = React.useState('')
@@ -62,12 +71,14 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
           api.get<CharacterStat[]>(`/character-stats/?character=${c.id}`).then((r) => { if (!cancelled) setCharStats(r.data) }),
           api.get<CharacterSpell[]>(`/character-spells/?character=${c.id}`).then((r) => { if (!cancelled) setCharSpells(r.data) }),
           api.get<CharacterSkill[]>(`/character-skills/?character=${c.id}`).then((r) => { if (!cancelled) setCharSkills(r.data) }),
+          api.get<CharacterPassiveSkill[]>(`/character-passive-skills/?character=${c.id}`).then((r) => { if (!cancelled) setCharPassiveSkills(r.data) }),
           api.get<CharacterItem[]>(`/character-items/?character=${c.id}`).then((r) => { if (!cancelled) setCharItems(r.data) }),
         )
         if (c.campaign) {
           promises.push(
             api.get<Spell[]>(`/spells/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSpells(r.data) }),
             api.get<Skill[]>(`/skills/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignSkills(r.data) }),
+            api.get<PassiveSkill[]>(`/passive-skills/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignPassiveSkills(r.data) }),
             api.get<Item[]>(`/items/?campaign=${c.campaign}`).then((r) => { if (!cancelled) setCampaignItems(r.data) }),
             api.get<CampaignSettings>(`/campaigns/${c.campaign}/settings/`).then((r) => { if (!cancelled) setCampaignSettings(r.data) }),
           )
@@ -229,6 +240,25 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
       setCharItems((prev) => prev.filter((i) => i.id !== ciId))
     } catch {
       setError('Erreur lors du retrait de l\'objet.')
+    }
+  }
+
+  const handleAddPassiveSkill = async (psId: number) => {
+    if (!character) return
+    try {
+      const res = await api.post<CharacterPassiveSkill>('/character-passive-skills/', { character: character.id, passive_skill: psId })
+      setCharPassiveSkills((prev) => [...prev, res.data])
+    } catch {
+      setError('Compétence passive déjà connue ou erreur.')
+    }
+  }
+
+  const handleRemovePassiveSkill = async (cpsId: number) => {
+    try {
+      await api.delete(`/character-passive-skills/${cpsId}/`)
+      setCharPassiveSkills((prev) => prev.filter((s) => s.id !== cpsId))
+    } catch {
+      setError('Erreur lors du retrait de la compétence passive.')
     }
   }
 
@@ -492,7 +522,12 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
                 {charSpells.map((cs) => (
                   <div key={cs.id} className="flex items-center justify-between gap-2 text-sm">
                     <div>
-                      <span className="font-medium text-gray-900 dark:text-gray-100">{cs.spell_name}</span>
+                      <button
+                        onClick={() => setPanelItem({ type: 'spell', data: cs })}
+                        className="font-medium text-gray-900 dark:text-gray-100 hover:text-primary dark:hover:text-primaryLight hover:underline text-left"
+                      >
+                        {cs.spell_name}
+                      </button>
                       <span className="ml-2 text-xs text-gray-500">Niv. {cs.spell_level}</span>
                       {cs.spell_school && <span className="ml-2 text-xs text-gray-500">{cs.spell_school}</span>}
                     </div>
@@ -529,7 +564,12 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
                 {charItems.map((ci) => (
                   <div key={ci.id} className="flex items-center justify-between gap-2 text-sm">
                     <div>
-                      <span className="font-medium text-gray-900 dark:text-gray-100">{ci.item_name}</span>
+                      <button
+                        onClick={() => setPanelItem({ type: 'item', data: ci })}
+                        className="font-medium text-gray-900 dark:text-gray-100 hover:text-primary dark:hover:text-primaryLight hover:underline text-left"
+                      >
+                        {ci.item_name}
+                      </button>
                       {ci.quantity > 1 && <span className="ml-1 text-xs text-gray-500">(x{ci.quantity})</span>}
                       {ci.is_equipped && <span className="ml-2 badge text-xs">Équipé</span>}
                     </div>
@@ -549,6 +589,46 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
                 >
                   <option value="" disabled>+ Ajouter un objet…</option>
                   {campaignItems.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
+                </select>
+              </div>
+            )}
+          </div>
+
+          {/* Character Passive Skills */}
+          <div className="card">
+            <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">Compétences passives</h2>
+            {charPassiveSkills.length === 0 ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">Aucune compétence passive.</p>
+            ) : (
+              <div className="space-y-2">
+                {charPassiveSkills.map((cps) => (
+                  <div key={cps.id} className="flex items-center justify-between gap-2 text-sm">
+                    <div>
+                      <button
+                        onClick={() => setPanelItem({ type: 'passive', data: cps })}
+                        className="font-medium text-gray-900 dark:text-gray-100 hover:text-primary dark:hover:text-primaryLight hover:underline text-left"
+                      >
+                        {cps.passive_skill_name}
+                      </button>
+                    </div>
+                    {canEdit && (
+                      <button onClick={() => handleRemovePassiveSkill(cps.id)} className="text-xs text-red-500 hover:underline shrink-0">Retirer</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            {canEdit && campaignPassiveSkills.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <select
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) handleAddPassiveSkill(+e.target.value); e.target.value = '' }}
+                  className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="" disabled>+ Ajouter une compétence passive…</option>
+                  {campaignPassiveSkills
+                    .filter((s) => !charPassiveSkills.some((cps) => cps.passive_skill === s.id))
+                    .map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
             )}
@@ -652,6 +732,146 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
           </dl>
         </aside>
       </div>
+
+      {/* Slide-in detail panel */}
+      {panelItem && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 z-40 transition-opacity"
+            onClick={() => setPanelItem(null)}
+          />
+          {/* Panel */}
+          <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl z-50 transform transition-transform duration-300 translate-x-0 flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-bold text-primary dark:text-primaryLight">
+                {panelItem.type === 'spell' && 'Détail du sort'}
+                {panelItem.type === 'item' && 'Détail de l\'objet'}
+                {panelItem.type === 'passive' && 'Détail de la compétence passive'}
+              </h2>
+              <button
+                onClick={() => setPanelItem(null)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                aria-label="Fermer"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {panelItem.type === 'spell' && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{panelItem.data.spell_name}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="badge">Niveau {panelItem.data.spell_level}</span>
+                    {panelItem.data.spell_school && <span className="badge">{panelItem.data.spell_school}</span>}
+                    <span className="badge">Mana {panelItem.data.spell_mana_cost}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {panelItem.data.spell_damage && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Dégâts</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.spell_damage}</p>
+                      </div>
+                    )}
+                    {panelItem.data.spell_range_distance && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Portée</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.spell_range_distance}</p>
+                      </div>
+                    )}
+                    {panelItem.data.spell_casting_time && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Incantation</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.spell_casting_time}</p>
+                      </div>
+                    )}
+                    {panelItem.data.spell_duration && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Durée</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.spell_duration}</p>
+                      </div>
+                    )}
+                  </div>
+                  {panelItem.data.spell_extra && Object.keys(panelItem.data.spell_extra).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Propriétés</p>
+                      {Object.entries(panelItem.data.spell_extra).map(([k, v]) => (
+                        <div key={k} className="text-sm text-gray-700 dark:text-gray-300">
+                          <span className="font-medium">{k}</span> : {String(v)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {panelItem.data.spell_description && (
+                    <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{panelItem.data.spell_description}</div>
+                  )}
+                  {panelItem.data.notes && (
+                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">Notes : {panelItem.data.notes}</div>
+                  )}
+                </>
+              )}
+              {panelItem.type === 'item' && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{panelItem.data.item_name}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {panelItem.data.item_rarity && <span className="badge">{panelItem.data.item_rarity}</span>}
+                    {panelItem.data.item_type && <span className="badge">{panelItem.data.item_type}</span>}
+                    {panelItem.data.item_is_magical && <span className="badge bg-accent1/20 text-accent2 dark:text-accent1">Magique</span>}
+                    {panelItem.data.is_equipped && <span className="badge bg-primary/10 text-primary dark:text-primaryLight">Équipé</span>}
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-sm">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                      <span className="text-gray-500 dark:text-gray-400 text-xs">Quantité</span>
+                      <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.quantity}</p>
+                    </div>
+                    {panelItem.data.item_value != null && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Valeur</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.item_value} po</p>
+                      </div>
+                    )}
+                    {panelItem.data.item_weight != null && (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded p-2">
+                        <span className="text-gray-500 dark:text-gray-400 text-xs">Poids</span>
+                        <p className="font-medium text-gray-900 dark:text-gray-100">{panelItem.data.item_weight}</p>
+                      </div>
+                    )}
+                  </div>
+                  {panelItem.data.item_properties && Object.keys(panelItem.data.item_properties).length > 0 && (
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Caractéristiques</p>
+                      {Object.entries(panelItem.data.item_properties).map(([k, v]) => (
+                        <div key={k} className="text-sm text-gray-700 dark:text-gray-300">
+                          <span className="font-medium">{k}</span> : {String(v)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {panelItem.data.item_description && (
+                    <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{panelItem.data.item_description}</div>
+                  )}
+                  {panelItem.data.notes && (
+                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">Notes : {panelItem.data.notes}</div>
+                  )}
+                </>
+              )}
+              {panelItem.type === 'passive' && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{panelItem.data.passive_skill_name}</h3>
+                  {panelItem.data.passive_skill_description && (
+                    <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{panelItem.data.passive_skill_description}</div>
+                  )}
+                  {panelItem.data.notes && (
+                    <div className="text-sm text-gray-500 dark:text-gray-400 italic">Notes : {panelItem.data.notes}</div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

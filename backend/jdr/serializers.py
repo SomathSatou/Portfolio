@@ -201,12 +201,19 @@ class CharacterSpellSerializer(serializers.ModelSerializer):
     spell_description = serializers.CharField(source='spell.description', read_only=True)
     spell_school = serializers.CharField(source='spell.school', read_only=True)
     spell_mana_cost = serializers.IntegerField(source='spell.mana_cost', read_only=True)
+    spell_damage = serializers.CharField(source='spell.damage', read_only=True)
+    spell_range_distance = serializers.CharField(source='spell.range_distance', read_only=True)
+    spell_casting_time = serializers.CharField(source='spell.casting_time', read_only=True)
+    spell_duration = serializers.CharField(source='spell.duration', read_only=True)
+    spell_extra = serializers.JSONField(source='spell.extra', read_only=True)
 
     class Meta:
         model = CharacterSpell
         fields = [
             'id', 'character', 'spell', 'spell_name', 'spell_level',
             'spell_description', 'spell_school', 'spell_mana_cost',
+            'spell_damage', 'spell_range_distance', 'spell_casting_time',
+            'spell_duration', 'spell_extra',
             'notes', 'acquired_at',
         ]
         read_only_fields = ['id', 'character', 'acquired_at']
@@ -218,12 +225,16 @@ class CharacterItemSerializer(serializers.ModelSerializer):
     item_type = serializers.CharField(source='item.item_type', read_only=True)
     item_description = serializers.CharField(source='item.description', read_only=True)
     item_is_magical = serializers.BooleanField(source='item.is_magical', read_only=True)
+    item_value = serializers.DecimalField(source='item.value', max_digits=10, decimal_places=2, read_only=True)
+    item_weight = serializers.DecimalField(source='item.weight', max_digits=10, decimal_places=2, read_only=True)
+    item_properties = serializers.JSONField(source='item.properties', read_only=True)
 
     class Meta:
         model = CharacterItem
         fields = [
             'id', 'character', 'item', 'item_name', 'item_rarity', 'item_type',
-            'item_description', 'item_is_magical',
+            'item_description', 'item_is_magical', 'item_value', 'item_weight',
+            'item_properties',
             'quantity', 'is_equipped', 'notes', 'acquired_at',
         ]
         read_only_fields = ['id', 'character', 'acquired_at']

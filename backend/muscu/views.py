@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView  # noqa: F401
 
+from accounts.serializers import MeSerializer as AccountsMeSerializer
+
 from .models import (
     Badge, DashboardConfig, Exercise, ExerciseMuscle, Goal, Gym, Machine,
     Muscle, MuscleGroup, MuscleXP, MuscuProfile, UserBadge, UserGymMembership,
@@ -20,7 +22,7 @@ from .serializers import (
     AdminUserSerializer, AdminWorkoutSerializer, BadgeSerializer,
     DashboardConfigSerializer,
     ExerciseCreateSerializer, ExerciseSerializer, GoalSerializer,
-    GymSerializer, MachineSerializer, MeSerializer, MuscleGroupSerializer,
+    GymSerializer, MachineSerializer, MuscleGroupSerializer,
     MuscleSerializer, MuscleXPSerializer, UserBadgeSerializer,
     UserGymMembershipSerializer, UserTotalXPSerializer,
     WorkoutCreateSerializer, WorkoutSerializer, WorkoutSetCreateSerializer,
@@ -49,10 +51,16 @@ class HasMuscuAccess(permissions.BasePermission):
 # ─── Auth ────────────────────────────────────────────────────────────────────
 
 class LoginView(APIView):
+    """Login IRL RPG : vérifie credentials + permission can_access_muscu.
+
+    Surcharge la LoginView générique pour ajouter les contrôles spécifiques
+    IRL RPG (activation du compte, bannissement).
+    """
+
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        email = request.data.get('email', '')
+        email = request.data.get('email', '').strip()
         password = request.data.get('password', '')
 
         try:
@@ -70,7 +78,7 @@ class LoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        # Check muscu access
+        # Contrôles spécifiques IRL RPG
         profile, _ = MuscuProfile.objects.get_or_create(user=user)
         if not user.is_staff and not profile.can_access_muscu:
             return Response(
@@ -91,8 +99,13 @@ class LoginView(APIView):
 
 
 class MeView(generics.RetrieveAPIView):
+    """Profil utilisateur IRL RPG — délègue au serializer unifié de accounts.
+
+    Crée le profil MuscuProfile s'il n'existe pas encore.
+    """
+
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = MeSerializer
+    serializer_class = AccountsMeSerializer
 
     def get_object(self):
         MuscuProfile.objects.get_or_create(user=self.request.user)

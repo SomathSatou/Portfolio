@@ -37,6 +37,7 @@ from .serializers import (
     ChatMessageSerializer,
     ItemSerializer,
     MonsterSerializer,
+    PassiveSkillSerializer,
     SkillSerializer,
     SpellSerializer,
     StatSerializer,
@@ -1069,6 +1070,65 @@ class SkillDetailView(APIView):
         if skill.campaign.game_master != request.user:
             return Response({'detail': 'Seul le MJ peut supprimer les compétences.'}, status=status.HTTP_403_FORBIDDEN)
         skill.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PassiveSkillListCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        campaign_id = request.query_params.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        passive_skills = PassiveSkill.objects.filter(campaign_id=campaign_id)
+        return Response(PassiveSkillSerializer(passive_skills, many=True).data)
+
+    def post(self, request):
+        campaign_id = request.data.get('campaign')
+        if not campaign_id:
+            return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            campaign = Campaign.objects.get(pk=campaign_id)
+        except Campaign.DoesNotExist:
+            return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut créer des compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = PassiveSkillSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(campaign=campaign)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class PassiveSkillDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            ps = PassiveSkill.objects.get(pk=pk)
+        except PassiveSkill.DoesNotExist:
+            return Response({'detail': 'Compétence passive introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(PassiveSkillSerializer(ps).data)
+
+    def patch(self, request, pk):
+        try:
+            ps = PassiveSkill.objects.select_related('campaign').get(pk=pk)
+        except PassiveSkill.DoesNotExist:
+            return Response({'detail': 'Compétence passive introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if ps.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut modifier les compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = PassiveSkillSerializer(ps, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        try:
+            ps = PassiveSkill.objects.select_related('campaign').get(pk=pk)
+        except PassiveSkill.DoesNotExist:
+            return Response({'detail': 'Compétence passive introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+        if ps.campaign.game_master != request.user:
+            return Response({'detail': 'Seul le MJ peut supprimer les compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
+        ps.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
