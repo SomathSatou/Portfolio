@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('jdr', '0013_monster'),
+        ('jdr', '0012_campaign_session_active'),
     ]
 
     operations = [

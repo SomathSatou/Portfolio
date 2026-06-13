@@ -1,11 +1,24 @@
 [
   {
+    "model": "jdr.campaign",
+    "pk": 1001,
+    "fields": {
+      "name": "Test Equilibrage",
+      "description": "Campagne test pour validation fixture",
+      "game_master": 1,
+      "is_active": true,
+      "current_session_number": 0,
+      "session_active": false,
+      "created_at": "2026-04-30T11:38:16Z"
+    }
+  },
+  {
     "model": "jdr.character",
     "pk": 1000,
     "fields": {
       "name": "Ellmor Tadelle",
       "player": 1,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "",
       "level": 8,
       "description": "Origine : Elfe sylvain\n\nElmor est née dans une famille mixte : son père, un Orc aussi fort que bête, l’a éduquée dans le respect du combat, de la mort et de l’adversaire. Sa mère, une elfe sylvaine pas beaucoup plus maligne, mais infiniment plus belle, l’a éduquée dans le respect de la nature et de l’ordre des choses. \nTrès tôt, Elmor montre une fascination pour la chasse et le cycle de la vie, et observe attentivement les animaux interagir. Ele fut très marquée, dans sa jeune enfance, par la capacité de la mante religieuse à chasser en utilisant les grandes faux de ses pattes. Elle a tenté mainte fois d’observer et de dessiner sur le fait ce glorieux insecte pendant sa chasse, avec quelques succès notables. Il découle de cette fascination une capacité étonnante à rester immobile des heures, anticiper les mouvements des animaux, et à trouver des insectes. \nEn grandissant, Elmor poussa sa fascination jusqu’à tenter de contacter Ermina elle-même, dont elle avait vu l’illustration dans un livre. Quoi de mieux que cette forme sombre, armée d’une faux, pour lui enseigner ce qui lui manquait tant d’un point de vue guerrier qu’intellectuel ? \nElle y travailla avec acharnement, et c’est enfin après de longues négociations avec ses parents et un rituel particulièrement gore à base de venin de mamba noir et de morceaux de mantes qu’elle parvint à contacter la déesse. Celle-ci, contre toute attente, accepta de la prendre en stage dans l’objectif de lui transmettre une partie de son travail. Malheureusement, Elmor aimait trop les animaux, et leur accordait bien souvent une autre chance. Par ailleurs, de nombreuses âmes de sont plaintes de son langage grossier et de ses blagues salaces, et la jeune femme fut remerciée après 10 ans de formation, très loin des 96 ans nécessaires à former une nouvelle mini divinité des récoltes et de la mort. \nRetour à la case départ donc pour la jeune femme, âgée de 26 ans. Plutôt bien formée au maniement de la faux, elle a d’abord voulu se reconvertir dans l’agriculture, mais son aspect blafard, ses yeux sombres enfoncés dans leurs orbites, et les cicatrices sur sa peau du rituel de contact d'Ermina ne donnent pas vraiment l’impression qu’elle ait la main verte. C’est finalement en tant que videuse de boite de nuit que la jeune femme gagnait sa vie pendant quelques années, jusqu’à se retrouver dans une rixe avec deux aventuriers il y a quelques semaines. C’est lors de cette rixe qu’Elmor prit une vie pour la première fois. L’autre aventurier, visiblement peu gêné par la mort de son compagnon de beuverie, pris le temps de signaler à la jeune fille qu’une vie d’aventurière pourrait très bien lui convenir, avant de prendre tant bien que mal ses jambes à son cou (qu’il avait encore, lui).",
@@ -16,14 +29,14 @@
       "max_hp": 112,
       "mp": 62,
       "max_mp": 62,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1000,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "La Mandibule Verte",
       "description": "La Mandibule Verte n'a rien d'une arme forgée. Son manche est une branche tordue, noueuse, arrachée à un arbre qui n'existe probablement plus — un bois sombre et dur comme de la pierre, parcouru de nervures qui semblent encore vivantes. La branche se courbe naturellement à son extrémité, comme le bras levé d'une mante en position de chasse, formant l'arc parfait pour accueillir la lame.\n\nEt la lame est ce qui frappe en premier. D'un vert profond — le vert des feuilles juste avant qu'elles ne pourrissent, le vert des mousses qui recouvrent les tombes oubliées — elle ne brille pas : elle absorbe la lumière. Son tranchant est irrégulier, dentelé par endroits comme la mandibule d'un insecte géant, lisse et chirurgical à d'autres. Des veinures plus claires la parcourent, semblables aux nervures d'une feuille ou aux canaux d'une plante carnivore.",
       "rarity": "très_rare",
@@ -36,7 +49,7 @@
         "icon": "t-weapon1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -48,14 +61,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.stat",
     "pk": 1000,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Intuition",
       "display_order": 0
     }
@@ -73,7 +86,7 @@
     "model": "jdr.stat",
     "pk": 1001,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Intelligence",
       "display_order": 1
     }
@@ -91,7 +104,7 @@
     "model": "jdr.stat",
     "pk": 1002,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Charisme",
       "display_order": 2
     }
@@ -109,7 +122,7 @@
     "model": "jdr.stat",
     "pk": 1003,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Adresse",
       "display_order": 3
     }
@@ -127,7 +140,7 @@
     "model": "jdr.stat",
     "pk": 1004,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Force",
       "display_order": 4
     }
@@ -145,7 +158,7 @@
     "model": "jdr.stat",
     "pk": 1005,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Chance",
       "display_order": 5
     }
@@ -163,7 +176,7 @@
     "model": "jdr.stat",
     "pk": 1006,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Constitution",
       "display_order": 6
     }
@@ -183,7 +196,7 @@
     "fields": {
       "name": "K.",
       "player": 1,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Ninja/Assassin",
       "level": 8,
       "description": "Origine : Semi-Homme",
@@ -194,14 +207,14 @@
       "max_hp": 90,
       "mp": 39,
       "max_mp": 63,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1001,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Stylet de lancer",
       "description": "petit stylet de métal \nidéal pour lancer sur l'ennemie",
       "rarity": "commun",
@@ -214,7 +227,7 @@
         "icon": "t-weapon6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -226,14 +239,14 @@
       "quantity": 6,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1002,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Carte d'aventurier",
       "description": "Carte de membre de rang D de la guilde d'aventurier de Lunebrèche\n\nID : Kassandria Ratzeyra Belladonna Valmirelli di Sorezzano Venticello Liranzetta della Notte Fiorenza Romanzari Calvignani di Ombreciello Valcorazza Nerina di Ryj’Altomare\n\nSemi-homme",
       "rarity": "commun",
@@ -244,7 +257,7 @@
         "icon": "t-misc6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -256,14 +269,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1003,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Gants de la Traque Silencieuse",
       "description": "Gants\nFaits de cuir sombre, renforcés au bout des doigts par des griffes d’obsidienne. Lorsqu’ils entaillent un adversaire, une marque invisible se pose sur lui, révélée aux yeux de tous les alliés. Même dissimulé par la magie, l’ennemi reste visible aux porteurs de volonté claire.\n\nEffets :  Permet de voir à travers illusions/invisibilité la cible marquée.  Bonus d’attaque +1 contre cette cible pour tous les alliés.La marque disparaît après de nouveaux dégâts.\n\nUne note noir est glissé a l'intérieur, \"Nyj a grandement appréciés votre offrande\"",
       "rarity": "artéfact",
@@ -275,7 +288,7 @@
         "icon": "t-armor4"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -287,14 +300,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1004,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Gourde",
       "description": "Gourde remplie d'eau",
       "rarity": "commun",
@@ -305,7 +318,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -317,14 +330,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1005,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "poncho de soie en ver des sable",
       "description": "protège efficacement de la chaleur du déserrt",
       "rarity": "commun",
@@ -335,7 +348,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -347,14 +360,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1006,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Potion de Soin Mineure",
       "description": "Restaure légèrement les points de vie (1D60+20 ou effet narratif léger, selon le système). Peut accélérer la cicatrisation de plaies récentes.",
       "rarity": "peu_commun",
@@ -365,7 +378,7 @@
         "icon": "t-misc3"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -377,14 +390,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1007,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Dague silencieuse",
       "description": "",
       "rarity": "très_rare",
@@ -397,7 +410,7 @@
         "icon": "t-weapon5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -409,14 +422,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1008,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Capuche de la Traque Silencieuse",
       "description": "Capuche de la Traque Silencieuse\nTissée dans un cuir noirci au feu lent et assouplie par des huiles inconnues, cette capuche épouse la tête comme une seconde ombre. À l’intérieur, des fibres sombres, presque animales, semblent vibrer faiblement lorsque son porteur retient son souffle.Le bord interne est marqué de symboles minuscules, gravés si finement qu’on croirait qu’ils se déplacent selon la lumière — des runes de chasse, liées non à la traque des bêtes, mais à celle des secrets.\nUne fois abaissée, la capuche efface la présence du porteur, comme si l’air lui-même hésitait à mémoriser sa silhouette. Les sons se voilent, les pas se fondent, et même les ombres paraissent oublier de s’écarter.\nAu fond, glissée contre la doublure, une petite note noire repose, l’encre d’un gris métallique :« Tu as donnée la visibilité au démunis Nyj te récompense avec un secret qui t'aideras a disparaitre aux yeux des autres »\nEffets :\n+1 au jet de Discrétion tant que la capuche est portée.Lorsque vous ou un allié fait disparaître la marque laissée par les Gants de la Traque silencieuse : +1d20 dégâts d'ombre supplémentaires.",
       "rarity": "artéfact",
@@ -428,7 +441,7 @@
         "icon": "t-armor1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -440,14 +453,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1009,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Poignard noir",
       "description": "",
       "rarity": "peu_commun",
@@ -460,7 +473,7 @@
         "icon": "t-weapon5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -472,14 +485,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1000,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Pointe D'ombre",
       "description": "petits projectiles infligeant des dégâts modérés\n\ndégât : (2x niveau de ninjutsu)d20",
       "level": 1,
@@ -493,7 +506,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -503,14 +516,14 @@
       "character": 1001,
       "spell": 1000,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1001,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Clone d'ombre",
       "description": "Une  clone d'ombre, trés discret mais disparait au moindre coup.",
       "level": 1,
@@ -524,7 +537,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -534,14 +547,14 @@
       "character": 1001,
       "spell": 1001,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1002,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Substitution",
       "description": "K. peut échanger sa place avec ces armes, ses ombres ou avec un coéquipier",
       "level": 1,
@@ -554,7 +567,7 @@
       "extra": {
         "components": ""
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -564,14 +577,14 @@
       "character": 1001,
       "spell": 1002,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1003,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Immobilisation des Ombres",
       "description": "Si K. ou un de ses clones est en contact avec l’ombre d’une cible, elle peut tenter de l’immobiliser.\nJet de Constitution de la cible pour résister. La peur générer par cette emprise assure que la cible soit apeuré un tour même en cas de réussite au jet de résistance.\nEn cas d’échec : paralysie temporaire (1-2 tours).",
       "level": 1,
@@ -585,7 +598,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -595,7 +608,7 @@
       "character": 1001,
       "spell": 1003,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -667,7 +680,7 @@
     "fields": {
       "name": "Paul Tron né SOFA",
       "player": 1,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Marchand",
       "level": 8,
       "description": "Origine : Nain\n\nBiographie !",
@@ -678,14 +691,14 @@
       "max_hp": 157,
       "mp": 21,
       "max_mp": 47,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1010,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac",
       "description": "",
       "rarity": "commun",
@@ -696,7 +709,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -708,14 +721,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1011,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Silex",
       "description": "idéal pour allumer un feux",
       "rarity": "commun",
@@ -726,7 +739,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -738,14 +751,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1012,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac a dos de randonnés en peau de loup",
       "description": "Un très grand sac de randonné, pratique pour transporter diverse marchandise, contient un volume d'environ 60L\n\ncontiens : \n3.3 kg de viande séché\n5 Kg de viande de bœuf10 kg d'os de loupune gourde\nCorde de chanvre (15 mètres)Crochet de grappin ou pitonsBriquet à amadouPetite lanterne à huile3 Craies4 torches",
       "rarity": "peu_commun",
@@ -756,7 +769,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -768,14 +781,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1013,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac de luxe",
       "description": "Un beau sac avec des fanfreluche au tour, l'intérieur est doublé de coton et les contour semble doré, deux pierre précieuse orne le cordons",
       "rarity": "rare",
@@ -786,7 +799,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -798,14 +811,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1014,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac pierres précieuses",
       "description": "deux petites pierres de la taille d'un bille, taillé mais non polis, la plus petite est rouge vif",
       "rarity": "peu_commun",
@@ -816,7 +829,7 @@
         "icon": "t-misc2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -828,14 +841,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1015,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Carte de marchand",
       "description": "Description :Un morceau de cuir souple, usé aux bords, frappé du sceau de la Guilde Marchande Libre. En son centre, une lettre \"E\" gravée à la main dans un cercle à demi effacé.La carte sent la poussière, le cuivre, et l’espoir. Elle est fournie à quiconque s’enregistre officiellement comme marchand itinérant ou artisan libre, quel que soit son capital de départ.\nAu verso, quelques lignes sont prévues pour noter :\nLe nom du porteurSon premier métier déclaréfait à Ponharilfei\nFonction :- Permet d’acheter ou de vendre légalement dans les marchés affiliés à la guilde (souvent en périphérie ou dans des quartiers pauvres).- Peut être exigée pour accéder à certaines routes commerciales, salons artisanaux, ou auberges de transit.\n\nEffet : \n- permet d'effectuer des échange pour un équivalent de 20 kilos par jour ou équivalent avec Alexander\nBénéfice cumulée : 682 po",
       "rarity": "commun",
@@ -846,7 +859,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -858,14 +871,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1016,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Bouclier Rutilant d’Embarod",
       "description": "Bouclier lourd Un imposant bouclier de parade, orné de gemmes multicolores serties dans un alliage d’or pâle et de fer clair. Son éclat aveuglant reflète la lumière avec intensité, au point de troubler parfois les assaillants. Jadis utilisé dans des cortèges impériaux, il allie prestige et protection.\n&gt; Peut détourner certains sorts de lumière ou éblouir dans de bonnes conditions.  &gt; On dit qu’il fait hésiter les plus cupides des attaquants.",
       "rarity": "rare",
@@ -877,7 +890,7 @@
         "icon": "t-armor6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -889,14 +902,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1017,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "bon porteur",
       "description": "échangeable dans les lieux de culte d'Avarinn contre 487 PO",
       "rarity": "commun",
@@ -907,7 +920,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -919,14 +932,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1018,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "bon de commande",
       "description": "une commande de 1kg d'houblon et 1kg de tissus de Lunebrèche vers Ponharilfei. \n\nTemps restant : 83 jour",
       "rarity": "commun",
@@ -937,7 +950,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -949,7 +962,7 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -961,14 +974,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1019,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Casque de garde de Pangore",
       "description": "Forgé dans les forges profondes de Pangore, ce casque massif fut jadis réservé aux gardes royaux chargés de veiller sur les portes du Haut-Trône.Son métal noirci, presque mat, a été trempé sept fois dans l’eau glaciale du Mont Drun, symbole de pureté et de résistance.\n\nPorteur d'une rune de protection +5PA",
       "rarity": "rare",
@@ -980,7 +993,7 @@
         "icon": "t-armor1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -992,14 +1005,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1020,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Masse d'Embarod",
       "description": "Cette masse sertie de rubis est une véritable œuvre d’art, à la fois redoutable et somptueuse. Son manche massif, forgé dans un métal sombre et dense, se prolonge jusqu’à une tête imposante dont chaque facette a été poli avec une précision de maître, reflétant la lumière comme un miroir d’acier.\nAutour du noyau principal, des rubis éclatants sont sertis avec une minutie exceptionnelle, leurs teintes rouge sang semblant vibrer sous la lumière. Ces gemmes ne sont pas de simples ornements : elles confèrent à l’arme une aura envoûtante, presque mystique, où l’élégance du bijou rencontre la puissance brute de la forge.\nLes bords polies comme des miroirs reflètent le monde alentour avec une netteté saisissante, contrastant avec la chaleur incandescente des pierres précieuses. L’ensemble dégage une impression de puissance contenue et de noblesse, comme si cette masse n’était pas seulement une arme, mais un symbole d’autorité et de prestige.",
       "rarity": "légendaire",
@@ -1012,7 +1025,7 @@
         "icon": "t-weapon2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1024,7 +1037,7 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1036,14 +1049,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1021,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Broche orné de saphir",
       "description": "Un bijou magnifique avec un saphir taillé en goutte d'eau et des ornements en forme de vague.",
       "rarity": "rare",
@@ -1054,7 +1067,7 @@
         "icon": "t-misc5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1066,7 +1079,7 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1078,14 +1091,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1022,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Jeu de Dés",
       "description": "",
       "rarity": "commun",
@@ -1096,7 +1109,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1108,14 +1121,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1023,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Balle de cuir",
       "description": "",
       "rarity": "commun",
@@ -1126,7 +1139,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1138,14 +1151,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1024,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Gants de plaque plaqué or",
       "description": "Des beaux gants doré\n\n+1 en Charisme",
       "rarity": "légendaire",
@@ -1157,7 +1170,7 @@
         "icon": "t-armor4"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1169,14 +1182,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1004,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Frappe de Fyrän",
       "description": "Paul Tron canalise l’impulsion de Fyrän dans un mouvement martial à la fois instinctif et ancien. Son bras se tend, ses appuis s’enracinent, et, dans un cri guttural ou un murmure vibrant, il libère la Frappe du Feu Silencieux.\n\nSon arme (ou son poing) s’entoure alors d’une flamme vive mais maîtrisée, ajoutant +1d5(niveau de bénédiction) dégâts de feu aux dégâts de l’arme.\n\nIl bénéficie également d’un bonus de +1 en précision pour ses jets d’attaque.\n\nl'effet de ce sort se dissipe au bout de 3 tour.",
       "level": 1,
@@ -1190,7 +1203,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1200,14 +1213,14 @@
       "character": 1002,
       "spell": 1004,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1005,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Dé magique  d'Avarinn",
       "description": "Une fois par jour vous pouvez lancer un dé de chance si le jet réussi vous pouvez lancer 1d (2 puissance de la différence de réussite divisé par deux arrondis au supérieur)\n\npar exemple je vais 1d20&lt;10 et je fais 9 je lance 1d2, si je fait un 6 je lance 1d4, si je fais 1 c'est 1d32\n\nvous gagnez le montant d'or du dernier dés.",
       "level": 1,
@@ -1221,7 +1234,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1231,14 +1244,14 @@
       "character": 1002,
       "spell": 1005,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1006,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Tourbillon renversant enflammé",
       "description": "attaque circulaire enflammée. Sur un échec de sauvegarde Constitution des ennemis : ils sont projetés au sol.",
       "level": 1,
@@ -1252,7 +1265,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1262,14 +1275,14 @@
       "character": 1002,
       "spell": 1006,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1007,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Magmarto",
       "description": "Paul Tron frappe le sol du poing, faisant jaillir une éruption de roche en fusion à l'endroit ciblé. La zone reste recouverte de magma brûlant pendant 2 tours, infligeant des dégâts à toute créature qui y pénètre ou y termine son tour.\nEffet : 2d8 feu + terrain de magma (zone 3m, 1d4/tour pendant 2 tours)",
       "level": 1,
@@ -1282,7 +1295,7 @@
       "extra": {
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1292,7 +1305,7 @@
       "character": 1002,
       "spell": 1007,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1364,7 +1377,7 @@
     "fields": {
       "name": "Prozengan Tchar",
       "player": 1,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Paladin",
       "level": 8,
       "description": "Origine : Semi-Homme",
@@ -1375,14 +1388,14 @@
       "max_hp": 150,
       "mp": 44,
       "max_mp": 55,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1025,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Ecu",
       "description": "un simple écu au armoirie de l'orbe bleu, s'attache au poignet",
       "rarity": "commun",
@@ -1394,7 +1407,7 @@
         "icon": "t-armor6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1406,7 +1419,7 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1418,7 +1431,7 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1430,7 +1443,7 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1442,14 +1455,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1026,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Epée batarde de fer ardent",
       "description": "",
       "rarity": "très_rare",
@@ -1462,7 +1475,7 @@
         "icon": "t-weapon1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1474,14 +1487,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1027,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Torse de plaque bleuté",
       "description": "Un torse de plaque fait sur mesure pour Prozengan, la hache de Drunmör est gravé sur les épaulettes et sur le torse au niveau du cœur. Le métal a des reflets bleutés grace à la technique de manipulation du métal employé pour façonner l'armure. \n\nCrée par Niglinucus",
       "rarity": "très_rare",
@@ -1493,7 +1506,7 @@
         "icon": "t-armor2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1505,14 +1518,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1028,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Gantelet de l'orbe bleu",
       "description": "Gant de plaque de fer bleuté, permettant a Prozengan de sortir et rétracté librement ces griffes.",
       "rarity": "très_rare",
@@ -1524,7 +1537,7 @@
         "icon": "t-armor4"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1536,14 +1549,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1029,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Bottes de 7 Bleu",
       "description": "Des botte de plaques de fer bleutés, adapté a la morphologie particulière d'un semi-homme félin",
       "rarity": "très_rare",
@@ -1555,7 +1568,7 @@
         "icon": "t-armor5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1567,14 +1580,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1008,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Bouclier magnétique II",
       "description": "Des éclats de métal apparaissent et se colle sur l'armure au niveau de l'avant bras.\nGrace a une inspiration de 🪓Drunmör Prozengan peut désormais placer ce bouclier sur ces alliés.",
       "level": 1,
@@ -1588,7 +1601,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1598,14 +1611,14 @@
       "character": 1003,
       "spell": 1008,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1009,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Eclats magnétique",
       "description": "magnétise un éclat de métal et le lance sur la cible. \n\n2(niveau de magie de métal)d7+10",
       "level": 1,
@@ -1619,7 +1632,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1629,14 +1642,14 @@
       "character": 1003,
       "spell": 1009,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1010,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Bénédiction de l'enclume",
       "description": "Une aura protège les alliées de Prozengan de la déstabilisation, +1 au jets de sauvegarde de renversement",
       "level": 1,
@@ -1650,7 +1663,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1660,14 +1673,14 @@
       "character": 1003,
       "spell": 1010,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1011,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Provocation Bestiale",
       "description": "Un rugissement bestial attire l'attention des ennemis dans un rayon de 5m, suite a un jet de charisme réussi. \n\nPeut aussi effrayé les ennemi en cas de jet de sauvegarde de charisme +5 échoué.",
       "level": 1,
@@ -1681,7 +1694,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1691,14 +1704,14 @@
       "character": 1003,
       "spell": 1011,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1012,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Lien de fer",
       "description": "Pendant 5 tour la cible reçoit 20% des Pa de Prozengan, qui voit ces PA diminuer de ce même montant. \n\nsi la cible devrait voir ces PV tombé a 0 suite a une attaque elle garde 1 PV et Prozengan subis le restant de dégât sous forme de dégât Brut (pas réduis par les PA)",
       "level": 1,
@@ -1712,7 +1725,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1722,14 +1735,14 @@
       "character": 1003,
       "spell": 1012,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1013,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Tourbilol",
       "description": "Frappe toute les cibles a 1m de Prozengan pour la moitié des dégâts habituel",
       "level": 1,
@@ -1743,7 +1756,7 @@
         "components": "",
         "unitCT": ""
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1753,7 +1766,7 @@
       "character": 1003,
       "spell": 1013,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1825,7 +1838,7 @@
     "fields": {
       "name": "Soria Stellan",
       "player": 1,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Mage/Sorcier",
       "level": 8,
       "description": "Origine : Haut Elfe\n\nSuite aux nombreux désaccords sur l'hypothèse de l'existence potentielle de Lug. Le Père Baltrou a continué de tout faire pour me ridiculiser.Malgré des tentatives d'excuses, en essayant de lui expliquer que je ne reniait rien de ce culte, mais que je me posait des questions, qui me semblaient légitimes.\nRien ne s'est réglé, au contraire.\nEn continuant de faire de moi une ennemie de son culte.\nJe me suis demandée, si son dieu existe vraiment, comment il pourrait laisser un homme qui humilie des enfants en être son représentant.\nPeut être alors que c'est ces représentants actuels sont la raison du déclin de Lug.\nComment se comportent les autres cités ? les autres dirigeants de cultes sont ils aussi bornés que notre Père Baltrou ?\nLug, réelle divinité ou construction sociale visant à contrôler la société par la peur de l'inconnue supérieure ?\nJ'ai tenté pendant toute la fin de mon enfance à faire le moins de vagues possibles. De garder pour moi ces questionnements, et en parler avec Mme Ghetto.\nMême avec mes parents je ne pouvais pas me permettre d'évoquer la moindre interrogation.\nMa mère, fabriquant de petits bijoux, et petits objets en bois, souvent pour offrir à l'église du village des petites idoles.\nMon père lui libraire de la ville, se retrouverai peut être capable de comprendre mon questionnement, mais ayant parcouru tout les livres de sa boutique.\nRien, pas même un ouvrage ne semble poser la question des réelles intentions de Lug ou de sa non existence potentielle.\nAprès que le Père Balesyeucou, eut  perdu officiellement la tête, enfin plus qu'avant\nLe confronter a son comportement, ou a ses propres contradictions n'avait plus aucun sens.\nA continuer (reste les gros évènements d'adolescence / D'adulte)\nLe Jour de la fête du Village (10 ans après), je confronte le père Baltrou, et lui parle de ses méthodes !",
@@ -1836,7 +1849,7 @@
       "max_hp": 55,
       "mp": 59,
       "max_mp": 150,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1848,14 +1861,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1030,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Grimoire intime",
       "description": "Compile l'intégralité des connaissance qui y sont inscrit par son détenteur.",
       "rarity": "commun",
@@ -1866,7 +1879,7 @@
         "icon": "t-misc6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1878,14 +1891,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1031,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Encrier a plumes",
       "description": "kit de voyage pour les écrivains amateur",
       "rarity": "commun",
@@ -1896,7 +1909,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1908,14 +1921,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1032,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac a dos en peau de loup",
       "description": "Un grand sac pouvant contenir un volume de 40L, fait par Niglinucus lui même",
       "rarity": "peu_commun",
@@ -1926,7 +1939,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1938,14 +1951,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1033,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Boucle d’Ondelune",
       "description": "Bijou (oreille)\nFine boucle d’oreille argentée prenant la forme d’une goutte d’eau en suspension, toujours fraîche au toucher. Lorsqu’elle est portée, un léger ruissellement s’entend parfois aux creux du silence, comme un écho venu d’un lac ancien.\n\nEffet : +1 niveau à la magie d’eau.",
       "rarity": "rare",
@@ -1956,7 +1969,7 @@
         "icon": "t-misc2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1968,14 +1981,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1034,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Potion de mana",
       "description": "rend 20 points de mana\n(Vide)",
       "rarity": "commun",
@@ -1986,7 +1999,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -1998,7 +2011,7 @@
       "quantity": 0,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2010,14 +2023,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1035,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Sac de Lug",
       "description": "« Quand nul élu ne le porte, il veille seul. »\n✨ ApparenceCe sac semble, à première vue, n’être qu’un robuste baluchon de toile noire tissée de fil d’argent, aux coutures étrangement parfaites. Le cuir qui en renforce les lanières est souple mais inusable, et l’intérieur paraît toujours plus grand qu’il ne devrait l’être. Une lumière douce, semblable à celle d’un astre tamisé, émane discrètement de ses coutures dès qu’on l’ouvre.\n🔮 Propriétés magiques🌟 Lueur du GardienTant qu’il est porté par un élu (ou reconnu comme tel par l’enchantement du sac), une lumière constante et apaisante émane doucement de l’intérieur — suffisante pour éclairer une pièce, mais jamais agressive. Elle repousse les ténèbres magiques de faible niveau, et offre un confort mental contre les effets d’isolement ou de terreur.\n🕯️ Rune de Veille SilencieuseLorsqu’aucun porteur désigné ne l’emporte (qu’il soit posé, oublié ou abandonné), le sac s’ancre au sol par une magie discrète :\nUne rune d’invisibilité est tracée sur le sol autour de lui, le rendant totalement indétectable aux regards ordinaires et à la plupart des détections simples.\nUne barrière de protection (domaine d’abjuration) empêche toute ouverture ou déplacement par une créature non reconnue.\nSi quelqu’un tente de le violer de force, le sac réagit par une poussée magique de dissuasion, semblable à un souffle léger, mais suffisamment intense pour repousser la main d’un curieux.\n🔁 Lien d’AttachementLe sac reconnaît ses porteurs. Il ne se laisse déverrouiller que par ceux qu’il a déjà \"acceptés\", ou par un rituel de résonance (souvent long, parfois douloureux). Chaque élu reconnu laisse une trace subtile dans la toile du sac — des motifs qui ne sont visibles qu’à la lumière de certaines étoiles ou sous un clair de lune bien précis.",
       "rarity": "artéfact",
@@ -2028,7 +2041,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2040,7 +2053,7 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2052,14 +2065,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1036,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Gantelets de la pierre mouvantes",
       "description": "Protège le porteur des dégâts des secousse sismiques",
       "rarity": "très_rare",
@@ -2071,7 +2084,7 @@
         "icon": "t-armor4"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2083,14 +2096,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1037,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Collier de L'hippocampe",
       "description": "Donne un bonus de 1d50 au dégâts d'eau",
       "rarity": "très_rare",
@@ -2101,7 +2114,7 @@
         "icon": "t-misc2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2113,14 +2126,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1038,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "anneau de fer simple",
       "description": "un anneau de fer de bonne manufacture, il ne manquerais qu'une ou deux pierre précieuse pour en faire un bijou mémorable.",
       "rarity": "commun",
@@ -2131,7 +2144,7 @@
         "icon": "t-misc5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2143,14 +2156,14 @@
       "quantity": 2,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1039,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Corset de cuir fin",
       "description": "Un corset qui peut être porté sous une  robe et qui protège efficacement le haut du corp sans interférer avec la magie de son porteur.",
       "rarity": "rare",
@@ -2162,7 +2175,7 @@
         "icon": "t-armor2"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2174,14 +2187,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1040,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Anneau de fer simple \"Magique\"",
       "description": "un rune est gravé mais pas de dessus mais aucun effet suplémentaire",
       "rarity": "commun",
@@ -2192,7 +2205,7 @@
         "icon": "t-misc5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2204,14 +2217,14 @@
       "quantity": 2,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1041,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Anneau d'argent",
       "description": "un simple anneau en argent",
       "rarity": "commun",
@@ -2222,7 +2235,7 @@
         "icon": "t-misc5"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2234,14 +2247,14 @@
       "quantity": 5,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1042,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Anneau de l'Hippocampe en fer simple",
       "description": "Un anneau de fer simple, travaillé avec patience durant les heures silencieuses de la nuit. Sur sa surface intérieure, gravée avec une précision minutieuse, s'enroule la Rune de l'Hippocampe\nEffet :- +5 Mana maximum",
       "rarity": "rare",
@@ -2256,7 +2269,7 @@
         "icon": "t-magic2"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2268,14 +2281,14 @@
       "quantity": 1,
       "is_equipped": true,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1014,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Bulle d'o",
       "description": "Lance une bulle d'eau sur la cible, cette bulle fait la taille d'une balle de baseball.\n\nfait (4xniveau magie d'eau)d5+5",
       "level": 1,
@@ -2289,7 +2302,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2299,14 +2312,14 @@
       "character": 1004,
       "spell": 1014,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1015,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Mur d'eau",
       "description": "Protège le lanceur ou ces alliés de (5 x niveau de magie d'eau) PR pendant 3 tours",
       "level": 1,
@@ -2320,7 +2333,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2330,14 +2343,14 @@
       "character": 1004,
       "spell": 1015,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1016,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Eau de vie",
       "description": "Permet de soigne ((4xniveau magie eau)+ 2)  d8+5, l'abus de cette eau peut vous faire tourner la tête",
       "level": 1,
@@ -2351,7 +2364,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2361,14 +2374,14 @@
       "character": 1004,
       "spell": 1016,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1017,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Vague d'eau",
       "description": "En présence d'une source d'eau ou si la magie d'eau mineur est de niveau 5, peut envoyé une vague qui a 1d20&lt;10 chance de renverser l'adversaire (il a le droit a un jet de constitution pour résister).\n\nFait 4(niveau magie d'eau)d9+5 de dégats",
       "level": 1,
@@ -2382,7 +2395,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2392,14 +2405,14 @@
       "character": 1004,
       "spell": 1017,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1018,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Yameit-eau",
       "description": "Par la force fluide de l’eau, le lanceur invoque une série de tentacules translucides et mouvants jaillissant d’une flaque, d’un bassin ou de l’humidité ambiante. Ces bras liquides s’élancent avec une souplesse sinistre pour entraver, soulever ou clouer au sol une cible.\nLes tentacules d’Yameit-eau ne blessent pas directement, mais leur étreinte est froide, impitoyable, et presque consciente. Lorsqu'elles enserrent un adversaire, elles absorbent sa chaleur, le ralentissent et le privent de sa mobilité comme si la mer elle-même voulait le garder.\n\nL'adversaire a le droit a un jet de sagesse par tour pour s'en délivrer, sinon la compétence dure un maximun de 3 tour.",
       "level": 1,
@@ -2413,7 +2426,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2423,14 +2436,14 @@
       "character": 1004,
       "spell": 1018,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1019,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Razenctus",
       "description": "Concentre sa magie dans l’eau d’un récipient clos.\nSi le contenant est fragile (cruche, cactus, fiole), il éclate en une explosion d’éclats et d’eau sous pression.\nPeut infliger des dégâts ou créer une diversion.",
       "level": 1,
@@ -2444,7 +2457,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2454,14 +2467,14 @@
       "character": 1004,
       "spell": 1019,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1020,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Scaphandre aqueux",
       "description": "Un sort puissant qui demande d'être canaliser pendant au minimum 3 tour, mais qui permet de tuer la plupart des créature non-amphibie. \n\nAttention certaine créature avec une forte constitution peuvent résister plus de 3 tour,  ce sort nécessite 10 de mana par tour pour être maintenu.",
       "level": 1,
@@ -2475,7 +2488,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2485,14 +2498,14 @@
       "character": 1004,
       "spell": 1020,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1021,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Lame aqueuse",
       "description": "Une puissante lame d'eau obtenus en fouettant l'air avec un fouet aqueux\n\nDégat : 5(niveau magie d'eaux + 3)d10 +20",
       "level": 1,
@@ -2506,7 +2519,7 @@
         "components": "",
         "unitCT": "turn"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2516,7 +2529,7 @@
       "character": 1004,
       "spell": 1021,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2588,7 +2601,7 @@
     "fields": {
       "name": "Banquier Maudit",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Mort-vivant",
       "level": 5,
       "description": "Type : Mort-vivant\n\nAlignement : Neutre Mauvais\n\nJadis respecté et craint dans les cercles financiers de Drughal'Mekh, ce banquier a conclu un pacte avec Grizpou pour s'assurer un monopole commercial absolu. Le dieu de l'avarice a tenu sa promesse... à sa manière.\nLe Banquier est devenu immortel, mais son corps se décompose lentement, sa peau prenant la teinte verdâtre du cuivre oxydé. Ses yeux brillent d'un éclat doré surnaturel, et ses doigts squelettiques manipulent encore un boulier spectral dont chaque perle représente une âme endettée.\nIl rôde dans les couloirs du Palais Doré, proposant des marchés impossibles aux aventuriers imprudents. Ceux qui refusent ses offres découvrent rapidement que le Banquier n'accepte pas le \\\"non\\\" comme réponse.",
@@ -2599,7 +2612,7 @@
       "max_hp": 55,
       "mp": 50,
       "max_mp": 50,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2627,7 +2640,7 @@
     "model": "jdr.item",
     "pk": 1043,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Boulier des Âmes",
       "description": "Boulier spectral dont les perles sont des âmes. Libérable (1d6 esprits) ou source d'énergie magique.",
       "rarity": "très_rare",
@@ -2639,7 +2652,7 @@
         "icon": "t-magic1"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2651,14 +2664,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1044,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Contrat de Grizpou (vierge)",
       "description": "Parchemin au sceau de Grizpou. Quiconque signe est lié par un pacte aux termes changeants. Dangereux.",
       "rarity": "légendaire",
@@ -2669,7 +2682,7 @@
         "icon": "t-misc6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2681,14 +2694,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1022,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Taxe Sanglante",
       "description": "Dégâts proportionnels à l'or de la cible. Ex: 50 po = 1d6+5 dégâts.",
       "level": 1,
@@ -2702,7 +2715,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2712,14 +2725,14 @@
       "character": 1005,
       "spell": 1022,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1023,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Offre Irrésistible",
       "description": "Jet Charisme DD 13 ou charmé 2 tours. Ne peut pas attaquer le Banquier, donne 1d20 po par tour.",
       "level": 1,
@@ -2733,7 +2746,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2743,14 +2756,14 @@
       "character": 1005,
       "spell": 1023,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1024,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Inflation Maudite",
       "description": "Zone 10m, 3 tours. Potions consomment 2 charges. Soins magiques réduits de 50%.",
       "level": 1,
@@ -2764,7 +2777,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2774,7 +2787,7 @@
       "character": 1005,
       "spell": 1024,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2846,7 +2859,7 @@
     "fields": {
       "name": "Clause III",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Gobelin",
       "level": 1,
       "description": "Type : Gobelin\n\nAlignement : Paladin",
@@ -2857,7 +2870,7 @@
       "max_hp": 1250,
       "mp": 0,
       "max_mp": 0,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2950,7 +2963,7 @@
     "fields": {
       "name": "Collecteur d'Âmes",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Mort-vivant",
       "level": 6,
       "description": "Type : Mort-vivant\n\nAlignement : Loyal Mauvais\n\nSpectre au service de Grizpou, le Collecteur d'Âmes arpente les salles du Palais Doré de Drughal'Mekh à la recherche de débiteurs insolvables. Autrefois un marchand prospère qui a vendu son âme à Grizpou en échange de richesses infinies, il a été trahi par le dieu de l'avarice qui l'a transformé en un serviteur éternel.\nEnveloppé d'une aura dorée et brumeuse, il flotte au-dessus du sol, tenant un registre spectral où sont inscrits les noms de ceux qui doivent à Grizpou. Sa faux est forgée dans de l'or maudit, capable de trancher aussi bien la chair que les liens entre une âme et son corps.",
@@ -2961,7 +2974,7 @@
       "max_hp": 70,
       "mp": 40,
       "max_mp": 40,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -2989,7 +3002,7 @@
     "model": "jdr.item",
     "pk": 1045,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Fragment d'âme dorée",
       "description": "Fragment d'âme piégée par le Collecteur. Composante nécromancie ou revente à un exorciste.",
       "rarity": "très_rare",
@@ -3001,7 +3014,7 @@
         "icon": "t-magic1"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3013,14 +3026,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1046,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Page du Registre Maudit",
       "description": "Page du registre spectral. Noms effacés et dettes impossibles. Intéresse les érudits.",
       "rarity": "rare",
@@ -3031,7 +3044,7 @@
         "icon": "t-misc6"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3043,14 +3056,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1025,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Faux de la Dette",
       "description": "Faux d'or maudit. Dégâts nécrotiques, soigne 50% des dégâts infligés.",
       "level": 1,
@@ -3064,7 +3077,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3074,14 +3087,14 @@
       "character": 1007,
       "spell": 1025,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1026,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Chaînes du Créancier",
       "description": "Chaînes spectrales dorées. Immobilise 2 tours (jet Force DD 14 pour se libérer). 1d6 dégâts par tour.",
       "level": 1,
@@ -3095,7 +3108,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3105,14 +3118,14 @@
       "character": 1007,
       "spell": 1026,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1027,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Appel de la Dette",
       "description": "Prononce le nom de la cible. Jet Charisme DD 12 ou effrayé 3 tours (-3 à tous les jets d'attaque).",
       "level": 1,
@@ -3126,7 +3139,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3136,7 +3149,7 @@
       "character": 1007,
       "spell": 1027,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3208,7 +3221,7 @@
     "fields": {
       "name": "Glouton Doré",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Bête",
       "level": 3,
       "description": "Type : Bête\n\nAlignement : Chaotique Neutre\n\nPetite créature reptilienne au ventre distendu et aux écailles dorées, le Glouton Doré est une abomination née de la cupidité concentrée dans les coffres oubliés des temples de Grizpou. Il se nourrit exclusivement de métaux précieux, et son estomac produit un acide capable de dissoudre l'or pour l'absorber.\nOn les trouve souvent en meute dans les salles de trésor du Palais Doré de Drughal'Mekh, où ils servent de gardiens involontaires. Leur appétit insatiable les rend agressifs envers quiconque transporte des pièces.",
@@ -3219,7 +3232,7 @@
       "max_hp": 45,
       "mp": 15,
       "max_mp": 15,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3247,7 +3260,7 @@
     "model": "jdr.item",
     "pk": 1047,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Écaille dorée",
       "description": "Écaille arrachée du Glouton Doré. Brille d'un éclat doré, revendable.",
       "rarity": "rare",
@@ -3258,7 +3271,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3270,14 +3283,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1028,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Morsure Avide",
       "description": "Mord la cible. Si elle porte de l'or, +1d6 dégâts (frénésie à l'odeur du métal).",
       "level": 1,
@@ -3291,7 +3304,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3301,14 +3314,14 @@
       "character": 1008,
       "spell": 1028,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1029,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Crachat Acide",
       "description": "Jet d'acide doré corrosif. -1 PA pendant 2 tours si armure métallique.",
       "level": 1,
@@ -3322,7 +3335,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3332,7 +3345,7 @@
       "character": 1008,
       "spell": 1029,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3404,7 +3417,7 @@
     "fields": {
       "name": "Golem de Pièces",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Construct",
       "level": 8,
       "description": "Type : Construct\n\nAlignement : Neutre Mauvais\n\nMasse imposante de pièces d'or, d'argent et de cuivre fondues et agglomérées en une forme humanoïde grossière, le Golem de Pièces est l'une des créations les plus redoutées des forges secrètes du culte de Grizpou.\nChaque pièce qui compose son corps a été volée, extorquée ou arrachée à un mortel désespéré. Le golem est animé par la cupidité concentrée de milliers de transactions malhonnêtes, et chaque coup qu'il porte résonne avec le tintement sinistre de l'or maudit.\nLent mais dévastateur, il garde les voûtes les plus profondes du Palais Doré de Drughal'Mekh. On dit que le détruire libère une pluie de pièces maudites qui portent malheur à quiconque les ramasse.",
@@ -3415,7 +3428,7 @@
       "max_hp": 120,
       "mp": 30,
       "max_mp": 30,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3443,7 +3456,7 @@
     "model": "jdr.item",
     "pk": 1048,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Lingot d'or maudit",
       "description": "Lingot des restes du Golem. Aura malsaine. Purifiable pour 10 po, sinon -1 Chance.",
       "rarity": "légendaire",
@@ -3454,7 +3467,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3466,14 +3479,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1049,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Coeur du Golem",
       "description": "Sphère de métal fondu pulsante. Utilisable pour animer un construct ou comme source d'énergie.",
       "rarity": "très_rare",
@@ -3485,7 +3498,7 @@
         "icon": "t-magic1"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3497,14 +3510,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1030,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Poing de l'Avarice",
       "description": "Poing dévastateur. Éclats de pièces tranchantes en zone 2m autour de l'impact.",
       "level": 1,
@@ -3518,7 +3531,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3528,14 +3541,14 @@
       "character": 1009,
       "spell": 1030,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1031,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Tempête de Monnaie",
       "description": "Rafale de pièces en cône 8m. Cibles perdent 1d10 po (absorbées, +5 PV par 5 pièces volées).",
       "level": 1,
@@ -3549,7 +3562,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3559,14 +3572,14 @@
       "character": 1009,
       "spell": 1031,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1032,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Blindage Doré",
       "description": "Réarrange ses pièces en carapace dense. +5 PA pendant 3 tours, vitesse réduite de moitié.",
       "level": 1,
@@ -3580,7 +3593,7 @@
         "components": "",
         "unitCT": "-"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3590,7 +3603,7 @@
       "character": 1009,
       "spell": 1032,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3662,7 +3675,7 @@
     "fields": {
       "name": "Grizpou Dieu de l'Avarice",
       "player": null,
-      "campaign": 1,
+      "campaign": 1001,
       "class_type": "Céleste",
       "level": 25,
       "description": "Type : Céleste\n\nAlignement : Neutre Mauvais\n\nGrizpou est le dieu de l'avarice et de la cupidité, membre du panthéon de Cosmog. Sa présence se manifeste dans les lieux où la richesse s'accumule au détriment des faibles : coffres-forts débordants, banques corrompues, et surtout le Palais Doré de Drughal'Mekh, son sanctuaire terrestre.\nIl se présente sous la forme d'une silhouette humanoïde titanesque (4 mètres), entièrement composée d'or liquide en perpétuel mouvement. Son visage est un masque doré figé dans un sourire cruel, et ses yeux sont deux rubis incandescents. Des pièces d'or orbitent autour de lui comme des satellites, et chaque pas qu'il fait laisse une empreinte de métal fondu sur le sol.\nIl a usé de son influence pour permettre à Laplace Del Magnifico II d'accumuler la plupart des ressources de la ville. Seven semble entretenir une relation particulière avec ce dieu.\nGrizpou ne combat que lorsque son trésor est directement menacé. Il considère chaque pièce d'or existante comme lui appartenant de droit, et punir les \\\"voleurs\\\" (c'est-à-dire quiconque possède de l'or) est son passe-temps favori.",
@@ -3673,7 +3686,7 @@
       "max_hp": 500,
       "mp": 200,
       "max_mp": 200,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3701,7 +3714,7 @@
     "model": "jdr.item",
     "pk": 1050,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Larme de Grizpou",
       "description": "Goutte d'or cristallisée divine. +3 Charisme mais obsession pour l'or (jet Charisme DD 16/jour). Peut forger un artefact.",
       "rarity": "artéfact",
@@ -3713,7 +3726,7 @@
         "icon": "t-magic1"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3725,14 +3738,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1051,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Couronne du Cupide",
       "description": "Couronne d'or extra-planaire. Confère Taxe Divine 1x/jour mais corrompt l'âme. Après 7 utilisations = serviteur de Grizpou.",
       "rarity": "artéfact",
@@ -3744,7 +3757,7 @@
         "icon": "t-magic1"
       },
       "is_magical": true,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3756,14 +3769,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.item",
     "pk": 1052,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Montagne de pièces maudites",
       "description": "À la mort de Grizpou, 5d100 po récupérables. Maudites. Purifiables (prêtre niv.10+). Non purifiées = attirent serviteurs de Grizpou dans 1km.",
       "rarity": "rare",
@@ -3774,7 +3787,7 @@
         "icon": "t-misc1"
       },
       "is_magical": false,
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3786,14 +3799,14 @@
       "quantity": 1,
       "is_equipped": false,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1033,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Taxe Divine",
       "description": "SORT SIGNATURE. Dégâts basés sur l'or total de TOUS les joueurs. Chaque joueur perd 10% de son or (absorbé = soin). Tous les 3 tours.",
       "level": 1,
@@ -3807,7 +3820,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3817,14 +3830,14 @@
       "character": 1010,
       "spell": 1033,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1034,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Pluie d'Or Fondu",
       "description": "Or en fusion zone 8m. Adhère à la peau. -2 Adresse 3 tours. Dégâts immédiats : 5d12. Continus : 2d6/tour pendant 3 tours.",
       "level": 1,
@@ -3838,7 +3851,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3848,14 +3861,14 @@
       "character": 1010,
       "spell": 1034,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1035,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Marché de Dupes",
       "description": "Jet Charisme DD 18 ou accepte le marché (dépose tout son or, pacifié 2 tours). Résiste = 3d8 psychique. Soin 2 PV/po.",
       "level": 1,
@@ -3869,7 +3882,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3879,14 +3892,14 @@
       "character": 1010,
       "spell": 1035,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1036,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Krach Divin",
       "description": "Objets magiques désactivés 2 tours. Potions 50% chance détruites. Or magnétique = 1d4 dégâts par 10 po.",
       "level": 1,
@@ -3900,7 +3913,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3910,14 +3923,14 @@
       "character": 1010,
       "spell": 1036,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1037,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Frappe du Titan Doré",
       "description": "Onde de choc 5m. Projection 3m + jet Constitution DD 15 ou étourdi 1 tour.",
       "level": 1,
@@ -3931,7 +3944,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3941,14 +3954,14 @@
       "character": 1010,
       "spell": 1037,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {
     "model": "jdr.spell",
     "pk": 1038,
     "fields": {
-      "campaign": 1,
+      "campaign": 1001,
       "name": "Invocation des Collecteurs",
       "description": "Portail doré. 1d3 Collecteurs d'Âmes à 50% PV. 1 fois par combat.",
       "level": 1,
@@ -3962,7 +3975,7 @@
         "components": "",
         "unitCT": "action"
       },
-      "created_at": "2026-04-30T09:42:19Z"
+      "created_at": "2026-04-30T11:38:16Z"
     }
   },
   {
@@ -3972,7 +3985,7 @@
       "character": 1010,
       "spell": 1038,
       "notes": "",
-      "acquired_at": "2026-04-30T09:42:19Z"
+      "acquired_at": "2026-04-30T11:38:16Z"
     }
   },
   {

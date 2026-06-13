@@ -91,6 +91,8 @@ class Character(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='characters',
+        null=True,
+        blank=True,
     )
     campaign = models.ForeignKey(
         Campaign,
@@ -106,6 +108,10 @@ class Character(models.Model):
     gold = models.IntegerField(default=0)
     silver = models.IntegerField(default=0)
     copper = models.IntegerField(default=0)
+    hp = models.IntegerField(default=0, help_text='Points de vie actuels (gauge0_0)')
+    max_hp = models.IntegerField(default=0, help_text='Points de vie max (gauge0_0 base)')
+    mp = models.IntegerField(default=0, help_text='Points de mana actuels (gauge0_1)')
+    max_mp = models.IntegerField(default=0, help_text='Points de mana max (gauge0_1 base)')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -114,7 +120,9 @@ class Character(models.Model):
         verbose_name_plural = 'Personnages'
 
     def __str__(self) -> str:
-        return f'{self.name} ({self.player.username})'
+        if self.player:
+            return f'{self.name} ({self.player.username})'
+        return self.name
 
 
 class Notification(models.Model):
@@ -403,13 +411,7 @@ class CharacterPassiveSkill(models.Model):
 
 # ─── Bestiary ───────────────────────────────────────────────────────────────
 
-class Monster(models.Model):
-    campaign = models.ForeignKey(
-        Campaign, on_delete=models.CASCADE, related_name='monsters',
-    )
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, default='')
-    hp = models.IntegerField(default=10, help_text='Points de vie')
+class Monster(Character):
     armor_class = models.IntegerField(default=10, help_text='Classe d\'armure')
     attack = models.CharField(max_length=200, blank=True, default='', help_text='Attaque principale (ex: 1d20+5)')
     damage = models.CharField(max_length=200, blank=True, default='', help_text='Dégâts (ex: 2d6+3)')
@@ -418,16 +420,14 @@ class Monster(models.Model):
     monster_type = models.CharField(max_length=100, blank=True, default='', help_text='Type (bête, mort-vivant, dragon…)')
     image = models.ImageField(upload_to='jdr/monsters/', blank=True, null=True)
     stats = models.JSONField(default=dict, blank=True, help_text='Stats campagne: {stat_id: value}')
-    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['name']
-        unique_together = ('campaign', 'name')
         verbose_name = 'Monstre'
         verbose_name_plural = 'Monstres'
 
     def __str__(self) -> str:
-        return f'{self.name} — {self.campaign.name}'
+        return f'{self.name} — {self.campaign.name if self.campaign else ""}'
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────

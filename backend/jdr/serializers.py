@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # utilisé par UserProfileSerializer et autres serializers
 from rest_framework import serializers
 
 from .models import (
@@ -11,38 +11,6 @@ from .models import (
 )
 
 
-class RegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=150)
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True, min_length=8)
-    password_confirm = serializers.CharField(write_only=True)
-
-    def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError("Ce nom d'utilisateur est déjà pris.")
-        return value
-
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError('Cet email est déjà utilisé.')
-        return value
-
-    def validate(self, data):
-        if data['password'] != data['password_confirm']:
-            raise serializers.ValidationError({'password_confirm': 'Les mots de passe ne correspondent pas.'})
-        return data
-
-    def create(self, validated_data):
-        validated_data.pop('password_confirm')
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-        )
-        UserProfile.objects.create(user=user)
-        return user
-
-
 class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
@@ -51,16 +19,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['id', 'username', 'email', 'role', 'avatar', 'created_at']
         read_only_fields = ['id', 'created_at']
-
-
-class MeSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(source='jdr_profile.role', read_only=True, default='joueur')
-    avatar = serializers.ImageField(source='jdr_profile.avatar', read_only=True, default=None)
-
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'role', 'avatar']
-        read_only_fields = ['id', 'username', 'email']
 
 
 class CampaignSerializer(serializers.ModelSerializer):
