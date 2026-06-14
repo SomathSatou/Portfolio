@@ -16,13 +16,28 @@ interface Props {
   character: CharacterWithStats
   isMJ: boolean
   onWalletChange?: (characterId: number, field: 'gold' | 'silver' | 'copper', value: number) => void
+  onOpenDetail?: (characterId: number) => void
+  onOpenSpells?: (characterId: number) => void
+  onOpenSkills?: (characterId: number) => void
+  onOpenInventory?: (characterId: number) => void
 }
 
-export default function CharacterSessionCard({ character, isMJ, onWalletChange }: Props) {
+export default function CharacterSessionCard({
+  character, isMJ, onWalletChange,
+  onOpenDetail, onOpenSpells, onOpenSkills, onOpenInventory,
+}: Props) {
   const stats = character.character_stats ?? []
+  const hasHp = character.max_hp > 0
+  const hasMp = character.max_mp > 0
+  const hpPct = hasHp ? Math.max(0, Math.min(100, Math.round((character.hp / character.max_hp) * 100))) : 0
+  const mpPct = hasMp ? Math.max(0, Math.min(100, Math.round((character.mp / character.max_mp) * 100))) : 0
+  const hpColor = hpPct > 50 ? 'bg-green-500' : hpPct > 20 ? 'bg-yellow-500' : 'bg-red-500'
 
   return (
-    <div className="card space-y-3">
+    <div
+      className={`card space-y-3 ${onOpenDetail ? 'cursor-pointer hover:ring-2 hover:ring-primary/40 dark:hover:ring-primaryLight/40 transition-all' : ''}`}
+      onClick={() => onOpenDetail?.(character.id)}
+    >
       {/* Header: avatar + name */}
       <div className="flex items-center gap-3">
         {character.avatar ? (
@@ -49,6 +64,32 @@ export default function CharacterSessionCard({ character, isMJ, onWalletChange }
         </div>
       </div>
 
+      {/* HP / MP bars */}
+      {(hasHp || hasMp) && (
+        <div className="space-y-1.5" onClick={(e) => e.stopPropagation()}>
+          {hasHp && (
+            <div className="space-y-0.5">
+              <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400">
+                <span>PV</span><span>{character.hp}/{character.max_hp}</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                <div className={`h-1.5 rounded-full transition-all ${hpColor}`} style={{ width: `${hpPct}%` }} />
+              </div>
+            </div>
+          )}
+          {hasMp && (
+            <div className="space-y-0.5">
+              <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400">
+                <span>Mana</span><span>{character.mp}/{character.max_mp}</span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                <div className="h-1.5 rounded-full transition-all bg-blue-500" style={{ width: `${mpPct}%` }} />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Stats badges */}
       {stats.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
@@ -64,7 +105,7 @@ export default function CharacterSessionCard({ character, isMJ, onWalletChange }
       )}
 
       {/* Wallet */}
-      <div className="border-t border-gray-200 dark:border-gray-700 pt-2">
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-2" onClick={(e) => e.stopPropagation()}>
         <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Bourse</p>
         {isMJ && onWalletChange ? (
           <div className="grid grid-cols-3 gap-2">
@@ -90,6 +131,42 @@ export default function CharacterSessionCard({ character, isMJ, onWalletChange }
           </p>
         )}
       </div>
+
+      {/* Action buttons */}
+      {(onOpenSpells || onOpenSkills || onOpenInventory) && (
+        <div
+          className="border-t border-gray-200 dark:border-gray-700 pt-2 flex gap-1"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {onOpenSpells && (
+            <button
+              onClick={() => onOpenSpells(character.id)}
+              className="flex-1 text-xs py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors font-medium"
+              title="Sorts"
+            >
+              ✨ Sorts
+            </button>
+          )}
+          {onOpenSkills && (
+            <button
+              onClick={() => onOpenSkills(character.id)}
+              className="flex-1 text-xs py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors font-medium"
+              title="Compétences"
+            >
+              ⚔️ Comp.
+            </button>
+          )}
+          {onOpenInventory && (
+            <button
+              onClick={() => onOpenInventory(character.id)}
+              className="flex-1 text-xs py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors font-medium"
+              title="Inventaire"
+            >
+              🎒 Inv.
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

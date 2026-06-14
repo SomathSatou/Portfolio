@@ -39,7 +39,50 @@ export interface Character {
 }
 
 export interface CharacterWithStats extends Character {
+  hp: number
+  max_hp: number
+  mp: number
+  max_mp: number
   character_stats: CharacterStat[]
+}
+
+export interface CombatParticipant {
+  id: number
+  combat: number
+  character: number | null
+  character_name: string
+  character_avatar: string | null
+  monster_name: string
+  initiative: number
+  hp_current: number
+  hp_max: number
+  is_monster: boolean
+  order_index: number
+}
+
+export interface CombatSession {
+  id: number
+  campaign: number
+  is_active: boolean
+  current_turn_index: number
+  round_number: number
+  created_at: string
+  updated_at: string
+  participants: CombatParticipant[]
+}
+
+export interface CampaignInventoryEntry {
+  id: number
+  campaign: number
+  item: number
+  item_name: string
+  item_rarity: string
+  item_type: string
+  item_description: string
+  item_is_magical: boolean
+  item_value: number
+  quantity: number
+  notes: string
 }
 
 export interface Notification {
