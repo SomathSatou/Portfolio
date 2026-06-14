@@ -930,3 +930,71 @@ class CampaignSettings(models.Model):
 
     def __str__(self) -> str:
         return f'Paramètres — {self.campaign.name}'
+
+
+# ─── Combat ──────────────────────────────────────────────────────────────────
+
+class CombatSession(models.Model):
+    campaign = models.OneToOneField(
+        Campaign, on_delete=models.CASCADE, related_name='combat_session',
+    )
+    is_active = models.BooleanField(default=False)
+    current_turn_index = models.IntegerField(default=0)
+    round_number = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Session de combat'
+        verbose_name_plural = 'Sessions de combat'
+
+    def __str__(self) -> str:
+        status = 'actif' if self.is_active else 'inactif'
+        return f'Combat {self.campaign.name} ({status})'
+
+
+class CombatParticipant(models.Model):
+    combat = models.ForeignKey(
+        CombatSession, on_delete=models.CASCADE, related_name='participants',
+    )
+    character = models.ForeignKey(
+        Character, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='combat_participations',
+    )
+    monster_name = models.CharField(max_length=200, blank=True, default='')
+    initiative = models.IntegerField(default=0, help_text='Valeur d\'Agilité pour l\'ordre de tour')
+    hp_current = models.IntegerField(default=0)
+    hp_max = models.IntegerField(default=0)
+    is_monster = models.BooleanField(default=False)
+    order_index = models.IntegerField(default=0, help_text='Position dans l\'ordre de tour (calculé)')
+
+    class Meta:
+        ordering = ['order_index']
+        verbose_name = 'Participant au combat'
+        verbose_name_plural = 'Participants au combat'
+
+    def __str__(self) -> str:
+        name = self.character.name if self.character else self.monster_name
+        return f'{name} (init. {self.initiative}) — {self.combat}'
+
+
+# ─── Campaign Inventory (Sac de Lug) ─────────────────────────────────────────
+
+class CampaignInventoryEntry(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.CASCADE, related_name='inventory_entries',
+    )
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, related_name='campaign_entries',
+    )
+    quantity = models.IntegerField(default=1)
+    notes = models.TextField(blank=True, default='')
+
+    class Meta:
+        unique_together = ('campaign', 'item')
+        ordering = ['item__name']
+        verbose_name = 'Entrée d\'inventaire de campagne'
+        verbose_name_plural = 'Entrées d\'inventaire de campagne'
+
+    def __str__(self) -> str:
+        return f'{self.campaign.name} — {self.item.name} (×{self.quantity})'

@@ -2,9 +2,10 @@ from django.contrib.auth.models import User  # utilisé par UserProfileSerialize
 from rest_framework import serializers
 
 from .models import (
-    AlchemyPlant, Campaign, CampaignEvent, CampaignMembership, CampaignSettings, Character,
+    AlchemyPlant, Campaign, CampaignEvent, CampaignInventoryEntry, CampaignMembership,
+    CampaignSettings, Character,
     CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
-    City, CityExport, CityImport,
+    City, CityExport, CityImport, CombatParticipant, CombatSession,
     GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
     MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
     PassiveSkill, RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
@@ -145,7 +146,8 @@ class CharacterWithStatsSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'player', 'player_name', 'campaign', 'campaign_name',
             'class_type', 'level', 'description', 'avatar',
-            'gold', 'silver', 'copper', 'created_at', 'character_stats',
+            'gold', 'silver', 'copper', 'hp', 'max_hp', 'mp', 'max_mp',
+            'created_at', 'character_stats',
         ]
         read_only_fields = fields
 
@@ -664,3 +666,83 @@ class CampaignSettingsSerializer(serializers.ModelSerializer):
         model = CampaignSettings
         fields = ['id', 'campaign', 'stat_min', 'stat_max', 'base_points', 'points_per_level']
         read_only_fields = ['id', 'campaign']
+
+
+# ─── Combat ──────────────────────────────────────────────────────────────────
+
+class CombatParticipantSerializer(serializers.ModelSerializer):
+    character_name = serializers.SerializerMethodField()
+    character_avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CombatParticipant
+        fields = [
+            'id', 'combat', 'character', 'character_name', 'character_avatar',
+            'monster_name', 'initiative', 'hp_current', 'hp_max',
+            'is_monster', 'order_index',
+        ]
+        read_only_fields = ['id', 'combat', 'order_index']
+
+    def get_character_name(self, obj) -> str:
+        if obj.character:
+            return obj.character.name
+        return obj.monster_name
+
+    def get_character_avatar(self, obj) -> str | None:
+        if obj.character and obj.character.avatar:
+            return obj.character.avatar.url
+        return None
+
+
+class CombatSessionSerializer(serializers.ModelSerializer):
+    participants = CombatParticipantSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = CombatSession
+        fields = [
+            'id', 'campaign', 'is_active', 'current_turn_index',
+            'round_number', 'created_at', 'updated_at', 'participants',
+        ]
+        read_only_fields = ['id', 'campaign', 'created_at', 'updated_at']
+
+
+class AddParticipantSerializer(serializers.Serializer):
+    character_id = serializers.IntegerField(required=False, allow_null=True)
+    monster_id = serializers.IntegerField(required=False, allow_null=True)
+    monster_name = serializers.CharField(required=False, allow_blank=True, default='')
+    hp = serializers.IntegerField(required=False, min_value=0)
+    initiative = serializers.IntegerField(required=False)
+
+
+class UpdateParticipantHpSerializer(serializers.Serializer):
+    participant_id = serializers.IntegerField()
+    hp_current = serializers.IntegerField(min_value=0)
+
+
+# ─── Campaign Inventory (Sac de Lug) ─────────────────────────────────────────
+
+class CampaignInventoryEntrySerializer(serializers.ModelSerializer):
+    item_name = serializers.CharField(source='item.name', read_only=True)
+    item_rarity = serializers.CharField(source='item.rarity', read_only=True)
+    item_type = serializers.CharField(source='item.item_type', read_only=True)
+    item_description = serializers.CharField(source='item.description', read_only=True)
+    item_is_magical = serializers.BooleanField(source='item.is_magical', read_only=True)
+    item_value = serializers.DecimalField(source='item.value', max_digits=10, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = CampaignInventoryEntry
+        fields = [
+            'id', 'campaign', 'item', 'item_name', 'item_rarity', 'item_type',
+            'item_description', 'item_is_magical', 'item_value',
+            'quantity', 'notes',
+        ]
+        read_only_fields = ['id', 'campaign']
+
+
+class InventoryTransferSerializer(serializers.Serializer):
+    item_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+    from_type = serializers.ChoiceField(choices=['character', 'campaign'])
+    from_character_id = serializers.IntegerField(required=False, allow_null=True)
+    to_type = serializers.ChoiceField(choices=['character', 'campaign'])
+    to_character_id = serializers.IntegerField(required=False, allow_null=True)

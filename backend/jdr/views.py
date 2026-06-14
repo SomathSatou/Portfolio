@@ -2,6 +2,7 @@
 # Each domain is defined in its own views_*.py module.
 # This file re-exports all symbols for urls.py compatibility.
 
+from accounts.views import PasswordResetConfirmView, PasswordResetRequestView  # noqa: F401
 from .views_auth import JdrLoginView, JdrMeView, RegisterView  # noqa: F401
 from .views_campaigns import CampaignViewSet  # noqa: F401
 from .views_characters import CharacterViewSet  # noqa: F401
@@ -81,4 +82,16 @@ from .views_session import (  # noqa: F401
     ChatMessageView,
     SessionNoteView,
     WalletUpdateView,
+)
+from .views_combat import (  # noqa: F401
+    CombatAddParticipantView,
+    CombatEndView,
+    CombatNextTurnView,
+    CombatStartView,
+    CombatStateView,
+    CombatUpdateHpView,
+)
+from .views_campaign_inventory import (  # noqa: F401
+    CampaignInventoryTransferView,
+    CampaignInventoryView,
 )

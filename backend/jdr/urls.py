@@ -4,8 +4,12 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
     AlchemyPlantViewSet,
+    CampaignInventoryTransferView,
+    CampaignInventoryView,
     CampaignSettingsView,
     CampaignViewSet,
+    PasswordResetConfirmView,
+    PasswordResetRequestView,
     CharacterAvatarUploadView,
     CharacterItemDetailView,
     CharacterItemsView,
@@ -21,6 +25,12 @@ from .views import (
     CharactersWithStatsView,
     CharacterViewSet,
     ChatMessageView,
+    CombatAddParticipantView,
+    CombatEndView,
+    CombatNextTurnView,
+    CombatStartView,
+    CombatStateView,
+    CombatUpdateHpView,
     ItemDetailView,
     ItemListCreateView,
     MonsterDetailView,
@@ -82,6 +92,8 @@ urlpatterns = [
     path('auth/login/', JdrLoginView.as_view(), name='jdr-login'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='jdr-token-refresh'),
     path('auth/me/', JdrMeView.as_view(), name='jdr-me'),
+    path('auth/password-reset/', PasswordResetRequestView.as_view(), name='jdr-password-reset'),
+    path('auth/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='jdr-password-reset-confirm'),
     # Campaign Content (Spells, Items, Stats)
     path('spells/', SpellListCreateView.as_view(), name='spells'),
     path('spells/<int:pk>/', SpellDetailView.as_view(), name='spell-detail'),
@@ -142,6 +154,16 @@ urlpatterns = [
     path('campaigns/<int:pk>/wallets/', WalletUpdateView.as_view(), name='wallet-update'),
     path('session-notes/', SessionNoteView.as_view(), name='session-notes'),
     path('chat-messages/', ChatMessageView.as_view(), name='chat-messages'),
+    # Combat
+    path('campaigns/<int:pk>/combat/', CombatStateView.as_view(), name='combat-state'),
+    path('campaigns/<int:pk>/combat/start/', CombatStartView.as_view(), name='combat-start'),
+    path('campaigns/<int:pk>/combat/end/', CombatEndView.as_view(), name='combat-end'),
+    path('campaigns/<int:pk>/combat/next-turn/', CombatNextTurnView.as_view(), name='combat-next-turn'),
+    path('campaigns/<int:pk>/combat/add-participant/', CombatAddParticipantView.as_view(), name='combat-add-participant'),
+    path('campaigns/<int:pk>/combat/update-hp/', CombatUpdateHpView.as_view(), name='combat-update-hp'),
+    # Campaign Inventory (Sac de Lug)
+    path('campaigns/<int:pk>/inventory/', CampaignInventoryView.as_view(), name='campaign-inventory'),
+    path('campaigns/<int:pk>/inventory/transfer/', CampaignInventoryTransferView.as_view(), name='campaign-inventory-transfer'),
     # Router
     path('', include(router.urls)),
 ]
