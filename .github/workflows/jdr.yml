@@ -27,8 +27,8 @@ jobs:
             BACKUP_DIR="/var/www/Backup"
             BACKUP_FILE="${BACKUP_DIR}/$(date +%Y%m%d_%H%M%S)_backup.sql"
             mkdir -p "${BACKUP_DIR}"
-            if ! sudo mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
-              echo "::error::Database backup failed"
+            if ! echo "${{ secrets.SSH_AUTOMIA_SUDO_PASSWORD }}" | sudo -S mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
+              echo "::error::Database backup failed (check sudo password)"
               exit 1
             fi
             echo "Backup saved: ${BACKUP_FILE}"
@@ -40,19 +40,20 @@ jobs:
         run: |
           echo "::group::Deployment"
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            export SUDO_PASSWORD="${{ secrets.SSH_AUTOMIA_SUDO_PASSWORD }}"
             DEPLOY_DIR="/var/www/Portfolio"
             cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
             if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
               echo "::error::deploy.sh not found"
               exit 1
             fi
-            echo "Running deploy.sh..."
-            if ! sudo bash "${DEPLOY_DIR}/deploy.sh"; then
+            echo "Running deploy.sh with SUDO_PASSWORD..."
+            if ! bash "${DEPLOY_DIR}/deploy.sh"; then
               EXIT_CODE=$?
               echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
               exit ${EXIT_CODE}
             fi
-            if ! sudo systemctl is-active --quiet portfolio; then
+            if ! echo "$SUDO_PASSWORD" | sudo -S systemctl is-active --quiet portfolio; then
               echo "::warning::Service 'portfolio' is not active after deployment"
             fi
           EOF
@@ -64,10 +65,10 @@ jobs:
           echo "::group::Post-Deploy Verification"
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             echo "--- Service Status ---"
-            sudo systemctl status portfolio --no-pager -l || true
+            echo "${{ secrets.SSH_AUTOMIA_SUDO_PASSWORD }}" | sudo -S systemctl status portfolio --no-pager -l || true
             echo ""
             echo "--- Recent Logs (portfolio) ---"
-            sudo journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
+            echo "${{ secrets.SSH_AUTOMIA_SUDO_PASSWORD }}" | sudo -S journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
             echo ""
             echo "--- Deploy script log (if exists) ---"
             if [ -f /var/www/Portfolio/deploy.log ]; then

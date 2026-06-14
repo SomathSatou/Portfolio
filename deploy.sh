@@ -11,6 +11,15 @@ ENV_FILE="/etc/portfolio.env"
 
 exec > >(tee -a "$LOG" "$DEPLOY_LOG") 2>&1
 
+# Helper pour sudo avec ou sans mot de passe
+run_sudo() {
+    if [ -n "$SUDO_PASSWORD" ]; then
+        echo "$SUDO_PASSWORD" | sudo -S "$@"
+    else
+        sudo "$@"
+    fi
+}
+
 echo "=== Déploiement $(date) ==="
 echo "Working directory: $(pwd)"
 
@@ -47,7 +56,7 @@ npm ci --silent
 npm run build
 
 echo "[7/7] Restarting services..."
-systemctl restart portfolio
-systemctl reload nginx
+run_sudo systemctl restart portfolio
+run_sudo systemctl reload nginx
 
 echo "=== Déploiement terminé avec succès ==="
