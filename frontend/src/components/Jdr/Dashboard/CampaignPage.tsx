@@ -9,7 +9,8 @@ import CampaignItemsPanel from './CampaignItemsPanel'
 import CampaignSpellsPanel from './CampaignSpellsPanel'
 import CampaignStatsPanel from './CampaignStatsPanel'
 import CharacterCard from './CharacterCard'
-import type { Campaign, CampaignMember, Character } from './types'
+import CampaignInventoryPanel from '../Session/CampaignInventoryPanel'
+import type { Campaign, CampaignMember, Character, CharacterWithStats } from './types'
 
 interface CampaignPageProps {
   campaignId: string
@@ -38,9 +39,17 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
   const [confirmAdvance, setConfirmAdvance] = React.useState(false)
 
   // Tabs
-  const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats' | 'bestiary' | 'settings'>('overview')
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats' | 'bestiary' | 'inventory' | 'settings'>('overview')
+  const [charactersWithStats, setCharactersWithStats] = React.useState<CharacterWithStats[]>([])
 
   const isMJ = campaign?.game_master === user?.id
+
+  React.useEffect(() => {
+    if (!isMJ) return
+    api.get<CharacterWithStats[]>(`/campaigns/${campaignId}/characters-with-stats/`)
+      .then((res) => setCharactersWithStats(res.data))
+      .catch(() => {})
+  }, [campaignId, isMJ])
 
   React.useEffect(() => {
     let cancelled = false
@@ -228,8 +237,8 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
       {/* Tabs */}
       <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
-        {(['overview', 'events', 'cities', 'spells', 'items', 'stats', ...(isMJ ? ['bestiary' as const] : []), 'settings' as const] as const).map((tab) => {
-          const labels: Record<string, string> = { overview: 'Vue d\'ensemble', events: '\u00c9v\u00e9nements', cities: 'Villes', spells: 'Sorts', items: 'Objets', stats: 'Statistiques', bestiary: 'Bestiaire', settings: 'Paramètres' }
+        {(['overview', 'events', 'cities', 'spells', 'items', 'stats', ...(isMJ ? ['bestiary' as const] : []), 'inventory' as const, 'settings' as const] as const).map((tab) => {
+          const labels: Record<string, string> = { overview: 'Vue d\'ensemble', events: '\u00c9v\u00e9nements', cities: 'Villes', spells: 'Sorts', items: 'Objets', stats: 'Statistiques', bestiary: 'Bestiaire', inventory: '🎒 Sac de Lug', settings: 'Paramètres' }
           return (
             <button
               key={tab}
@@ -341,6 +350,16 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
 
       {activeTab === 'bestiary' && (
         <CampaignBestiaryPanel campaignId={campaign.id} isMJ={isMJ} />
+      )}
+
+      {activeTab === 'inventory' && (
+        <CampaignInventoryPanel
+          campaignId={campaign.id}
+          isMJ={isMJ}
+          combatActive={false}
+          currentUserId={user?.id}
+          characters={charactersWithStats}
+        />
       )}
 
       {activeTab === 'settings' && (
