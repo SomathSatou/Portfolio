@@ -105,6 +105,23 @@ def parse_mana_cost(characteristic: dict) -> int:
     return total
 
 
+def _average_dice(dice_str: str) -> float:
+    """Rough average damage from a dice string like '2d6+3' or '4d10'."""
+    import re
+    total = 0.0
+    for match in re.finditer(r'(\d+)d(\d+)(?:\+(-?\d+))?', dice_str.lower()):
+        count = int(match.group(1))
+        sides = int(match.group(2))
+        bonus = int(match.group(3)) if match.group(3) else 0
+        total += count * (sides + 1) / 2 + bonus
+    if total == 0:
+        # Fallback: extract any integer as flat damage
+        nums = re.findall(r'\d+', dice_str)
+        if nums:
+            total = sum(int(n) for n in nums) / len(nums)
+    return max(1.0, total)
+
+
 def extract_item_properties(item_data: dict) -> dict:
     props = {}
     char = item_data.get('characteristic', {})
@@ -155,6 +172,10 @@ class Command(BaseCommand):
             help='Patch JSON files to apply after Homebrew import.',
         )
         parser.add_argument(
+            '--monsters-source', type=str, default=r'F:\Lug\CharacterSheet\monstre',
+            help='Folder containing *-Homebrew.json monster files',
+        )
+        parser.add_argument(
             '--output', type=str, default='jdr/fixtures/homebrew.json',
             help='Output fixture file path (relative to backend/).',
         )
@@ -200,6 +221,18 @@ class Command(BaseCommand):
             self.stdout.write(f'\n{"="*60}')
             self.stdout.write(f'Processing: {jf.name}')
             builder.process_file(jf)
+
+        # ── Monster files ─────────────────────────────────────────────────
+        monsters_source = Path(options['monsters_source'])
+        if monsters_source.is_dir():
+            monster_files = sorted(monsters_source.glob('*-Homebrew.json'))
+            self.stdout.write(f'\nFound {len(monster_files)} monster files.')
+            for jf in monster_files:
+                self.stdout.write(f'\n{"="*60}')
+                self.stdout.write(f'Processing monster: {jf.name}')
+                builder.process_monster_file(jf)
+        else:
+            self.stdout.write(self.style.WARNING(f'Monster source not found: {monsters_source}'))
 
         # ── Apply patches ─────────────────────────────────────────────────
         for patch_path_str in options['patches']:
@@ -320,6 +353,7 @@ class FixtureBuilder:
                     'is_active': True,
                     'current_session_number': 0,
                     'session_active': False,
+                    'created_at': NOW,
                 },
             })
         return result + self._entries
@@ -363,9 +397,16 @@ class FixtureBuilder:
             elif unit == 0.01:
                 copper = val
 
+        # ── Gauges (HP / MP) ──────────────────────────────────────────────
+        gauges = co.get('gauges', {})
+        hp = max(0, int(gauges.get('gauge0_0', {}).get('value', 0) or 0))
+        max_hp = max(0, int(gauges.get('gauge0_0', {}).get('base', hp) or hp))
+        mp = max(0, int(gauges.get('gauge0_1', {}).get('value', 0) or 0))
+        max_mp = max(0, int(gauges.get('gauge0_1', {}).get('base', mp) or mp))
+
         self.stdout.write(
             f'  Character: {name} (lvl {level}, {class_type or "?"}) '
-            f'— {gold}g {silver}s {copper}c'
+            f'— {gold}g {silver}s {copper}c  HP={hp}/{max_hp} MP={mp}/{max_mp}'
         )
 
         char_pk = self._next_pk('character')
@@ -380,6 +421,10 @@ class FixtureBuilder:
             'gold': gold,
             'silver': silver,
             'copper': copper,
+            'hp': hp,
+            'max_hp': max_hp,
+            'mp': mp,
+            'max_mp': max_mp,
             'created_at': NOW,
         })
 
@@ -392,10 +437,159 @@ class FixtureBuilder:
         self._process_spells(spells_data, char_pk)
 
         # ── Passive Skills ────────────────────────────────────────────────
-        passive_data = co.get('passiveSkills', {}).get('passiveSkills1', {})
+        passive_data = co.get('passiveSkills', {})
         self._process_passive_skills(passive_data, char_pk)
 
         # ── Stats ─────────────────────────────────────────────────────────
+        self._process_stats(co, template, char_pk)
+
+    def process_monster_file(self, path: Path):
+        """Process a monster Homebrew JSON file into Character + Monster fixture entries."""
+        with open(path, encoding='utf-8') as f:
+            data = json.load(f)
+
+        co = data.get('characterObj', {})
+        template = co.get('template', data.get('template', {}))
+
+        # ── Character info ────────────────────────────────────────────────
+        name = co.get('nameCharacter', path.stem.split('-')[0].strip())
+        level_data = co.get('level', {})
+        level = level_data.get('value', 1) if isinstance(level_data, dict) else 1
+
+        info = co.get('info', {})
+        monster_type = info.get('info10', {}).get('value', '')
+        alignment = info.get('info11', {}).get('value', '')
+
+        biography = strip_html(co.get('biography', ''))
+        description_parts = []
+        if monster_type:
+            description_parts.append(f'Type : {monster_type}')
+        if alignment:
+            description_parts.append(f'Alignement : {alignment}')
+        if biography:
+            description_parts.append(biography)
+        description = '\n\n'.join(description_parts)
+
+        # ── Gauges ────────────────────────────────────────────────────────
+        gauges = co.get('gauges', {})
+        hp = max(0, int(gauges.get('gauge0_0', {}).get('value', 0) or 0))
+        max_hp = max(0, int(gauges.get('gauge0_0', {}).get('base', hp) or hp))
+        mp = max(0, int(gauges.get('gauge0_1', {}).get('value', 0) or 0))
+        max_mp = max(0, int(gauges.get('gauge0_1', {}).get('base', mp) or mp))
+
+        # ── Stats ─────────────────────────────────────────────────────────
+        asbonus = co.get('asbonus', {}).get('asbonus1', {})
+        stats_json = {}
+        for i, stat_name in enumerate(STAT_TEMPLATE_ORDER):
+            bonus_key = f'asbonus{i}'
+            stat_entry = asbonus.get(bonus_key, {})
+            stats_json[stat_name] = int(stat_entry.get('base', 0))
+
+        # ── Armor class ───────────────────────────────────────────────────
+        armor_class = 10 + (stats_json.get('Constitution', 0) // 2)
+        # Check for equipped armor with armor_point
+        items_data = co.get('inventory', {}).get('items', {})
+        for item_id, item in items_data.items():
+            if item.get('type') == 'armor' and item.get('worn', False):
+                ap = item.get('characteristic', {}).get('armorpoint', 0)
+                try:
+                    armor_class = max(armor_class, 10 + int(ap))
+                except (ValueError, TypeError):
+                    pass
+
+        # ── Attack / Damage ─────────────────────────────────────────────
+        # Prefer weapon damage, else strongest spell effect
+        attack_dice = '1d20'
+        damage_str = ''
+        weapon_found = False
+        for item_id, item in items_data.items():
+            if item.get('type') == 'weapon' and item.get('worn', False):
+                dmg = item.get('characteristic', {}).get('damage', '')
+                if dmg:
+                    damage_str = str(dmg)
+                    weapon_found = True
+                    break
+        if not weapon_found:
+            spells_data = co.get('spellBook', {}).get('spells', {})
+            best_dmg = ''
+            for spell_id, spell in spells_data.items():
+                effect = str(spell.get('effect', ''))
+                if effect and ('d' in effect or '+' in effect):
+                    # Keep the one with highest dice count roughly
+                    if len(effect) > len(best_dmg):
+                        best_dmg = effect
+            damage_str = best_dmg
+
+        attack = f'{attack_dice}+{stats_json.get("Force", 0) // 2}' if stats_json.get('Force', 0) > 0 else attack_dice
+        if not damage_str:
+            damage_str = '1d4'
+
+        # ── Special abilities ────────────────────────────────────────────
+        passive_data = co.get('passiveSkills', {})
+        special_parts = []
+        for sk_id, sk in passive_data.items():
+            if isinstance(sk, dict) and sk.get('name'):
+                special_parts.append(f"{sk['name']}: {strip_html(sk.get('desc', ''))}")
+        special_abilities = '\n'.join(special_parts)
+
+        # ── Challenge rating (simple heuristic) ────────────────────────────
+        # Based on HP pool and damage output relative to a level-1 PC (HP ~20, DPR ~5)
+        pc_hp = 20 + (level - 1) * 8
+        pc_dpr = 5 + (level - 1) * 2
+        rounds_to_kill_pc = max(1, pc_hp / max(1, _average_dice(damage_str)))
+        rounds_pc_to_kill = max(1, hp / max(1, pc_dpr))
+        cr_score = (rounds_pc_to_kill / rounds_to_kill_pc) * level
+        if cr_score < 0.5:
+            challenge_rating = 'Faible'
+        elif cr_score < 1.5:
+            challenge_rating = 'Modéré'
+        elif cr_score < 3:
+            challenge_rating = 'Dangereux'
+        elif cr_score < 6:
+            challenge_rating = 'Légendaire'
+        else:
+            challenge_rating = 'Boss'
+
+        self.stdout.write(
+            f'  Monster: {name} (lvl {level}, {monster_type or "?"}) '
+            f'HP={hp}/{max_hp} MP={mp}/{max_mp} AC={armor_class} CR={challenge_rating}'
+        )
+
+        char_pk = self._next_pk('character')
+        self._characters[name] = char_pk
+        self._add('character', char_pk, {
+            'name': name,
+            'player': None,
+            'campaign': self.campaign_pk,
+            'class_type': monster_type,
+            'level': level,
+            'description': description,
+            'gold': 0,
+            'silver': 0,
+            'copper': 0,
+            'hp': hp,
+            'max_hp': max_hp,
+            'mp': mp,
+            'max_mp': max_mp,
+            'created_at': NOW,
+        })
+
+        # Monster entry (same PK as Character for multi-table inheritance)
+        self._add('monster', char_pk, {
+            'armor_class': armor_class,
+            'attack': attack,
+            'damage': damage_str,
+            'special_abilities': special_abilities,
+            'challenge_rating': challenge_rating,
+            'monster_type': monster_type,
+            'stats': stats_json,
+        })
+
+        # ── Items, Spells, Passives, Stats ────────────────────────────────
+        self._process_items(items_data, char_pk)
+        spells_data = co.get('spellBook', {}).get('spells', {})
+        self._process_spells(spells_data, char_pk)
+        self._process_passive_skills(passive_data, char_pk)
         self._process_stats(co, template, char_pk)
 
     # ─── Items ────────────────────────────────────────────────────────────
@@ -523,7 +717,18 @@ class FixtureBuilder:
 
     def _process_passive_skills(self, passive_data: dict, char_pk: int):
         count = 0
-        for sk_id, sk in passive_data.items():
+        # Support nested structure: passiveSkills -> passiveSkills1 -> {id: {...}}
+        entries = passive_data
+        # If first value is another dict of passives, unwrap one level
+        if entries:
+            first_val = next(iter(entries.values()))
+            if isinstance(first_val, dict) and not first_val.get('name') and any(isinstance(v, dict) for v in first_val.values()):
+                entries = {}
+                for container in passive_data.values():
+                    if isinstance(container, dict):
+                        entries.update(container)
+
+        for sk_id, sk in entries.items():
             if not isinstance(sk, dict):
                 continue
             sk_name = sk.get('name', '').strip()
@@ -803,7 +1008,7 @@ class FixtureBuilder:
         }
         db_field = field_map.get(field, field)
 
-        allowed_fields = {'name', 'level', 'class_type', 'description', 'gold', 'silver', 'copper'}
+        allowed_fields = {'name', 'level', 'class_type', 'description', 'gold', 'silver', 'copper', 'hp', 'max_hp', 'mp', 'max_mp'}
         if db_field not in allowed_fields:
             self.stdout.write(f'    ⚠ Field "{db_field}" not allowed, skipping.')
             return

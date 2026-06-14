@@ -77,6 +77,12 @@ export default function LoginPage() {
             >
               {loading ? 'Connexion…' : 'Se connecter'}
             </button>
+
+            <p className="text-center text-sm">
+              <a href="#/irlrpg/forgot-password" className="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primaryLight hover:underline">
+                Mot de passe oublié ?
+              </a>
+            </p>
           </form>
 
           <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-500">

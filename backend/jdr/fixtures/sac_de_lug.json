@@ -1,0 +1,529 @@
+[
+  {
+    "model": "jdr.item",
+    "pk": 2000,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Kit d'Aventurier d'Alchimie",
+      "description": "Kit complet pour l'alchimiste de terrain. Contient : cornues et fioles (x3), mortier et pilon, tubes d'essai (x5), mini-brûleur, cuillères doseuses (x3), pince et filtre, carnet de recettes, plume et encre, loupe rudimentaire.\n\nIngrédients inclus : soufre brut, sel de pierre, charbon pulvérisé, racine de givreline séchée, pétales d'érisone rouge, baies d'ombre-lune, mousse d'écorce, poudre d'os calciné.",
+      "rarity": "commun",
+      "item_type": "Consommable",
+      "weight": "5.00",
+      "value": "30.00",
+      "properties": { "icon": "t-alchemy" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2001,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Kit d'Artisan Polyvalent",
+      "description": "Établi de voyage complet. Outils : marteau multi-usage, pinces (x2), cisaille, lime, scie pliante, aiguilles (x6), alêne, burins (x2), mallette de gravure.\n\nMatériaux : fil cuivre/laiton/fer, planches bois tendre (x3), cuir souple et rigide, tissu, colle végétale, clous/rivets/agrafes, teintures (x3), cire de protection.\n\nÉquipement : forge de terrain, pierre à aiguiser, compas et équerre, ficelle de plomb, gants renforcés, tablier de cuir, lentilles grossissantes, trousse de dessin, carnet de modèles, livre de traditions artisanales.",
+      "rarity": "commun",
+      "item_type": "Équipement",
+      "weight": "12.00",
+      "value": "50.00",
+      "properties": { "icon": "t-tools" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2002,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Fleur Bocolique",
+      "description": "Ingrédient alchimique commun. Fleur délicate aux propriétés stabilisantes.",
+      "rarity": "commun",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "0.10",
+      "properties": { "icon": "t-herb", "emoji": "🌼", "tier": 1 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2003,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Tige Tzétzé",
+      "description": "Tige aux propriétés soporifiques légères. Manipuler avec précaution.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.02",
+      "value": "0.50",
+      "properties": { "icon": "t-herb", "emoji": "💤", "tier": 1 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2004,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Lisserande",
+      "description": "Herbe fine aux propriétés calmantes et régénératrices.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "0.30",
+      "properties": { "icon": "t-herb", "emoji": "🌿", "tier": 5 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2005,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Cerfeuillu",
+      "description": "Plante arborescente aux propriétés fortifiantes.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.05",
+      "value": "0.40",
+      "properties": { "icon": "t-herb", "emoji": "🌳", "tier": 5 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2006,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Iris Lunaire",
+      "description": "Fleur aux reflets argentés, récoltée sous la lune. Propriétés lunaires et purifiantes.",
+      "rarity": "rare",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "1.00",
+      "properties": { "icon": "t-herb", "emoji": "🌸", "tier": 2 },
+      "is_magical": true,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2007,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Champignon Pâle",
+      "description": "Champignon aux spores légèrement hallucinogènes. Dosage délicat.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.02",
+      "value": "0.80",
+      "properties": { "icon": "t-herb", "emoji": "🍄", "tier": 2 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2008,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Feu-Piment",
+      "description": "Épice alchimique à haute température d'activation. Composant pour catalyseurs de feu.",
+      "rarity": "rare",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "2.00",
+      "properties": { "icon": "t-herb", "emoji": "🌶", "tier": 4 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2009,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Écorce d'Éveil",
+      "description": "Écorce tonifiante aux propriétés stimulantes. Contre la torpeur et la fatigue.",
+      "rarity": "rare",
+      "item_type": "Ingrédient",
+      "weight": "0.03",
+      "value": "2.50",
+      "properties": { "icon": "t-herb", "emoji": "🌳", "tier": 4 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2010,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Charbon",
+      "description": "Charbon d'artisan, composant énergétique et absorbant de base.",
+      "rarity": "commun",
+      "item_type": "Ingrédient",
+      "weight": "0.05",
+      "value": "0.05",
+      "properties": { "icon": "t-resource", "emoji": "🔥", "tier": 4 },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2011,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Sève Claire (bocal)",
+      "description": "Bocal de sève claire, en attente de réapprovisionnement de l'atelier.",
+      "rarity": "commun",
+      "item_type": "Ingrédient",
+      "weight": "0.50",
+      "value": "1.00",
+      "properties": { "icon": "t-resource" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2012,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Racine Nerveuse",
+      "description": "Racine aux propriétés nerveuses, effets sur le système nerveux.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.02",
+      "value": "0.60",
+      "properties": { "icon": "t-herb" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2013,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Menthe Noire",
+      "description": "Menthe sombre aux propriétés antiseptiques et légèrement toxiques.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "0.40",
+      "properties": { "icon": "t-herb" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2014,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Racine Douce Miel",
+      "description": "Racine sucrée aux propriétés adoucissantes et curatives légères.",
+      "rarity": "commun",
+      "item_type": "Ingrédient",
+      "weight": "0.02",
+      "value": "0.30",
+      "properties": { "icon": "t-herb" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2015,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Quartz Bleu",
+      "description": "Cristal de quartz bleu, amplificateur de résonance magique.",
+      "rarity": "rare",
+      "item_type": "Ingrédient",
+      "weight": "0.10",
+      "value": "5.00",
+      "properties": { "icon": "t-gem" },
+      "is_magical": true,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2016,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Herbe Coupe-Feu",
+      "description": "Herbe résistante aux flammes, utilisée dans les onguents anti-brûlures.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "0.50",
+      "properties": { "icon": "t-herb" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2017,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Racine Aspire-Venin",
+      "description": "Racine aux propriétés anti-toxines, absorbe les poisons dans les préparations.",
+      "rarity": "rare",
+      "item_type": "Ingrédient",
+      "weight": "0.03",
+      "value": "3.00",
+      "properties": { "icon": "t-herb" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2018,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Lambolas",
+      "description": "Composant rare aux propriétés inconnues du commun. Très prisé des alchimistes expérimentés.",
+      "rarity": "très_rare",
+      "item_type": "Ingrédient",
+      "weight": "0.05",
+      "value": "10.00",
+      "properties": { "icon": "t-herb" },
+      "is_magical": true,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2019,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Fleur TzéeTzée",
+      "description": "Fleur de la tige Tzétzé, aux propriétés soporifiques concentrées.",
+      "rarity": "peu_commun",
+      "item_type": "Ingrédient",
+      "weight": "0.01",
+      "value": "0.70",
+      "properties": { "icon": "t-herb", "emoji": "🌸" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2020,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Épée de l'Orbe Bleu",
+      "description": "Lame forgée dans un alliage rare aux reflets bleutés. Légèrement magique.",
+      "rarity": "rare",
+      "item_type": "Arme",
+      "weight": "1.50",
+      "value": "0.50",
+      "properties": { "damage": "2d15+5+1d5", "icon": "t-weapon1" },
+      "is_magical": true,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2021,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Plastron de Cuir de Qualité",
+      "description": "Armure thoracique en cuir tanné de qualité supérieure. Légère et résistante.",
+      "rarity": "peu_commun",
+      "item_type": "Armure",
+      "weight": "3.00",
+      "value": "0.05",
+      "properties": { "armor_class": 2, "icon": "t-armor1" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2022,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Gant en Plaque",
+      "description": "Gantelet en plaques d'acier articulées. Protection maximale des mains.",
+      "rarity": "rare",
+      "item_type": "Armure",
+      "weight": "2.00",
+      "value": "25.00",
+      "properties": { "armor_class": 15, "icon": "t-armor1" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2023,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Cotte de Givreclair",
+      "description": "Armure légère forgée dans un acier traité au froid extrême. Propriétés de résistance au feu.",
+      "rarity": "rare",
+      "item_type": "Armure",
+      "weight": "8.00",
+      "value": "50.00",
+      "properties": { "armor_class": 30, "icon": "t-armor1" },
+      "is_magical": true,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2024,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Aiguillon d'Os",
+      "description": "Arme artisanale taillée dans un os de grande créature. Légère et silencieuse.",
+      "rarity": "peu_commun",
+      "item_type": "Arme",
+      "weight": "0.40",
+      "value": "2.00",
+      "properties": { "icon": "t-weapon1" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2025,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Hache de Larian",
+      "description": "Hache de guerre à double tranchant, de fabrication Larienne.",
+      "rarity": "rare",
+      "item_type": "Arme",
+      "weight": "3.00",
+      "value": "15.00",
+      "properties": { "icon": "t-weapon1" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2026,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Hache de Larian (brisée)",
+      "description": "Hache de Larian dont la lame est fissurée. Inutilisable au combat sans réparation. Peut être refondue.",
+      "rarity": "commun",
+      "item_type": "Arme",
+      "weight": "2.50",
+      "value": "3.00",
+      "properties": { "icon": "t-weapon1", "broken": true },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2027,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Lance-Grenouilles",
+      "description": "Arme exotique et mécanique permettant de projeter de petites grenouilles à distance. Utilisation... créative.",
+      "rarity": "rare",
+      "item_type": "Arme",
+      "weight": "1.20",
+      "value": "8.00",
+      "properties": { "icon": "t-weapon1" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2028,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Crocs de Loup",
+      "description": "Crocs arrachés à un loup. Peut servir de composant alchimique, d'ornement ou d'arme improvisée.",
+      "rarity": "commun",
+      "item_type": "Matériau",
+      "weight": "0.10",
+      "value": "0.20",
+      "properties": { "icon": "t-resource" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2029,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Os de Loup",
+      "description": "Os de loup, solide et léger. Matériau de base pour artisanat ou alchimie.",
+      "rarity": "commun",
+      "item_type": "Matériau",
+      "weight": "0.20",
+      "value": "0.15",
+      "properties": { "icon": "t-resource" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  },
+  {
+    "model": "jdr.item",
+    "pk": 2030,
+    "fields": {
+      "campaign": 1,
+      "resource": null,
+      "name": "Cane-Os",
+      "description": "Canne taillée dans un os, à la fois outil de marche et arme improvisée.",
+      "rarity": "peu_commun",
+      "item_type": "Équipement",
+      "weight": "0.50",
+      "value": "1.50",
+      "properties": { "icon": "t-tools" },
+      "is_magical": false,
+      "created_at": "2026-06-14T00:00:00Z"
+    }
+  }
+]

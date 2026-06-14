@@ -3,6 +3,8 @@ import { AuthProvider } from './AuthContext'
 import { useAuth } from './useAuth'
 import MuscuHomePage from './MuscuHomePage'
 import LoginPage from './LoginPage'
+import ForgotPasswordPage from './ForgotPasswordPage'
+import ResetPasswordPage from './ResetPasswordPage'
 import MuscuLayout from './MuscuLayout'
 import DashboardPage from './pages/DashboardPage'
 import WorkoutPage from './pages/WorkoutPage'
@@ -61,6 +63,8 @@ function MuscuRouterInner({ hash }: { hash: string }) {
   // Public routes
   if (hash === '#/irlrpg' || hash === '#/irlrpg/') return <MuscuHomePage />
   if (hash === '#/irlrpg/login') return <LoginPage />
+  if (hash === '#/irlrpg/forgot-password') return <ForgotPasswordPage />
+  if (hash.startsWith('#/irlrpg/reset-password')) return <ResetPasswordPage />
 
   // Admin routes
   if (hash.startsWith('#/irlrpg/admin')) {

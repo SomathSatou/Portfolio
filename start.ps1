@@ -44,20 +44,37 @@ $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $BackendDir = Join-Path $RepoRoot 'backend'
 $FrontendDir = Join-Path $RepoRoot 'frontend'
 
-# Backend command with auto venv activation (root .venv or backend/.venv)
+# Backend command: activate venv, migrate, then runserver
 $BackendCmd = @"
 if (Test-Path "${RepoRoot}\.venv\Scripts\Activate.ps1") {
   & "${RepoRoot}\.venv\Scripts\Activate.ps1"
 } elseif (Test-Path "${BackendDir}\.venv\Scripts\Activate.ps1") {
   & "${BackendDir}\.venv\Scripts\Activate.ps1"
 }
+Write-Host "=> Applying migrations..." -ForegroundColor Cyan
+python manage.py migrate --run-syncdb
+Write-Host "=> Starting Django dev server..." -ForegroundColor Cyan
 python manage.py runserver 8000
 "@
-$FrontendCmd = 'npm run dev'
+
+# Frontend command: install deps if missing, then dev server
+$FrontendCmd = @"
+if (-not (Test-Path "${FrontendDir}\node_modules")) {
+  Write-Host "=> node_modules not found, running npm install..." -ForegroundColor Cyan
+  npm install
+}
+npm run dev
+"@
 
 Start-AppWindow -Title 'Backend: Django (http://localhost:8000)' -WorkingDir $BackendDir -Command $BackendCmd
 Start-AppWindow -Title 'Frontend: Vite (http://localhost:5173)' -WorkingDir $FrontendDir -Command $FrontendCmd
 
+Write-Host ""
 Write-Host "Launched backend and frontend in separate windows." -ForegroundColor Green
-Write-Host "Backend => http://localhost:8000" -ForegroundColor Yellow
-Write-Host "Frontend => http://localhost:5173" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "  Portfolio  => http://localhost:5173"           -ForegroundColor Yellow
+Write-Host "  JDR        => http://localhost:5173/#/jdr"     -ForegroundColor Yellow
+Write-Host "  IRL RPG    => http://localhost:5173/#/irlrpg"  -ForegroundColor Yellow
+Write-Host "  API        => http://localhost:8000/api/"      -ForegroundColor Yellow
+Write-Host "  Admin      => http://localhost:8000/admin/"    -ForegroundColor Yellow
+Write-Host ""

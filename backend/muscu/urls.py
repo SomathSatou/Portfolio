@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
     # Auth
-    LoginView, MeView,
+    LoginView, MeView, PasswordResetRequestView, PasswordResetConfirmView,
     # Muscles
     MuscleGroupListView, MuscleListView,
     # Gyms
@@ -38,6 +38,8 @@ urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='muscu-login'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='muscu-token-refresh'),
     path('auth/me/', MeView.as_view(), name='muscu-me'),
+    path('auth/password-reset/', PasswordResetRequestView.as_view(), name='muscu-password-reset'),
+    path('auth/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='muscu-password-reset-confirm'),
 
     # ── Muscles ───────────────────────────────────────────────────────────
     path('muscle-groups/', MuscleGroupListView.as_view(), name='muscu-muscle-groups'),

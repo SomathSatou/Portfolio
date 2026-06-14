@@ -113,6 +113,21 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             'created_at': event['created_at'],
         })
 
+    async def combat_event(self, event):
+        """Forward combat state updates to WebSocket client."""
+        await self.send_json({
+            'type': 'combat_event',
+            'event': event.get('event'),
+            'combat': event.get('combat'),
+        })
+
+    async def inventory_update(self, event):
+        """Notify clients that the campaign inventory has changed."""
+        await self.send_json({
+            'type': 'inventory_update',
+            'campaign_id': event.get('campaign_id'),
+        })
+
     @database_sync_to_async
     def _check_access(self) -> bool:
         try:

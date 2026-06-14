@@ -39,7 +39,50 @@ export interface Character {
 }
 
 export interface CharacterWithStats extends Character {
+  hp: number
+  max_hp: number
+  mp: number
+  max_mp: number
   character_stats: CharacterStat[]
+}
+
+export interface CombatParticipant {
+  id: number
+  combat: number
+  character: number | null
+  character_name: string
+  character_avatar: string | null
+  monster_name: string
+  initiative: number
+  hp_current: number
+  hp_max: number
+  is_monster: boolean
+  order_index: number
+}
+
+export interface CombatSession {
+  id: number
+  campaign: number
+  is_active: boolean
+  current_turn_index: number
+  round_number: number
+  created_at: string
+  updated_at: string
+  participants: CombatParticipant[]
+}
+
+export interface CampaignInventoryEntry {
+  id: number
+  campaign: number
+  item: number
+  item_name: string
+  item_rarity: string
+  item_type: string
+  item_description: string
+  item_is_magical: boolean
+  item_value: number
+  quantity: number
+  notes: string
 }
 
 export interface Notification {
@@ -118,6 +161,11 @@ export interface CharacterSpell {
   spell_description: string
   spell_school: string
   spell_mana_cost: number
+  spell_damage: string
+  spell_range_distance: string
+  spell_casting_time: string
+  spell_duration: string
+  spell_extra: Record<string, unknown>
   notes: string
   acquired_at: string
 }
@@ -131,6 +179,9 @@ export interface CharacterItem {
   item_type: string
   item_description: string
   item_is_magical: boolean
+  item_value: number
+  item_weight: number
+  item_properties: Record<string, unknown>
   quantity: number
   is_equipped: boolean
   notes: string
@@ -154,6 +205,25 @@ export interface CharacterSkill {
   skill_name: string
   skill_description: string
   skill_category: string
+  notes: string
+  acquired_at: string
+}
+
+export interface PassiveSkill {
+  id: number
+  campaign: number
+  name: string
+  description: string
+  extra: Record<string, unknown>
+  created_at: string
+}
+
+export interface CharacterPassiveSkill {
+  id: number
+  character: number
+  passive_skill: number
+  passive_skill_name: string
+  passive_skill_description: string
   notes: string
   acquired_at: string
 }

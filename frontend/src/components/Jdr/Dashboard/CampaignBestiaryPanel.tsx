@@ -5,6 +5,8 @@ import type { Monster, Stat } from './types'
 interface Props {
   campaignId: number
   isMJ: boolean
+  combatActive?: boolean
+  onAddToCombat?: (monster: Monster) => void
 }
 
 const EMPTY_FORM = {
@@ -15,7 +17,7 @@ const EMPTY_FORM = {
 
 const INPUT_CLS = 'rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary'
 
-export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
+export default function CampaignBestiaryPanel({ campaignId, isMJ, combatActive = false, onAddToCombat }: Props) {
   const [monsters, setMonsters] = React.useState<Monster[]>([])
   const [campaignStats, setCampaignStats] = React.useState<Stat[]>([])
   const [loading, setLoading] = React.useState(true)
@@ -31,6 +33,10 @@ export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
   const [editingId, setEditingId] = React.useState<number | null>(null)
   const [editForm, setEditForm] = React.useState(EMPTY_FORM)
   const [editStats, setEditStats] = React.useState<Record<string, number>>({})
+
+  // Search / filter
+  const [search, setSearch] = React.useState('')
+  const [filterType, setFilterType] = React.useState('')
 
   // Expanded detail
   const [expandedId, setExpandedId] = React.useState<number | null>(null)
@@ -105,6 +111,20 @@ export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
     }
   }
 
+  const monsterTypes = React.useMemo(() => {
+    const types = new Set<string>()
+    monsters.forEach((m) => { if (m.monster_type) types.add(m.monster_type) })
+    return Array.from(types).sort()
+  }, [monsters])
+
+  const filteredMonsters = React.useMemo(() => {
+    return monsters.filter((m) => {
+      const matchSearch = !search || m.name.toLowerCase().includes(search.toLowerCase())
+      const matchType = !filterType || m.monster_type === filterType
+      return matchSearch && matchType
+    })
+  }, [monsters, search, filterType])
+
   if (loading) return <p className="text-sm text-gray-500 dark:text-gray-400">Chargement…</p>
 
   const renderStatsInputs = (
@@ -167,9 +187,9 @@ export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <h2 className="text-lg font-semibold text-primary dark:text-primaryLight">
-          Bestiaire ({monsters.length})
+          Bestiaire ({filteredMonsters.length}{filteredMonsters.length !== monsters.length ? `/${monsters.length}` : ''})
         </h2>
         {isMJ && (
           <button onClick={() => { setShowForm(!showForm); setEditingId(null) }} className="btn btn-primary text-sm">
@@ -178,15 +198,42 @@ export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
         )}
       </div>
 
+      {/* Search + filter */}
+      {monsters.length > 0 && (
+        <div className="flex gap-2 flex-wrap">
+          <input
+            type="search"
+            placeholder="Rechercher…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 min-w-[160px] rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          {monsterTypes.length > 1 && (
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+            >
+              <option value="">Tous les types</option>
+              {monsterTypes.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          )}
+        </div>
+      )}
+
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {showForm && isMJ && !editingId && renderForm(form, (v) => setForm(v), formStats, setFormStats, handleCreate, 'Créer le monstre')}
 
-      {monsters.length === 0 ? (
-        <p className="text-sm text-gray-500 dark:text-gray-400">Aucun monstre dans cette campagne.</p>
+      {filteredMonsters.length === 0 ? (
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {monsters.length === 0 ? 'Aucun monstre dans cette campagne.' : 'Aucun monstre ne correspond à la recherche.'}
+        </p>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
-          {monsters.map((monster) => (
+          {filteredMonsters.map((monster) => (
             <div key={monster.id} className="card">
               {editingId === monster.id ? (
                 renderForm(editForm, (v) => setEditForm(v), editStats, setEditStats, handleEdit, 'Sauver')
@@ -214,9 +261,19 @@ export default function CampaignBestiaryPanel({ campaignId, isMJ }: Props) {
                       </div>
                     </div>
                     {isMJ && (
-                      <div className="flex gap-1 shrink-0">
-                        <button onClick={() => startEdit(monster)} className="text-xs text-primary dark:text-primaryLight hover:underline">Modifier</button>
-                        <button onClick={() => handleDelete(monster.id)} className="text-xs text-red-500 hover:underline">Supprimer</button>
+                      <div className="flex flex-col gap-1 shrink-0 items-end">
+                        {combatActive && onAddToCombat && (
+                          <button
+                            onClick={() => onAddToCombat(monster)}
+                            className="text-xs px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50 font-medium"
+                          >
+                            ⚔️ Ajouter au combat
+                          </button>
+                        )}
+                        <div className="flex gap-1">
+                          <button onClick={() => startEdit(monster)} className="text-xs text-primary dark:text-primaryLight hover:underline">Modifier</button>
+                          <button onClick={() => handleDelete(monster.id)} className="text-xs text-red-500 hover:underline">Supprimer</button>
+                        </div>
                       </div>
                     )}
                   </div>

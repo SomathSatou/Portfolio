@@ -1,0 +1,34 @@
+=== RÈGLES DU MONDE DE LUG — Nouvelles règles ===
+
+--- Magie & Compétences Magiques ---
+Si votre personnage dispose d'une compétence liée à la magie (affinité élémentaire, source divine,
+rituel, pacte ou sensibilité magique), il peut improviser des effets magiques en dépensant du mana,
+même sans sort formellement appris. Cette improvisation dépend de votre créativité, de la cohérence
+avec votre personnage et du bon vouloir du MJ.
+
+Apprendre de nouveaux sorts : Une improvisation réussie et répétée peut cristalliser en un sort stable.
+Le MJ peut ajuster l'effet, les coûts, ou ajouter une quête déclencheur.
+
+N'hésitez pas à décrire vos entraînements entre deux aventures, faire vivre votre relation à la magie :
+doutes, inspirations, échecs, éclairs de génie. En cas de doute, parlez-en au MJ.
+
+--- Le Pacte avec le Diable ---
+Déclencheur : avant un jet de dés, un joueur propose un Pacte.
+Effet immédiat : réussite critique automatique, sans jet.
+Contrepartie : le MJ obtient le droit de déclencher un échec critique automatique à n'importe quel
+moment futur (annoncé avant que le joueur lance les dés).
+Limite : un seul pacte en attente par joueur à la fois.
+
+--- Conseil du Cercle ---
+Fréquence : 1 fois par demi-journée en jeu.
+Effet : met l'aventure en pause narrative — tous les joueurs discutent librement (max 10 min réelles),
+aucun PNJ ni événement ne peut interrompre.
+Pas d'actions physiques ou magiques pendant le Conseil.
+Bonus : coordination accrue pour les prochaines actions du groupe.
+
+--- Accélération Tactique ---
+Type : Action de combat / Mouvement — 1 fois par tour.
+Coût : utilise l'action principale.
+Effet : déplacement normal + 2 cases supplémentaires.
+Restriction : pas d'attaque, sort ou interaction ce tour (sauf actions mineures).
+Narration : peut représenter une ruée, une esquive vive ou un élan de panique contrôlé.

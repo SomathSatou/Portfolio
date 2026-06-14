@@ -4,6 +4,8 @@ import { useAuth } from './useAuth'
 import JdrHomePage from './JdrHomePage'
 import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
+import ForgotPasswordPage from './ForgotPasswordPage'
+import ResetPasswordPage from './ResetPasswordPage'
 import JdrLayout from './JdrLayout'
 import { CampaignPage, CampaignsListPage, CharacterCreatePage, CharactersListPage, CharacterSheet, DashboardPage } from './Dashboard'
 import { GardenPage } from './Garden'
@@ -36,6 +38,8 @@ function JdrRouterInner({ hash }: { hash: string }) {
   if (hash === '#/jdr' || hash === '#/jdr/') return <JdrHomePage />
   if (hash === '#/jdr/login') return <LoginPage />
   if (hash === '#/jdr/register') return <RegisterPage />
+  if (hash === '#/jdr/forgot-password') return <ForgotPasswordPage />
+  if (hash.startsWith('#/jdr/reset-password')) return <ResetPasswordPage />
 
   // Protected routes
   const sessionMatch = hash.match(/^#\/jdr\/campaign\/(\d+)\/session$/)
