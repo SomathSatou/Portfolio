@@ -7,6 +7,8 @@ présents seulement si le profil correspondant existe.
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from .mail_sync import update_postfixadmin_password, ensure_mailbox_exists
+
 
 class RegisterSerializer(serializers.Serializer):
     """Inscription d'un nouvel utilisateur (commun JDR + IRL RPG).
@@ -39,11 +41,22 @@ class RegisterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         validated_data.pop('password_confirm')
-        return User.objects.create_user(
+        user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
+            is_active=False,  # Compte inactif jusqu'à vérification email
         )
+
+        # Synchronise avec PostfixAdmin
+        email = user.email
+        if email and '@' in email:
+            # Crée la mailbox si elle n'existe pas
+            ensure_mailbox_exists(email, name=user.username)
+            # Synchronise le mot de passe
+            update_postfixadmin_password(email, validated_data['password'])
+
+        return user
 
 
 class MeSerializer(serializers.ModelSerializer):
@@ -118,3 +131,15 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
                 {'new_password_confirm': 'Les mots de passe ne correspondent pas.'}
             )
         return data
+
+
+class EmailVerificationSerializer(serializers.Serializer):
+    """Vérification d'email via token."""
+
+    token = serializers.CharField(max_length=64)
+
+
+class ResendVerificationSerializer(serializers.Serializer):
+    """Demande de renvoi d'email de vérification."""
+
+    email = serializers.EmailField()
