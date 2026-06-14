@@ -12,17 +12,66 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_AUTOMIA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo "Trying a ssh-keyscan on ${{ vars.SSH_AUTOMIA_HOST }}"
-          ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts
+          echo "=== SSH key configured ==="
+          echo "Scanning host ${{ vars.SSH_AUTOMIA_HOST }}..."
+          ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts 2>&1 || {
+            echo "ERROR: Failed to scan SSH host ${{ vars.SSH_AUTOMIA_HOST }}"
+            exit 1
+          }
+          echo "=== SSH host added to known_hosts ==="
 
-      - name: Deploy 
+      - name: Backup database
         run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
-          set -e
-          mkdir -p /var/www/Backup
-          sudo mysqldump -u root portfolio > /var/www/Backup/$(date +%Y%m%d)_backup.sql
-          echo "Backup OK"
-          cd /var/www/Portfolio
-          sudo /var/www/Portfolio/deploy.sh
-          sudo mysqldump -u root portfolio < /var/www/Backup/$(date +%Y%m%d)_backup.sql 
+          echo "::group::Database Backup"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            BACKUP_DIR="/var/www/Backup"
+            BACKUP_FILE="${BACKUP_DIR}/$(date +%Y%m%d_%H%M%S)_backup.sql"
+            mkdir -p "${BACKUP_DIR}"
+            if ! sudo mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
+              echo "::error::Database backup failed"
+              exit 1
+            fi
+            echo "Backup saved: ${BACKUP_FILE}"
+            echo "BACKUP_FILE=${BACKUP_FILE}" >> /tmp/deploy_env.sh
           EOF
+          echo "::endgroup::"
+
+      - name: Deploy application
+        run: |
+          echo "::group::Deployment"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            DEPLOY_DIR="/var/www/Portfolio"
+            cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
+            if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
+              echo "::error::deploy.sh not found"
+              exit 1
+            fi
+            echo "Running deploy.sh..."
+            if ! sudo bash "${DEPLOY_DIR}/deploy.sh"; then
+              EXIT_CODE=$?
+              echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
+              exit ${EXIT_CODE}
+            fi
+            if ! sudo systemctl is-active --quiet portfolio; then
+              echo "::warning::Service 'portfolio' is not active after deployment"
+            fi
+          EOF
+          echo "::endgroup::"
+
+      - name: Verify deployment
+        if: always()
+        run: |
+          echo "::group::Post-Deploy Verification"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            echo "--- Service Status ---"
+            sudo systemctl status portfolio --no-pager -l || true
+            echo ""
+            echo "--- Recent Logs (portfolio) ---"
+            sudo journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
+            echo ""
+            echo "--- Deploy script log (if exists) ---"
+            if [ -f /var/www/Portfolio/deploy.log ]; then
+              tail -50 /var/www/Portfolio/deploy.log
+            fi
+          EOF
+          echo "::endgroup::"
