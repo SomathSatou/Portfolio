@@ -22,69 +22,56 @@ jobs:
 
       - name: Backup database
         run: |
-          echo "=== Starting database backup ==="
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
-            set -e
+          echo "::group::Database Backup"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             BACKUP_DIR="/var/www/Backup"
             BACKUP_FILE="${BACKUP_DIR}/$(date +%Y%m%d_%H%M%S)_backup.sql"
-
-            echo "[1/3] Creating backup directory..."
             mkdir -p "${BACKUP_DIR}"
-
-            echo "[2/3] Dumping database 'portfolio'..."
-            sudo mysqldump -u root portfolio > "${BACKUP_FILE}" || {
-              echo "ERROR: Database backup failed"
+            if ! sudo mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
+              echo "::error::Database backup failed"
               exit 1
-            }
-
-            echo "[3/3] Backup completed: ${BACKUP_FILE}"
+            fi
+            echo "Backup saved: ${BACKUP_FILE}"
             echo "BACKUP_FILE=${BACKUP_FILE}" >> /tmp/deploy_env.sh
           EOF
-          echo "=== Backup step completed ==="
+          echo "::endgroup::"
 
       - name: Deploy application
         run: |
-          echo "=== Starting deployment ==="
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
-            set -e
+          echo "::group::Deployment"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             DEPLOY_DIR="/var/www/Portfolio"
-
-            echo "[1/4] Changing to deploy directory: ${DEPLOY_DIR}"
-            cd "${DEPLOY_DIR}" || {
-              echo "ERROR: Cannot access ${DEPLOY_DIR}"
-              exit 1
-            }
-
-            echo "[2/4] Checking deploy.sh exists..."
+            cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
             if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
-              echo "ERROR: deploy.sh not found in ${DEPLOY_DIR}"
+              echo "::error::deploy.sh not found"
               exit 1
             fi
-
-            echo "[3/4] Running deploy.sh..."
-            sudo bash "${DEPLOY_DIR}/deploy.sh" 2>&1 || {
-              echo "ERROR: deploy.sh failed with exit code $?"
-              exit 1
-            }
-
-            echo "[4/4] Checking service status..."
-            sudo systemctl is-active --quiet portfolio && echo "Service 'portfolio' is active" || {
-              echo "WARNING: Service 'portfolio' is not active!"
-              sudo systemctl status portfolio || true
-            }
+            echo "Running deploy.sh..."
+            if ! sudo bash "${DEPLOY_DIR}/deploy.sh"; then
+              EXIT_CODE=$?
+              echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
+              exit ${EXIT_CODE}
+            fi
+            if ! sudo systemctl is-active --quiet portfolio; then
+              echo "::warning::Service 'portfolio' is not active after deployment"
+            fi
           EOF
-          echo "=== Deployment completed ==="
+          echo "::endgroup::"
 
       - name: Verify deployment
         if: always()
         run: |
-          echo "=== Verification step ==="
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} bash <<'EOF'
-            echo "Checking services status:"
-            sudo systemctl status portfolio --no-pager -l || echo "portfolio service status check failed"
-            sudo systemctl status nginx --no-pager -l || echo "nginx service status check failed"
+          echo "::group::Post-Deploy Verification"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            echo "--- Service Status ---"
+            sudo systemctl status portfolio --no-pager -l || true
             echo ""
-            echo "Recent logs:"
-            sudo journalctl -u portfolio --since "5 minutes ago" --no-pager -l || echo "Could not retrieve logs"
+            echo "--- Recent Logs (portfolio) ---"
+            sudo journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
+            echo ""
+            echo "--- Deploy script log (if exists) ---"
+            if [ -f /var/www/Portfolio/deploy.log ]; then
+              tail -50 /var/www/Portfolio/deploy.log
+            fi
           EOF
-          echo "=== Verification completed ==="
+          echo "::endgroup::"
