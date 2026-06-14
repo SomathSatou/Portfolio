@@ -46,6 +46,9 @@ npm run dev          # Dev server → http://localhost:5173
 npm run build        # Production build (tsc + vite build) → frontend/dist/
 npm run preview      # Preview production build
 npm run lint         # ESLint
+npm run test         # Vitest (run once)
+npm run test:watch   # Vitest (watch mode)
+npm run coverage     # Vitest + rapport coverage V8 (seuils : 90%)
 ```
 
 ### Backend
@@ -58,6 +61,16 @@ python -m venv .venv
 pip install django djangorestframework django-cors-headers
 python manage.py migrate
 python manage.py runserver 8000   # → http://localhost:8000
+```
+
+### Tests backend (depuis la racine du projet)
+
+```powershell
+# Lancer les tests Django
+.venv\Scripts\python.exe -m pytest backend/ --tb=short   # si pytest installé
+# ou avec django test runner + coverage
+.venv\Scripts\python.exe -m coverage run --source=backend/api backend/manage.py test api
+.venv\Scripts\python.exe -m coverage report --omit="backend/api/migrations/*,*/tests.py"
 ```
 
 ### Full stack (Windows)

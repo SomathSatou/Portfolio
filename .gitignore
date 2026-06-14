@@ -61,3 +61,13 @@ Calculs - Feuille 4.csv
 NEXTCLOUD_SETUP.md
 backend/db.sqlite3
 backend/db.sqlite3.back
+
+# === Coverage reports ===
+.coverage
+htmlcov/
+.pytest_cache/
+
+# === Python cache ===
+__pycache__/
+*.py[cod]
+*$py.class

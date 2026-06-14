@@ -12,7 +12,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_AUTOMIA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          echo "Trying a ssh-keyscan on {{ vars.SSH_AUTOMIA_HOST }}"
+          echo "Trying a ssh-keyscan on ${{ vars.SSH_AUTOMIA_HOST }}"
           ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy 
