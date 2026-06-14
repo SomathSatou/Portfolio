@@ -45,8 +45,9 @@ class RegisterSerializer(serializers.Serializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
+            is_active=False,  # Compte inactif jusqu'à vérification email
         )
-        
+
         # Synchronise avec PostfixAdmin
         email = user.email
         if email and '@' in email:
@@ -54,7 +55,7 @@ class RegisterSerializer(serializers.Serializer):
             ensure_mailbox_exists(email, name=user.username)
             # Synchronise le mot de passe
             update_postfixadmin_password(email, validated_data['password'])
-        
+
         return user
 
 
@@ -130,3 +131,15 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
                 {'new_password_confirm': 'Les mots de passe ne correspondent pas.'}
             )
         return data
+
+
+class EmailVerificationSerializer(serializers.Serializer):
+    """Vérification d'email via token."""
+
+    token = serializers.CharField(max_length=64)
+
+
+class ResendVerificationSerializer(serializers.Serializer):
+    """Demande de renvoi d'email de vérification."""
+
+    email = serializers.EmailField()
