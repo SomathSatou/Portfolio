@@ -252,7 +252,7 @@ function ProjectPage({ slug }: { slug: string }) {
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 animate-slideUp">
             <h1 className="text-2xl md:text-3xl font-bold text-primary">{project.title}</h1>
-            <div className="mt-4 text-gray-700 dark:text-gray-300 space-y-4">
+            <div className="mt-4 prose">
               {project.description}
             </div>
           </div>

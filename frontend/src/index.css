@@ -240,6 +240,47 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
+/* ── Prose (rich text dans les descriptions de projets) ─── */
+.prose {
+  @apply text-gray-800 dark:text-gray-200 leading-relaxed;
+}
+.prose p {
+  @apply mb-4;
+}
+.prose ul {
+  @apply list-disc pl-6 mb-4 space-y-1;
+}
+.prose ol {
+  @apply list-decimal pl-6 mb-4 space-y-1;
+}
+.prose li {
+  @apply mb-1;
+}
+.prose strong {
+  @apply font-semibold text-gray-900 dark:text-white;
+}
+.prose em {
+  @apply italic;
+}
+.prose h2 {
+  @apply text-xl font-bold text-primary dark:text-primaryLight mt-8 mb-3;
+}
+.prose h3 {
+  @apply text-lg font-semibold text-primary dark:text-primaryLight mt-6 mb-2;
+}
+.prose blockquote {
+  @apply border-l-4 border-primary pl-4 italic text-gray-600 dark:text-gray-400 my-4;
+}
+.prose a {
+  @apply text-primary dark:text-primaryLight underline hover:text-primaryLight dark:hover:text-accent3;
+}
+.prose figure {
+  @apply my-6;
+}
+.prose figure figcaption {
+  @apply text-sm text-gray-500 dark:text-gray-400 text-center mt-2 italic;
+}
+
 /* ── Skeleton loader ────────────────────────────────────── */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
