@@ -2,6 +2,14 @@
 
 Projet vitrine pour illustrer mes compétences et mon parcours.
 
+## Accès
+
+Portfolio : http://automia.org
+JDR : http://automia.org/jdr
+IRL RPG : http://automia.org/#/irlrpg
+API Django : http://automia.org/api/
+Admin Django : http://automia.org/admin/
+
 ## Aperçu
 - **Framework**: React + TypeScript via Vite
 - **Styles**: Tailwind CSS
