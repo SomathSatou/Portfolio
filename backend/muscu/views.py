@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView  # noqa: F401
 
 from accounts.serializers import MeSerializer as AccountsMeSerializer
+from accounts.views import PasswordResetConfirmView, PasswordResetRequestView  # noqa: F401
 
 from .models import (
     Badge, DashboardConfig, Exercise, ExerciseMuscle, Goal, Gym, Machine,
