@@ -96,3 +96,25 @@ class MeSerializer(serializers.ModelSerializer):
     def get_is_banned(self, obj) -> bool:
         profile = getattr(obj, 'muscu_profile', None)
         return profile.is_banned if profile else False
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    """Demande de réinitialisation de mot de passe par email."""
+
+    email = serializers.EmailField()
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    """Confirmation de réinitialisation avec token + nouveau mot de passe."""
+
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    new_password_confirm = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['new_password_confirm']:
+            raise serializers.ValidationError(
+                {'new_password_confirm': 'Les mots de passe ne correspondent pas.'}
+            )
+        return data
