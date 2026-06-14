@@ -4,13 +4,16 @@ import type { ChatMessage } from '../Dashboard/types'
 interface UseChatOptions {
   campaignId: string | number
   enabled?: boolean
+  onMessage?: (msg: Record<string, unknown>) => void
 }
 
 const MAX_RETRIES = 10
 const BASE_DELAY = 1000
 const MAX_DELAY = 30000
 
-export default function useChat({ campaignId, enabled = true }: UseChatOptions) {
+export default function useChat({ campaignId, enabled = true, onMessage }: UseChatOptions) {
+  const onMessageRef = useRef(onMessage)
+  onMessageRef.current = onMessage
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [connected, setConnected] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
@@ -43,11 +46,17 @@ export default function useChat({ campaignId, enabled = true }: UseChatOptions) 
 
     ws.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data) as ChatMessage
+        const data = JSON.parse(event.data) as Record<string, unknown>
+        // Route non-chat messages (combat, inventory) to onMessage callback
+        if (data.type && data.type !== 'chat_message') {
+          onMessageRef.current?.(data)
+          return
+        }
+        const chatMsg = data as unknown as ChatMessage
         setMessages((prev) => {
           // Deduplicate by id
-          if (prev.some((m) => m.id === data.id)) return prev
-          return [...prev, data]
+          if (prev.some((m) => m.id === chatMsg.id)) return prev
+          return [...prev, chatMsg]
         })
       } catch {
         // ignore malformed messages
