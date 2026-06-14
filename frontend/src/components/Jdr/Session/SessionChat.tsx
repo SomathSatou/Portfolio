@@ -14,6 +14,7 @@ interface Props {
 export default function SessionChat({ messages, connected, onSend, currentUserId, onReconnect, retryCount = 0 }: Props) {
   const [input, setInput] = React.useState('')
   const bottomRef = React.useRef<HTMLDivElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -25,6 +26,7 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
     if (!text) return
     onSend(text)
     setInput('')
+    inputRef.current?.focus()
   }
 
   return (
@@ -106,6 +108,7 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
       {/* Input */}
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
+          ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
