@@ -85,6 +85,10 @@ jobs:
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             DEPLOY_DIR="/var/www/Portfolio"
             cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
+
+            echo "Pulling latest changes..."
+            git pull || { echo "::error::git pull failed"; exit 1; }
+
             if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
               echo "::error::deploy.sh not found"
               exit 1
