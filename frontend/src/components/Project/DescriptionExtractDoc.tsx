@@ -1,34 +1,55 @@
-export const DescriptionExtractDoc = () => (
+﻿export const DescriptionExtractDoc = () => (
   <>
     <p>
-      De nos jours, l'extraction automatique d'informations contenues dans des documents
-      est un enjeu crucial pour de nombreux secteurs, notamment l'industrie, la santé,
-      les services financiers ou encore les administrations. J'ai eu l'opportunité
-      d'explorer cette thématique en profondeur durant{' '}
+      De nos jours, l&apos;extraction automatique d&apos;informations contenues dans des documents
+      est un enjeu crucial pour de nombreux secteurs, notamment l&apos;industrie, la sant&eacute;,
+      les services financiers ou encore les administrations. J&apos;ai explor&eacute; cette th&eacute;matique
+      en profondeur dans le cadre de{' '}
       <a
-        href="https://theses.hal.science/tel-05004226/document"
+        href="https://theses.hal.science/tel-05004226"
         target="_blank"
         rel="noreferrer"
       >
-        ma thèse
-      </a>, consacrée à la <strong>gestion électronique avancée de documents professionnels</strong>.
+        ma th&egrave;se de doctorat
+      </a>{' '}
+      intitul&eacute;e{' '}
+      <strong>&laquo;&nbsp;Gestion &eacute;lectronique avanc&eacute;e de documents professionnels&nbsp;&raquo;</strong>{' '}
+      (HAL&nbsp;: tel-05004226 &mdash; DOI&nbsp;:{' '}
+      <a
+        href="https://dx.doi.org/10.70675/29f3d988z23e0z4f24z9c76z0d23bd67bc1a"
+        target="_blank"
+        rel="noreferrer"
+      >
+        10.70675/29f3d988z23e0z4f24z9c76z0d23bd67bc1a
+      </a>
+      ), r&eacute;alis&eacute;e au sein du{' '}
+      <strong>LERIA</strong> (Laboratoire d&apos;&Eacute;tudes et de Recherche en Informatique d&apos;Angers),
+      en partenariat avec un acteur industriel du secteur de la gestion documentaire.
     </p>
 
     <p>
-      L’objectif de ce travail était de concevoir et d’implémenter une solution complète
-      et générique capable d’extraire automatiquement des informations clés à partir de
-      documents professionnels variés : factures, analyses de laboratoire, fiches
-      suiveuses, rapports structurés ou semi-structurés. L’un des défis majeurs résidait
-      dans la grande hétérogénéité de ces documents, tant sur le plan visuel que sur la
-      structuration des données.
+      L&apos;objectif central &eacute;tait de concevoir une solution g&eacute;n&eacute;rique capable d&apos;extraire
+      automatiquement des informations cl&eacute;s &agrave; partir de documents professionnels vari&eacute;s :
+      factures, analyses de laboratoire, fiches suiveuses, rapports structur&eacute;s ou
+      semi-structur&eacute;s. Le d&eacute;fi principal r&eacute;sidait dans la grande h&eacute;t&eacute;rog&eacute;n&eacute;it&eacute; de ces
+      documents, tant sur le plan visuel que sur celui de la structuration des donn&eacute;es.
     </p>
 
+    <h4>Approche : mod&eacute;lisation par graphes</h4>
     <p>
-      Pour répondre à ces enjeux, nous avons proposé une approche hybride combinant des
-      <strong> méthodes de reconnaissance de motifs dans des graphes</strong> avec des techniques de
-      <strong> vision artificielle</strong> appliquées aux documents. Cette stratégie nous a permis
-      d’identifier et de modéliser les relations entre zones, blocs ou éléments textuels
-      afin d’extraire plus efficacement des structures complexes telles que les tableaux.
+      La contribution centrale de cette th&egrave;se repose sur la{' '}
+      <strong>mod&eacute;lisation des documents professionnels sous forme de graphes</strong>.
+      Chaque document est repr&eacute;sent&eacute; comme un graphe dont les n&oelig;uds correspondent aux
+      blocs ou zones textuelles, et les ar&ecirc;tes aux relations spatiales et s&eacute;mantiques
+      entre eux.
+    </p>
+    <p>
+      La d&eacute;tection de tableaux est formalis&eacute;e comme un probl&egrave;me de{' '}
+      <strong>reconnaissance de sous-graphes isomorphes</strong> : identifier dans le graphe
+      du document les sous-structures correspondant &agrave; des motifs tabulaires. Cette approche
+      permet d&apos;automatiser la d&eacute;tection{' '}
+      <strong>sans pr&eacute;traitement complexe ni apprentissage co&ucirc;teux</strong>, ce qui la rend
+      robuste aux variations entre fournisseurs et types de documents.
     </p>
 
     <figure>
@@ -38,62 +59,48 @@ export const DescriptionExtractDoc = () => (
         className="w-full h-auto rounded-lg shadow-md"
         style={{ maxWidth: 800, margin: '0 auto' }}
       />
-      <figcaption>Processus Extract Transform Load (ETL)</figcaption>
+      <figcaption>Processus Extract&ndash;Transform&ndash;Load (ETL) appliqu&eacute; aux documents professionnels</figcaption>
     </figure>
 
+    <h4>Pipeline ETL documentaire</h4>
     <p>
-      L'extraction d’informations repose sur un schéma de traitement de type
-      <strong>Extract–Transform–Load (ETL)</strong>. Nous avons adapté ce paradigme aux contraintes
-      des documents numérisés ou issus de processus papier, en développant une chaîne de
-      traitement complète allant de la détection visuelle des structures à la
-      valorisation des contenus extraits.
+      L&apos;extraction d&apos;informations s&apos;appuie sur un paradigme{' '}
+      <strong>Extract&ndash;Transform&ndash;Load (ETL)</strong> adapt&eacute; aux documents num&eacute;ris&eacute;s :
     </p>
-
-    <p>
-      Nos travaux se sont particulièrement concentrés sur la phase de
-      <strong>Transform</strong>. À cette étape, nous avons conçu un moteur de règles
-      permettant d'étiqueter les informations détectées dans les documents, s’inscrivant
-      ainsi dans le domaine de la <strong>Reconnaissance d’Entités Nommées (NER)</strong>.
-      Ce moteur permettait de donner du sens aux éléments textuels extraits, de les
-      normaliser et de les structurer pour un traitement ultérieur.
-    </p>
-
-    <p>
-      Une part importante de notre recherche a porté sur l’extraction des
-      <strong>tableaux</strong>, qui constituent une forme extrêmement répandue de représentation
-      des données dans les documents professionnels. Leur détection et leur reconstruction
-      impliquent de combiner habilement des aspects visuels (lignes, contours, formes
-      géométriques) et textuels (cohérence sémantique, alignement logique, régularité).
-    </p>
-
-    <p>
-      Pour améliorer la fiabilité du processus, nous avons développé une approche
-      croisée mobilisant deux techniques complémentaires :
-    </p>
-
     <ul>
       <li>
-        une analyse visuelle basée sur des bibliothèques de vision artificielle pour
-        identifier des structures géométriques (lignes, blocs, zones candidates) ;
+        <strong>Extract :</strong> d&eacute;tection visuelle des structures g&eacute;om&eacute;triques (lignes,
+        blocs, zones candidates) par des m&eacute;thodes de vision artificielle.
       </li>
       <li>
-        une analyse linguistique exploité par des méthodes de <strong>Traitement Automatique
-        du Langage Naturel (TALN)</strong> afin de détecter des régularités sémantiques,
-        reconnaître les en-têtes, et reconstruire la cohérence logique des cellules.
+        <strong>Transform :</strong> &eacute;tiquetage automatique des &eacute;l&eacute;ments d&eacute;tect&eacute;s via un
+        moteur de r&egrave;gles relevant de la{' '}
+        <strong>Reconnaissance d&apos;Entit&eacute;s Nomm&eacute;es (NER)</strong> &mdash; normalisation,
+        mise en coh&eacute;rence s&eacute;mantique, reconstruction logique des cellules de tableaux.
+      </li>
+      <li>
+        <strong>Load :</strong> valorisation et structuration des contenus extraits pour
+        int&eacute;gration dans les syst&egrave;mes d&apos;information.
       </li>
     </ul>
 
+    <h4>R&eacute;sultats</h4>
     <p>
-      Le croisement de ces deux approches — visuelle et sémantique — a permis d'obtenir
-      des résultats robustes dans des contextes où les documents sont parfois dégradés,
-      numérisés, ou fortement variables d’un fournisseur à l’autre.
+      Les exp&eacute;rimentations montrent que la mod&eacute;lisation par graphes coupl&eacute;e &agrave; la
+      reconnaissance de sous-graphes isomorphes{' '}
+      <strong>am&eacute;liore significativement l&apos;extraction et l&apos;analyse des donn&eacute;es tabulaires</strong>,
+      y compris sur des documents r&eacute;els de qualit&eacute; variable. L&apos;approche se distingue par
+      sa capacit&eacute; &agrave; fonctionner <strong>sans apprentissage supervis&eacute; co&ucirc;teux</strong>, ouvrant
+      ainsi des perspectives concr&egrave;tes pour des d&eacute;ploiements industriels &agrave; grande &eacute;chelle.
     </p>
 
     <p>
       <strong>
-        Ces travaux ont été réalisés dans le cadre d’un projet de recherche collaboratif avec
-        l’équipe du LERIA de l’Université d’Angers et l’entreprise KS2, combinant recherche
-        académique et besoins industriels concrets.
+        Ces travaux, men&eacute;s en collaboration entre le LERIA et un partenaire industriel,
+        illustrent ma capacit&eacute; &agrave; conduire une recherche appliqu&eacute;e de bout en bout &mdash; de la
+        formalisation th&eacute;orique &agrave; l&apos;&eacute;valuation exp&eacute;rimentale sur donn&eacute;es r&eacute;elles &mdash; &agrave;
+        l&apos;intersection de la vision par ordinateur, du traitement de documents et de
+        l&apos;intelligence artificielle.
       </strong>
     </p>
   </>

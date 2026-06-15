@@ -25,29 +25,44 @@ else
 fi
 
 cd "$PROJECT_DIR"
-echo "[1/7] Git pull..."
+echo "[1/6] Git pull..."
 git pull
 
-echo "[2/7] Activating virtualenv..."
+echo "[2/6] Activating virtualenv..."
 source "$VENV/activate"
 
-echo "[3/7] Installing Python dependencies..."
+echo "[3/6] Installing Python dependencies..."
 pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels mysqlclient python-dotenv
 
 cd "$BACKEND_DIR"
-echo "[4/7] Running migrations..."
-python manage.py migrate --noinput
+echo "[4/6] Running migrations..."
 
-echo "[5/7] Collecting static files..."
+echo "  → Checking migration status..."
+python manage.py showmigrations --verbosity=2 || {
+    echo "::warning::showmigrations failed but continuing..."
+}
+
+echo "  → Checking migration consistency..."
+if ! python manage.py migrate --check --noinput 2>&1; then
+    echo "⚠ Migration check indicates potential issues."
+    echo "  Check output above for details."
+fi
+
+echo "  → Applying migrations..."
+if ! python manage.py migrate --noinput --verbosity=2; then
+    echo "::error::Migration failed!"
+    echo "  → Attempting to show migration state..."
+    python manage.py showmigrations || true
+    exit 1
+fi
+echo "  → Migrations completed successfully"
+
+echo "[5/6] Collecting static files..."
 python manage.py collectstatic --noinput
 
 cd "$FRONTEND_DIR"
-echo "[6/7] Building frontend..."
+echo "[6/6] Building frontend..."
 npm ci --silent
 npm run build
-
-echo "[7/7] Restarting services..."
-systemctl restart portfolio
-systemctl reload nginx
 
 echo "=== Déploiement terminé avec succès ==="

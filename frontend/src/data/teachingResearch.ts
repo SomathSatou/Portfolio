@@ -3,6 +3,10 @@ import type { Category, Project } from './projects'
 
 import { DescICTAI2024 } from '../components/Project/DescICTAI2024'
 import { DescOverview } from '../components/Project/DescOverview'
+import { DescComputerVision } from '../components/Project/DescComputerVision'
+import { DescGenAI } from '../components/Project/DescGenAI'
+import { DescProjetLSF } from '../components/Project/DescProjetLSF'
+import { DescProjetOCR } from '../components/Project/DescProjetOCR'
 
 function toSlug(label: string) {
   return label
@@ -39,7 +43,26 @@ export const teachingResearchProjects: Project[] = [
   P('Supabase', 'Formation'),
   P('OpenRouter', 'Formation'),
 
-  P('Computer Vision', 'Enseignement')
+  P('Computer Vision', 'Enseignement', {
+    tags: ['CNN', 'Transformers', 'OCR', 'ViT', 'PyTorch', 'OpenCV', '18h'],
+    description: DescComputerVision(),
+  }),
+  P('Generative AI', 'Enseignement', {
+    tags: ['LLM', 'GAN', 'Diffusion', 'Fine-tuning', 'LoRA', 'Hugging Face', '12h'],
+    description: DescGenAI(),
+  }),
+
+  // Projets encadrés (Projet Majeur IA)
+  P('Reconnaissance LSF', 'Enseignement', {
+    slug: 'reconnaissance-lsf',
+    tags: ['Computer Vision', 'LSF', 'MediaPipe', 'Temps réel', 'Médical', 'Projet encadré'],
+    description: DescProjetLSF(),
+  }),
+  P('OCR Écriture Manuscrite', 'Enseignement', {
+    slug: 'ocr-ecriture-manuscrite',
+    tags: ['OCR', 'TrOCR', 'Tesseract', 'Hugging Face', 'NLP', 'Projet encadré'],
+    description: DescProjetOCR(),
+  }),
 ]
 
 export const teachingResearchCategories: Category[] = [

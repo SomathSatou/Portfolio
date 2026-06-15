@@ -28,62 +28,43 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
-      <div className="w-full max-w-md">
-        <div className="card">
-          <h1 className="text-2xl font-bold text-primary dark:text-primaryLight text-center mb-2">
-            Mot de passe oublié
-          </h1>
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Saisissez votre email pour recevoir un lien de réinitialisation.
-          </p>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: '#0f172a' }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(14,165,233,0.02) 2px, rgba(14,165,233,0.02) 4px)' }} />
+
+      <div className="w-full max-w-md z-10">
+        <div className="card-neon">
+          <div className="text-center mb-6">
+            <h1 className="title-neon text-2xl mb-1">RÉCUPÉRATION</h1>
+            <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.15em', color: '#475569' }}>MOT DE PASSE OUBLIÉ</p>
+            <div className="mt-3 h-px" style={{ background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+          </div>
 
           {success ? (
-            <div className="rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 p-4 text-center">
-              <p className="text-green-700 dark:text-green-400 text-sm font-medium">
-                Si cet email est enregistré, un lien vous a été envoyé.
+            <div className="rounded p-4 text-center" style={{ background: 'rgba(132,204,22,0.08)', border: '1px solid rgba(132,204,22,0.3)' }}>
+              <p className="text-sm font-medium" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', letterSpacing: '0.06em', color: '#84cc16' }}>
+                LIEN ENVOYÉ — VÉRIFIEZ VOS SPAMS
               </p>
-              <p className="text-green-600 dark:text-green-500 text-xs mt-1">
-                Vérifiez vos spams si vous ne le recevez pas.
-              </p>
-              <a
-                href="#/irlrpg/login"
-                className="mt-4 inline-block text-sm font-medium text-primary dark:text-primaryLight hover:underline"
-              >
-                ← Retour à la connexion
+              <a href="#/irlrpg/login" className="mt-4 inline-block btn-neon text-xs">
+                ← RETOUR CONNEXION
               </a>
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="votre@email.com"
-                />
+                <label className="block mb-1 text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.08em', color: '#0ea5e9' }}>EMAIL</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-neon" placeholder="votre@email.com" />
               </div>
 
               {error && (
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm" style={{ color: '#f87171', fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', letterSpacing: '0.04em' }}>{error}</p>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary w-full justify-center"
-              >
-                {loading ? 'Envoi…' : 'Envoyer le lien'}
+              <button type="submit" disabled={loading} className="btn-neon w-full justify-center">
+                {loading ? 'ENVOI…' : 'ENVOYER LE LIEN'}
               </button>
 
-              <p className="text-center text-sm text-gray-500 dark:text-gray-500">
-                <a href="#/irlrpg/login" className="hover:underline">
-                  ← Retour à la connexion
-                </a>
+              <p className="text-center text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.06em' }}>
+                <a href="#/irlrpg/login" className="no-underline hover:underline" style={{ color: '#475569' }}>← RETOUR</a>
               </p>
             </form>
           )}

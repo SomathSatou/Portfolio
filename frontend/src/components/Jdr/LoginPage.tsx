@@ -27,68 +27,79 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
-      <div className="w-full max-w-md">
-        <div className="card">
-          <h1 className="text-2xl font-bold text-primary dark:text-primaryLight text-center mb-6">
-            Connexion JDR
+    <div className="min-h-screen flex items-center justify-center parchment-bg px-4 relative overflow-hidden">
+      <div className="absolute top-6 left-6 w-12 h-12 opacity-15" style={{ borderTop: '2px solid #c9a227', borderLeft: '2px solid #c9a227' }} />
+      <div className="absolute top-6 right-6 w-12 h-12 opacity-15" style={{ borderTop: '2px solid #c9a227', borderRight: '2px solid #c9a227' }} />
+      <div className="absolute bottom-6 left-6 w-12 h-12 opacity-15" style={{ borderBottom: '2px solid #c9a227', borderLeft: '2px solid #c9a227' }} />
+      <div className="absolute bottom-6 right-6 w-12 h-12 opacity-15" style={{ borderBottom: '2px solid #c9a227', borderRight: '2px solid #c9a227' }} />
+
+      <div className="w-full max-w-md z-10">
+        <div className="card-parchment">
+          <div className="divider-medieval mb-2"><span>✦</span></div>
+          <h1 className="title-medieval text-2xl text-center mb-1">
+            Connexion
           </h1>
+          <p className="text-center mb-6 text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+            Le Monde de Lug
+          </p>
 
           <form onSubmit={onSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email
+              <label className="block mb-1 text-sm font-medium" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
+                Adresse email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="input-parchment"
                 placeholder="votre@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block mb-1 text-sm font-medium" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                 Mot de passe
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="input-parchment"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              <p className="text-sm" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>{error}</p>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full justify-center"
+              className="btn-medieval w-full justify-center"
             >
-              {loading ? 'Connexion…' : 'Se connecter'}
+              {loading ? 'Vérification…' : 'Entrer dans le monde'}
             </button>
 
-            <p className="text-center text-sm">
-              <a href="#/jdr/forgot-password" className="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primaryLight hover:underline">
-                Mot de passe oublié ?
+            <p className="text-center text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>
+              <a href="#/jdr/forgot-password" className="no-underline hover:underline" style={{ color: '#a0845c' }}>
+                Parchemin de réinitialisation ?
               </a>
             </p>
           </form>
 
-          <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            Pas encore de compte ?{' '}
-            <a href="#/jdr/register" className="font-medium">
+          <div className="divider-medieval mt-4 mb-3"><span>~ ~</span></div>
+
+          <p className="text-center text-sm" style={{ fontFamily: "'IM Fell English', serif", color: '#7c5a30' }}>
+            Pas encore d'aventurier ?{' '}
+            <a href="#/jdr/register" className="font-medium no-underline hover:underline" style={{ color: '#92400e' }}>
               S'inscrire
             </a>
           </p>
 
-          <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-500">
-            <a href="#/">← Retour au portfolio</a>
+          <p className="mt-3 text-center text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+            <a href="#/" className="no-underline hover:underline" style={{ color: '#a0845c' }}>← Retour au portfolio</a>
           </p>
         </div>
       </div>

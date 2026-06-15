@@ -26,60 +26,48 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+    <div className="min-h-screen flex items-center justify-center parchment-bg px-4">
       <div className="w-full max-w-md">
-        <div className="card">
-          <h1 className="text-2xl font-bold text-primary dark:text-primaryLight text-center mb-2">
-            Mot de passe oublié
+        <div className="card-parchment">
+          <div className="divider-medieval mb-2"><span>✦</span></div>
+          <h1 className="title-medieval text-xl text-center mb-1">
+            Parchemin Perdu
           </h1>
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-center text-sm mb-6" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
             Saisissez votre email pour recevoir un lien de réinitialisation.
           </p>
 
           {success ? (
-            <div className="rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 p-4 text-center">
-              <p className="text-green-700 dark:text-green-400 text-sm font-medium">
-                Si cet email est enregistré, un lien vous a été envoyé.
+            <div className="rounded p-4 text-center" style={{ background: 'rgba(132,204,22,0.08)', border: '1px solid rgba(132,204,22,0.3)' }}>
+              <p className="text-sm font-medium" style={{ fontFamily: "'IM Fell English', serif", color: '#7c3a0e' }}>
+                Si cet email est enregistré, un parchemin vous a été envoyé.
               </p>
-              <p className="text-green-600 dark:text-green-500 text-xs mt-1">
+              <p className="text-xs mt-1" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
                 Vérifiez vos spams si vous ne le recevez pas.
               </p>
-              <a
-                href="#/jdr/login"
-                className="mt-4 inline-block text-sm font-medium text-primary dark:text-primaryLight hover:underline"
-              >
+              <a href="#/jdr/login" className="mt-4 inline-block btn-medieval-outline text-sm">
                 ← Retour à la connexion
               </a>
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Email
+                <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
+                  Adresse email
                 </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="votre@email.com"
-                />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-parchment" placeholder="votre@email.com" />
               </div>
 
               {error && (
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>{error}</p>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary w-full justify-center"
-              >
-                {loading ? 'Envoi…' : 'Envoyer le lien'}
+              <button type="submit" disabled={loading} className="btn-medieval w-full justify-center">
+                {loading ? 'Envoi du parchemin…' : 'Envoyer le lien'}
               </button>
 
-              <p className="text-center text-sm text-gray-500 dark:text-gray-500">
-                <a href="#/jdr/login" className="hover:underline">
+              <p className="text-center text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+                <a href="#/jdr/login" className="no-underline hover:underline" style={{ color: '#a0845c' }}>
                   ← Retour à la connexion
                 </a>
               </p>

@@ -20,6 +20,25 @@ jobs:
           }
           echo "=== SSH host added to known_hosts ==="
 
+      - name: Pre-deploy checks
+        run: |
+          echo "::group::Pre-deploy Migration Check"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            DEPLOY_DIR="/var/www/Portfolio"
+            cd "${DEPLOY_DIR}/backend" || exit 1
+            source "${DEPLOY_DIR}/backend/.venv/bin/activate"
+            echo "--- Django Migration Status ---"
+            python manage.py showmigrations 2>&1 || true
+            echo ""
+            echo "--- Checking for pending migrations ---"
+            if python manage.py migrate --check --noinput 2>&1; then
+              echo "✓ All migrations are up to date"
+            else
+              echo "⚠ Pending migrations detected - will be applied during deployment"
+            fi
+          EOF
+          echo "::endgroup::"
+
       - name: Backup database
         run: |
           echo "::group::Database Backup"
@@ -27,7 +46,7 @@ jobs:
             BACKUP_DIR="/var/www/Backup"
             BACKUP_FILE="${BACKUP_DIR}/$(date +%Y%m%d_%H%M%S)_backup.sql"
             mkdir -p "${BACKUP_DIR}"
-            if ! sudo mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
+            if ! mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
               echo "::error::Database backup failed"
               exit 1
             fi
@@ -47,12 +66,12 @@ jobs:
               exit 1
             fi
             echo "Running deploy.sh..."
-            if ! sudo bash "${DEPLOY_DIR}/deploy.sh"; then
+            if ! bash "${DEPLOY_DIR}/deploy.sh"; then
               EXIT_CODE=$?
               echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
               exit ${EXIT_CODE}
             fi
-            if ! sudo systemctl is-active --quiet portfolio; then
+            if ! systemctl is-active --quiet portfolio; then
               echo "::warning::Service 'portfolio' is not active after deployment"
             fi
           EOF
@@ -64,10 +83,10 @@ jobs:
           echo "::group::Post-Deploy Verification"
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             echo "--- Service Status ---"
-            sudo systemctl status portfolio --no-pager -l || true
+            systemctl status portfolio --no-pager -l || true
             echo ""
             echo "--- Recent Logs (portfolio) ---"
-            sudo journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
+            journalctl -u portfolio --since "5 minutes ago" --no-pager -l || true
             echo ""
             echo "--- Deploy script log (if exists) ---"
             if [ -f /var/www/Portfolio/deploy.log ]; then
