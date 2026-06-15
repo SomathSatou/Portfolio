@@ -5,11 +5,10 @@ PROJECT_DIR="/var/www/Portfolio"
 BACKEND_DIR="$PROJECT_DIR/backend"
 FRONTEND_DIR="$PROJECT_DIR/frontend"
 VENV="$BACKEND_DIR/.venv/bin"
-LOG="/var/log/portfolio-deploy.log"
 DEPLOY_LOG="$PROJECT_DIR/deploy.log"
 ENV_FILE="/etc/portfolio.env"
 
-exec > >(tee -a "$LOG" "$DEPLOY_LOG") 2>&1
+exec > >(tee -a "$DEPLOY_LOG") 2>&1
 
 echo "=== Déploiement $(date) ==="
 echo "Working directory: $(pwd)"
