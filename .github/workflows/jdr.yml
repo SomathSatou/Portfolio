@@ -86,6 +86,9 @@ jobs:
             DEPLOY_DIR="/var/www/Portfolio"
             cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
 
+            echo "Configuring git safe directory..."
+            git config --global --add safe.directory "${DEPLOY_DIR}"
+
             echo "Pulling latest changes..."
             git pull || { echo "::error::git pull failed"; exit 1; }
 
