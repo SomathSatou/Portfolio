@@ -43,14 +43,38 @@ jobs:
         run: |
           echo "::group::Database Backup"
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            # Load environment variables for DB credentials
+            ENV_FILE="/etc/portfolio.env"
+            if [ -f "$ENV_FILE" ]; then
+              set -a
+              source "$ENV_FILE"
+              set +a
+            fi
+
             BACKUP_DIR="/var/www/Backup"
             BACKUP_FILE="${BACKUP_DIR}/$(date +%Y%m%d_%H%M%S)_backup.sql"
             mkdir -p "${BACKUP_DIR}"
-            if ! mysqldump -u root portfolio > "${BACKUP_FILE}" 2>&1; then
-              echo "::error::Database backup failed"
-              exit 1
+
+            # Use DB credentials from env, fallback to root with .my.cnf if configured
+            DB_USER="${DB_USER:-root}"
+            DB_NAME="${DB_NAME:-portfolio}"
+
+            echo "Backing up database ${DB_NAME} as ${DB_USER}..."
+            if [ -n "$DB_PASSWORD" ]; then
+              if ! mysqldump -u "${DB_USER}" -p"${DB_PASSWORD}" "${DB_NAME}" > "${BACKUP_FILE}" 2>&1; then
+                echo "::error::Database backup failed (with password)"
+                exit 1
+              fi
+            else
+              # Try without password (unix socket auth or .my.cnf)
+              if ! mysqldump -u "${DB_USER}" "${DB_NAME}" > "${BACKUP_FILE}" 2>&1; then
+                echo "::error::Database backup failed (no password)"
+                exit 1
+              fi
             fi
-            echo "Backup saved: ${BACKUP_FILE}"
+
+            echo "✓ Backup saved: ${BACKUP_FILE}"
+            ls -lh "${BACKUP_FILE}"
             echo "BACKUP_FILE=${BACKUP_FILE}" >> /tmp/deploy_env.sh
           EOF
           echo "::endgroup::"
