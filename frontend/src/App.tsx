@@ -11,11 +11,14 @@ function SectionCV() {
   return (
     <section id="cv">
       <div className="section flex flex-col items-center text-center gap-6 animate-fadeIn">
-        <img
-          src="/assets/avatar.jpg"
-          alt="Avatar"
-          className="w-40 h-40 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-primaryLight/60 shadow-lg"
-        />
+        <div className="relative inline-block">
+          <div className="absolute -inset-1 rounded-full opacity-40" style={{ background: 'conic-gradient(from 0deg, var(--color-primary), var(--color-primaryLight), var(--color-accent3), var(--color-primary))' }} />
+          <img
+            src="/assets/avatar.jpg"
+            alt="Avatar"
+            className="relative w-40 h-40 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-white/80 dark:ring-gray-900/80 shadow-xl"
+          />
+        </div>
         <div className="max-w-3xl animate-slideUp">
           <h1 className="text-3xl md:text-4xl font-bold text-primary">Développeur logiciel et web</h1>
           <p className="mt-4 text-base leading-relaxed text-justify">
@@ -56,9 +59,12 @@ function SectionProjects() {
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {projectCategories.map((cat) => (
-            <div key={cat.name} className="card-glass animate-slideUp">
-              <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
-              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
+            <div key={cat.name} className="card-glass animate-slideUp group">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 rounded-full" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent3))' }} />
+                <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
+              </div>
+              <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1">
                 {cat.projectSlugs.map((slug) => {
                   const p = projectBySlug[slug]
                   /* istanbul ignore next */
@@ -94,7 +100,7 @@ function SectionTeachingResearch() {
 
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {teachingResearchCategories.map((cat) => (
-            <div key={cat.name} className="card-glass animate-slideUp">
+            <div key={cat.name} className="card-glass animate-slideUp group">
               <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
               <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
                 {cat.projectSlugs.map((slug) => {

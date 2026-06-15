@@ -73,6 +73,15 @@ Compétences techniques et fonctionnelles illustrées par ce projet portfolio.
 - Domaine : `automia.org`
 - Frontend servi comme fichiers statiques depuis `frontend/dist/`
 
+### Administration système & SSH
+
+- **Connexion SSH** au VPS de production (`ssh automia` via config `~/.ssh/config`)
+- **Gestion des services** : `systemctl` (status, restart, reload), `journalctl -f` pour les logs temps réel
+- **Déploiement manuel** : exécution de `deploy.sh` sur le serveur
+- **Diagnostic réseau** : test des services mail (SMTP, IMAP), vérification des ports ouverts
+- **Configuration email** : test de connectivité SMTP (`telnet mail.automia.org 587`), vérification des logs mail
+- **Intégration authentification** : synchronisation des mots de passe Django avec PostfixAdmin/Dovecot via hash SHA512-CRYPT, partage de session SSO entre applications
+
 ## Intégration & Communication Front/Back
 
 - Proxy Vite (`/api` → `http://127.0.0.1:8000`) pour le développement

@@ -10,11 +10,11 @@ interface DashboardCardProps {
 
 export default function DashboardCard({ title, icon, children, href, action }: DashboardCardProps) {
   const content = (
-    <div className="card-glass flex flex-col gap-3 h-full flex-1 animate-slideUp">
+    <div className="card-parchment flex flex-col gap-3 h-full flex-1 animate-slideUp">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-primary dark:text-primaryLight">{icon}</span>
-          <h3 className="font-semibold text-lg text-primary dark:text-primaryLight">{title}</h3>
+          <span style={{ color: '#c9a227' }}>{icon}</span>
+          <h3 className="title-medieval text-base">{title}</h3>
         </div>
         {action}
       </div>

@@ -38,58 +38,60 @@ export default function DashboardPage() {
     }).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
+  if (loading) return <p className="text-sm" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem', letterSpacing: '0.06em', color: '#475569' }}>CHARGEMENT…</p>
 
   const rankColor = stats ? (RANK_COLORS[stats.rank.tier] || '#cd7f32') : '#cd7f32'
   const rankLabel = stats ? stats.rank.tier.charAt(0).toUpperCase() + stats.rank.tier.slice(1) : 'Bronze'
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-primary dark:text-primaryLight">
-        Bienvenue, {user?.username}
-      </h1>
+      {/* Welcome header */}
+      <div>
+        <h1 className="title-neon text-2xl">BIENVENUE, {user?.username?.toUpperCase()}</h1>
+        <p className="mt-1 text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.1em', color: '#475569' }}>TABLEAU DE BORD</p>
+      </div>
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Rank */}
-        <div className="card flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold" style={{ backgroundColor: rankColor + '22', color: rankColor }}>
+        <div className="card-neon flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold" style={{ backgroundColor: rankColor + '22', color: rankColor, fontFamily: 'Orbitron, sans-serif', boxShadow: `0 0 12px ${rankColor}55` }}>
             {stats?.rank.position ? `#${stats.rank.position}` : '—'}
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Rang global</p>
-            <p className="font-semibold" style={{ color: rankColor }}>{rankLabel}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Niv. {stats?.rank.level ?? 1} — {stats?.rank.xp ?? 0} XP</p>
+            <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', letterSpacing: '0.1em', color: '#475569' }}>RANG GLOBAL</p>
+            <p className="font-bold" style={{ fontFamily: 'Orbitron, sans-serif', color: rankColor, textShadow: `0 0 8px ${rankColor}88` }}>{rankLabel.toUpperCase()}</p>
+            <p className="text-xs mt-1" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', color: '#475569' }}>NIV.{stats?.rank.level ?? 1} — {stats?.rank.xp ?? 0} XP</p>
           </div>
         </div>
 
         {/* Favorite gym */}
-        <div className="card flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-accent2/20 flex items-center justify-center text-xl">
+        <div className="card-neon flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl" style={{ background: 'rgba(14,165,233,0.1)', border: '1px solid rgba(14,165,233,0.3)' }}>
             🏋️
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Salle favorite</p>
-            <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm">
-              {stats?.favorite_gym || 'Aucune'}
+            <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', letterSpacing: '0.1em', color: '#475569' }}>SALLE FAVORITE</p>
+            <p className="font-semibold text-sm mt-0.5" style={{ color: '#e2e8f0', fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem' }}>
+              {stats?.favorite_gym || 'AUCUNE'}
             </p>
           </div>
         </div>
 
         {/* Top muscle */}
-        <div className="card flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-accent1/20 flex items-center justify-center text-xl">
+        <div className="card-neon-lime flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl" style={{ background: 'rgba(132,204,22,0.1)', border: '1px solid rgba(132,204,22,0.3)' }}>
             💪
           </div>
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Muscle top</p>
+            <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', letterSpacing: '0.1em', color: '#475569' }}>MUSCLE TOP</p>
             {stats?.top_muscle ? (
               <>
-                <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm">{stats.top_muscle.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Niv. {stats.top_muscle.level}</p>
+                <p className="font-bold text-sm mt-0.5" style={{ color: '#84cc16', fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem' }}>{stats.top_muscle.name.toUpperCase()}</p>
+                <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', color: '#475569' }}>NIV.{stats.top_muscle.level}</p>
               </>
             ) : (
-              <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm">—</p>
+              <p className="font-bold text-sm mt-0.5" style={{ color: '#475569', fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem' }}>—</p>
             )}
           </div>
         </div>
@@ -97,45 +99,45 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <div className="flex flex-wrap gap-3">
-        <a href="#/irlrpg/workout" className="btn btn-primary">Nouvelle séance</a>
-        <a href="#/irlrpg/goals" className="btn btn-outline">Mes objectifs</a>
-        <a href="#/irlrpg/leaderboard" className="btn btn-outline">Classement</a>
-        <a href="#/irlrpg/profile" className="btn btn-outline">Mon profil</a>
+        <a href="#/irlrpg/workout" className="btn-neon-lime">NOUVELLE SÉANCE</a>
+        <a href="#/irlrpg/goals" className="btn-neon">OBJECTIFS</a>
+        <a href="#/irlrpg/leaderboard" className="btn-neon">CLASSEMENT</a>
+        <a href="#/irlrpg/profile" className="btn-neon">PROFIL</a>
       </div>
 
       {/* Recent workouts */}
       {recent.length > 0 && (
-        <div className="card">
-          <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Dernières séances</h2>
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="card-neon">
+          <h2 className="font-bold mb-3" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.8rem', letterSpacing: '0.08em', color: '#0ea5e9' }}>DERNIÈRES SÉANCES</h2>
+          <div style={{ borderTop: '1px solid rgba(14,165,233,0.15)' }}>
             {recent.map((w) => {
               const sets = w.sets ?? []
               const volume = sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
               return (
-                <div key={w.id} className="flex items-center justify-between py-2">
+                <div key={w.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(14,165,233,0.1)' }}>
                   <div>
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                      {new Date(w.started_at).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                    <p className="text-sm font-medium" style={{ color: '#e2e8f0', fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', letterSpacing: '0.04em' }}>
+                      {new Date(w.started_at).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }).toUpperCase()}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {w.gym_name || 'Pas de salle'} — {(w.sets ?? []).length} série{(w.sets ?? []).length > 1 ? 's' : ''}
+                    <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.6rem', color: '#475569' }}>
+                      {w.gym_name || 'SANS SALLE'} — {(w.sets ?? []).length} SÉRIE{(w.sets ?? []).length > 1 ? 'S' : ''}
                     </p>
                   </div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">{volume.toFixed(0)} kg</span>
+                  <span className="text-sm" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', color: '#84cc16' }}>{volume.toFixed(0)} KG</span>
                 </div>
               )
             })}
           </div>
-          <a href="#/irlrpg/history" className="mt-3 inline-block text-sm text-primary dark:text-primaryLight hover:underline">
-            Voir tout l'historique →
+          <a href="#/irlrpg/history" className="mt-3 inline-block text-xs no-underline hover:underline" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.06em', color: '#0ea5e9' }}>
+            VOIR TOUT L'HISTORIQUE →
           </a>
         </div>
       )}
 
       {recent.length === 0 && (
-        <div className="card text-center py-8">
-          <p className="text-gray-500 dark:text-gray-400">Pas encore de séances. Commencez votre première !</p>
-          <a href="#/irlrpg/workout" className="btn btn-accent mt-4">Démarrer une séance</a>
+        <div className="card-neon text-center py-8">
+          <p className="text-sm mb-4" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem', letterSpacing: '0.06em', color: '#475569' }}>AUCUNE SÉANCE. INITIALISEZ VOTRE PREMIÈRE MISSION.</p>
+          <a href="#/irlrpg/workout" className="btn-neon-lime">▶ DÉMARRER</a>
         </div>
       )}
     </div>

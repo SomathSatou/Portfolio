@@ -57,13 +57,13 @@ export default function ResetPasswordPage() {
 
   if (!isValidLink) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+      <div className="min-h-screen flex items-center justify-center parchment-bg px-4">
         <div className="w-full max-w-md">
-          <div className="card text-center">
-            <p className="text-red-600 dark:text-red-400 font-medium mb-4">
-              Lien invalide ou expiré.
+          <div className="card-parchment text-center">
+            <p className="font-medium mb-4" style={{ fontFamily: "'IM Fell English', serif", color: '#b91c1c' }}>
+              Ce parchemin est invalide ou a expiré.
             </p>
-            <a href="#/jdr/forgot-password" className="btn btn-primary">
+            <a href="#/jdr/forgot-password" className="btn-medieval">
               Demander un nouveau lien
             </a>
           </div>
@@ -73,67 +73,46 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+    <div className="min-h-screen flex items-center justify-center parchment-bg px-4">
       <div className="w-full max-w-md">
-        <div className="card">
-          <h1 className="text-2xl font-bold text-primary dark:text-primaryLight text-center mb-2">
-            Nouveau mot de passe
+        <div className="card-parchment">
+          <div className="divider-medieval mb-2"><span>✦</span></div>
+          <h1 className="title-medieval text-xl text-center mb-1">
+            Nouveau Mot de Passe
           </h1>
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-center text-sm mb-6" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
             Choisissez un nouveau mot de passe sécurisé.
           </p>
 
           {success ? (
-            <div className="rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 p-4 text-center">
-              <p className="text-green-700 dark:text-green-400 text-sm font-medium">
+            <div className="rounded p-4 text-center" style={{ background: 'rgba(132,204,22,0.08)', border: '1px solid rgba(132,204,22,0.3)' }}>
+              <p className="text-sm font-medium" style={{ fontFamily: "'IM Fell English', serif", color: '#7c3a0e' }}>
                 Mot de passe mis à jour avec succès !
               </p>
-              <a
-                href="#/jdr/login"
-                className="mt-4 inline-block btn btn-primary"
-              >
-                Se connecter
+              <a href="#/jdr/login" className="mt-4 inline-block btn-medieval">
+                Entrer dans le monde
               </a>
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                   Nouveau mot de passe
                 </label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="••••••••"
-                  minLength={8}
-                />
+                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                   Confirmer le mot de passe
                 </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="••••••••"
-                  minLength={8}
-                />
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
               </div>
 
               {error && (
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>{error}</p>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary w-full justify-center"
-              >
+              <button type="submit" disabled={loading} className="btn-medieval w-full justify-center">
                 {loading ? 'Mise à jour…' : 'Mettre à jour le mot de passe'}
               </button>
             </form>

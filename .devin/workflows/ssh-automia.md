@@ -44,3 +44,47 @@ source /var/www/Portfolio/backend/.venv/bin/activate
 cd /var/www/Portfolio/backend
 python manage.py <commande>
 ```
+
+## Test des services mail (Roundcube/Postfix)
+
+7. Tester la connectivité SMTP :
+```bash
+telnet mail.automia.org 587
+# ou
+telnet localhost 25
+```
+
+8. Vérifier les logs mail :
+```bash
+# Logs Postfix
+journalctl -u postfix -f
+tail -f /var/log/mail.log
+
+# Logs Dovecot (IMAP/POP3)
+journalctl -u dovecot -f
+```
+
+9. Vérifier la configuration DNS (DKIM, SPF, DMARC) :
+```bash
+dig TXT automia.org
+dig TXT _dmarc.automia.org
+dig TXT mail._domainkey.automia.org
+```
+
+10. Tester l'envoi d'email depuis Django (shell Python) :
+```bash
+source /var/www/Portfolio/backend/.venv/bin/activate
+cd /var/www/Portfolio/backend
+python manage.py shell
+```
+Puis dans le shell Python :
+```python
+from django.core.mail import send_mail
+send_mail(
+    'Test automia.org',
+    'Ceci est un test depuis Django.',
+    'noreply@automia.org',
+    ['ton-email@example.com'],
+    fail_silently=False,
+)
+```
