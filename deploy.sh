@@ -24,17 +24,17 @@ else
 fi
 
 cd "$PROJECT_DIR"
-echo "[1/5] Git status..."
+echo "[1/6] Git status..."
 git status
 
-echo "[2/5] Activating virtualenv..."
+echo "[2/6] Activating virtualenv..."
 source "$VENV/activate"
 
-echo "[3/5] Installing Python dependencies..."
+echo "[3/6] Installing Python dependencies..."
 pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels mysqlclient python-dotenv
 
 cd "$BACKEND_DIR"
-echo "[4/5] Running migrations..."
+echo "[4/6] Running migrations..."
 
 echo "  → Checking migration status..."
 python manage.py showmigrations --verbosity=2 || {
@@ -56,12 +56,19 @@ if ! python manage.py migrate --noinput --verbosity=2; then
 fi
 echo "  → Migrations completed successfully"
 
-echo "[5/5] Collecting static files..."
+echo "[4/6] Collecting static files..."
 python manage.py collectstatic --noinput
 
 cd "$FRONTEND_DIR"
-echo "Building frontend..."
+echo "[5/6] Building frontend..."
 npm ci --silent
 npm run build
+
+echo "[6/6] Restarting service..."
+systemctl restart portfolio || {
+    echo "::warning::systemctl restart portfolio failed - trying reload..."
+    systemctl reload portfolio || echo "::warning::reload also failed"
+}
+systemctl is-active --quiet portfolio && echo "✓ Service portfolio is running" || echo "::warning::Service portfolio is not active"
 
 echo "=== Déploiement terminé avec succès ==="
