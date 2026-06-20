@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/jdr
 jobs:
   automia-deploy-portfolio:
     runs-on: ubuntu-latest
@@ -92,10 +91,8 @@ jobs:
             echo "Configuring git safe directory..."
             git config --global --add safe.directory "${DEPLOY_DIR}"
 
-            echo "Pulling latest changes (branch: ${{ github.ref_name }})..."
-            git fetch origin || { echo "::error::git fetch failed"; exit 1; }
-            git checkout ${{ github.ref_name }} 2>/dev/null || true
-            git pull origin ${{ github.ref_name }} || { echo "::error::git pull failed"; exit 1; }
+            echo "Pulling latest changes..."
+            git pull origin main || { echo "::error::git pull failed"; exit 1; }
 
             if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
               echo "::error::deploy.sh not found"
