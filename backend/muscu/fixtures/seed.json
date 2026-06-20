@@ -124,6 +124,16 @@
 
   {"model": "muscu.exercisemuscle", "pk": 18, "fields": {"exercise": 11, "muscle": 16, "involvement": 1.0}},
 
+  {"model": "muscu.exercise", "pk": 13, "fields": {"name": "Course à pied", "description": "Course sur tapis ou en extérieur", "machine": null, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "metric_type": "distance", "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 14, "fields": {"name": "Vélo", "description": "Vélo d'appartement ou vélo route", "machine": null, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "metric_type": "distance", "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 15, "fields": {"name": "Rameur", "description": "Rameur cardio", "machine": null, "is_public": true, "created_by": 1, "difficulty_factor": 1.0, "metric_type": "duration", "created_at": "2025-01-01T00:00:00Z"}},
+  {"model": "muscu.exercise", "pk": 16, "fields": {"name": "Jumping jacks", "description": "Jumping jacks cardio", "machine": null, "is_public": true, "created_by": 1, "difficulty_factor": 0.8, "metric_type": "reps_only", "created_at": "2025-01-01T00:00:00Z"}},
+
+  {"model": "muscu.exercisemuscle", "pk": 19, "fields": {"exercise": 13, "muscle": 23, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 20, "fields": {"exercise": 14, "muscle": 23, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 21, "fields": {"exercise": 15, "muscle": 23, "involvement": 1.0}},
+  {"model": "muscu.exercisemuscle", "pk": 22, "fields": {"exercise": 16, "muscle": 23, "involvement": 1.0}},
+
   {"model": "muscu.badge", "pk": 1, "fields": {"name": "Première Séance", "description": "Terminer sa première séance", "icon": "🎉", "trigger_type": "first_workout", "trigger_value": 1, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
   {"model": "muscu.badge", "pk": 2, "fields": {"name": "Assidu", "description": "7 jours d'entraînement consécutifs", "icon": "🔥", "trigger_type": "streak", "trigger_value": 7, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},
   {"model": "muscu.badge", "pk": 3, "fields": {"name": "Machine", "description": "30 jours d'affilée", "icon": "⚙️", "trigger_type": "streak", "trigger_value": 30, "trigger_muscle": null, "created_at": "2025-01-01T00:00:00Z"}},

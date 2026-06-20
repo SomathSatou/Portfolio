@@ -45,8 +45,8 @@ class MachineAdmin(admin.ModelAdmin):
 
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ['name', 'is_public', 'created_by', 'difficulty_factor']
-    list_filter = ['is_public']
+    list_display = ['name', 'metric_type', 'is_public', 'created_by', 'difficulty_factor']
+    list_filter = ['is_public', 'metric_type']
     inlines = [ExerciseMuscleInline]
 
 

@@ -103,6 +103,13 @@ class Machine(models.Model):
 # ─── Exercises ───────────────────────────────────────────────────────────────
 
 class Exercise(models.Model):
+    METRIC_CHOICES = [
+        ('weight_reps', 'Poids × Répétitions'),
+        ('distance', 'Distance (mètres)'),
+        ('duration', 'Durée (minutes)'),
+        ('reps_only', 'Répétitions seules'),
+    ]
+
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default='')
     machine = models.ForeignKey(
@@ -113,6 +120,9 @@ class Exercise(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_exercises',
     )
     difficulty_factor = models.FloatField(default=1.0)
+    metric_type = models.CharField(
+        max_length=20, choices=METRIC_CHOICES, default='weight_reps',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -164,8 +174,9 @@ class Workout(models.Model):
 class WorkoutSet(models.Model):
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name='sets')
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    weight_kg = models.FloatField()
-    reps = models.IntegerField()
+    weight_kg = models.FloatField(default=0, blank=True, null=True)
+    reps = models.IntegerField(default=0, blank=True, null=True)
+    quantity_value = models.FloatField(default=0, blank=True, null=True)
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -175,7 +186,13 @@ class WorkoutSet(models.Model):
         verbose_name_plural = 'Séries'
 
     def __str__(self) -> str:
-        return f'{self.exercise.name}: {self.weight_kg}kg × {self.reps}'
+        if self.exercise.metric_type == 'weight_reps':
+            return f'{self.exercise.name}: {self.weight_kg}kg × {self.reps}'
+        if self.exercise.metric_type == 'distance':
+            return f'{self.exercise.name}: {self.quantity_value} m'
+        if self.exercise.metric_type == 'duration':
+            return f'{self.exercise.name}: {self.quantity_value} min'
+        return f'{self.exercise.name}: {self.quantity_value} reps'
 
 
 # ─── Gamification ────────────────────────────────────────────────────────────
@@ -276,6 +293,12 @@ class Goal(models.Model):
         ('max_weight', 'Poids max (kg)'),
         ('max_reps', 'Reps max'),
         ('total_volume', 'Volume total (kg)'),
+        ('max_distance', 'Distance max (m)'),
+        ('max_duration', 'Durée max (min)'),
+        ('max_reps_only', 'Reps max (sans poids)'),
+        ('total_distance', 'Distance totale (m)'),
+        ('total_duration', 'Durée totale (min)'),
+        ('total_reps_only', 'Reps total (sans poids)'),
     ]
     STATUS_CHOICES = [
         ('active', 'En cours'),

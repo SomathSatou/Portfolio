@@ -1,11 +1,15 @@
 import React from 'react'
 import api from '../api'
 
+type MetricType = 'weight_reps' | 'distance' | 'duration' | 'reps_only'
+
 interface WorkoutSet {
   id: number
   exercise_name: string
+  metric_type: MetricType
   weight_kg: number
   reps: number
+  quantity_value: number
 }
 
 interface Workout {
@@ -49,7 +53,10 @@ export default function HistoryPage() {
       <div className="space-y-3">
         {workouts.map((w) => {
           const sets = w.sets ?? []
-          const volume = sets.reduce((acc, s) => acc + s.weight_kg * s.reps, 0)
+          const volume = sets.reduce((acc, s) => {
+            if (s.metric_type === 'weight_reps') return acc + s.weight_kg * s.reps
+            return acc + s.quantity_value
+          }, 0)
           const isExpanded = expandedId === w.id
           return (
             <div key={w.id} className="card">
@@ -81,7 +88,10 @@ export default function HistoryPage() {
                         <span className="text-gray-700 dark:text-gray-300">{s.exercise_name}</span>
                       </span>
                       <span className="text-gray-500 dark:text-gray-400">
-                        {s.weight_kg}kg × {s.reps}
+                        {s.metric_type === 'weight_reps' && `${s.weight_kg}kg × ${s.reps}`}
+                        {s.metric_type === 'distance' && `${s.quantity_value} m`}
+                        {s.metric_type === 'duration' && `${s.quantity_value} min`}
+                        {s.metric_type === 'reps_only' && `${s.quantity_value} reps`}
                       </span>
                     </div>
                   ))}

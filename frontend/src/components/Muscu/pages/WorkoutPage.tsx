@@ -1,41 +1,8 @@
 import React from 'react'
 import api from '../api'
-
-interface Gym {
-  id: number
-  name: string
-  city: string
-}
-
-interface Exercise {
-  id: number
-  name: string
-  muscle_targets: { muscle_name: string; involvement: number }[]
-}
-
-interface MuscleGroup {
-  id: number
-  name: string
-  muscles: { id: number; name: string }[]
-}
-
-interface WorkoutSet {
-  id: number
-  exercise: number
-  exercise_name: string
-  weight_kg: number
-  reps: number
-  order: number
-}
-
-interface Workout {
-  id: number
-  gym: number | null
-  gym_name: string | null
-  started_at: string
-  status: string
-  sets: WorkoutSet[]
-}
+import ExerciseForm from '../ExerciseForm'
+import { METRIC_LABELS } from '../types'
+import type { Exercise, ExerciseInput, Gym, MuscleGroup, Workout } from '../types'
 
 export default function WorkoutPage() {
   const [workout, setWorkout] = React.useState<Workout | null>(null)
@@ -48,16 +15,19 @@ export default function WorkoutPage() {
   const [selExercise, setSelExercise] = React.useState<number>(0)
   const [weight, setWeight] = React.useState('')
   const [reps, setReps] = React.useState('')
+  const [quantity, setQuantity] = React.useState('')
   const [addingSet, setAddingSet] = React.useState(false)
+
+  const selectedExercise = React.useMemo(
+    () => exercises.find((ex) => ex.id === selExercise),
+    [exercises, selExercise],
+  )
 
   // Start form
   const [selGym, setSelGym] = React.useState<number>(0)
 
   // Create exercise form
   const [showNewExercise, setShowNewExercise] = React.useState(false)
-  const [newExName, setNewExName] = React.useState('')
-  const [newExDesc, setNewExDesc] = React.useState('')
-  const [newExMuscleIds, setNewExMuscleIds] = React.useState<number[]>([])
   const [muscleGroups, setMuscleGroups] = React.useState<MuscleGroup[]>([])
   const [creatingExercise, setCreatingExercise] = React.useState(false)
 
@@ -101,21 +71,37 @@ export default function WorkoutPage() {
     }
   }
 
+  function canAddSet() {
+    if (!workout || !selExercise) return false
+    const metric = selectedExercise?.metric_type ?? 'weight_reps'
+    if (metric === 'weight_reps') {
+      return !!weight && !!reps
+    }
+    return !!quantity
+  }
+
   async function addSet() {
-    if (!workout || !selExercise || !weight || !reps) return
+    if (!workout || !selExercise || !canAddSet()) return
     setAddingSet(true)
+    const metric = selectedExercise?.metric_type ?? 'weight_reps'
+    const payload: Record<string, number> = {
+      exercise: selExercise,
+      order: (workout.sets ?? []).length,
+    }
+    if (metric === 'weight_reps') {
+      payload.weight_kg = parseFloat(weight)
+      payload.reps = parseInt(reps, 10)
+    } else {
+      payload.quantity_value = parseFloat(quantity)
+    }
     try {
-      await api.post(`/workouts/${workout.id}/sets/`, {
-        exercise: selExercise,
-        weight_kg: parseFloat(weight),
-        reps: parseInt(reps, 10),
-        order: (workout.sets ?? []).length,
-      })
+      await api.post(`/workouts/${workout.id}/sets/`, payload)
       // Refresh workout
       const res = await api.get<Workout>(`/workouts/${workout.id}/`)
       setWorkout(res.data)
       setWeight('')
       setReps('')
+      setQuantity('')
     } catch {
       setError("Erreur lors de l'ajout de la série.")
     } finally {
@@ -144,6 +130,22 @@ export default function WorkoutPage() {
       setWorkout(null)
     } catch {
       setError('Erreur lors de la clôture.')
+    }
+  }
+
+  async function createExercise(data: ExerciseInput) {
+    setCreatingExercise(true)
+    setError('')
+    try {
+      const res = await api.post<Exercise>('/exercises/', data)
+      const created = res.data
+      setExercises((prev) => [...prev, created])
+      setSelExercise(created.id)
+      setShowNewExercise(false)
+    } catch {
+      setError("Erreur lors de la création de l'exercice.")
+    } finally {
+      setCreatingExercise(false)
     }
   }
 
@@ -250,120 +252,79 @@ export default function WorkoutPage() {
               <option value={-1}>➕ Créer un exercice…</option>
             </select>
           </div>
-          <div>
-            <input
-              type="number"
-              placeholder="Poids (kg)"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-              min={0}
-              step={0.5}
-            />
-          </div>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Reps"
-              value={reps}
-              onChange={(e) => setReps(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-              min={1}
-            />
-            <button
-              onClick={addSet}
-              disabled={addingSet || !weight || !reps || showNewExercise}
-              className="btn btn-primary text-sm px-3 py-2 flex-shrink-0"
-            >
-              +
-            </button>
-          </div>
+          {selectedExercise?.metric_type === 'weight_reps' && (
+            <>
+              <div>
+                <input
+                  type="number"
+                  placeholder="Poids (kg)"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+                  min={0}
+                  step={0.5}
+                />
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  placeholder="Reps"
+                  value={reps}
+                  onChange={(e) => setReps(e.target.value)}
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+                  min={1}
+                />
+              </div>
+            </>
+          )}
+          {selectedExercise && selectedExercise.metric_type !== 'weight_reps' && (
+            <div className="flex gap-2">
+              <input
+                type="number"
+                placeholder={
+                  selectedExercise.metric_type === 'distance'
+                    ? 'Distance (m)'
+                    : selectedExercise.metric_type === 'duration'
+                      ? 'Durée (min)'
+                      : 'Répétitions'
+                }
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+                min={0}
+                step={selectedExercise.metric_type === 'duration' ? 0.5 : 1}
+              />
+            </div>
+          )}
+          <button
+            onClick={addSet}
+            disabled={addingSet || !canAddSet() || showNewExercise}
+            className="btn btn-primary text-sm px-3 py-2 flex-shrink-0"
+          >
+            +
+          </button>
         </div>
+        {selectedExercise && (
+          <p className="text-xs text-primaryLight mt-2">
+            {selectedExercise.name} · {METRIC_LABELS[selectedExercise.metric_type]}
+          </p>
+        )}
 
         {/* Inline create exercise form */}
         {showNewExercise && (
           <div className="mt-4 p-4 rounded-md border border-primary/30 dark:border-primaryLight/30 bg-primary/5 dark:bg-primaryLight/5 space-y-3">
             <h3 className="text-sm font-semibold text-primary dark:text-primaryLight">Nouvel exercice</h3>
-            <input
-              type="text"
-              placeholder="Nom de l'exercice *"
-              value={newExName}
-              onChange={(e) => setNewExName(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+            <ExerciseForm
+              gyms={gyms}
+              muscleGroups={muscleGroups}
+              submitLabel="Créer"
+              loading={creatingExercise}
+              onSubmit={createExercise}
+              onCancel={() => {
+                setShowNewExercise(false)
+                if (exercises.length > 0) setSelExercise(exercises[0].id)
+              }}
             />
-            <input
-              type="text"
-              placeholder="Description (optionnel)"
-              value={newExDesc}
-              onChange={(e) => setNewExDesc(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-            />
-            <div>
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Muscles ciblés :</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
-                {muscleGroups.map((g) => (
-                  <div key={g.id}>
-                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-1">{g.name}</p>
-                    {g.muscles.map((m) => (
-                      <label key={m.id} className="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-300 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={newExMuscleIds.includes(m.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setNewExMuscleIds([...newExMuscleIds, m.id])
-                            } else {
-                              setNewExMuscleIds(newExMuscleIds.filter((id) => id !== m.id))
-                            }
-                          }}
-                          className="rounded border-gray-300 dark:border-gray-600"
-                        />
-                        {m.name}
-                      </label>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={async () => {
-                  if (!newExName.trim()) return
-                  setCreatingExercise(true)
-                  try {
-                    const res = await api.post<Exercise>('/exercises/', {
-                      name: newExName.trim(),
-                      description: newExDesc.trim(),
-                      muscle_ids: newExMuscleIds,
-                    })
-                    const created = res.data
-                    setExercises((prev) => [...prev, created])
-                    setSelExercise(created.id)
-                    setShowNewExercise(false)
-                    setNewExName("")
-                    setNewExDesc("")
-                    setNewExMuscleIds([])
-                  } catch {
-                    setError("Erreur lors de la création de l'exercice.")
-                  } finally {
-                    setCreatingExercise(false)
-                  }
-                }}
-                disabled={creatingExercise || !newExName.trim()}
-                className="btn btn-primary text-sm"
-              >
-                {creatingExercise ? 'Création…' : 'Créer'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewExercise(false)
-                  if (exercises.length > 0) setSelExercise(exercises[0].id)
-                }}
-                className="btn btn-outline text-sm"
-              >
-                Annuler
-              </button>
-            </div>
           </div>
         )}
       </div>
@@ -381,7 +342,10 @@ export default function WorkoutPage() {
                   <span className="text-gray-400 mr-2">#{i + 1}</span>
                   <span className="font-medium text-gray-800 dark:text-gray-200">{s.exercise_name}</span>
                   <span className="text-gray-500 dark:text-gray-400 ml-2">
-                    {s.weight_kg}kg × {s.reps}
+                    {s.metric_type === 'weight_reps' && `${s.weight_kg}kg × ${s.reps}`}
+                    {s.metric_type === 'distance' && `${s.quantity_value} m`}
+                    {s.metric_type === 'duration' && `${s.quantity_value} min`}
+                    {s.metric_type === 'reps_only' && `${s.quantity_value} reps`}
                   </span>
                 </div>
                 <button
@@ -395,7 +359,13 @@ export default function WorkoutPage() {
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400">
-            Volume total : {(workout.sets ?? []).reduce((acc, s) => acc + s.weight_kg * s.reps, 0).toFixed(0)} kg
+            Volume total : {' '}
+            {(workout.sets ?? [])
+              .reduce((acc, s) => {
+                if (s.metric_type === 'weight_reps') return acc + s.weight_kg * s.reps
+                return acc + s.quantity_value
+              }, 0)
+              .toFixed(0)}
           </div>
         </div>
       )}

@@ -78,7 +78,17 @@ class MeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'is_staff', 'role', 'can_access_muscu', 'avatar', 'is_banned']
-        read_only_fields = ['id', 'username', 'email']
+        read_only_fields = ['id', 'is_staff']
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exclude(pk=self.instance.pk).exists():
+            raise serializers.ValidationError("Ce nom d'utilisateur est déjà pris.")
+        return value
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exclude(pk=self.instance.pk).exists():
+            raise serializers.ValidationError('Cet email est déjà utilisé.')
+        return value
 
     def get_role(self, obj) -> str:
         profile = getattr(obj, 'jdr_profile', None)
