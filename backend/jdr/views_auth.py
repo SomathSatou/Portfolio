@@ -28,7 +28,7 @@ class JdrLoginView(_BaseLoginView):
         return response
 
 
-class JdrMeView(generics.RetrieveAPIView):
+class JdrMeView(generics.RetrieveUpdateAPIView):
     """Profil utilisateur JDR — garantit l'existence du UserProfile JDR."""
 
     permission_classes = [permissions.IsAuthenticated]

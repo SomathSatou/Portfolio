@@ -7,6 +7,7 @@ import RegisterPage from './RegisterPage'
 import ForgotPasswordPage from './ForgotPasswordPage'
 import ResetPasswordPage from './ResetPasswordPage'
 import JdrLayout from './JdrLayout'
+import JdrProfilePage from './JdrProfilePage'
 import { CampaignPage, CampaignsListPage, CharacterCreatePage, CharactersListPage, CharacterSheet, DashboardPage } from './Dashboard'
 import { GardenPage } from './Garden'
 import { MerchantPage } from './Merchant'
@@ -129,6 +130,14 @@ function JdrRouterInner({ hash }: { hash: string }) {
     return (
       <ProtectedRoute>
         <FilesPage />
+      </ProtectedRoute>
+    )
+  }
+
+  if (hash === '#/jdr/profile') {
+    return (
+      <ProtectedRoute>
+        <JdrProfilePage />
       </ProtectedRoute>
     )
   }

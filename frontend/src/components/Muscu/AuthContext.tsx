@@ -28,6 +28,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [fetchMe])
 
+  const updateProfile = React.useCallback(
+    async (data: Partial<Pick<MuscuUser, 'username' | 'email'>>) => {
+      const res = await api.patch<MuscuUser>('/auth/me/', data)
+      setState((s) => ({ ...s, user: res.data }))
+      return res.data
+    },
+    [],
+  )
+
   const login = React.useCallback(async (email: string, password: string) => {
     const res = await api.post<{ access: string; refresh: string }>('/auth/login/', {
       email,
@@ -57,8 +66,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [logout])
 
   const value = React.useMemo<AuthContextValue>(
-    () => ({ ...state, login, logout, refreshToken }),
-    [state, login, logout, refreshToken],
+    () => ({ ...state, login, logout, refreshToken, updateProfile }),
+    [state, login, logout, refreshToken, updateProfile],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

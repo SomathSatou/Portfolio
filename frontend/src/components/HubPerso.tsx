@@ -44,6 +44,15 @@ export default function HubPerso() {
 
       {/* App cards */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-10">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Applications</h2>
+          <a
+            href="#/perso/account"
+            className="text-sm text-primary dark:text-primaryLight hover:underline no-underline"
+          >
+            Mon compte →
+          </a>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {apps.map((app) => (
             <a

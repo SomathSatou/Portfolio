@@ -126,10 +126,11 @@ class LoginView(APIView):
         })
 
 
-class MeView(generics.RetrieveAPIView):
-    """Retourne le profil complet de l'utilisateur authentifié.
+class MeView(generics.RetrieveUpdateAPIView):
+    """Retourne et met à jour le profil de l'utilisateur authentifié.
 
     GET /api/auth/me/
+    PATCH /api/auth/me/  { username?, email? }
     Inclut : username, email, is_staff, role JDR, can_access_muscu, avatar, is_banned.
     """
 
