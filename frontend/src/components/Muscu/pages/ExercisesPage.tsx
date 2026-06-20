@@ -1,55 +1,16 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-
-interface MuscleTarget {
-  id: number
-  muscle: number
-  muscle_name: string
-  muscle_group: string
-  involvement: number
-}
-
-interface Exercise {
-  id: number
-  name: string
-  description: string
-  machine: number | null
-  machine_name: string | null
-  is_public: boolean
-  created_by: number
-  created_by_name: string
-  difficulty_factor: number
-  muscle_targets: MuscleTarget[]
-  created_at: string
-}
-
-interface MuscleGroup {
-  id: number
-  name: string
-  icon: string
-  muscles: { id: number; name: string }[]
-}
-
-interface Gym {
-  id: number
-  name: string
-  city: string
-}
-
-interface Machine {
-  id: number
-  name: string
-  gym: number
-  description: string
-}
+import ExerciseDrawer from '../ExerciseDrawer'
+import ExerciseForm from '../ExerciseForm'
+import { METRIC_LABELS } from '../types'
+import type { Exercise, ExerciseInput, Gym, MuscleGroup } from '../types'
 
 export default function ExercisesPage() {
   const { user } = useAuth()
   const [exercises, setExercises] = React.useState<Exercise[]>([])
   const [muscleGroups, setMuscleGroups] = React.useState<MuscleGroup[]>([])
   const [gyms, setGyms] = React.useState<Gym[]>([])
-  const [machines, setMachines] = React.useState<Machine[]>([])
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState('')
 
@@ -59,12 +20,11 @@ export default function ExercisesPage() {
 
   // Create form
   const [showCreate, setShowCreate] = React.useState(false)
-  const [newName, setNewName] = React.useState('')
-  const [newDesc, setNewDesc] = React.useState('')
-  const [newMachineId, setNewMachineId] = React.useState<number>(0)
-  const [newMuscleIds, setNewMuscleIds] = React.useState<number[]>([])
-  const [newGymId, setNewGymId] = React.useState<number>(0)
   const [creating, setCreating] = React.useState(false)
+
+  // Edit drawer
+  const [editingExercise, setEditingExercise] = React.useState<Exercise | null>(null)
+  const [updating, setUpdating] = React.useState(false)
 
   const fetchData = React.useCallback(async () => {
     try {
@@ -85,40 +45,32 @@ export default function ExercisesPage() {
 
   React.useEffect(() => { void fetchData() }, [fetchData])
 
-  // Load machines when gym changes
-  React.useEffect(() => {
-    if (newGymId) {
-      api.get<Machine[]>(`/gyms/${newGymId}/machines/`).then((r) => {
-        setMachines(Array.isArray(r.data) ? r.data : [])
-      }).catch(() => setMachines([]))
-    } else {
-      setMachines([])
-      setNewMachineId(0)
-    }
-  }, [newGymId])
-
-  async function createExercise() {
-    if (!newName.trim()) return
+  async function createExercise(data: ExerciseInput) {
     setCreating(true)
     setError('')
     try {
-      const res = await api.post<Exercise>('/exercises/', {
-        name: newName.trim(),
-        description: newDesc.trim(),
-        machine: newMachineId || null,
-        muscle_ids: newMuscleIds,
-      })
+      const res = await api.post<Exercise>('/exercises/', data)
       setExercises((prev) => [...prev, res.data])
       setShowCreate(false)
-      setNewName('')
-      setNewDesc('')
-      setNewMachineId(0)
-      setNewMuscleIds([])
-      setNewGymId(0)
     } catch {
       setError("Erreur lors de la création de l'exercice.")
     } finally {
       setCreating(false)
+    }
+  }
+
+  async function updateExercise(data: ExerciseInput) {
+    if (!editingExercise) return
+    setUpdating(true)
+    setError('')
+    try {
+      const res = await api.patch<Exercise>(`/exercises/${editingExercise.id}/`, data)
+      setExercises((prev) => prev.map((ex) => (ex.id === res.data.id ? res.data : ex)))
+      setEditingExercise(null)
+    } catch {
+      setError("Erreur lors de la mise à jour de l'exercice.")
+    } finally {
+      setUpdating(false)
     }
   }
 
@@ -132,7 +84,8 @@ export default function ExercisesPage() {
     }
   }
 
-  // Filtered exercises
+  const canEdit = (ex: Exercise) => ex.created_by === user?.id || user?.is_staff
+
   const filtered = exercises.filter((ex) => {
     if (filterSearch && !ex.name.toLowerCase().includes(filterSearch.toLowerCase())) return false
     if (filterGroup && !ex.muscle_targets.some((mt) => mt.muscle_group === filterGroup)) return false
@@ -159,96 +112,14 @@ export default function ExercisesPage() {
       {showCreate && (
         <div className="card space-y-4 border border-primary/20 dark:border-primaryLight/20">
           <h2 className="font-semibold text-primary dark:text-primaryLight">Créer un exercice</h2>
-          <input
-            type="text"
-            placeholder="Nom de l'exercice *"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+          <ExerciseForm
+            gyms={gyms}
+            muscleGroups={muscleGroups}
+            submitLabel="Créer"
+            loading={creating}
+            onSubmit={createExercise}
+            onCancel={() => setShowCreate(false)}
           />
-          <input
-            type="text"
-            placeholder="Description (optionnel)"
-            value={newDesc}
-            onChange={(e) => setNewDesc(e.target.value)}
-            className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-          />
-
-          {/* Machine selection via gym */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Salle (optionnel)</label>
-              <select
-                value={newGymId}
-                onChange={(e) => { setNewGymId(Number(e.target.value)); setNewMachineId(0) }}
-                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-              >
-                <option value={0}>— Aucune salle —</option>
-                {gyms.map((g) => (
-                  <option key={g.id} value={g.id}>{g.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Machine (optionnel)</label>
-              <select
-                value={newMachineId}
-                onChange={(e) => setNewMachineId(Number(e.target.value))}
-                disabled={!newGymId}
-                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 disabled:opacity-50"
-              >
-                <option value={0}>— Aucune machine —</option>
-                {machines.map((m) => (
-                  <option key={m.id} value={m.id}>{m.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Muscle targets */}
-          <div>
-            <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Muscles ciblés :</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1 max-h-60 overflow-y-auto">
-              {muscleGroups.map((g) => (
-                <div key={g.id}>
-                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-2">{g.icon} {g.name}</p>
-                  {g.muscles.map((m) => (
-                    <label key={m.id} className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-gray-300 cursor-pointer py-0.5">
-                      <input
-                        type="checkbox"
-                        checked={newMuscleIds.includes(m.id)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setNewMuscleIds((prev) => [...prev, m.id])
-                          } else {
-                            setNewMuscleIds((prev) => prev.filter((id) => id !== m.id))
-                          }
-                        }}
-                        className="rounded border-gray-300 dark:border-gray-600"
-                      />
-                      {m.name}
-                    </label>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={createExercise}
-              disabled={creating || !newName.trim()}
-              className="btn btn-primary text-sm"
-            >
-              {creating ? 'Création…' : 'Créer'}
-            </button>
-            <button
-              onClick={() => setShowCreate(false)}
-              className="btn btn-outline text-sm"
-            >
-              Annuler
-            </button>
-          </div>
         </div>
       )}
 
@@ -281,7 +152,19 @@ export default function ExercisesPage() {
           </p>
         )}
         {filtered.map((ex) => (
-          <div key={ex.id} className="card">
+          <div
+            key={ex.id}
+            className="card cursor-pointer"
+            onClick={() => { if (canEdit(ex)) setEditingExercise(ex) }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                if (canEdit(ex)) setEditingExercise(ex)
+              }
+            }}
+          >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -291,6 +174,9 @@ export default function ExercisesPage() {
                   )}
                   {!ex.is_public && (
                     <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Privé</span>
+                  )}
+                  {canEdit(ex) && (
+                    <span className="text-xs text-primaryLight">Cliquer pour modifier</span>
                   )}
                 </div>
                 {ex.description && (
@@ -312,12 +198,15 @@ export default function ExercisesPage() {
                   </div>
                 )}
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                  Par {ex.created_by_name} · Difficulté ×{ex.difficulty_factor}
+                  Par {ex.created_by_name} · Difficulté ×{ex.difficulty_factor} · {METRIC_LABELS[ex.metric_type]}
                 </p>
               </div>
               {(ex.created_by === user?.id || user?.is_staff) && !ex.is_public && (
                 <button
-                  onClick={() => deleteExercise(ex.id)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    deleteExercise(ex.id)
+                  }}
                   className="text-xs text-red-500 hover:text-red-700 flex-shrink-0"
                   title="Supprimer"
                 >
@@ -328,6 +217,15 @@ export default function ExercisesPage() {
           </div>
         ))}
       </div>
+
+      <ExerciseDrawer
+        exercise={editingExercise}
+        gyms={gyms}
+        muscleGroups={muscleGroups}
+        loading={updating}
+        onClose={() => setEditingExercise(null)}
+        onSubmit={updateExercise}
+      />
     </div>
   )
 }

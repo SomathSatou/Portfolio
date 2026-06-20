@@ -45,6 +45,18 @@ def rank_from_xp(xp: int) -> str:
 
 # ─── XP distribution ────────────────────────────────────────────────────────
 
+def _set_volume(wset: WorkoutSet) -> float:
+    """Compute an effective volume for XP calculation based on exercise metric."""
+    metric = wset.exercise.metric_type
+    if metric == 'distance':
+        return float(wset.quantity_value or 0)
+    if metric == 'duration':
+        return float(wset.quantity_value or 0) * 50
+    if metric == 'reps_only':
+        return float(wset.quantity_value or 0) * 5
+    return float(wset.weight_kg or 0) * float(wset.reps or 0)
+
+
 def distribute_xp_for_workout(workout: Workout) -> dict:
     """
     Distribue l'XP pour une séance fermée.
@@ -54,7 +66,7 @@ def distribute_xp_for_workout(workout: Workout) -> dict:
 
     for wset in workout.sets.select_related('exercise').all():
         exercise = wset.exercise
-        volume = wset.weight_kg * wset.reps
+        volume = _set_volume(wset)
         xp_brut = math.log2(volume + 1) * 10
 
         for em in exercise.muscle_targets.select_related('muscle').all():
@@ -104,16 +116,34 @@ def update_goals_for_workout(workout: Workout) -> list[int]:
             continue
 
         if goal.metric == 'max_weight':
-            max_w = max(s.weight_kg for s in sets_for_exercise)
+            max_w = max((s.weight_kg or 0) for s in sets_for_exercise)
             if max_w > goal.current_value:
                 goal.current_value = max_w
         elif goal.metric == 'max_reps':
-            max_r = max(s.reps for s in sets_for_exercise)
+            max_r = max((s.reps or 0) for s in sets_for_exercise)
             if max_r > goal.current_value:
                 goal.current_value = max_r
         elif goal.metric == 'total_volume':
-            vol = sum(s.weight_kg * s.reps for s in sets_for_exercise)
+            vol = sum((s.weight_kg or 0) * (s.reps or 0) for s in sets_for_exercise)
             goal.current_value += vol
+        elif goal.metric == 'max_distance':
+            max_d = max((s.quantity_value or 0) for s in sets_for_exercise)
+            if max_d > goal.current_value:
+                goal.current_value = max_d
+        elif goal.metric == 'max_duration':
+            max_t = max((s.quantity_value or 0) for s in sets_for_exercise)
+            if max_t > goal.current_value:
+                goal.current_value = max_t
+        elif goal.metric == 'max_reps_only':
+            max_ro = max((s.quantity_value or 0) for s in sets_for_exercise)
+            if max_ro > goal.current_value:
+                goal.current_value = max_ro
+        elif goal.metric == 'total_distance':
+            goal.current_value += sum((s.quantity_value or 0) for s in sets_for_exercise)
+        elif goal.metric == 'total_duration':
+            goal.current_value += sum((s.quantity_value or 0) for s in sets_for_exercise)
+        elif goal.metric == 'total_reps_only':
+            goal.current_value += sum((s.quantity_value or 0) for s in sets_for_exercise)
 
         if goal.current_value >= goal.target_value:
             goal.status = 'achieved'

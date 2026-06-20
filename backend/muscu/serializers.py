@@ -96,7 +96,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'description', 'machine', 'machine_name',
             'is_public', 'created_by', 'created_by_name',
-            'difficulty_factor', 'muscle_targets', 'created_at',
+            'difficulty_factor', 'metric_type', 'muscle_targets', 'created_at',
         ]
         read_only_fields = ['id', 'created_by', 'created_at', 'is_public']
 
@@ -108,7 +108,10 @@ class ExerciseCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exercise
-        fields = ['id', 'name', 'description', 'machine', 'difficulty_factor', 'muscle_ids']
+        fields = [
+            'id', 'name', 'description', 'machine', 'difficulty_factor',
+            'metric_type', 'muscle_ids',
+        ]
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -119,14 +122,43 @@ class ExerciseCreateSerializer(serializers.ModelSerializer):
         return exercise
 
 
+class ExerciseUpdateSerializer(serializers.ModelSerializer):
+    muscle_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False, default=[],
+    )
+
+    class Meta:
+        model = Exercise
+        fields = [
+            'id', 'name', 'description', 'machine', 'difficulty_factor',
+            'metric_type', 'muscle_ids',
+        ]
+        read_only_fields = ['id']
+
+    def update(self, instance, validated_data):
+        muscle_ids = validated_data.pop('muscle_ids', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        if muscle_ids is not None:
+            instance.muscle_targets.all().delete()
+            for mid in muscle_ids:
+                ExerciseMuscle.objects.create(exercise=instance, muscle_id=mid)
+        return instance
+
+
 # ─── Workouts ────────────────────────────────────────────────────────────────
 
 class WorkoutSetSerializer(serializers.ModelSerializer):
     exercise_name = serializers.CharField(source='exercise.name', read_only=True)
+    metric_type = serializers.CharField(source='exercise.metric_type', read_only=True)
 
     class Meta:
         model = WorkoutSet
-        fields = ['id', 'exercise', 'exercise_name', 'weight_kg', 'reps', 'order', 'created_at']
+        fields = [
+            'id', 'exercise', 'exercise_name', 'metric_type',
+            'weight_kg', 'reps', 'quantity_value', 'order', 'created_at',
+        ]
         read_only_fields = ['id', 'created_at']
 
 
@@ -156,8 +188,33 @@ class WorkoutCreateSerializer(serializers.ModelSerializer):
 class WorkoutSetCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutSet
-        fields = ['id', 'exercise', 'weight_kg', 'reps', 'order']
+        fields = ['id', 'exercise', 'weight_kg', 'reps', 'quantity_value', 'order']
         read_only_fields = ['id']
+
+    def validate(self, data):
+        exercise = data.get('exercise')
+        if not exercise:
+            raise serializers.ValidationError({'exercise': 'Exercice requis.'})
+        metric = exercise.metric_type
+        if metric == 'weight_reps':
+            if data.get('weight_kg') is None or data.get('reps') is None:
+                raise serializers.ValidationError(
+                    'Poids et répétitions requis pour cet exercice.',
+                )
+            if data.get('quantity_value') is not None:
+                raise serializers.ValidationError(
+                    'La quantité globale n\'est pas utilisée pour les exercices poids × répétitions.',
+                )
+        else:
+            if data.get('quantity_value') is None:
+                raise serializers.ValidationError(
+                    'Valeur de quantité requise pour cet exercice.',
+                )
+            if data.get('weight_kg') is not None or data.get('reps') is not None:
+                raise serializers.ValidationError(
+                    'Poids et répétitions ne sont pas utilisés pour cet exercice.',
+                )
+        return data
 
 
 # ─── Gamification ────────────────────────────────────────────────────────────
@@ -260,7 +317,7 @@ class AdminExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         fields = [
             'id', 'name', 'description', 'machine', 'is_public',
-            'created_by', 'created_by_name', 'difficulty_factor',
+            'created_by', 'created_by_name', 'difficulty_factor', 'metric_type',
             'muscle_targets', 'created_at',
         ]
 

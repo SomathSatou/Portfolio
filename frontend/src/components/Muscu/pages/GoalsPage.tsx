@@ -22,6 +22,12 @@ const METRIC_LABELS: Record<string, string> = {
   max_weight: 'Poids max (kg)',
   max_reps: 'Reps max',
   total_volume: 'Volume total (kg)',
+  max_distance: 'Distance max (m)',
+  max_duration: 'Durée max (min)',
+  max_reps_only: 'Reps max (sans poids)',
+  total_distance: 'Distance totale (m)',
+  total_duration: 'Durée totale (min)',
+  total_reps_only: 'Reps total (sans poids)',
 }
 
 export default function GoalsPage() {

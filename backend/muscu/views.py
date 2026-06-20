@@ -22,8 +22,8 @@ from .serializers import (
     AdminMachineSerializer, AdminMuscleGroupSerializer, AdminMuscleSerializer,
     AdminUserSerializer, AdminWorkoutSerializer, BadgeSerializer,
     DashboardConfigSerializer,
-    ExerciseCreateSerializer, ExerciseSerializer, GoalSerializer,
-    GymSerializer, MachineSerializer, MuscleGroupSerializer,
+    ExerciseCreateSerializer, ExerciseSerializer, ExerciseUpdateSerializer,
+    GoalSerializer, GymSerializer, MachineSerializer, MuscleGroupSerializer,
     MuscleSerializer, MuscleXPSerializer, UserBadgeSerializer,
     UserGymMembershipSerializer, UserTotalXPSerializer,
     WorkoutCreateSerializer, WorkoutSerializer, WorkoutSetCreateSerializer,
@@ -99,7 +99,7 @@ class LoginView(APIView):
         })
 
 
-class MeView(generics.RetrieveAPIView):
+class MeView(generics.RetrieveUpdateAPIView):
     """Profil utilisateur IRL RPG — délègue au serializer unifié de accounts.
 
     Crée le profil MuscuProfile s'il n'existe pas encore.
@@ -197,9 +197,14 @@ class ExerciseListCreateView(generics.ListCreateAPIView):
         )
 
 
-class ExerciseDetailView(generics.RetrieveDestroyAPIView):
+class ExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [HasMuscuAccess]
     serializer_class = ExerciseSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ('PUT', 'PATCH'):
+            return ExerciseUpdateSerializer
+        return ExerciseSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -207,6 +212,25 @@ class ExerciseDetailView(generics.RetrieveDestroyAPIView):
             Q(is_public=True) | Q(created_by=user)
         ).select_related('machine', 'created_by').prefetch_related(
             'muscle_targets__muscle__group',
+        )
+
+    def perform_update(self, serializer):
+        exercise = self.get_object()
+        if exercise.created_by != self.request.user and not self.request.user.is_staff:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('Vous ne pouvez modifier que vos propres exercices.')
+        serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        exercise = Exercise.objects.select_related(
+            'machine', 'created_by',
+        ).prefetch_related(
+            'muscle_targets__muscle__group',
+        ).get(pk=self.get_object().pk)
+        return Response(
+            ExerciseSerializer(exercise).data,
+            status=response.status_code,
         )
 
     def perform_destroy(self, instance):
@@ -423,7 +447,11 @@ class LeaderboardView(APIView):
                 total_xp_val=Sum('muscle_xps__xp'),
                 workout_count=Count('workouts', filter=workout_filter, distinct=True),
                 total_volume=Sum(
-                    F('workouts__sets__weight_kg') * F('workouts__sets__reps'),
+                    (
+                        F('workouts__sets__weight_kg') * F('workouts__sets__reps')
+                    ) + (
+                        F('workouts__sets__quantity_value')
+                    ),
                     filter=set_filter,
                 ),
             )
@@ -548,9 +576,15 @@ class DashboardChartDataView(APIView):
 
             data = []
             for s in qs:
-                entry = {'date': s.workout.started_at.isoformat(), 'weight': s.weight_kg, 'reps': s.reps}
+                entry = {
+                    'date': s.workout.started_at.isoformat(),
+                    'weight': s.weight_kg or 0,
+                    'reps': s.reps or 0,
+                    'quantity_value': s.quantity_value or 0,
+                    'metric_type': s.exercise.metric_type,
+                }
                 if chart_type == 'onerm_progress':
-                    entry['onerm'] = round(s.weight_kg * (1 + s.reps / 30), 1)
+                    entry['onerm'] = round((s.weight_kg or 0) * (1 + (s.reps or 0) / 30), 1)
                 data.append(entry)
             return Response({'data': data})
 
@@ -564,7 +598,11 @@ class DashboardChartDataView(APIView):
             weekly = (
                 qs.annotate(week=TruncWeek('workout__started_at'))
                 .values('week')
-                .annotate(volume=Sum(F('weight_kg') * F('reps')))
+                .annotate(
+                    volume=Sum(
+                        (F('weight_kg') * F('reps')) + F('quantity_value'),
+                    ),
+                )
                 .order_by('week')
             )
             return Response({'data': list(weekly)})
@@ -800,7 +838,9 @@ class AdminStatsView(APIView):
         ).count()
         total_volume = WorkoutSet.objects.filter(
             workout__status='closed',
-        ).aggregate(vol=Sum(F('weight_kg') * F('reps')))['vol'] or 0
+        ).aggregate(
+            vol=Sum((F('weight_kg') * F('reps')) + F('quantity_value')),
+        )['vol'] or 0
 
         top_exercises = (
             WorkoutSet.objects.filter(workout__status='closed')
