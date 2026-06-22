@@ -781,6 +781,14 @@
   box-shadow: 0 1px 0 rgba(14, 165, 233, 0.2), 0 4px 20px rgba(14, 165, 233, 0.1);
 }
 
+/* ── Drawers JDR — thème parchemin adaptatif ─────────────── */
+:root {
+  --parchment-panel-bg: #f5e6c8;
+}
+.dark {
+  --parchment-panel-bg: #1a0e05;
+}
+
 /* ── Sidebar JDR ────────────────────────────────────────── */
 .sidebar-jdr {
   background: linear-gradient(180deg, #f5e6c8 0%, #edddb8 100%);
