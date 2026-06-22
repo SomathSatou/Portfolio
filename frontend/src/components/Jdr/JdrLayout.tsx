@@ -100,12 +100,12 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
       {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top header parchemin */}
-        <header className="z-20 h-16 shrink-0 flex items-center justify-between px-4 lg:px-6" style={{ background: 'rgba(245,230,200,0.9)', borderBottom: '1px solid rgba(201,162,39,0.4)', backdropFilter: 'blur(8px)' }}>
+        <header className="z-20 h-16 shrink-0 flex items-center justify-between px-4 lg:px-6" style={{ background: 'rgba(15,10,5,0.97)', borderBottom: '1px solid rgba(201,162,39,0.5)', backdropFilter: 'blur(8px)' }}>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 rounded transition-colors"
-              style={{ color: '#92400e' }}
+              style={{ color: '#c9a227' }}
               aria-label="Ouvrir le menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -121,7 +121,7 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-4">
             <NotificationBell />
-            <div className="flex items-center gap-2 text-sm" style={{ color: '#5c3317' }}>
+            <div className="flex items-center gap-2 text-sm" style={{ color: '#e8d5a0' }}>
               <span className="hidden sm:inline font-medium" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.8rem' }}>{user?.username}</span>
               <button
                 onClick={logout}

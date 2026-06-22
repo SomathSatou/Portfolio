@@ -1,4 +1,5 @@
 export { default as SessionPage } from './SessionPage'
+export { default as MonsterSessionCard } from './MonsterSessionCard'
 export { default as CharacterSessionCard } from './CharacterSessionCard'
 export { default as SessionChat } from './SessionChat'
 export { default as SessionNotes } from './SessionNotes'

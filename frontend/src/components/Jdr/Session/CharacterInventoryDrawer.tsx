@@ -140,11 +140,12 @@ export default function CharacterInventoryDrawer({
         <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" onClick={onClose} />
       )}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 flex flex-col ${
+        className={`fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] shadow-2xl transform transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
+        style={{ background: 'var(--parchment-panel-bg, #f5e6c8)', borderRight: '1px solid rgba(201,162,39,0.5)' }}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+        <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: '1px solid rgba(201,162,39,0.4)' }}>
           <h2 className="font-semibold text-primary dark:text-primaryLight">
             🎒 Inventaire — {characterName}
           </h2>

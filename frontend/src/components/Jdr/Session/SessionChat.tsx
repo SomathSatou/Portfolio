@@ -30,9 +30,9 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
   }
 
   return (
-    <div className="card-glass flex flex-col h-full animate-slideUp">
+    <div className="card-glass flex flex-col h-full min-h-0 animate-slideUp" style={{ maxHeight: '100vh' }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 shrink-0">
         <h2 className="text-lg font-semibold text-primary dark:text-primaryLight">Chat</h2>
         <span className={`inline-flex items-center gap-1.5 text-xs ${connected ? 'text-green-600' : 'text-red-500'}`}>
           <span className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
@@ -50,7 +50,7 @@ export default function SessionChat({ messages, connected, onSend, currentUserId
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2.5 mb-3 min-h-0 max-h-[60vh] chat-scrollbar">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-2.5 mb-3 min-h-0 chat-scrollbar">
         {messages.length === 0 && (
           <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8 animate-fadeIn">
             Aucun message. Écrivez quelque chose ou lancez des dés (ex: 2d20)

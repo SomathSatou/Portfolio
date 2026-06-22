@@ -1,8 +1,9 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
-import type { Campaign, CharacterWithStats, ChatMessage, CombatSession } from '../Dashboard/types'
+import type { Campaign, CharacterWithStats, ChatMessage, CombatSession, Monster } from '../Dashboard/types'
 import CharacterSessionCard from './CharacterSessionCard'
+import MonsterSessionCard from './MonsterSessionCard'
 import SessionChat from './SessionChat'
 import SessionNotes from './SessionNotes'
 import SessionSidebar from './SessionSidebar'
@@ -23,6 +24,9 @@ export default function SessionPage({ campaignId }: Props) {
   const { user } = useAuth()
   const [campaign, setCampaign] = React.useState<Campaign | null>(null)
   const [characters, setCharacters] = React.useState<CharacterWithStats[]>([])
+  const [monsters, setMonsters] = React.useState<Monster[]>([])
+  const [activeMonsterIds, setActiveMonsterIds] = React.useState<Set<number>>(new Set())
+  const [mjTab, setMjTab] = React.useState<'players' | 'monsters'>('players')
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState('')
   const [toggling, setToggling] = React.useState(false)
@@ -68,12 +72,14 @@ export default function SessionPage({ campaignId }: Props) {
       api.get<Campaign>(`/campaigns/${campaignId}/`),
       api.get<CharacterWithStats[]>(`/campaigns/${campaignId}/characters-with-stats/`),
       api.get<ChatMessage[]>(`/chat-messages/?campaign=${campaignId}&limit=200`),
+      api.get<Monster[]>(`/monsters/?campaign=${campaignId}`),
     ])
-      .then(([campRes, charRes, chatRes]) => {
+      .then(([campRes, charRes, chatRes, monsterRes]) => {
         if (cancelled) return
         setCampaign(campRes.data)
         setCharacters(charRes.data)
         setInitialMessages(chatRes.data)
+        setMonsters(monsterRes.data)
       })
       .catch(() => {
         if (!cancelled) setError('Impossible de charger la session.')
@@ -219,31 +225,106 @@ export default function SessionPage({ campaignId }: Props) {
 
       {/* 3-column layout */}
       <div className="grid gap-6 lg:grid-cols-12">
-        {/* Left: Character cards */}
-        <div className="lg:col-span-3 space-y-4">
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-            Personnages ({characters.length})
-          </h2>
-          {characters.length === 0 ? (
-            <p className="text-sm text-gray-400">Aucun personnage dans cette campagne.</p>
-          ) : (
-            characters.map((c) => (
-              <CharacterSessionCard
-                key={c.id}
-                character={c}
-                isMJ={isMJ}
-                onWalletChange={handleWalletChange}
-                onOpenDetail={(id) => setDrawerDetail(id)}
-                onOpenSpells={(id) => setDrawerSpells(id)}
-                onOpenSkills={(id) => setDrawerSkills(id)}
-                onOpenInventory={(id) => setDrawerInventory(id)}
-              />
-            ))
+        {/* Left: Character cards / Monster list */}
+        <div className="lg:col-span-3 space-y-3">
+          {/* MJ tabs */}
+          {isMJ && (
+            <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'rgba(201,162,39,0.4)' }}>
+              <button
+                onClick={() => setMjTab('players')}
+                className="flex-1 py-1.5 text-xs font-medium transition-colors"
+                style={{
+                  background: mjTab === 'players' ? 'rgba(124,58,14,0.85)' : 'transparent',
+                  color: mjTab === 'players' ? '#f5e6c8' : '#7c3a0e',
+                  fontFamily: "'Cinzel', serif",
+                }}
+              >
+                👤 Joueurs ({characters.length})
+              </button>
+              <button
+                onClick={() => setMjTab('monsters')}
+                className="flex-1 py-1.5 text-xs font-medium transition-colors"
+                style={{
+                  background: mjTab === 'monsters' ? 'rgba(124,58,14,0.85)' : 'transparent',
+                  color: mjTab === 'monsters' ? '#f5e6c8' : '#7c3a0e',
+                  fontFamily: "'Cinzel', serif",
+                }}
+              >
+                👹 Monstres ({activeMonsterIds.size}/{monsters.length})
+              </button>
+            </div>
+          )}
+
+          {/* Players tab */}
+          {(!isMJ || mjTab === 'players') && (
+            <>
+              {!isMJ && (
+                <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                  Personnages ({characters.length})
+                </h2>
+              )}
+              {characters.length === 0 ? (
+                <p className="text-sm text-gray-400">Aucun personnage dans cette campagne.</p>
+              ) : (
+                characters.map((c) => (
+                  <CharacterSessionCard
+                    key={c.id}
+                    character={c}
+                    isMJ={isMJ}
+                    onWalletChange={handleWalletChange}
+                    onOpenDetail={(id) => setDrawerDetail(id)}
+                    onOpenSpells={(id) => setDrawerSpells(id)}
+                    onOpenSkills={(id) => setDrawerSkills(id)}
+                    onOpenInventory={(id) => setDrawerInventory(id)}
+                  />
+                ))
+              )}
+            </>
+          )}
+
+          {/* Monsters tab (MJ only) */}
+          {isMJ && mjTab === 'monsters' && (
+            <>
+              {monsters.length === 0 ? (
+                <p className="text-sm text-gray-400">Aucun monstre dans cette campagne.</p>
+              ) : (
+                monsters.map((m) => {
+                  const isActive = activeMonsterIds.has(m.id)
+                  return (
+                    <div key={m.id}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <button
+                          onClick={() => setActiveMonsterIds((prev) => {
+                            const next = new Set(prev)
+                            if (next.has(m.id)) { next.delete(m.id) } else { next.add(m.id) }
+                            return next
+                          })}
+                          className="text-[10px] px-2 py-0.5 rounded-full border transition-colors shrink-0"
+                          style={{
+                            borderColor: 'rgba(201,162,39,0.5)',
+                            background: isActive ? 'rgba(124,58,14,0.15)' : 'transparent',
+                            color: isActive ? '#7c3a0e' : '#a0845c',
+                          }}
+                        >
+                          {isActive ? '● En jeu' : '○ Hors jeu'}
+                        </button>
+                      </div>
+                      <MonsterSessionCard
+                        monster={m}
+                        onUpdated={(updated) =>
+                          setMonsters((prev) => prev.map((x) => (x.id === updated.id ? updated : x)))
+                        }
+                      />
+                    </div>
+                  )
+                })
+              )}
+            </>
           )}
         </div>
 
-        {/* Center: Chat */}
-        <div className="lg:col-span-5">
+        {/* Center: Chat — sticky full height */}
+        <div className="lg:col-span-5 lg:sticky lg:top-0 lg:h-screen lg:py-0 flex flex-col">
           <SessionChat
             messages={messages}
             connected={connected}
