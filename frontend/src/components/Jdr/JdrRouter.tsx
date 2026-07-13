@@ -20,8 +20,9 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
+      <div className="min-h-screen flex flex-col items-center justify-center parchment-bg">
+        <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4" />
+        <p className="loading-text-jdr">Vérification des parchemins…</p>
       </div>
     )
   }

@@ -13,7 +13,12 @@ export default function JdrHomePage() {
 
   if (isAuthenticated) {
     window.location.hash = '#/jdr/dashboard'
-    return null
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center parchment-bg">
+        <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full mb-4" />
+        <p className="loading-text-jdr">Ouverture du livre de campagne…</p>
+      </div>
+    )
   }
 
   return (

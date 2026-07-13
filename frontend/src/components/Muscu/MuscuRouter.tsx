@@ -16,20 +16,25 @@ import AdminPage from './pages/AdminPage'
 import ExercisesPage from './pages/ExercisesPage'
 import GymsPage from './pages/GymsPage'
 
+function AuthLoader() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center theme-irlrpg">
+      <div className="animate-spin h-10 w-10 border-4 border-[var(--color-irlrpg-primary)] border-t-transparent rounded-full mb-4" />
+      <p className="title-neon text-sm">Chargement…</p>
+    </div>
+  )
+}
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
-      </div>
-    )
+    return <AuthLoader />
   }
 
   if (!isAuthenticated) {
     window.location.hash = '#/irlrpg/login'
-    return null
+    return <AuthLoader />
   }
 
   return <MuscuLayout>{children}</MuscuLayout>
@@ -39,21 +44,17 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   const { user, isAuthenticated, isLoading } = useAuth()
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
-      </div>
-    )
+    return <AuthLoader />
   }
 
   if (!isAuthenticated) {
     window.location.hash = '#/irlrpg/login'
-    return null
+    return <AuthLoader />
   }
 
   if (!user?.is_staff) {
     window.location.hash = '#/irlrpg/dashboard'
-    return null
+    return <AuthLoader />
   }
 
   return <MuscuLayout>{children}</MuscuLayout>
