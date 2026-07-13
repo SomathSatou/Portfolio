@@ -1,6 +1,7 @@
 import React from 'react'
 import api from '../api'
 import { useAuth } from '../useAuth'
+import { Spinner } from '../../ui'
 
 interface FieldError {
   username?: string
@@ -100,7 +101,12 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
+  if (loading) return (
+    <div className="flex items-center gap-3 animate-fadeIn" style={{ color: 'var(--color-irlrpg-primary)' }}>
+      <Spinner size="sm" />
+      <span className="neon-label">CHARGEMENT…</span>
+    </div>
+  )
 
   const rankColor = RANK_COLORS[total.rank] || '#cd7f32'
   const rankLabel = total.rank.charAt(0).toUpperCase() + total.rank.slice(1)
@@ -115,65 +121,65 @@ export default function ProfilePage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header / Edit profile */}
-      <form onSubmit={onSubmit} className="card">
+      <form onSubmit={onSubmit} className="card-neon">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-2xl font-bold text-primary dark:text-primaryLight">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold neon-avatar">
             {user?.username?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Profil</h1>
+            <h1 className="title-neon text-xl">PROFIL</h1>
             <div className="flex items-center gap-3 mt-1">
-              <span className="font-semibold" style={{ color: rankColor }}>{rankLabel}</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">Niveau {total.level}</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">{total.xp} XP</span>
+              <span className="font-semibold neon-rank" style={{ color: rankColor }}>{rankLabel}</span>
+              <span className="neon-text-sm">NIVEAU {total.level}</span>
+              <span className="neon-text-sm">{total.xp} XP</span>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Pseudo</label>
+            <label className="block neon-label mb-1">PSEUDO</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="input-neon w-full"
               placeholder="Votre pseudo"
             />
-            {errors.username && <p className="text-xs text-red-500 mt-1">{errors.username}</p>}
+            {errors.username && <p className="neon-error-xs mt-1">{errors.username}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+            <label className="block neon-label mb-1">EMAIL</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="input-neon w-full"
               placeholder="votre@email.com"
             />
-            {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+            {errors.email && <p className="neon-error-xs mt-1">{errors.email}</p>}
           </div>
         </div>
 
-        {errors.non_field && <p className="text-sm text-red-500 mb-3">{errors.non_field}</p>}
-        {saveSuccess && <p className="text-sm text-green-500 mb-3">Profil mis à jour avec succès.</p>}
+        {errors.non_field && <p className="neon-error mb-3">{errors.non_field}</p>}
+        {saveSuccess && <p className="neon-success mb-3">PROFIL MIS À JOUR AVEC SUCCÈS.</p>}
 
         <div className="flex justify-end">
-          <button type="submit" disabled={saving} className="btn btn-primary">
-            {saving ? 'Sauvegarde…' : 'Sauvegarder'}
+          <button type="submit" disabled={saving} className="btn-neon-lime">
+            {saving ? 'SAUVEGARDE…' : 'SAUVEGARDER'}
           </button>
         </div>
       </form>
 
       {/* Badges */}
       {badges.length > 0 && (
-        <div className="card">
-          <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Badges ({badges.length})</h2>
+        <div className="card-neon">
+          <h2 className="neon-subtitle mb-3">BADGES ({badges.length})</h2>
           <div className="flex flex-wrap gap-3">
             {badges.map((b) => (
-              <div key={b.id} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-sm" title={b.badge.description}>
+              <div key={b.id} className="flex items-center gap-2 px-3 py-1.5 rounded-full neon-badge text-sm" title={b.badge.description}>
                 <span>{b.badge.icon}</span>
-                <span className="text-gray-700 dark:text-gray-300">{b.badge.name}</span>
+                <span className="neon-badge-text">{b.badge.name}</span>
               </div>
             ))}
           </div>
@@ -181,23 +187,23 @@ export default function ProfilePage() {
       )}
 
       {/* Muscle XP by group */}
-      <div className="card">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-4">XP par muscle</h2>
+      <div className="card-neon">
+        <h2 className="neon-subtitle mb-4">XP PAR MUSCLE</h2>
         {Object.entries(grouped).map(([group, items]) => (
           <div key={group} className="mb-4">
-            <h3 className="text-sm font-medium text-primary dark:text-primaryLight mb-2">{group}</h3>
+            <h3 className="neon-group-title mb-2">{group}</h3>
             <div className="space-y-2">
               {items.map((m) => (
                 <div key={m.muscle_name} className="flex items-center gap-3">
-                  <span className="w-36 text-sm text-gray-700 dark:text-gray-300 truncate">{m.muscle_name}</span>
-                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <span className="w-36 text-sm neon-muscle-name truncate">{m.muscle_name}</span>
+                  <div className="flex-1 neon-progress-bg rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-primary dark:bg-primaryLight"
+                      className="h-full rounded-full neon-progress-fill"
                       style={{ width: `${Math.min(100, (m.xp / Math.max(total.xp, 1)) * 100)}%` }}
                     />
                   </div>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">
-                    Niv. {m.level} ({m.xp})
+                  <span className="neon-xp-text w-20 text-right">
+                    NIV. {m.level} ({m.xp})
                   </span>
                 </div>
               ))}
@@ -205,7 +211,7 @@ export default function ProfilePage() {
           </div>
         ))}
         {muscles.length === 0 && (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Pas encore d'XP. Terminez une séance !</p>
+          <p className="neon-empty-text">PAS ENCORE D'XP. TERMINEZ UNE SÉANCE !</p>
         )}
       </div>
     </div>

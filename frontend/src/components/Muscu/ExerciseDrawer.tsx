@@ -24,22 +24,24 @@ export default function ExerciseDrawer({
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 z-40 bg-black/60"
+        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm animate-fadeIn"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Drawer */}
       <div
-        className="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-gray-900 border-l border-gray-700 shadow-xl flex flex-col animate-slideInRight"
+        className="fixed inset-y-0 right-0 z-50 w-full sm:w-96 shadow-xl flex flex-col animate-slideInRight"
+        style={{ background: 'var(--color-irlrpg-bg)', borderLeft: '1px solid rgba(14, 165, 233, 0.35)' }}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-primaryLight">Modifier l'exercice</h2>
+        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(14, 165, 233, 0.25)' }}>
+          <h2 className="title-neon text-base">MODIFIER L'EXERCICE</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-200"
+            className="transition-colors opacity-60 hover:opacity-100"
+            style={{ color: 'var(--color-irlrpg-primary)' }}
             aria-label="Fermer"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -32,52 +32,48 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: '#0f172a' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden theme-irlrpg">
       {/* Scan-line overlay */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(14,165,233,0.02) 2px, rgba(14,165,233,0.02) 4px)' }} />
+      <div className="absolute inset-0 pointer-events-none scanline-overlay" />
 
       <div className="w-full max-w-md z-10">
         <div className="card-neon">
           <div className="text-center mb-6">
             <h1 className="title-neon text-3xl mb-1">IRL RPG</h1>
-            <p className="text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.2em', color: '#84cc16' }}>AUTHENTIFICATION</p>
-            <div className="mt-3 h-px" style={{ background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+            <p className="neon-label-lime">AUTHENTIFICATION</p>
+            <div className="mt-3 h-px neon-divider" />
           </div>
 
           <form onSubmit={onSubmit} className="space-y-4">
             <div>
-              <label className="block mb-1 text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.08em', color: '#0ea5e9' }}>
-                EMAIL
-              </label>
+              <label className="block neon-label mb-1">EMAIL</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-neon" placeholder="votre@email.com" />
             </div>
 
             <div>
-              <label className="block mb-1 text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.08em', color: '#0ea5e9' }}>
-                MOT DE PASSE
-              </label>
+              <label className="block neon-label mb-1">MOT DE PASSE</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-neon" placeholder="••••••••" />
             </div>
 
             {error && (
-              <p className="text-sm" style={{ color: '#f87171', fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', letterSpacing: '0.04em' }}>{error}</p>
+              <p className="neon-error">{error}</p>
             )}
 
             <button type="submit" disabled={loading} className="btn-neon-lime w-full justify-center">
               {loading ? 'CONNEXION…' : 'INITIALISER SESSION'}
             </button>
 
-            <p className="text-center text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.06em' }}>
-              <a href="#/irlrpg/forgot-password" className="no-underline hover:underline transition-colors" style={{ color: '#475569' }}>
+            <p className="text-center neon-label">
+              <a href="#/irlrpg/forgot-password" className="neon-link hover:underline transition-colors">
                 MOT DE PASSE OUBLIÉ
               </a>
             </p>
           </form>
 
-          <div className="mt-4 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(14,165,233,0.3), transparent)' }} />
+          <div className="mt-4 h-px neon-divider-faded" />
 
-          <p className="mt-4 text-center text-xs" style={{ fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.06em', color: '#334155' }}>
-            <a href="#/" className="no-underline hover:text-slate-400 transition-colors" style={{ color: '#334155' }}>← PORTFOLIO</a>
+          <p className="mt-4 text-center neon-label">
+            <a href="#/" className="neon-link-muted hover:text-slate-400 transition-colors">← PORTFOLIO</a>
           </p>
         </div>
       </div>

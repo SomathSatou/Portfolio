@@ -24,7 +24,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
   const activeHash = window.location.hash
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#0f172a', color: '#e2e8f0' }}>
+    <div className="min-h-screen flex theme-irlrpg">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -46,12 +46,12 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center justify-between h-16 px-4 shrink-0" style={{ borderBottom: '1px solid rgba(14,165,233,0.25)' }}>
           <a href="#/irlrpg/dashboard" className="no-underline">
             <span className="title-neon text-lg block">IRL RPG</span>
-            <span className="text-xs" style={{ color: '#475569', fontFamily: 'Orbitron, sans-serif', letterSpacing: '0.1em' }}>TRAINING OS</span>
+            <span className="neon-label">TRAINING OS</span>
           </a>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-1 rounded transition-colors"
-            style={{ color: '#0ea5e9' }}
+            style={{ color: 'var(--color-irlrpg-primary)' }}
             aria-label="Fermer le menu"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -60,7 +60,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
           </button>
         </div>
 
-        <nav className="mt-3 px-2 space-y-0.5 flex-1 overflow-y-auto">
+        <nav className="mt-3 px-2 space-y-0.5 flex-1 overflow-y-auto stagger-children">
           {items.map((item) => {
             const isActive = activeHash === item.hash
             return (
@@ -68,18 +68,9 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
                 key={item.label}
                 href={item.hash}
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-3 px-3 py-2 rounded no-underline transition-all text-sm"
-                style={{
-                  fontFamily: 'Orbitron, sans-serif',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.05em',
-                  color: isActive ? '#0ea5e9' : '#64748b',
-                  background: isActive ? 'rgba(14,165,233,0.1)' : 'transparent',
-                  borderLeft: isActive ? '2px solid #0ea5e9' : '2px solid transparent',
-                  boxShadow: isActive ? 'inset 0 0 20px rgba(14,165,233,0.05)' : 'none',
-                }}
+                className={`sidebar-item-irlrpg animate-fadeIn ${isActive ? 'is-active' : ''}`}
               >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: isActive ? '#0ea5e9' : '#475569' }}>
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                 </svg>
                 {item.label}
@@ -91,8 +82,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
         <div className="shrink-0 px-3 py-4" style={{ borderTop: '1px solid rgba(14,165,233,0.15)' }}>
           <a
             href="#/"
-            className="flex items-center gap-2 px-3 py-2 rounded text-xs no-underline transition-colors"
-            style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.65rem', letterSpacing: '0.06em', color: '#334155' }}
+            className="sidebar-item-irlrpg text-xs"
           >
             ← PORTFOLIO
           </a>
@@ -106,7 +96,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden p-2 rounded transition-colors"
-            style={{ color: '#0ea5e9' }}
+            style={{ color: 'var(--color-irlrpg-primary)' }}
             aria-label="Ouvrir le menu"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -118,7 +108,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline text-sm font-medium" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem', letterSpacing: '0.06em', color: '#0ea5e9' }}>
+              <span className="hidden sm:inline text-sm font-medium neon-primary-text" style={{ fontSize: '0.75rem' }}>
                 {user?.username?.toUpperCase()}
               </span>
               <button onClick={logout} className="btn-neon text-xs py-1 px-3">
@@ -129,7 +119,7 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-4 lg:p-6" style={{ background: '#0f172a' }}>
+        <main className="flex-1 p-4 lg:p-6 animate-fadeIn" style={{ background: 'var(--color-irlrpg-bg)' }}>
           {children}
         </main>
       </div>

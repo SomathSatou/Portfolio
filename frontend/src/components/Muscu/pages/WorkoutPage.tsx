@@ -231,83 +231,109 @@ export default function WorkoutPage() {
       {/* Add set form */}
       <div className="card">
         <h2 className="font-semibold text-gray-800 dark:text-gray-200 mb-3">Ajouter une série</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-          <div className="sm:col-span-2">
-            <select
-              value={showNewExercise ? -1 : selExercise}
-              onChange={(e) => {
-                const v = Number(e.target.value)
-                if (v === -1) {
-                  setShowNewExercise(true)
-                } else {
-                  setShowNewExercise(false)
-                  setSelExercise(v)
-                }
-              }}
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-            >
-              {exercises.map((ex) => (
-                <option key={ex.id} value={ex.id}>{ex.name}</option>
-              ))}
-              <option value={-1}>➕ Créer un exercice…</option>
-            </select>
-          </div>
-          {selectedExercise?.metric_type === 'weight_reps' && (
-            <>
-              <div>
-                <input
-                  type="number"
-                  placeholder="Poids (kg)"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-                  min={0}
-                  step={0.5}
-                />
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  placeholder="Reps"
-                  value={reps}
-                  onChange={(e) => setReps(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-                  min={1}
-                />
-              </div>
-            </>
-          )}
-          {selectedExercise && selectedExercise.metric_type !== 'weight_reps' && (
-            <div className="flex gap-2">
-              <input
-                type="number"
-                placeholder={
-                  selectedExercise.metric_type === 'distance'
-                    ? 'Distance (m)'
-                    : selectedExercise.metric_type === 'duration'
-                      ? 'Durée (min)'
-                      : 'Répétitions'
-                }
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
-                min={0}
-                step={selectedExercise.metric_type === 'duration' ? 0.5 : 1}
-              />
-            </div>
-          )}
-          <button
-            onClick={addSet}
-            disabled={addingSet || !canAddSet() || showNewExercise}
-            className="btn btn-primary text-sm px-3 py-2 flex-shrink-0"
+
+        {/* Exercise selector */}
+        <div>
+          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Exercice</label>
+          <select
+            value={showNewExercise ? -1 : selExercise}
+            onChange={(e) => {
+              const v = Number(e.target.value)
+              if (v === -1) {
+                setShowNewExercise(true)
+              } else {
+                setShowNewExercise(false)
+                setSelExercise(v)
+              }
+            }}
+            className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
           >
-            +
-          </button>
+            {exercises.map((ex) => (
+              <option key={ex.id} value={ex.id}>{ex.name}</option>
+            ))}
+            <option value={-1}>➕ Créer un exercice…</option>
+          </select>
+          {selectedExercise && !showNewExercise && (
+            <span className="inline-block mt-2 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary dark:bg-primaryLight/15 dark:text-primaryLight">
+              {METRIC_LABELS[selectedExercise.metric_type]}
+            </span>
+          )}
         </div>
-        {selectedExercise && (
-          <p className="text-xs text-primaryLight mt-2">
-            {selectedExercise.name} · {METRIC_LABELS[selectedExercise.metric_type]}
-          </p>
+
+        {/* Metric-specific inputs */}
+        {selectedExercise && !showNewExercise && (
+          <div className="mt-4 flex flex-wrap items-end gap-3">
+            {selectedExercise.metric_type === 'weight_reps' ? (
+              <>
+                <div className="flex-1 min-w-[120px]">
+                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Poids (kg)</label>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    placeholder="ex. 40"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+                    min={0}
+                    step={0.5}
+                  />
+                </div>
+                <span className="pb-2 text-gray-400">×</span>
+                <div className="flex-1 min-w-[120px]">
+                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Répétitions</label>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="ex. 12"
+                    value={reps}
+                    onChange={(e) => setReps(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+                    min={1}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex-1 min-w-[160px]">
+                <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  {selectedExercise.metric_type === 'distance'
+                    ? 'Distance'
+                    : selectedExercise.metric_type === 'duration'
+                      ? 'Durée'
+                      : 'Répétitions'}
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    placeholder={
+                      selectedExercise.metric_type === 'distance'
+                        ? 'ex. 2000'
+                        : selectedExercise.metric_type === 'duration'
+                          ? 'ex. 20'
+                          : 'ex. 30'
+                    }
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 pr-14 text-sm text-gray-900 dark:text-gray-100"
+                    min={0}
+                    step={selectedExercise.metric_type === 'duration' ? 0.5 : 1}
+                  />
+                  {selectedExercise.metric_type !== 'reps_only' && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                      {selectedExercise.metric_type === 'distance' ? 'm' : 'min'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+            <button
+              onClick={addSet}
+              disabled={addingSet || !canAddSet()}
+              className="btn btn-primary text-sm px-4 py-2 flex-shrink-0"
+            >
+              {addingSet ? '…' : 'Ajouter'}
+            </button>
+          </div>
         )}
 
         {/* Inline create exercise form */}
@@ -358,14 +384,24 @@ export default function WorkoutPage() {
               </div>
             ))}
           </div>
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400">
-            Volume total : {' '}
-            {(workout.sets ?? [])
-              .reduce((acc, s) => {
-                if (s.metric_type === 'weight_reps') return acc + s.weight_kg * s.reps
-                return acc + s.quantity_value
-              }, 0)
-              .toFixed(0)}
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
+            {(() => {
+              const sets = workout.sets ?? []
+              const totals = {
+                volume: sets.filter((s) => s.metric_type === 'weight_reps').reduce((a, s) => a + s.weight_kg * s.reps, 0),
+                distance: sets.filter((s) => s.metric_type === 'distance').reduce((a, s) => a + s.quantity_value, 0),
+                duration: sets.filter((s) => s.metric_type === 'duration').reduce((a, s) => a + s.quantity_value, 0),
+                reps: sets.filter((s) => s.metric_type === 'reps_only').reduce((a, s) => a + s.quantity_value, 0),
+              }
+              return (
+                <>
+                  {totals.volume > 0 && <span>Volume : <strong>{totals.volume.toFixed(0)} kg</strong></span>}
+                  {totals.distance > 0 && <span>Distance : <strong>{totals.distance.toFixed(0)} m</strong></span>}
+                  {totals.duration > 0 && <span>Durée : <strong>{totals.duration.toFixed(0)} min</strong></span>}
+                  {totals.reps > 0 && <span>Répétitions : <strong>{totals.reps.toFixed(0)}</strong></span>}
+                </>
+              )
+            })()}
           </div>
         </div>
       )}

@@ -5,6 +5,7 @@ import ExerciseDrawer from '../ExerciseDrawer'
 import ExerciseForm from '../ExerciseForm'
 import { METRIC_LABELS } from '../types'
 import type { Exercise, ExerciseInput, Gym, MuscleGroup } from '../types'
+import { EmptyState, Spinner } from '../../ui'
 
 export default function ExercisesPage() {
   const { user } = useAuth()
@@ -92,17 +93,24 @@ export default function ExercisesPage() {
     return true
   })
 
-  if (loading) return <p className="text-gray-500 dark:text-gray-400">Chargement…</p>
+  if (loading) {
+    return (
+      <div className="flex items-center gap-3 animate-fadeIn" style={{ color: 'var(--color-irlrpg-primary)' }}>
+        <Spinner size="sm" />
+        <span className="neon-label">CHARGEMENT…</span>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-primary dark:text-primaryLight">Exercices</h1>
+      <div className="flex items-center justify-between flex-wrap gap-3 animate-fadeIn">
+        <h1 className="title-neon text-2xl">EXERCICES</h1>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="btn btn-primary text-sm"
+          className="btn-neon-lime text-sm"
         >
-          {showCreate ? 'Annuler' : '+ Nouvel exercice'}
+          {showCreate ? 'ANNULER' : '+ NOUVEL EXERCICE'}
         </button>
       </div>
 
@@ -110,8 +118,8 @@ export default function ExercisesPage() {
 
       {/* Create form */}
       {showCreate && (
-        <div className="card space-y-4 border border-primary/20 dark:border-primaryLight/20">
-          <h2 className="font-semibold text-primary dark:text-primaryLight">Créer un exercice</h2>
+        <div className="card-neon space-y-4 animate-scaleIn">
+          <h2 className="neon-primary-text font-semibold" style={{ fontSize: '0.85rem' }}>CRÉER UN EXERCICE</h2>
           <ExerciseForm
             gyms={gyms}
             muscleGroups={muscleGroups}
@@ -130,12 +138,14 @@ export default function ExercisesPage() {
           placeholder="Rechercher…"
           value={filterSearch}
           onChange={(e) => setFilterSearch(e.target.value)}
-          className="flex-1 min-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+          className="input-neon text-sm flex-1 min-w-[200px]"
+          style={{ width: 'auto' }}
         />
         <select
           value={filterGroup}
           onChange={(e) => setFilterGroup(e.target.value)}
-          className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100"
+          className="input-neon text-sm"
+          style={{ width: 'auto' }}
         >
           <option value="">Tous les groupes</option>
           {muscleGroups.map((g) => (
@@ -145,16 +155,14 @@ export default function ExercisesPage() {
       </div>
 
       {/* Exercise list */}
-      <div className="space-y-3">
+      <div className="space-y-3 stagger-children">
         {filtered.length === 0 && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-            Aucun exercice trouvé.
-          </p>
+          <EmptyState title="AUCUN EXERCICE TROUVÉ" className="neon-label" />
         )}
         {filtered.map((ex) => (
           <div
             key={ex.id}
-            className="card cursor-pointer"
+            className="card-neon cursor-pointer animate-slideUp"
             onClick={() => { if (canEdit(ex)) setEditingExercise(ex) }}
             role="button"
             tabIndex={0}
@@ -168,36 +176,37 @@ export default function ExercisesPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">{ex.name}</h3>
+                  <h3 className="font-semibold neon-text" style={{ fontSize: '0.85rem' }}>{ex.name}</h3>
                   {ex.is_public && (
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">Public</span>
+                    <span className="badge-neon" style={{ color: 'var(--color-irlrpg-accent)', borderColor: 'rgba(132,204,22,0.4)' }}>PUBLIC</span>
                   )}
                   {!ex.is_public && (
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Privé</span>
+                    <span className="badge-neon" style={{ color: 'var(--color-irlrpg-muted)', borderColor: 'rgba(148,163,184,0.3)' }}>PRIVÉ</span>
                   )}
                   {canEdit(ex) && (
-                    <span className="text-xs text-primaryLight">Cliquer pour modifier</span>
+                    <span className="neon-label">CLIQUER POUR MODIFIER</span>
                   )}
                 </div>
                 {ex.description && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{ex.description}</p>
+                  <p className="text-sm mt-1" style={{ color: 'var(--color-irlrpg-muted)' }}>{ex.description}</p>
                 )}
                 {ex.machine_name && (
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Machine : {ex.machine_name}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--color-irlrpg-muted)' }}>Machine : {ex.machine_name}</p>
                 )}
                 {ex.muscle_targets.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {ex.muscle_targets.map((mt) => (
                       <span
                         key={mt.id}
-                        className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary dark:bg-primaryLight/10 dark:text-primaryLight"
+                        className="text-xs px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(14,165,233,0.1)', color: 'var(--color-irlrpg-primary)', border: '1px solid rgba(14,165,233,0.25)' }}
                       >
                         {mt.muscle_name}
                       </span>
                     ))}
                   </div>
                 )}
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                <p className="text-xs mt-2" style={{ color: 'var(--color-irlrpg-muted)' }}>
                   Par {ex.created_by_name} · Difficulté ×{ex.difficulty_factor} · {METRIC_LABELS[ex.metric_type]}
                 </p>
               </div>

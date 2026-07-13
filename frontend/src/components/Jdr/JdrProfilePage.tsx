@@ -58,15 +58,12 @@ export default function JdrProfilePage() {
     <div className="max-w-2xl mx-auto">
       <div className="card-parchment">
         <div className="flex items-center gap-4 mb-6">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold"
-            style={{ background: 'rgba(201,162,39,0.2)', color: '#7c3a0e' }}
-          >
+          <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold profile-avatar-jdr">
             {user?.username?.charAt(0).toUpperCase()}
           </div>
           <div>
             <h1 className="title-medieval text-xl">Profil de l'aventurier</h1>
-            <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", color: '#a0845c' }}>
+            <p className="text-sm profile-subtitle-jdr">
               Modifiez votre nom et votre email de contact.
             </p>
           </div>
@@ -74,10 +71,7 @@ export default function JdrProfilePage() {
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label
-              className="block mb-1 text-sm font-medium"
-              style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}
-            >
+            <label className="block mb-1 text-sm font-medium label-jdr">
               Nom d'aventurier
             </label>
             <input
@@ -88,17 +82,14 @@ export default function JdrProfilePage() {
               placeholder="Votre pseudo"
             />
             {errors.username && (
-              <p className="text-sm mt-1" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>
+              <p className="text-sm mt-1 error-text-jdr">
                 {errors.username}
               </p>
             )}
           </div>
 
           <div>
-            <label
-              className="block mb-1 text-sm font-medium"
-              style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}
-            >
+            <label className="block mb-1 text-sm font-medium label-jdr">
               Adresse email
             </label>
             <input
@@ -109,19 +100,19 @@ export default function JdrProfilePage() {
               placeholder="votre@email.com"
             />
             {errors.email && (
-              <p className="text-sm mt-1" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>
+              <p className="text-sm mt-1 error-text-jdr">
                 {errors.email}
               </p>
             )}
           </div>
 
           {errors.non_field && (
-            <p className="text-sm" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>
+            <p className="text-sm error-text-jdr">
               {errors.non_field}
             </p>
           )}
           {success && (
-            <p className="text-sm" style={{ color: '#15803d', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>
+            <p className="text-sm success-text-jdr">
               Profil mis à jour avec succès.
             </p>
           )}
