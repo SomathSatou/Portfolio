@@ -12,12 +12,13 @@ Le backend expose une API REST (projets + contact email).
 Portfolio/
 ├── frontend/          # React 19 + TypeScript + Vite 7 + Tailwind CSS 4
 │   ├── src/
-│   │   ├── App.tsx              # Hash-based router + sections (CV, Projects, Teaching, Contact)
+│   │   ├── App.tsx              # Hybrid router: hash (#/) + clean URLs (/) for SEO
 │   │   ├── main.tsx             # Entry point (dark mode init, React root)
 │   │   ├── index.css            # Tailwind layers, theme tokens, component classes
-│   │   ├── components/          # Layout, Header, Footer, Project descriptions
-│   │   └── data/                # Static project data (projects.ts, teachingResearch.ts, projectIndex.ts)
-│   ├── public/                  # Static assets (avatar, CV PDF)
+│   │   ├── components/          # Layout, Header, Footer, CookieConsent, ClarityLoader
+│   │   └── data/                # Static project data (projects.ts, teachingResearch.ts, projectIndex.ts, seo.json)
+│   ├── public/                  # Static assets (avatar, CV PDF, robots.txt, sitemap.xml, site.webmanifest)
+│   ├── scripts/                 # Build helpers (generate-seo.js)
 │   ├── vite.config.ts           # Vite config with /api proxy to Django
 │   ├── tailwind.config.js       # Custom colors (primary, accent1-3), fonts (Souvenir, Inter)
 │   ├── eslint.config.js         # ESLint flat config (TS + React hooks + React Refresh)
@@ -42,8 +43,9 @@ Portfolio/
 ```bash
 cd frontend
 npm install
+npm run seo          # Generate robots.txt + sitemap.xml from src/data/seo.json
 npm run dev          # Dev server → http://localhost:5173
-npm run build        # Production build (tsc + vite build) → frontend/dist/
+npm run build        # Production build (seo + tsc + vite build) → frontend/dist/
 npm run preview      # Preview production build
 npm run lint         # ESLint
 npm run test         # Vitest (run once)
@@ -100,7 +102,7 @@ Le frontend proxy `/api` vers `http://127.0.0.1:8000` via Vite (`vite.config.ts`
 - Utiliser les **classes utilitaires Tailwind** (pas de CSS-in-JS)
 - Classes custom définies dans `index.css` via `@layer components` : `.section`, `.card`, `.btn`, `.btn-primary`, `.btn-outline`, `.btn-accent`, `.badge`
 - Dark mode via la classe `dark` sur `<html>` (stocké dans `localStorage`)
-- Routing par hash (`#/`, `#/project/:slug`, `#/cv`, `#/projects`, `#/contact`)
+- Routing hybride : hash par défaut (`#/`, `#/project/:slug`) + clean URLs SEO (`/project/:slug`) supportées côté serveur via le fallback `index.html`
 
 ### Python / Django (backend)
 
@@ -132,6 +134,7 @@ Les projets sont définis statiquement dans `frontend/src/data/` :
 - `projects.ts` — Projets principaux (Traitement documentaire, Jeux, Web, Automatisation, Sécurité)
 - `teachingResearch.ts` — Recherche, Formation, Enseignement
 - `projectIndex.ts` — Index fusionné (`allProjects`, `projectBySlug`)
+- `seo.json` — Données SEO : siteUrl, pages canoniques et slugs des projets pour le sitemap
 
 Chaque projet : `{ slug, title, description (ReactNode), category, tags?, github?, image? }`
 
@@ -150,6 +153,15 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 - Honeypot anti-spam sur le formulaire de contact
 - Fichiers `.env` ignorés par `.gitignore`
 - MariaDB en prod derrière Nginx reverse-proxy
+
+## Cookies & analytics
+
+- **Microsoft Clarity** est utilisé pour l'analyse d'audience (gratuit).
+- Le script Clarity n'est chargé que si la catégorie **Analytics** est acceptée via le centre de préférences cookies (`CookieConsent` + `ClarityLoader`).
+- Le consentement est stocké dans `localStorage` sous la clé `cookieConsent`.
+- Catégories : Nécessaires, Fonctionnels, Analytics.
+- Le signal `navigator.doNotTrack` désactive Analytics par défaut.
+- Config : définir `VITE_CLARITY_PROJECT_ID` dans `frontend/.env` (voir `frontend/.env.example`).
 
 ## Deployment
 
@@ -176,6 +188,7 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 - Toujours lancer `npm run lint` dans `frontend/` avant de proposer un commit
 - Vérifier `tsc -b` (via `npm run build`) pour les erreurs TypeScript
 - Ne pas modifier `db.sqlite3` directement — utiliser les migrations Django
-- Ajouter un nouveau projet : créer l'entrée dans `data/projects.ts` ou `data/teachingResearch.ts`, et si besoin un composant `Desc*.tsx`
+- Ajouter un nouveau projet : créer l'entrée dans `data/projects.ts` ou `data/teachingResearch.ts`, ajouter son slug dans `data/seo.json`, et si besoin un composant `Desc*.tsx`
+- Lancer `npm run seo` après toute modification de `data/seo.json` pour régénérer `public/robots.txt` et `public/sitemap.xml`
 - Respecter le thème de couleurs existant (tokens ci-dessus)
-- Garder le README.md à jour si la structure change
+- Garder le README.md et `AGENTS.md` à jour si la structure du projet change

@@ -1,11 +1,18 @@
+import { useContext } from 'react'
+import { CookieConsentContext } from './CookieConsentContext'
+
 const footerLinks = [
   { href: '#/cv', label: 'CV' },
   { href: '#/projects', label: 'Projets' },
   { href: '#/teaching-research', label: 'Enseignement' },
   { href: '#/contact', label: 'Contact' },
+  { href: '#/perso', label: 'Perso' },
 ]
 
 export default function Footer() {
+  const consent = useContext(CookieConsentContext)
+  const openPreferences = consent?.openPreferences ?? (() => {})
+
   return (
     <footer className="border-t border-white/10 dark:border-gray-800" style={{ background: 'rgba(95, 42, 98, 0.08)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
       <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -16,6 +23,13 @@ export default function Footer() {
               {link.label}
             </a>
           ))}
+          <button
+            type="button"
+            onClick={openPreferences}
+            className="hover:text-primary dark:hover:text-primaryLight transition-colors no-underline"
+          >
+            Cookies
+          </button>
           <a
             href="https://github.com/SomathSatou"
             target="_blank"

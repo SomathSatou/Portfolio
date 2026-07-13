@@ -5,6 +5,7 @@ export const navLinks = [
   { href: '#/projects', label: 'Projets' },
   { href: '#/teaching-research', label: 'Enseignement et Recherche' },
   { href: '#/contact', label: 'Contact' },
+  { href: '#/perso', label: 'Perso' },
 ]
 
 export function useHeaderState() {

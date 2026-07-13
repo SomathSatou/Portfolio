@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /jdr/
+Disallow: /irlrpg/
+Disallow: /perso/
+
+Sitemap: https://automia.org/sitemap.xml

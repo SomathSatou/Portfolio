@@ -1,0 +1,32 @@
+{
+  "siteUrl": "https://automia.org",
+  "defaultLocale": "fr",
+  "pages": [
+    { "path": "/", "changefreq": "weekly", "priority": "1.0" },
+    { "path": "/cv", "changefreq": "monthly", "priority": "0.7" },
+    { "path": "/projects", "changefreq": "weekly", "priority": "0.9" },
+    { "path": "/teaching-research", "changefreq": "weekly", "priority": "0.9" },
+    { "path": "/contact", "changefreq": "monthly", "priority": "0.6" }
+  ],
+  "projectSlugs": [
+    "extraction-d-information-documentaire",
+    "generation-de-documents",
+    "llm-nlp",
+    "alfi-ludique",
+    "mechaidle",
+    "fullmetalwar",
+    "projet-a-definir-java-laravel-tailwindcss",
+    "infoscope-django-react",
+    "n8n",
+    "audit",
+    "ictai-2024",
+    "overview",
+    "vercel",
+    "supabase",
+    "openrouter",
+    "computer-vision",
+    "generative-ai",
+    "reconnaissance-lsf",
+    "ocr-ecriture-manuscrite"
+  ]
+}
