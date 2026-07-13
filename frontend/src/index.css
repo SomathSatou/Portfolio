@@ -214,6 +214,32 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Cookie consent */
+.cookie-banner {
+  @apply fixed bottom-0 left-0 right-0 z-50 border-t border-primary/20;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dark .cookie-banner {
+  background: rgba(17, 24, 39, 0.95);
+}
+.cookie-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.cookie-modal {
+  @apply w-full max-w-lg rounded-2xl p-6 shadow-2xl animate-scaleIn;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.dark .cookie-modal {
+  background: rgba(17, 24, 39, 0.98);
+}
+
 /* Chat scrollbar — themed */
 .chat-scrollbar::-webkit-scrollbar {
   width: 6px;

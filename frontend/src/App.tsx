@@ -11,6 +11,18 @@ import { teachingResearchCategories } from './data/teachingResearch'
 
 const heroSkills = ['Python', 'Java', 'C++', 'React', 'Django', 'CI/CD', 'API', 'TALN']
 
+/**
+ * Détermine la route courante du portfolio en privilégiant le hash
+ * (compatibilité historique) et en revenant au pathname quand aucun
+ * hash n'est présent. Cela permet au sitemap SEO d'utiliser des URLs
+ * propres (/project/:slug) tout en conservant les ancres (#/project/:slug).
+ */
+function getCurrentRoute(): string {
+  const hash = window.location.hash
+  if (hash && hash.length > 1) return hash
+  return window.location.pathname
+}
+
 function SectionCV() {
   return (
     <section id="cv" className="hero-blobs">
@@ -19,7 +31,9 @@ function SectionCV() {
           <div className="avatar-ring" />
           <img
             src="/assets/avatar.jpg"
-            alt="Avatar"
+            alt="Portrait de Thomas Saout, développeur logiciel et web"
+            loading="eager"
+            decoding="async"
             className="relative w-40 h-40 md:w-80 md:h-80 rounded-full object-cover ring-4 ring-white/80 dark:ring-gray-900/80 shadow-xl"
           />
         </div>
@@ -171,7 +185,7 @@ function SectionContact() {
       <div className="section animate-fadeIn">
         <SectionTitle title="Contact" subtitle="Envoyez-moi un message, je vous répondrai rapidement." />
 
-        <form onSubmit={onSubmit} className="mt-6 card-glass p-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <form onSubmit={onSubmit} aria-label="Formulaire de contact" className="mt-6 card-glass p-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-1">
             <Input label="Nom" value={name} onChange={(e) => setName(e.target.value)} placeholder="Votre nom" />
           </div>
@@ -259,7 +273,13 @@ function ProjectPage({ slug }: { slug: string }) {
             {/* istanbul ignore next */}
             {project.image && (
               <div className="overflow-hidden rounded-md mb-4">
-                <img src={project.image} alt={project.title} className="w-full transition-transform duration-500 hover:scale-105" />
+                <img
+                  src={project.image}
+                  alt={`Aperçu du projet ${project.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full transition-transform duration-500 hover:scale-105"
+                />
               </div>
             )}
             {/* istanbul ignore next */}
@@ -284,44 +304,44 @@ function ProjectPage({ slug }: { slug: string }) {
 }
 
 export default function App() {
-  const [hash, setHash] = React.useState<string>(/* v8 ignore next */ () => window.location.hash || '#/')
+  const [route, setRoute] = React.useState<string>(/* v8 ignore next */ () => getCurrentRoute())
 
   React.useEffect(() => {
-    const onHashChange = /* v8 ignore next */ () => setHash(window.location.hash || '#/')
+    const onHashChange = /* v8 ignore next */ () => setRoute(getCurrentRoute())
     window.addEventListener('hashchange', onHashChange)
     return /* v8 ignore next */ () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
   // Hub Perso — gateway to apps
-  if (hash === '#/perso') {
+  if (route === '#/perso' || route === '/perso') {
     return <HubPerso />
   }
-  if (hash === '#/perso/account') {
+  if (route === '#/perso/account' || route === '/perso/account') {
     return <HubAccountPage />
   }
 
   // IRL RPG routes — rendered outside of the portfolio Layout
-  if (hash.startsWith('#/irlrpg')) {
-    return <div className="theme-irlrpg"><MuscuRouter hash={hash} /></div>
+  if (route.startsWith('#/irlrpg') || route.startsWith('/irlrpg')) {
+    return <div className="theme-irlrpg"><MuscuRouter hash={route.replace(/^\/?/, '#/')} /></div>
   }
 
   // JDR routes — rendered outside of the portfolio Layout
-  if (hash.startsWith('#/jdr')) {
-    return <div className="theme-jdr"><JdrRouter hash={hash} /></div>
+  if (route.startsWith('#/jdr') || route.startsWith('/jdr')) {
+    return <div className="theme-jdr"><JdrRouter hash={route.replace(/^\/?/, '#/')} /></div>
   }
 
-  // Simple hash router: #/ for home, #/project/:slug for project page
+  // Portfolio router: support both hash-routing (#/...) and clean URLs (/...)
   let view: React.ReactNode = null
-  const match = hash.match(/^#\/project\/([^#/?]+)/)
-  if (match) {
-    view = <ProjectPage slug={match[1]} />
+  const projectMatch = route.match(/^#?\/project\/([^#/?]+)/)
+  if (projectMatch) {
+    view = <ProjectPage slug={projectMatch[1]} />
   } else {
-    // support #/cv, #/projects, #/contact for direct section links
+    // support /cv, /projects, /contact and #/cv, #/projects, #/contact for direct section links
     let scrollTo: 'cv' | 'projects' | 'teaching-research' | 'contact' | undefined
-    if (hash === '#/cv') scrollTo = 'cv'
-    else if (hash === '#/projects') scrollTo = 'projects'
-    else if (hash === '#/teaching-research') scrollTo = 'teaching-research'
-    else if (hash === '#/contact') scrollTo = 'contact'
+    if (route === '#/cv' || route === '/cv') scrollTo = 'cv'
+    else if (route === '#/projects' || route === '/projects') scrollTo = 'projects'
+    else if (route === '#/teaching-research' || route === '/teaching-research') scrollTo = 'teaching-research'
+    else if (route === '#/contact' || route === '/contact') scrollTo = 'contact'
     view = <Home scrollTo={scrollTo} />
   }
 
