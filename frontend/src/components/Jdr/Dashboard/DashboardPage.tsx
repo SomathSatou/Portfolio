@@ -154,7 +154,7 @@ export default function DashboardPage() {
         <h1 className="title-medieval text-2xl">
           Bienvenue, {user?.username}
         </h1>
-        <p className="mt-1 text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+        <p className="mt-1 text-sm dashboard-welcome-jdr">
           {isMJ ? 'Maître du Jeu' : 'Aventurier'} — {campaigns.length} campagne{campaigns.length !== 1 ? 's' : ''}, {myCharacters.length} personnage{myCharacters.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
             }
           >
             {myCharacters.length === 0 ? (
-              <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Aucun personnage pour le moment.</p>
+              <p className="text-sm empty-text-jdr">Aucun personnage pour le moment.</p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2 stagger-children">
                 {myCharacters.map((c) => (
@@ -189,7 +189,7 @@ export default function DashboardPage() {
             icon={<Flag className="w-5 h-5" />}
           >
             {campaigns.length === 0 ? (
-              <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Aucune campagne active.</p>
+              <p className="text-sm empty-text-jdr">Aucune campagne active.</p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2 stagger-children">
                 {campaigns.map((c) => (
@@ -208,19 +208,19 @@ export default function DashboardPage() {
               {isMJ ? (
                 // MJ sees a summary of all mini-games for all players
                 <div className="space-y-3">
-                  <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+                  <p className="text-sm empty-text-jdr">
                     Vue d'ensemble de tous les mini-jeux (à venir avec les modules Marchand, Cultivateur, Enchanteur).
                   </p>
                   <div className="grid gap-3 sm:grid-cols-3">
                     {MINI_GAMES.map((mg) => (
                       <div key={mg.key} className="card-parchment p-3">
                         <div className="flex items-center gap-2 mb-1">
-                          <svg className="w-4 h-4" style={{ color: '#c9a227' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <svg className="w-4 h-4 minigame-icon-jdr" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d={mg.icon} />
                           </svg>
-                          <span className="text-sm" style={{ fontFamily: "'Cinzel', serif", color: '#7c3a0e' }}>{mg.label}</span>
+                          <span className="text-sm minigame-label-jdr">{mg.label}</span>
                         </div>
-                        <p className="text-xs" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Module à venir</p>
+                        <p className="text-xs minigame-status-jdr">Module à venir</p>
                       </div>
                     ))}
                   </div>
@@ -231,12 +231,12 @@ export default function DashboardPage() {
                     const content = (
                       <>
                         <div className="flex items-center gap-2 mb-2">
-                          <svg className="w-5 h-5" style={{ color: '#c9a227' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <svg className="w-5 h-5 minigame-icon-jdr" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d={mg.icon} />
                           </svg>
-                          <span className="font-medium" style={{ fontFamily: "'Cinzel', serif", color: '#7c3a0e' }}>{mg.label}</span>
+                          <span className="font-medium minigame-label-jdr">{mg.label}</span>
                         </div>
-                        <p className="text-xs" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>{mg.summary(myCharacters)}</p>
+                        <p className="text-xs minigame-desc-jdr">{mg.summary(myCharacters)}</p>
                       </>
                     )
                     return mg.hash ? (
@@ -261,32 +261,29 @@ export default function DashboardPage() {
               icon={<Users className="w-5 h-5" />}
             >
               {characters.length === 0 ? (
-                <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Aucun personnage dans vos campagnes.</p>
+                <p className="text-sm empty-text-jdr">Aucun personnage dans vos campagnes.</p>
               ) : (
                 <div className="space-y-3">
                   {characters.filter((c) => c.player !== user?.id).map((c) => (
                     <a
                       key={c.id}
                       href={`#/jdr/character/${c.id}`}
-                      className="flex items-center gap-3 p-2 rounded no-underline transition-colors"
-                      style={{ borderLeft: '2px solid transparent' }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderLeftColor = '#c9a227'; (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(201,162,39,0.08)' }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderLeftColor = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.background = 'transparent' }}
+                      className="flex items-center gap-3 p-2 rounded no-underline transition-colors character-link-jdr"
                     >
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'rgba(201,162,39,0.15)', color: '#c9a227', fontFamily: "'Cinzel', serif" }}>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold character-avatar-jdr">
                         {c.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <span className="text-sm font-medium" style={{ fontFamily: "'Cinzel', serif", color: '#7c3a0e' }}>{c.name}</span>
-                        <span className="text-xs ml-2" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+                        <span className="text-sm font-medium character-name-jdr">{c.name}</span>
+                        <span className="text-xs ml-2 character-info-jdr">
                           ({c.player_name}) — {c.class_type || 'Classe inconnue'} Niv.{c.level}
                         </span>
                       </div>
-                      <span className="badge text-[10px]" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.6rem' }}>{c.campaign_name}</span>
+                      <span className="badge text-[10px] character-badge-jdr">{c.campaign_name}</span>
                     </a>
                   ))}
                   {characters.filter((c) => c.player !== user?.id).length === 0 && (
-                    <p className="text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Aucun joueur dans vos campagnes.</p>
+                    <p className="text-sm empty-text-jdr">Aucun joueur dans vos campagnes.</p>
                   )}
                 </div>
               )}

@@ -33,16 +33,16 @@ export default function ForgotPasswordPage() {
           <h1 className="title-medieval text-xl text-center mb-1">
             Parchemin Perdu
           </h1>
-          <p className="text-center text-sm mb-6" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+          <p className="text-center text-sm mb-6 forgot-subtitle-jdr">
             Saisissez votre email pour recevoir un lien de réinitialisation.
           </p>
 
           {success ? (
-            <div className="rounded p-4 text-center" style={{ background: 'rgba(132,204,22,0.08)', border: '1px solid rgba(132,204,22,0.3)' }}>
-              <p className="text-sm font-medium" style={{ fontFamily: "'IM Fell English', serif", color: '#7c3a0e' }}>
+            <div className="rounded p-4 text-center success-box-jdr">
+              <p className="text-sm font-medium success-main-text-jdr">
                 Si cet email est enregistré, un parchemin vous a été envoyé.
               </p>
-              <p className="text-xs mt-1" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+              <p className="text-xs mt-1 success-sub-text-jdr">
                 Vérifiez vos spams si vous ne le recevez pas.
               </p>
               <a href="#/jdr/login" className="mt-4 inline-block btn-medieval-outline text-sm">
@@ -52,22 +52,22 @@ export default function ForgotPasswordPage() {
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
+                <label className="block mb-1 label-jdr">
                   Adresse email
                 </label>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-parchment" placeholder="votre@email.com" />
               </div>
 
               {error && (
-                <p className="text-sm" style={{ color: '#b91c1c', fontFamily: "'IM Fell English', serif", fontStyle: 'italic' }}>{error}</p>
+                <p className="text-sm error-text-jdr">{error}</p>
               )}
 
               <button type="submit" disabled={loading} className="btn-medieval w-full justify-center">
                 {loading ? 'Envoi du parchemin…' : 'Envoyer le lien'}
               </button>
 
-              <p className="text-center text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
-                <a href="#/jdr/login" className="no-underline hover:underline" style={{ color: '#a0845c' }}>
+              <p className="text-center text-sm back-link-text-jdr">
+                <a href="#/jdr/login" className="no-underline hover:underline back-link-jdr">
                   ← Retour à la connexion
                 </a>
               </p>

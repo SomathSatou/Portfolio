@@ -39,18 +39,17 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        <div className="flex items-center justify-between h-16 px-4 shrink-0" style={{ borderBottom: '1px solid rgba(201,162,39,0.35)' }}>
+        <div className="flex items-center justify-between h-16 px-4 shrink-0 sidebar-header-jdr">
           <a
             href="#/jdr/dashboard"
             className="no-underline flex flex-col leading-none"
           >
             <span className="title-medieval text-base">Le Monde de Lug</span>
-            <span className="text-xs" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Livre de Campagne</span>
+            <span className="sidebar-subtitle-jdr">Livre de Campagne</span>
           </a>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1 rounded transition-colors"
-            style={{ color: '#92400e' }}
+            className="lg:hidden p-1 rounded transition-colors sidebar-close-jdr"
             aria-label="Fermer le menu"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -67,17 +66,9 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
                 key={item.label}
                 href={item.hash}
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-3 px-3 py-2 rounded no-underline transition-all text-sm"
-                style={{
-                  fontFamily: "'Cinzel', serif",
-                  fontSize: '0.78rem',
-                  letterSpacing: '0.03em',
-                  color: isActive ? '#7c3a0e' : '#5c3317',
-                  background: isActive ? 'rgba(201,162,39,0.2)' : 'transparent',
-                  borderLeft: isActive ? '3px solid #c9a227' : '3px solid transparent',
-                }}
+                className={`flex items-center gap-3 px-3 py-2 rounded no-underline transition-all text-sm sidebar-item-jdr ${isActive ? 'is-active' : ''}`}
               >
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: isActive ? '#c9a227' : '#a0845c' }}>
+                <svg className={`w-4 h-4 flex-shrink-0 sidebar-icon-jdr ${isActive ? 'is-active' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                 </svg>
                 {item.label}
@@ -86,11 +77,10 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="shrink-0 px-3 py-4" style={{ borderTop: '1px solid rgba(201,162,39,0.25)' }}>
+        <div className="shrink-0 px-3 py-4 sidebar-footer-jdr">
           <a
             href="#/"
-            className="flex items-center gap-2 px-3 py-2 rounded text-xs no-underline transition-colors"
-            style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}
+            className="flex items-center gap-2 px-3 py-2 rounded text-xs no-underline transition-colors sidebar-back-link-jdr"
           >
             ← Retour au portfolio
           </a>
@@ -100,19 +90,18 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
       {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top header parchemin */}
-        <header className="z-20 h-16 shrink-0 flex items-center justify-between px-4 lg:px-6" style={{ background: 'rgba(15,10,5,0.97)', borderBottom: '1px solid rgba(201,162,39,0.5)', backdropFilter: 'blur(8px)' }}>
+        <header className="z-20 h-16 shrink-0 flex items-center justify-between px-4 lg:px-6 topbar-jdr">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded transition-colors"
-              style={{ color: '#c9a227' }}
+              className="lg:hidden p-2 rounded transition-colors menu-burger-jdr"
               aria-label="Ouvrir le menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <a href="#/" className="lg:hidden text-xs no-underline transition-colors" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
+            <a href="#/" className="lg:hidden text-xs no-underline transition-colors portfolio-link-jdr">
               ← Portfolio
             </a>
           </div>
@@ -121,8 +110,8 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-4">
             <NotificationBell />
-            <div className="flex items-center gap-2 text-sm" style={{ color: '#e8d5a0' }}>
-              <span className="hidden sm:inline font-medium" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.8rem' }}>{user?.username}</span>
+            <div className="flex items-center gap-2 text-sm user-info-jdr">
+              <span className="hidden sm:inline font-medium username-jdr">{user?.username}</span>
               <button
                 onClick={logout}
                 className="btn-medieval-outline text-xs py-1 px-3"

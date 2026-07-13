@@ -6,7 +6,7 @@ export default function JdrHomePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center parchment-bg">
-        <p style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>Consultation des parchemins…</p>
+        <p className="loading-text-jdr">Consultation des parchemins…</p>
       </div>
     )
   }
@@ -19,10 +19,10 @@ export default function JdrHomePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center parchment-bg px-4 relative overflow-hidden">
       {/* Décoration coins */}
-      <div className="absolute top-8 left-8 w-16 h-16 opacity-20" style={{ borderTop: '3px solid #c9a227', borderLeft: '3px solid #c9a227' }} />
-      <div className="absolute top-8 right-8 w-16 h-16 opacity-20" style={{ borderTop: '3px solid #c9a227', borderRight: '3px solid #c9a227' }} />
-      <div className="absolute bottom-8 left-8 w-16 h-16 opacity-20" style={{ borderBottom: '3px solid #c9a227', borderLeft: '3px solid #c9a227' }} />
-      <div className="absolute bottom-8 right-8 w-16 h-16 opacity-20" style={{ borderBottom: '3px solid #c9a227', borderRight: '3px solid #c9a227' }} />
+      <div className="absolute top-8 left-8 w-16 h-16 opacity-20 corner-tl-jdr" />
+      <div className="absolute top-8 right-8 w-16 h-16 opacity-20 corner-tr-jdr" />
+      <div className="absolute bottom-8 left-8 w-16 h-16 opacity-20 corner-bl-jdr" />
+      <div className="absolute bottom-8 right-8 w-16 h-16 opacity-20 corner-br-jdr" />
 
       <div className="text-center max-w-xl z-10">
         {/* Ornement au-dessus du titre */}
@@ -33,7 +33,7 @@ export default function JdrHomePage() {
         <h1 className="title-medieval text-4xl md:text-5xl mb-2">
           Le Monde de Lug
         </h1>
-        <p className="mb-6" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', fontSize: '1.1rem', color: '#7c5a30' }}>
+        <p className="mb-6 subtitle-jdr">
           Livre de Campagne — Plateforme des Aventuriers
         </p>
 
@@ -41,7 +41,7 @@ export default function JdrHomePage() {
           <span>~ ~ ~</span>
         </div>
 
-        <p className="mb-8 leading-relaxed" style={{ fontFamily: "'IM Fell English', serif", color: '#5c3317', fontSize: '1rem' }}>
+        <p className="mb-8 leading-relaxed description-jdr">
           Accédez à vos campagnes, gérez vos personnages, parcourez le comptoir des marchands et dessinez vos runes. L'aventure vous attend.
         </p>
 
@@ -54,8 +54,8 @@ export default function JdrHomePage() {
           </a>
         </div>
 
-        <p className="mt-8 text-sm" style={{ fontFamily: "'IM Fell English', serif", fontStyle: 'italic', color: '#a0845c' }}>
-          <a href="#/" className="no-underline hover:underline" style={{ color: '#a0845c' }}>← Retour au portfolio</a>
+        <p className="mt-8 text-sm back-link-text-jdr">
+          <a href="#/" className="no-underline hover:underline back-link-jdr">← Retour au portfolio</a>
         </p>
       </div>
     </div>

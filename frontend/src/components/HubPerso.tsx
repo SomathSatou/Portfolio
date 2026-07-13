@@ -26,9 +26,9 @@ export default function HubPerso() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between animate-fadeIn">
           <div>
-            <h1 className="text-2xl font-bold text-primary dark:text-primaryLight">Mon Espace</h1>
+            <h1 className="text-2xl font-bold text-gradient">Mon Espace</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Accédez à vos applications
             </p>
@@ -53,21 +53,21 @@ export default function HubPerso() {
             Mon compte →
           </a>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 stagger-children">
           {apps.map((app) => (
             <a
               key={app.name}
               href={app.hash}
-              className={`group block rounded-xl border ${app.border} bg-gradient-to-br ${app.color} p-6 no-underline transition-all hover:shadow-lg hover:scale-[1.02]`}
+              className={`group block rounded-xl border ${app.border} bg-gradient-to-br ${app.color} p-6 no-underline transition-all hover:shadow-xl hover:-translate-y-1 animate-slideUp`}
             >
-              <div className="text-4xl mb-3">{app.icon}</div>
+              <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">{app.icon}</div>
               <h2 className={`text-lg font-bold text-gray-800 dark:text-gray-100 ${app.hoverColor} transition-colors`}>
                 {app.name}
               </h2>
               <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 {app.description}
               </p>
-              <div className={`mt-4 text-xs font-medium ${app.linkColor} opacity-0 group-hover:opacity-100 transition-opacity`}>
+              <div className={`mt-4 text-xs font-medium ${app.linkColor} opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300`}>
                 Ouvrir →
               </div>
             </a>

@@ -4,16 +4,19 @@ import JdrRouter from './components/Jdr/JdrRouter'
 import MuscuRouter from './components/Muscu/MuscuRouter'
 import HubPerso from './components/HubPerso'
 import HubAccountPage from './components/HubAccountPage'
+import { Badge, Button, Card, Input, SectionTitle, TextArea, useReveal } from './components/ui'
 import { categories as projectCategories } from './data/projects'
 import { projectBySlug } from './data/projectIndex'
 import { teachingResearchCategories } from './data/teachingResearch'
 
+const heroSkills = ['Python', 'Java', 'C++', 'React', 'Django', 'CI/CD', 'API', 'TALN']
+
 function SectionCV() {
   return (
-    <section id="cv">
+    <section id="cv" className="hero-blobs">
       <div className="section flex flex-col items-center text-center gap-6 animate-fadeIn">
         <div className="relative inline-block">
-          <div className="absolute -inset-1 rounded-full opacity-40" style={{ background: 'conic-gradient(from 0deg, var(--color-primary), var(--color-primaryLight), var(--color-accent3), var(--color-primary))' }} />
+          <div className="avatar-ring" />
           <img
             src="/assets/avatar.jpg"
             alt="Avatar"
@@ -21,8 +24,15 @@ function SectionCV() {
           />
         </div>
         <div className="max-w-3xl animate-slideUp">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary">Développeur logiciel et web</h1>
-          <p className="mt-4 text-base leading-relaxed text-justify">
+          <h1 className="text-3xl md:text-5xl font-bold">
+            <span className="text-gradient">Développeur logiciel et web</span>
+          </h1>
+          <div className="mt-4 flex flex-wrap justify-center gap-2 stagger-children">
+            {heroSkills.map((skill) => (
+              <Badge key={skill} className="animate-scaleIn">{skill}</Badge>
+            ))}
+          </div>
+          <p className="mt-5 text-base leading-relaxed text-justify">
             Développeur logiciel et web, j'évolue à l'interface entre recherche, ingénierie et applications métiers. 
             Je m'appuie sur une veille technologique continue pour sélectionner les outils, frameworks et architectures 
             les plus pertinents, puis les transformer en solutions logicielles robustes, performantes et maintenables. 
@@ -31,19 +41,12 @@ function SectionCV() {
             Sensible à la qualité du code et aux bonnes pratiques, je privilégie des solutions fiables, évolutives et adaptées aux usages 
             réels, en lien étroit avec les besoins métier. </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <a
-              href="/assets/cv.pdf"
-              className="btn btn-primary"
-              download
-            >
+            <Button href="/assets/cv.pdf" variant="primary" download className="hover-lift">
               Télécharger le CV
-            </a>
-            <a
-              href="#projects"
-              className="btn btn-outline"
-            >
+            </Button>
+            <Button href="#projects" variant="outline" className="hover-lift">
               Voir les projets
-            </a>
+            </Button>
           </div>
         </div>
       </div>
@@ -51,42 +54,62 @@ function SectionCV() {
   )
 }
 
+type CategoryLike = { name: string; projectSlugs: string[] }
+
+function CategoryGrid({ categories }: { categories: CategoryLike[] }) {
+  const ref = useReveal<HTMLDivElement>()
+  return (
+    <div ref={ref} className="reveal mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
+      {categories.map((cat, index) => (
+        <Card
+          key={cat.name}
+          variant="bento"
+          className={`animate-slideUp group flex flex-col ${index === 0 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-5 rounded-full" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent3))' }} />
+            <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
+          </div>
+          <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1 flex-1">
+            {cat.projectSlugs.map((slug) => {
+              const p = projectBySlug[slug]
+              /* istanbul ignore next */
+              if (!p) return null
+              return (
+                <li key={slug}>
+                  <a href={`#/project/${slug}`} className="hover:underline">
+                    {p.title}
+                  </a>
+                  {p.tags && p.tags.length > 0 && (
+                    <span className="ml-2 hidden lg:inline-flex flex-wrap gap-1 align-middle">
+                      {p.tags.slice(0, 2).map((t) => (
+                        <Badge key={t} className="!text-[0.65rem]">{t}</Badge>
+                      ))}
+                    </span>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+          {cat.projectSlugs.length > 0 && (
+            <div className="mt-4">
+              <Button href={`#/project/${cat.projectSlugs[0]}`} variant="accent" className="opacity-90 group-hover:opacity-100">
+                Voir un exemple
+              </Button>
+            </div>
+          )}
+        </Card>
+      ))}
+    </div>
+  )
+}
+
 function SectionProjects() {
   return (
     <section id="projects">
       <div className="section animate-fadeIn">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary">Projets</h2>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Un aperçu de mes travaux et domaines d’expertise.</p>
-
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
-          {projectCategories.map((cat) => (
-            <div key={cat.name} className="card-glass animate-slideUp group">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-1 h-5 rounded-full" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent3))' }} />
-                <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
-              </div>
-              <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1">
-                {cat.projectSlugs.map((slug) => {
-                  const p = projectBySlug[slug]
-                  /* istanbul ignore next */
-                  if (!p) return null
-                  return (
-                    <li key={slug}>
-                      <a href={`#/project/${slug}`} className="hover:underline">
-                        {p.title}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-              {cat.projectSlugs.length > 0 && (
-                <a href={`#/project/${cat.projectSlugs[0]}`} className="mt-4 inline-block btn btn-accent">
-                  Voir un exemple
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
+        <SectionTitle title="Projets" subtitle="Un aperçu de mes travaux et domaines d’expertise." />
+        <CategoryGrid categories={projectCategories} />
       </div>
     </section>
   )
@@ -96,35 +119,8 @@ function SectionTeachingResearch() {
   return (
     <section id="teaching-research">
       <div className="section animate-fadeIn">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary">Enseignement et Recherche</h2>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Travaux académiques, publications et supports liés à la formation.</p>
-
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
-          {teachingResearchCategories.map((cat) => (
-            <div key={cat.name} className="card-glass animate-slideUp group">
-              <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
-              <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-gray-300">
-                {cat.projectSlugs.map((slug) => {
-                  const p = projectBySlug[slug]
-                  /* istanbul ignore next */
-                  if (!p) return null
-                  return (
-                    <li key={slug}>
-                      <a href={`#/project/${slug}`} className="hover:underline">
-                        {p.title}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-              {cat.projectSlugs.length > 0 && (
-                <a href={`#/project/${cat.projectSlugs[0]}`} className="mt-4 inline-block btn btn-accent">
-                  Voir un exemple
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
+        <SectionTitle title="Enseignement et Recherche" subtitle="Travaux académiques, publications et supports liés à la formation." />
+        <CategoryGrid categories={teachingResearchCategories} />
       </div>
     </section>
   )
@@ -173,30 +169,26 @@ function SectionContact() {
   return (
     <section id="contact">
       <div className="section animate-fadeIn">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary">Contact</h2>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">Envoyez-moi un message, je vous répondrai rapidement.</p>
+        <SectionTitle title="Contact" subtitle="Envoyez-moi un message, je vous répondrai rapidement." />
 
         <form onSubmit={onSubmit} className="mt-6 card-glass p-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre nom" />
+            <Input label="Nom" value={name} onChange={(e) => setName(e.target.value)} placeholder="Votre nom" />
           </div>
           <div className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="votremail@example.com" />
+            <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="votremail@example.com" />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
-            <textarea rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Votre message"></textarea>
+            <TextArea label="Message" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Votre message" />
           </div>
           {/* Honeypot field (should stay empty) */}
           <input type="text" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
           <div className="sm:col-span-2 flex items-center justify-between">
             <span className={`text-xs ${resultOk === true ? 'text-green-700' : resultOk === false ? 'text-red-700' : 'text-gray-500'}`}>{resultMessage}</span>
-            <button disabled={loading} type="submit" className="btn btn-accent">
+            <Button disabled={loading} type="submit" variant="accent" className="hover-lift">
               {loading ? 'Envoi…' : 'Envoyer'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
@@ -263,21 +255,25 @@ function ProjectPage({ slug }: { slug: string }) {
               {project.description}
             </div>
           </div>
-          <aside className="card-glass animate-slideInRight">
+          <aside className="card-glass animate-slideInRight lg:sticky lg:top-24 self-start">
             {/* istanbul ignore next */}
             {project.image && (
-              <img src={project.image} alt={project.title} className="w-full rounded-md mb-4" />
+              <div className="overflow-hidden rounded-md mb-4">
+                <img src={project.image} alt={project.title} className="w-full transition-transform duration-500 hover:scale-105" />
+              </div>
             )}
             {/* istanbul ignore next */}
             {project.tags && project.tags.length > 0 && (
               <div className="mb-4 flex flex-wrap gap-2">
                 {project.tags.map((t: string) => (
-                  <span key={t} className="badge">{t}</span>
+                  <Badge key={t}>{t}</Badge>
                 ))}
               </div>
             )}
             {project.github && (
-              <a href={project.github} target="_blank" rel="noreferrer" className="btn btn-outline">Voir sur GitHub</a>
+              <Button href={project.github} target="_blank" rel="noreferrer" variant="outline" className="hover-lift">
+                Voir sur GitHub
+              </Button>
             )}
           </aside>
         </div>

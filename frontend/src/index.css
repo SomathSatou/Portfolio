@@ -13,20 +13,39 @@
   --color-irlrpg-primary: #0ea5e9;
   --color-irlrpg-primaryLight: #22d3ee;
   --color-irlrpg-accent: #84cc16;
+  --color-irlrpg-accentLight: #a3e635;
   --color-irlrpg-bg: #0f172a;
   --color-irlrpg-surface: #1e293b;
   --color-irlrpg-border: #0ea5e9;
+  --color-irlrpg-text: #e2e8f0;
+  --color-irlrpg-muted: #94a3b8;
 
   /* JDR palette — parchemin / grimoire */
   --color-jdr-primary: #92400e;
+  --color-jdr-primaryDark: #7c3a0e;
   --color-jdr-primaryLight: #d97706;
   --color-jdr-accent: #d4a96a;
+  --color-jdr-accentLight: #e8c07a;
   --color-jdr-bg-light: #fdf6e3;
   --color-jdr-bg-dark: #1a0e00;
   --color-jdr-surface-light: #f5e6c8;
   --color-jdr-surface-dark: #2d1a06;
   --color-jdr-ink: #3d1f00;
+  --color-jdr-ink-light: #5c3317;
+  --color-jdr-muted: #a0845c;
   --color-jdr-gold: #c9a227;
+  --color-jdr-text-dark: #e8d5b0;
+}
+
+:root {
+  /* Design tokens partagés */
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.14);
+  --duration-fast: 0.15s;
+  --duration-base: 0.25s;
+  --duration-slow: 0.5s;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Local Souvenir font if installed on system */
@@ -137,6 +156,12 @@
   figure {
     @apply dark:bg-gray-600;
   }
+
+  .input-base {
+    @apply w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-gray-100;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary;
+    transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
 }
 
 /* Header styles — glassmorphism */
@@ -218,7 +243,7 @@
   scrollbar-color: var(--color-primary) transparent;
 }
 
-/* ── JDR Animations ─────────────────────────────────────── */
+/* ── Animations partagées ───────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -231,18 +256,75 @@
   from { opacity: 0; transform: translateX(16px); }
   to { opacity: 1; transform: translateX(0); }
 }
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 .animate-fadeIn { animation: fadeIn 0.3s ease-out both; }
 .animate-slideUp { animation: slideUp 0.35s ease-out both; }
 .animate-slideInRight { animation: slideInRight 0.3s ease-out both; }
+.animate-scaleIn { animation: scaleIn 0.3s var(--ease-out-soft) both; }
+.animate-float { animation: floatSoft 5s ease-in-out infinite; }
+.animate-spinSlow { animation: spinSlow 14s linear infinite; }
+
+/* Reveal on scroll — piloté par le hook useReveal (IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-out-soft), transform var(--duration-slow) var(--ease-out-soft);
+}
+.reveal.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover lift — micro-interaction commune aux cards */
+.hover-lift {
+  transition: transform var(--duration-base) var(--ease-out-soft), box-shadow var(--duration-base) ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
 
 /* Stagger children for list animations */
-.stagger-children > :nth-child(1) { animation-delay: 0ms; }
-.stagger-children > :nth-child(2) { animation-delay: 50ms; }
-.stagger-children > :nth-child(3) { animation-delay: 100ms; }
-.stagger-children > :nth-child(4) { animation-delay: 150ms; }
-.stagger-children > :nth-child(5) { animation-delay: 200ms; }
-.stagger-children > :nth-child(6) { animation-delay: 250ms; }
+.stagger-children > :nth-child(1) { animation-delay: 0ms; transition-delay: 0ms; }
+.stagger-children > :nth-child(2) { animation-delay: 50ms; transition-delay: 50ms; }
+.stagger-children > :nth-child(3) { animation-delay: 100ms; transition-delay: 100ms; }
+.stagger-children > :nth-child(4) { animation-delay: 150ms; transition-delay: 150ms; }
+.stagger-children > :nth-child(5) { animation-delay: 200ms; transition-delay: 200ms; }
+.stagger-children > :nth-child(6) { animation-delay: 250ms; transition-delay: 250ms; }
+.stagger-children > :nth-child(7) { animation-delay: 300ms; transition-delay: 300ms; }
+.stagger-children > :nth-child(8) { animation-delay: 350ms; transition-delay: 350ms; }
+.stagger-children > :nth-child(9) { animation-delay: 400ms; transition-delay: 400ms; }
+.stagger-children > :nth-child(10) { animation-delay: 450ms; transition-delay: 450ms; }
+.stagger-children > :nth-child(11) { animation-delay: 500ms; transition-delay: 500ms; }
+.stagger-children > :nth-child(12) { animation-delay: 550ms; transition-delay: 550ms; }
+
+/* Accessibilité — désactiver les animations si demandé */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* ── JDR Card variant (glassmorphism) ───────────────────── */
 .card-glass {
@@ -327,12 +409,12 @@
 
 /* Animations néon */
 @keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 6px #0ea5e9, 0 0 12px #0ea5e9; }
-  50%       { box-shadow: 0 0 12px #0ea5e9, 0 0 28px #0ea5e9, 0 0 40px #22d3ee; }
+  0%, 100% { box-shadow: 0 0 6px var(--color-irlrpg-primary), 0 0 12px var(--color-irlrpg-primary); }
+  50%       { box-shadow: 0 0 12px var(--color-irlrpg-primary), 0 0 28px var(--color-irlrpg-primary), 0 0 40px var(--color-irlrpg-primaryLight); }
 }
 @keyframes neon-pulse-lime {
-  0%, 100% { box-shadow: 0 0 4px #84cc16, 0 0 10px #84cc16; }
-  50%       { box-shadow: 0 0 10px #84cc16, 0 0 20px #84cc16, 0 0 30px #a3e635; }
+  0%, 100% { box-shadow: 0 0 4px var(--color-irlrpg-accent), 0 0 10px var(--color-irlrpg-accent); }
+  50%       { box-shadow: 0 0 10px var(--color-irlrpg-accent), 0 0 20px var(--color-irlrpg-accent), 0 0 30px var(--color-irlrpg-accentLight); }
 }
 @keyframes scan-line {
   0%   { background-position: 0 0; }
@@ -400,8 +482,8 @@
   letter-spacing: 0.04em;
   font-family: Orbitron, sans-serif;
   background: transparent;
-  color: #0ea5e9;
-  border: 1.5px solid #0ea5e9;
+  color: var(--color-irlrpg-primary);
+  border: 1.5px solid var(--color-irlrpg-primary);
   box-shadow: 0 0 8px rgba(14, 165, 233, 0.35);
   transition: all 0.2s ease;
   cursor: pointer;
@@ -410,8 +492,8 @@
 .btn-neon:hover {
   background: rgba(14, 165, 233, 0.15);
   box-shadow: 0 0 18px rgba(14, 165, 233, 0.6), 0 0 4px rgba(14, 165, 233, 0.4);
-  color: #22d3ee;
-  border-color: #22d3ee;
+  color: var(--color-irlrpg-primaryLight);
+  border-color: var(--color-irlrpg-primaryLight);
 }
 .btn-neon:disabled {
   opacity: 0.5;
@@ -430,8 +512,8 @@
   letter-spacing: 0.04em;
   font-family: Orbitron, sans-serif;
   background: rgba(132, 204, 22, 0.15);
-  color: #84cc16;
-  border: 1.5px solid #84cc16;
+  color: var(--color-irlrpg-accent);
+  border: 1.5px solid var(--color-irlrpg-accent);
   box-shadow: 0 0 8px rgba(132, 204, 22, 0.3);
   transition: all 0.2s ease;
   cursor: pointer;
@@ -440,7 +522,7 @@
 .btn-neon-lime:hover {
   background: rgba(132, 204, 22, 0.25);
   box-shadow: 0 0 16px rgba(132, 204, 22, 0.5);
-  color: #a3e635;
+  color: var(--color-irlrpg-accentLight);
 }
 
 /* XP bar néon animée */
@@ -454,14 +536,14 @@
 .xp-bar-fill {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+  background: linear-gradient(90deg, var(--color-irlrpg-primary), var(--color-irlrpg-primaryLight));
   animation: neon-pulse 2.5s ease-in-out infinite;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .xp-bar-fill-lime {
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, #84cc16, #a3e635);
+  background: linear-gradient(90deg, var(--color-irlrpg-accent), var(--color-irlrpg-accentLight));
   animation: neon-pulse-lime 2.5s ease-in-out infinite;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -491,7 +573,7 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-neon:focus {
-  border-color: #0ea5e9;
+  border-color: var(--color-irlrpg-primary);
   box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25);
 }
 .input-neon::placeholder {
@@ -503,7 +585,7 @@
   font-family: Orbitron, sans-serif;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: #0ea5e9;
+  color: var(--color-irlrpg-primary);
   text-shadow: 0 0 12px rgba(14, 165, 233, 0.5);
 }
 
@@ -534,7 +616,7 @@
 }
 .dark .theme-jdr {
   background-color: var(--color-jdr-bg-dark);
-  color: #e8d5b0;
+  color: var(--color-jdr-text-dark);
 }
 
 /* Carte parchemin */
@@ -575,7 +657,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
   border-color: rgba(201, 162, 39, 0.3);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(201, 162, 39, 0.05), inset 0 1px 0 rgba(255,255,255,0.04);
-  color: #e8d5b0;
+  color: var(--color-jdr-text-dark);
 }
 .dark .card-parchment::before,
 .dark .card-parchment::after {
@@ -596,7 +678,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  background: linear-gradient(135deg, #c9a227 0%, #d4a96a 50%, #c9a227 100%);
+  background: linear-gradient(135deg, var(--color-jdr-gold) 0%, var(--color-jdr-accent) 50%, var(--color-jdr-gold) 100%);
   color: #1a0900;
   border: 1px solid rgba(201, 162, 39, 0.8);
   box-shadow: 0 2px 6px rgba(61, 31, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
@@ -605,7 +687,7 @@
   text-decoration: none;
 }
 .btn-medieval:hover {
-  background: linear-gradient(135deg, #d4a96a 0%, #e8c07a 50%, #d4a96a 100%);
+  background: linear-gradient(135deg, var(--color-jdr-accent) 0%, #e8c07a 50%, var(--color-jdr-accent) 100%);
   box-shadow: 0 3px 10px rgba(61, 31, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.4);
   color: #1a0900;
 }
@@ -626,7 +708,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   background: transparent;
-  color: #92400e;
+  color: var(--color-jdr-primary);
   border: 1px solid rgba(146, 64, 14, 0.6);
   transition: all 0.2s ease;
   cursor: pointer;
@@ -634,16 +716,16 @@
 }
 .btn-medieval-outline:hover {
   background: rgba(201, 162, 39, 0.1);
-  border-color: #c9a227;
-  color: #7c3a0e;
+  border-color: var(--color-jdr-gold);
+  color: var(--color-jdr-primaryDark);
 }
 .dark .btn-medieval-outline {
-  color: #d4a96a;
+  color: var(--color-jdr-accent);
   border-color: rgba(212, 169, 106, 0.5);
 }
 .dark .btn-medieval-outline:hover {
   background: rgba(201, 162, 39, 0.12);
-  border-color: #c9a227;
+  border-color: var(--color-jdr-gold);
   color: #e8c07a;
 }
 
@@ -654,13 +736,13 @@
   border: 1px solid rgba(146, 64, 14, 0.3);
   background: rgba(253, 246, 227, 0.7);
   padding: 0.5rem 0.75rem;
-  color: #3d1f00;
+  color: var(--color-jdr-ink);
   font-family: 'IM Fell English', serif;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-parchment:focus {
-  border-color: #c9a227;
+  border-color: var(--color-jdr-gold);
   box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.2);
   background: rgba(253, 246, 227, 0.95);
 }
@@ -671,10 +753,10 @@
 .dark .input-parchment {
   background: rgba(45, 26, 6, 0.8);
   border-color: rgba(201, 162, 39, 0.2);
-  color: #e8d5b0;
+  color: var(--color-jdr-text-dark);
 }
 .dark .input-parchment:focus {
-  border-color: #c9a227;
+  border-color: var(--color-jdr-gold);
   box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.15);
   background: rgba(45, 26, 6, 0.95);
 }
@@ -687,10 +769,10 @@
   font-family: 'Cinzel', serif;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: #92400e;
+  color: var(--color-jdr-primary);
 }
 .dark .title-medieval {
-  color: #d4a96a;
+  color: var(--color-jdr-accent);
   text-shadow: 0 0 20px rgba(201, 162, 39, 0.2);
 }
 
@@ -715,7 +797,7 @@
   padding: 0 0.75rem;
   font-family: 'Cinzel', serif;
   font-size: 0.75rem;
-  color: #c9a227;
+  color: var(--color-jdr-gold);
   letter-spacing: 0.15em;
 }
 .dark .divider-medieval span {
@@ -729,8 +811,8 @@
   font-family: 'IM Fell English', serif;
 }
 .table-medieval thead tr {
-  background: linear-gradient(135deg, #92400e, #7c3a0e);
-  color: #f5e6c8;
+  background: linear-gradient(135deg, var(--color-jdr-primary), var(--color-jdr-primaryDark));
+  color: var(--color-jdr-surface-light);
 }
 .table-medieval thead th {
   padding: 0.6rem 1rem;
@@ -749,10 +831,10 @@
 .table-medieval tbody td {
   padding: 0.5rem 1rem;
   border-bottom: 1px solid rgba(201, 162, 39, 0.2);
-  color: #3d1f00;
+  color: var(--color-jdr-ink);
 }
 .dark .table-medieval tbody td {
-  color: #e8d5b0;
+  color: var(--color-jdr-text-dark);
   border-bottom-color: rgba(201, 162, 39, 0.1);
 }
 .dark .table-medieval tbody tr:nth-child(even) {
@@ -764,26 +846,96 @@
 
 /* ── Header JDR (parchemin) ─────────────────────────────── */
 .header-jdr {
-  background: linear-gradient(135deg, #6b2d0e 0%, #92400e 50%, #7c3a0e 100%);
+  background: linear-gradient(135deg, #6b2d0e 0%, var(--color-jdr-primary) 50%, var(--color-jdr-primaryDark) 100%);
   border-bottom: 2px solid rgba(201, 162, 39, 0.5);
   box-shadow: 0 2px 12px rgba(61, 31, 0, 0.4);
 }
 .dark .header-jdr {
-  background: linear-gradient(135deg, #1a0e00 0%, #2d1a06 50%, #1a0e00 100%);
+  background: linear-gradient(135deg, var(--color-jdr-bg-dark) 0%, var(--color-jdr-surface-dark) 50%, var(--color-jdr-bg-dark) 100%);
   border-bottom-color: rgba(201, 162, 39, 0.3);
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.6), 0 0 30px rgba(201, 162, 39, 0.06);
 }
 
+/* ── Header JDR : brand, liens, toggle, menu mobile ─────── */
+.header-jdr-brand {
+  font-family: 'Cinzel', serif;
+  @apply font-semibold tracking-wide no-underline;
+  color: #fef3c7;
+}
+.header-jdr-brand:hover { color: #fcd34d; }
+.header-jdr-link {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.04em;
+  @apply no-underline transition-colors;
+  color: #fde68a;
+}
+.header-jdr-link:hover { color: #fbbf24; }
+.header-jdr-toggle {
+  font-family: 'Cinzel', serif;
+  @apply rounded px-3 py-1.5 text-xs font-medium cursor-pointer transition-colors;
+  background: rgba(180, 83, 9, 0.6);
+  color: #fef3c7;
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+.header-jdr-toggle:hover { background: rgba(217, 119, 6, 0.7); }
+.header-jdr-mobile-menu {
+  background: rgba(26, 14, 0, 0.97);
+  border-top: 1px solid rgba(201, 162, 39, 0.2);
+}
+.header-jdr-mobile-menu a {
+  font-family: 'Cinzel', serif;
+  @apply block px-4 py-3 no-underline transition-colors;
+  color: #fde68a;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+}
+.header-jdr-mobile-menu a:hover { background: rgba(146, 64, 14, 0.3); }
+
 /* ── Header IRL RPG (néon) ──────────────────────────────── */
 .header-irlrpg {
-  background: #0f172a;
+  background: var(--color-irlrpg-bg);
   border-bottom: 1px solid rgba(14, 165, 233, 0.4);
   box-shadow: 0 1px 0 rgba(14, 165, 233, 0.2), 0 4px 20px rgba(14, 165, 233, 0.1);
 }
+.header-irlrpg-brand {
+  font-family: Orbitron, sans-serif;
+  @apply font-semibold tracking-widest no-underline transition-colors;
+  color: var(--color-irlrpg-primary);
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+}
+.header-irlrpg-link {
+  font-family: Orbitron, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  @apply no-underline transition-colors;
+  color: var(--color-irlrpg-muted);
+}
+.header-irlrpg-link:hover { color: var(--color-irlrpg-primaryLight); }
+.header-irlrpg-toggle {
+  font-family: Orbitron, sans-serif;
+  letter-spacing: 0.06em;
+  @apply rounded px-3 py-1.5 text-xs font-medium cursor-pointer transition-all;
+  color: var(--color-irlrpg-primary);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  background: rgba(14, 165, 233, 0.08);
+}
+.header-irlrpg-toggle:hover { background: rgba(14, 165, 233, 0.16); }
+.header-irlrpg-mobile-menu {
+  background: var(--color-irlrpg-bg);
+  border-top: 1px solid rgba(14, 165, 233, 0.2);
+}
+.header-irlrpg-mobile-menu a {
+  font-family: Orbitron, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  @apply block px-4 py-3 no-underline transition-colors;
+  color: var(--color-irlrpg-muted);
+  border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+}
+.header-irlrpg-mobile-menu a:hover { color: var(--color-irlrpg-primaryLight); }
 
 /* ── Drawers JDR — thème parchemin adaptatif ─────────────── */
 :root {
-  --parchment-panel-bg: #f5e6c8;
+  --parchment-panel-bg: var(--color-jdr-surface-light);
 }
 .dark {
   --parchment-panel-bg: #1a0e05;
@@ -791,17 +943,497 @@
 
 /* ── Sidebar JDR ────────────────────────────────────────── */
 .sidebar-jdr {
-  background: linear-gradient(180deg, #f5e6c8 0%, #edddb8 100%);
+  background: linear-gradient(180deg, var(--color-jdr-surface-light) 0%, #edddb8 100%);
   border-right: 1px solid rgba(201, 162, 39, 0.4);
 }
 .dark .sidebar-jdr {
-  background: linear-gradient(180deg, #1a0e00 0%, #2d1a06 100%);
+  background: linear-gradient(180deg, var(--color-jdr-bg-dark) 0%, var(--color-jdr-surface-dark) 100%);
   border-right-color: rgba(201, 162, 39, 0.2);
 }
 
 /* ── Sidebar IRL RPG ────────────────────────────────────── */
 .sidebar-irlrpg {
-  background: #0f172a;
+  background: var(--color-irlrpg-bg);
   border-right: 1px solid rgba(14, 165, 233, 0.25);
   box-shadow: inset -1px 0 0 rgba(14, 165, 233, 0.1);
+}
+
+/* ── Sidebar items — JDR ────────────────────────────────── */
+.sidebar-item-jdr {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--color-jdr-ink-light);
+  border-left: 3px solid transparent;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-base) var(--ease-out-soft), transform var(--duration-fast) ease;
+}
+.sidebar-item-jdr:hover {
+  background: rgba(201, 162, 39, 0.1);
+  color: var(--color-jdr-primaryDark);
+  transform: translateX(2px);
+}
+.sidebar-item-jdr.is-active {
+  color: var(--color-jdr-primaryDark);
+  background: rgba(201, 162, 39, 0.2);
+  border-left-color: var(--color-jdr-gold);
+}
+.sidebar-item-jdr svg { color: var(--color-jdr-muted); }
+.sidebar-item-jdr.is-active svg { color: var(--color-jdr-gold); }
+.dark .sidebar-item-jdr { color: var(--color-jdr-accent); }
+.dark .sidebar-item-jdr:hover { color: var(--color-jdr-accentLight); background: rgba(201, 162, 39, 0.08); }
+.dark .sidebar-item-jdr.is-active { color: var(--color-jdr-accentLight); background: rgba(201, 162, 39, 0.14); }
+
+/* ── Sidebar items — IRL RPG ────────────────────────────── */
+.sidebar-item-irlrpg {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-family: Orbitron, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--color-irlrpg-muted);
+  border-left: 3px solid transparent;
+  transition: background var(--duration-fast) ease, color var(--duration-fast) ease, border-color var(--duration-base) var(--ease-out-soft), transform var(--duration-fast) ease;
+}
+.sidebar-item-irlrpg:hover {
+  background: rgba(14, 165, 233, 0.08);
+  color: var(--color-irlrpg-primaryLight);
+  transform: translateX(2px);
+}
+.sidebar-item-irlrpg.is-active {
+  color: var(--color-irlrpg-primaryLight);
+  background: rgba(14, 165, 233, 0.12);
+  border-left-color: var(--color-irlrpg-primary);
+  box-shadow: inset 0 0 12px rgba(14, 165, 233, 0.08);
+}
+.sidebar-item-irlrpg svg { color: var(--color-irlrpg-muted); }
+.sidebar-item-irlrpg.is-active svg { color: var(--color-irlrpg-primary); }
+
+/* ════════════════════════════════════════════════════════════
+   Portfolio — Hero & Bento
+   ════════════════════════════════════════════════════════════ */
+
+/* Blobs dégradés d'arrière-plan du hero */
+.hero-blobs {
+  position: relative;
+  overflow: hidden;
+}
+.hero-blobs::before,
+.hero-blobs::after {
+  content: '';
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-blobs::before {
+  width: 420px;
+  height: 420px;
+  top: -120px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(95, 42, 98, 0.28), transparent 70%);
+}
+.hero-blobs::after {
+  width: 360px;
+  height: 360px;
+  bottom: -140px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(245, 192, 36, 0.2), transparent 70%);
+}
+.dark .hero-blobs::before {
+  background: radial-gradient(circle, rgba(169, 118, 195, 0.18), transparent 70%);
+}
+.dark .hero-blobs::after {
+  background: radial-gradient(circle, rgba(245, 192, 36, 0.1), transparent 70%);
+}
+.hero-blobs > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Anneau conique animé autour de l'avatar */
+.avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg, var(--color-primary), var(--color-primaryLight), var(--color-accent3), var(--color-primary));
+  animation: spinSlow 10s linear infinite;
+  opacity: 0.6;
+}
+
+/* Texte en dégradé thème */
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-primary), var(--color-primaryLight) 55%, var(--color-accent3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .text-gradient {
+  background: linear-gradient(100deg, var(--color-primaryLight), var(--color-accent3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Card bento — bordure dégradée animée au survol */
+.card-bento {
+  position: relative;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(95, 42, 98, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--duration-base) var(--ease-out-soft), box-shadow var(--duration-base) ease, border-color var(--duration-base) ease;
+}
+.card-bento::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primaryLight), var(--color-accent3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--duration-base) ease;
+  pointer-events: none;
+}
+.card-bento:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(95, 42, 98, 0.18);
+}
+.card-bento:hover::before {
+  opacity: 1;
+}
+.dark .card-bento {
+  background: rgba(17, 24, 39, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.dark .card-bento:hover {
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(169, 118, 195, 0.12);
+}
+
+/* ── Stat card néon (compteurs IRL RPG) ─────────────────── */
+.stat-neon {
+  background: var(--color-irlrpg-surface);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease, transform var(--duration-base) var(--ease-out-soft);
+}
+.stat-neon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(14, 165, 233, 0.08), transparent);
+  transform: skewX(-15deg);
+  transition: left var(--duration-slow) ease;
+  pointer-events: none;
+}
+.stat-neon:hover {
+  border-color: rgba(14, 165, 233, 0.7);
+  box-shadow: 0 0 18px rgba(14, 165, 233, 0.25);
+  transform: translateY(-2px);
+}
+.stat-neon:hover::after {
+  left: 120%;
+}
+
+/* ── Textes thème IRL RPG (remplace les styles inline) ──── */
+.neon-label {
+  font-family: Orbitron, sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #475569;
+}
+.neon-text {
+  font-family: Orbitron, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-irlrpg-text);
+}
+.neon-accent-text {
+  font-family: Orbitron, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-irlrpg-accent);
+}
+.neon-primary-text {
+  font-family: Orbitron, sans-serif;
+  letter-spacing: 0.06em;
+  color: var(--color-irlrpg-primary);
+}
+.neon-divider { border-top: 1px solid rgba(14, 165, 233, 0.15); }
+.neon-row { border-bottom: 1px solid rgba(14, 165, 233, 0.1); }
+.neon-link {
+  font-family: Orbitron, sans-serif;
+  letter-spacing: 0.06em;
+  color: var(--color-irlrpg-primary);
+  text-decoration: none;
+}
+.neon-link:hover { text-decoration: underline; }
+.neon-label-lime { font-family: Orbitron, sans-serif; font-size: 0.6rem; letter-spacing: 0.2em; color: #84cc16; }
+.neon-error { color: #f87171; font-family: Orbitron, sans-serif; font-size: 0.7rem; letter-spacing: 0.04em; }
+.scanline-overlay { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(14,165,233,0.02) 2px, rgba(14,165,233,0.02) 4px); }
+.neon-divider { background: linear-gradient(90deg, transparent, #0ea5e9, transparent); }
+.neon-divider-faded { background: linear-gradient(90deg, transparent, rgba(14,165,233,0.3), transparent); }
+.neon-badge-lime { color: #84cc16; }
+.neon-description { color: #94a3b8; font-family: 'Inter', sans-serif; }
+.neon-stat-value { font-family: 'Orbitron', sans-serif; color: #0ea5e9; text-shadow: 0 0 10px rgba(14,165,233,0.4); }
+.neon-stat-label { font-family: 'Orbitron', sans-serif; letter-spacing: 0.12em; color: #334155; font-size: 0.75rem; }
+.glow-spot-blue { background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%); }
+.glow-spot-lime { background: radial-gradient(circle, rgba(132,204,22,0.06) 0%, transparent 70%); }
+.neon-avatar { background: var(--color-irlrpg-surface); border: 2px solid rgba(14,165,233,0.3); color: var(--color-irlrpg-primary); }
+.neon-rank { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+.neon-text-sm { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: #94a3b8; letter-spacing: 0.06em; }
+.neon-error-xs { color: #f87171; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.04em; }
+.neon-success { color: #84cc16; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; }
+.neon-subtitle { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 600; color: var(--color-irlrpg-primary); letter-spacing: 0.08em; }
+.neon-badge { background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2); }
+.neon-badge-text { color: var(--color-irlrpg-text); font-family: 'Inter', sans-serif; }
+.neon-group-title { font-family: 'Orbitron', sans-serif; font-size: 0.875rem; font-weight: 500; color: var(--color-irlrpg-primary); letter-spacing: 0.06em; }
+.neon-muscle-name { color: var(--color-irlrpg-text); font-family: 'Inter', sans-serif; }
+.neon-progress-bg { background: rgba(14,165,233,0.1); }
+.neon-progress-fill { background: linear-gradient(90deg, #0ea5e9, #38bdf8); transition: width 0.3s ease; }
+.neon-xp-text { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #64748b; letter-spacing: 0.04em; }
+.neon-empty-text { color: #64748b; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; letter-spacing: 0.06em; text-align: center; }
+.neon-success-box { background: rgba(132,204,22,0.08); border: 1px solid rgba(132,204,22,0.3); }
+.neon-success-text { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.06em; color: #84cc16; }
+
+/* ── Textes thème JDR (remplace les styles inline) ──────── */
+.ink-text { color: var(--color-jdr-ink-light); }
+.dark .ink-text { color: var(--color-jdr-text-dark); }
+.ink-muted {
+  color: var(--color-jdr-muted);
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+}
+.dark .ink-muted { color: #7c5a30; }
+
+/* ── Header top-bar JDR (barre sombre au-dessus du contenu) ─ */
+.topbar-jdr {
+  background: rgba(15, 10, 5, 0.97);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Sidebar JDR classes ─ */
+.sidebar-header-jdr { border-bottom: 1px solid rgba(201,162,39,0.35); }
+.sidebar-subtitle-jdr { font-family: 'IM Fell English', serif; font-style: italic; color: #a0845c; font-size: 0.75rem; }
+.sidebar-close-jdr { color: #92400e; }
+.sidebar-close-jdr:hover { background: rgba(201,162,39,0.1); }
+.sidebar-item-jdr {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: #5c3317;
+  background: transparent;
+  border-left: 3px solid transparent;
+}
+.sidebar-item-jdr:hover {
+  background: rgba(201,162,39,0.1);
+  color: #7c3a0e;
+}
+.sidebar-item-jdr.is-active {
+  color: #7c3a0e;
+  background: rgba(201,162,39,0.2);
+  border-left-color: #c9a227;
+}
+.sidebar-icon-jdr { color: #a0845c; }
+.sidebar-icon-jdr.is-active { color: #c9a227; }
+.sidebar-footer-jdr { border-top: 1px solid rgba(201,162,39,0.25); }
+.sidebar-back-link-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.sidebar-back-link-jdr:hover {
+  background: rgba(201,162,39,0.1);
+  color: #7c3a0e;
+}
+.menu-burger-jdr { color: #c9a227; }
+.menu-burger-jdr:hover { background: rgba(201,162,39,0.1); }
+.portfolio-link-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.portfolio-link-jdr:hover { color: #7c3a0e; }
+.user-info-jdr { color: #e8d5a0; }
+.username-jdr {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: #e8d5a0;
+}
+
+/* ── JDR Home page classes ─ */
+.loading-text-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.corner-tl-jdr { border-top: 3px solid #c9a227; border-left: 3px solid #c9a227; }
+.corner-tr-jdr { border-top: 3px solid #c9a227; border-right: 3px solid #c9a227; }
+.corner-bl-jdr { border-bottom: 3px solid #c9a227; border-left: 3px solid #c9a227; }
+.corner-br-jdr { border-bottom: 3px solid #c9a227; border-right: 3px solid #c9a227; }
+.subtitle-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #7c5a30;
+}
+.description-jdr {
+  font-family: 'IM Fell English', serif;
+  color: #5c3317;
+  font-size: 1rem;
+}
+.back-link-text-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.back-link-jdr { color: #a0845c; }
+.back-link-jdr:hover { color: #7c3a0e; }
+
+/* ── JDR Profile page classes ─ */
+.profile-avatar-jdr {
+  background: rgba(201,162,39,0.2);
+  color: #7c3a0e;
+}
+.profile-subtitle-jdr {
+  font-family: 'IM Fell English', serif;
+  color: #a0845c;
+}
+.label-jdr {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #7c3a0e;
+}
+.error-text-jdr {
+  color: #b91c1c;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+}
+.success-text-jdr {
+  color: #15803d;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+}
+
+/* ── JDR Authentication page classes ─ */
+.login-subtitle-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.forgot-link-text-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+}
+.forgot-link-jdr { color: #a0845c; }
+.forgot-link-jdr:hover { color: #7c3a0e; }
+.register-text-jdr {
+  font-family: 'IM Fell English', serif;
+  color: #7c5a30;
+}
+.register-link-jdr { color: #92400e; }
+.register-link-jdr:hover { color: #7c3a0e; }
+.forgot-subtitle-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.success-box-jdr {
+  background: rgba(132,204,22,0.08);
+  border: 1px solid rgba(132,204,22,0.3);
+}
+.success-main-text-jdr {
+  font-family: 'IM Fell English', serif;
+  color: #7c3a0e;
+}
+.success-sub-text-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+
+/* ── JDR Dashboard page classes ─ */
+.dashboard-welcome-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.empty-text-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.minigame-icon-jdr { color: #c9a227; }
+.minigame-label-jdr {
+  font-family: 'Cinzel', serif;
+  color: #7c3a0e;
+}
+.minigame-status-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.minigame-desc-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.character-link-jdr {
+  border-left: 2px solid transparent;
+}
+.character-link-jdr:hover {
+  border-left-color: #c9a227;
+  background: rgba(201,162,39,0.08);
+}
+.character-avatar-jdr {
+  background: rgba(201,162,39,0.15);
+  color: #c9a227;
+  font-family: 'Cinzel', serif;
+}
+.character-name-jdr {
+  font-family: 'Cinzel', serif;
+  color: #7c3a0e;
+}
+.character-info-jdr {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  color: #a0845c;
+}
+.character-badge-jdr {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+}
+
+/* ── Card glass : bordure lumineuse au survol ───────────── */
+.card-glass:hover {
+  border-color: rgba(95, 42, 98, 0.35);
+}
+.dark .card-glass:hover {
+  border-color: rgba(169, 118, 195, 0.3);
 }
