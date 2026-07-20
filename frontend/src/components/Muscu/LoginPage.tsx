@@ -44,15 +44,15 @@ export default function LoginPage() {
             <div className="mt-3 h-px neon-divider" />
           </div>
 
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4" autoComplete="on">
             <div>
-              <label className="block neon-label mb-1">EMAIL</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-neon" placeholder="votre@email.com" />
+              <label htmlFor="muscu-login-email" className="block neon-label mb-1">EMAIL</label>
+              <input id="muscu-login-email" name="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-neon" placeholder="votre@email.com" />
             </div>
 
             <div>
-              <label className="block neon-label mb-1">MOT DE PASSE</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-neon" placeholder="••••••••" />
+              <label htmlFor="muscu-login-password" className="block neon-label mb-1">MOT DE PASSE</label>
+              <input id="muscu-login-password" name="password" type="password" autoComplete="current-password" data-clarity-mask="true" value={password} onChange={(e) => setPassword(e.target.value)} className="input-neon" placeholder="••••••••" />
             </div>
 
             {error && (

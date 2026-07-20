@@ -99,13 +99,13 @@ export default function ResetPasswordPage() {
                 <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                   Nouveau mot de passe
                 </label>
-                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
+                <input name="new-password" type="password" autoComplete="new-password" data-clarity-mask="true" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
               </div>
               <div>
                 <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                   Confirmer le mot de passe
                 </label>
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
+                <input name="new-password-confirm" type="password" autoComplete="new-password" data-clarity-mask="true" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input-parchment" placeholder="••••••••" minLength={8} />
               </div>
 
               {error && (
