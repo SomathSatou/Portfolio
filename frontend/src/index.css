@@ -7,7 +7,7 @@
   --color-primaryLight: #a976c3;
   --color-accent1: #a0de59;
   --color-accent2: #466b5a;
-  --color-accent3: #f5c024;
+  --color-accent3: #a0de59;
 
   /* IRL RPG palette — néon sport électrique */
   --color-irlrpg-primary: #0ea5e9;
@@ -1075,13 +1075,13 @@
   height: 360px;
   bottom: -140px;
   right: -80px;
-  background: radial-gradient(circle, rgba(245, 192, 36, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(160, 222, 89, 0.2), transparent 70%);
 }
 .dark .hero-blobs::before {
   background: radial-gradient(circle, rgba(169, 118, 195, 0.18), transparent 70%);
 }
 .dark .hero-blobs::after {
-  background: radial-gradient(circle, rgba(245, 192, 36, 0.1), transparent 70%);
+  background: radial-gradient(circle, rgba(160, 222, 89, 0.1), transparent 70%);
 }
 .hero-blobs > * {
   position: relative;
