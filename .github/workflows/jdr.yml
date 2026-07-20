@@ -91,11 +91,9 @@ jobs:
             echo "Configuring git safe directory..."
             git config --global --add safe.directory "${DEPLOY_DIR}"
 
-            echo "Resetting local changes before pull..."
-            git checkout -- . || true
-
-            echo "Pulling latest changes..."
-            git pull origin main || { echo "::error::git pull failed"; exit 1; }
+            echo "Fetching and resetting to origin/main..."
+            git fetch origin || { echo "::error::git fetch failed"; exit 1; }
+            git reset --hard origin/main || { echo "::error::git reset failed"; exit 1; }
 
             if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
               echo "::error::deploy.sh not found"
