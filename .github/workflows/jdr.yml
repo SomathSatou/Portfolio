@@ -91,6 +91,9 @@ jobs:
             echo "Configuring git safe directory..."
             git config --global --add safe.directory "${DEPLOY_DIR}"
 
+            echo "Resetting local changes before pull..."
+            git checkout -- . || true
+
             echo "Pulling latest changes..."
             git pull origin main || { echo "::error::git pull failed"; exit 1; }
 

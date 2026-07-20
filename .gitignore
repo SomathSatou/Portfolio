@@ -71,3 +71,7 @@ htmlcov/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# === SEO ===
+/public/sitemap.xml
+/public/robots.txt
