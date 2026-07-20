@@ -9,7 +9,7 @@ export default {
           primaryLight: "#a976c3",
           accent1: "#a0de59",
           accent2: "#466b5a",
-          accent3: "#f5c024",
+          accent3: "#a0de59",
           /* IRL RPG */
           irlrpgPrimary: "#dc2626",
           irlrpgLight: "#2563eb",

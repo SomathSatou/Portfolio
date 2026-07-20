@@ -13,7 +13,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_AUTOMIA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsaz
           echo "=== SSH key configured ==="
           echo "Scanning host ${{ vars.SSH_AUTOMIA_HOST }}..."
           ssh-keyscan -H ${{ vars.SSH_AUTOMIA_HOST }} >> ~/.ssh/known_hosts 2>&1 || {
