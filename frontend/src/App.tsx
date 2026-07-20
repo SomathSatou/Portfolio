@@ -322,12 +322,12 @@ export default function App() {
 
   // IRL RPG routes — rendered outside of the portfolio Layout
   if (route.startsWith('#/irlrpg') || route.startsWith('/irlrpg')) {
-    return <div className="theme-irlrpg"><MuscuRouter hash={route.replace(/^\/?/, '#/')} /></div>
+    return <div className="theme-irlrpg"><MuscuRouter hash={route.startsWith('#') ? route : `#${route}`} /></div>
   }
 
   // JDR routes — rendered outside of the portfolio Layout
   if (route.startsWith('#/jdr') || route.startsWith('/jdr')) {
-    return <div className="theme-jdr"><JdrRouter hash={route.replace(/^\/?/, '#/')} /></div>
+    return <div className="theme-jdr"><JdrRouter hash={route.startsWith('#') ? route : `#${route}`} /></div>
   }
 
   // Portfolio router: support both hash-routing (#/...) and clean URLs (/...)

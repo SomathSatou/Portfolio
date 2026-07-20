@@ -3,6 +3,14 @@ import { DescriptionExtractDoc } from '../components/Project/DescriptionExtractD
 import { DescFullMetalWar } from '../components/Project/DescFullMetalWar';
 import { DescInfoscope } from '../components/Project/DescInfoscope';
 
+export type Session = {
+  id: string
+  title: string
+  description: ReactNode
+  content?: ReactNode
+  duration?: string
+}
+
 export type Project = {
   slug: string
   title: string
@@ -11,6 +19,7 @@ export type Project = {
   tags?: string[]
   github?: string
   image?: string
+  sessions?: Session[]
 }
 
 function toSlug(label: string) {
