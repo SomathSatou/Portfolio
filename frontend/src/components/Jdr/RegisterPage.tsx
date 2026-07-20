@@ -77,13 +77,13 @@ export default function RegisterPage() {
               <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                 Mot de passe
               </label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-parchment" placeholder="••••••••" />
+              <input name="password" type="password" autoComplete="new-password" data-clarity-mask="true" value={password} onChange={(e) => setPassword(e.target.value)} className="input-parchment" placeholder="••••••••" />
             </div>
             <div>
               <label className="block mb-1" style={{ fontFamily: "'Cinzel', serif", fontSize: '0.75rem', letterSpacing: '0.06em', color: '#7c3a0e' }}>
                 Confirmer le mot de passe
               </label>
-              <input type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} className="input-parchment" placeholder="••••••••" />
+              <input name="password-confirm" type="password" autoComplete="new-password" data-clarity-mask="true" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} className="input-parchment" placeholder="••••••••" />
             </div>
 
             {error && (

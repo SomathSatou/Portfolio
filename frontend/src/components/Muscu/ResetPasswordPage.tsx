@@ -93,11 +93,11 @@ export default function ResetPasswordPage() {
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
                 <label className="block neon-label mb-1">NOUVEAU MDP</label>
-                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="input-neon" placeholder="••••••••" minLength={8} />
+                <input name="new-password" type="password" autoComplete="new-password" data-clarity-mask="true" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="input-neon" placeholder="••••••••" minLength={8} />
               </div>
               <div>
                 <label className="block neon-label mb-1">CONFIRMER MDP</label>
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input-neon" placeholder="••••••••" minLength={8} />
+                <input name="new-password-confirm" type="password" autoComplete="new-password" data-clarity-mask="true" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="input-neon" placeholder="••••••••" minLength={8} />
               </div>
 
               {error && (

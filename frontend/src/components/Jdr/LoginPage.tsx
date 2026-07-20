@@ -43,13 +43,16 @@ export default function LoginPage() {
             Le Monde de Lug
           </p>
 
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4" autoComplete="on">
             <div>
-              <label className="block mb-1 text-sm font-medium label-jdr">
+              <label htmlFor="jdr-login-email" className="block mb-1 text-sm font-medium label-jdr">
                 Adresse email
               </label>
               <input
+                id="jdr-login-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="input-parchment"
@@ -58,11 +61,15 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block mb-1 text-sm font-medium label-jdr">
+              <label htmlFor="jdr-login-password" className="block mb-1 text-sm font-medium label-jdr">
                 Mot de passe
               </label>
               <input
+                id="jdr-login-password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
+                data-clarity-mask="true"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input-parchment"
