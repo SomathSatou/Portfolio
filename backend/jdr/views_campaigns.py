@@ -3,19 +3,17 @@
 Gère le cycle de vie des campagnes : CRUD, sessions en direct,
 avance inter-session (marché + jardin), invitations et membres.
 """
-import random
-from decimal import Decimal
-
+from django.db import transaction
 from django.db.models import Q
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import (
-    Campaign, CampaignEvent, CampaignMembership, Character,
-    CharacterItem, City, Item, MarketPrice, MerchantInventory,
+    Campaign, CampaignEvent, CampaignMembership, Character, City, MarketPrice,
     MerchantOrder, Notification, Resource,
 )
+from .services.merchant_inventory import receive_delivery
 from .serializers import (
     CampaignEventSerializer, CampaignMembershipSerializer,
     CampaignSerializer, CampaignSettingsSerializer, CityListSerializer,
@@ -43,8 +41,9 @@ class CampaignViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     @action(detail=True, methods=['post'], url_path='advance-session')
+    @transaction.atomic
     def advance_session(self, request, pk=None):
-        campaign = self.get_object()
+        campaign = Campaign.objects.select_for_update().get(pk=pk)
         if campaign.game_master != request.user:
             return Response(
                 {'detail': 'Seul le MJ peut avancer la session.'},
@@ -83,16 +82,11 @@ class CampaignViewSet(viewsets.ModelViewSet):
                     )
 
         # Décrémenter transit des commandes et livrer
-        from .views_economy import AVAILABILITY_RANGES
-        transit_orders = MerchantOrder.objects.filter(
+        transit_orders = MerchantOrder.objects.select_for_update().filter(
             campaign=campaign, status='in_transit',
         ).select_related('character', 'resource')
 
         delivered_notifications: list[Notification] = []
-        availability_rarity = {
-            'Abondant': 'commun', 'Commun': 'commun', 'Moyen': 'peu_commun',
-            'Rare': 'rare', 'Légendaire': 'légendaire',
-        }
         for order in transit_orders:
             order.sessions_remaining -= 1
             if order.sessions_remaining <= 0:
@@ -108,41 +102,12 @@ class CampaignViewSet(viewsets.ModelViewSet):
                     notification_type='info',
                 ))
 
-                item, _created = Item.objects.get_or_create(
-                    campaign=campaign,
-                    resource=order.resource,
-                    defaults={
-                        'name': order.resource.name,
-                        'description': f'Ressource marchande ({order.resource.craft_type})',
-                        'item_type': order.resource.craft_type,
-                        'rarity': availability_rarity.get(order.resource.availability, 'commun'),
-                        'value': order.buy_price_unit,
-                    },
-                )
-                ci, ci_created = CharacterItem.objects.get_or_create(
-                    character=order.character,
-                    item=item,
-                    defaults={'quantity': order.quantity},
-                )
-                if not ci_created:
-                    ci.quantity += order.quantity
-                    ci.save(update_fields=['quantity'])
-
-                mi, mi_created = MerchantInventory.objects.get_or_create(
+                receive_delivery(
                     character=order.character,
                     resource=order.resource,
-                    defaults={
-                        'quantity': order.quantity,
-                        'average_buy_price': order.buy_price_unit,
-                    },
+                    quantity=order.quantity,
+                    unit_cost=order.buy_price_unit,
                 )
-                if not mi_created:
-                    old_total = mi.average_buy_price * mi.quantity
-                    new_total = order.buy_price_unit * order.quantity
-                    mi.quantity += order.quantity
-                    if mi.quantity > 0:
-                        mi.average_buy_price = (old_total + new_total) / mi.quantity
-                    mi.save(update_fields=['quantity', 'average_buy_price'])
 
             order.save(update_fields=['sessions_remaining', 'status'])
 

@@ -10,13 +10,16 @@ const statusConfig: Record<string, { label: string; color: string }> = {
 
 interface Props {
   order: MerchantOrderItem
+  onSell?: () => void
 }
 
-export default function OrderCard({ order }: Props) {
+export default function OrderCard({ order, onSell }: Props) {
   const cfg = statusConfig[order.status] ?? statusConfig.pending
-  const progressPct = order.transit_sessions > 0
-    ? Math.round(((order.transit_sessions - order.sessions_remaining) / order.transit_sessions) * 100)
-    : 100
+  const totalSessions = order.transit_sessions + 1
+  const sessionsDone = order.status === 'pending'
+    ? 0
+    : totalSessions - order.sessions_remaining
+  const progressPct = Math.min(100, Math.round((sessionsDone / totalSessions) * 100))
 
   return (
     <div className="card p-4 space-y-3">
@@ -26,7 +29,9 @@ export default function OrderCard({ order }: Props) {
             {order.quantity}× {order.resource_name}
           </h4>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Acheté à {order.buy_city_name} — {parseFloat(order.buy_price_unit).toFixed(2)} po/{order.resource_unit}
+            {order.buy_city_name
+              ? `Acheté à ${order.buy_city_name} — ${parseFloat(order.buy_price_unit).toFixed(2)} po/${order.resource_unit}`
+              : `Stock en inventaire — ${parseFloat(order.buy_price_unit).toFixed(2)} po/${order.resource_unit}`}
           </p>
         </div>
         <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${cfg.color}`}>
@@ -38,7 +43,7 @@ export default function OrderCard({ order }: Props) {
       {(order.status === 'in_transit' || order.status === 'pending') && (
         <div>
           <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-            <span>Transit</span>
+            <span>Avancement</span>
             <span>{order.sessions_remaining} session{order.sessions_remaining !== 1 ? 's' : ''} restante{order.sessions_remaining !== 1 ? 's' : ''}</span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -74,6 +79,18 @@ export default function OrderCard({ order }: Props) {
             </span>
           </div>
         </>
+      )}
+
+      {/* Sell delivered order */}
+      {order.status === 'delivered' && onSell && (
+        <div className="pt-1">
+          <button
+            onClick={onSell}
+            className="w-full btn btn-accent text-xs py-1.5"
+          >
+            Vendre depuis cette livraison
+          </button>
+        </div>
       )}
 
     </div>

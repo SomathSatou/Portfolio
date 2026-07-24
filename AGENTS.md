@@ -30,6 +30,9 @@ Portfolio/
 │   │   ├── views.py             # ProjectViewSet (read-only), ContactAPIView (email + honeypot)
 │   │   ├── serializers.py       # ProjectSerializer, ContactSerializer
 │   │   └── urls.py              # /api/projects/, /api/contact/
+│   ├── jdr/                     # Module JDR (API, modèles, services, migrations)
+│   │   ├── services/            # Services métier transactionnels
+│   │   └── management/commands/ # Commandes d’administration, dont audit_jdr_data
 │   └── db.sqlite3               # SQLite dev database
 ├── start.ps1          # PowerShell: lance backend + frontend en parallèle
 ├── deploy.sh          # Déploiement Linux (git pull, migrate, build, systemctl)
@@ -188,6 +191,8 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 - Toujours lancer `npm run lint` dans `frontend/` avant de proposer un commit
 - Vérifier `tsc -b` (via `npm run build`) pour les erreurs TypeScript
 - Ne pas modifier `db.sqlite3` directement — utiliser les migrations Django
+- Avant une migration de données JDR, exécuter `.venv\Scripts\python.exe backend\manage.py audit_jdr_data --json` depuis la racine ; les livraisons marchandes alimentent uniquement `MerchantInventory`
+- `Monster` est un modèle de créature autonome : ne pas le lier à `Character` ni lui attribuer de joueur, inventaire, portefeuille ou ressources de personnage
 - Ajouter un nouveau projet : créer l'entrée dans `data/projects.ts` ou `data/teachingResearch.ts`, ajouter son slug dans `data/seo.json`, et si besoin un composant `Desc*.tsx`
 - Lancer `npm run seo` après toute modification de `data/seo.json` pour régénérer `public/robots.txt` et `public/sitemap.xml`
 - Respecter le thème de couleurs existant (tokens ci-dessus)

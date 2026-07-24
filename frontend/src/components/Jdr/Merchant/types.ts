@@ -49,8 +49,8 @@ export interface MerchantOrderItem {
   resource_name: string
   resource_unit: string
   quantity: number
-  buy_city: number
-  buy_city_name: string
+  buy_city: number | null
+  buy_city_name: string | null
   buy_price_unit: string
   sell_city: number | null
   sell_city_name: string | null

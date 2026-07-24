@@ -249,6 +249,13 @@ class Item(models.Model):
     class Meta:
         ordering = ['name']
         unique_together = ('campaign', 'name')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['campaign', 'resource'],
+                condition=models.Q(resource__isnull=False),
+                name='unique_resource_item_per_campaign',
+            ),
+        ]
         verbose_name = 'Objet'
         verbose_name_plural = 'Objets'
 
@@ -325,6 +332,12 @@ class CharacterItem(models.Model):
 
     class Meta:
         unique_together = ('character', 'item')
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gte=0),
+                name='character_item_quantity_nonnegative',
+            ),
+        ]
         verbose_name = 'Objet de personnage'
         verbose_name_plural = 'Objets de personnage'
 
@@ -411,7 +424,15 @@ class CharacterPassiveSkill(models.Model):
 
 # ─── Bestiary ───────────────────────────────────────────────────────────────
 
-class Monster(Character):
+class Monster(models.Model):
+    campaign = models.ForeignKey(
+        Campaign, on_delete=models.SET_NULL, related_name='monsters', null=True, blank=True,
+    )
+    is_global = models.BooleanField(default=False)
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, default='')
+    hp = models.IntegerField(default=0)
+    max_hp = models.IntegerField(default=10)
     armor_class = models.IntegerField(default=10, help_text='Classe d\'armure')
     attack = models.CharField(max_length=200, blank=True, default='', help_text='Attaque principale (ex: 1d20+5)')
     damage = models.CharField(max_length=200, blank=True, default='', help_text='Dégâts (ex: 2d6+3)')
@@ -420,14 +441,24 @@ class Monster(Character):
     monster_type = models.CharField(max_length=100, blank=True, default='', help_text='Type (bête, mort-vivant, dragon…)')
     image = models.ImageField(upload_to='jdr/monsters/', blank=True, null=True)
     stats = models.JSONField(default=dict, blank=True, help_text='Stats campagne: {stat_id: value}')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['name']
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(is_global=True, campaign__isnull=True)
+                    | models.Q(is_global=False, campaign__isnull=False)
+                ),
+                name='monster_has_exactly_one_scope',
+            ),
+        ]
         verbose_name = 'Monstre'
         verbose_name_plural = 'Monstres'
 
     def __str__(self) -> str:
-        return f'{self.name} — {self.campaign.name if self.campaign else ""}'
+        return f'{self.name} — {self.campaign.name if self.campaign else "sans campagne"}'
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────
@@ -501,6 +532,12 @@ class CityImport(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name='imports')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     origin_city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='exports_to')
+    availability = models.CharField(
+        max_length=20,
+        choices=Resource.AVAILABILITY_CHOICES,
+        default='Commun',
+        help_text='Disponibilité locale de la ressource dans la ville importatrice',
+    )
 
     class Meta:
         unique_together = ('city', 'resource', 'origin_city')
@@ -542,7 +579,9 @@ class MerchantOrder(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='merchant_orders')
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE, related_name='orders')
     quantity = models.IntegerField()
-    buy_city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='orders_bought')
+    buy_city = models.ForeignKey(
+        City, on_delete=models.CASCADE, related_name='orders_bought', null=True, blank=True,
+    )
     buy_price_unit = models.DecimalField(max_digits=10, decimal_places=2)
     sell_city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='orders_sold', null=True, blank=True)
     sell_price_unit = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -557,6 +596,20 @@ class MerchantOrder(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gt=0),
+                name='merchant_order_quantity_positive',
+            ),
+            models.CheckConstraint(
+                condition=models.Q(transit_sessions__gte=0),
+                name='merchant_order_transit_sessions_nonnegative',
+            ),
+            models.CheckConstraint(
+                condition=models.Q(sessions_remaining__gte=0),
+                name='merchant_order_sessions_remaining_nonnegative',
+            ),
+        ]
         verbose_name = 'Commande marchande'
         verbose_name_plural = 'Commandes marchandes'
 
@@ -572,6 +625,12 @@ class MerchantInventory(models.Model):
 
     class Meta:
         unique_together = ('character', 'resource')
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gte=0),
+                name='merchant_inventory_quantity_nonnegative',
+            ),
+        ]
         verbose_name = 'Inventaire marchand'
         verbose_name_plural = 'Inventaires marchands'
 
@@ -644,6 +703,14 @@ class GardenPlot(models.Model):
         ('ready', 'Prête'),
         ('withered', 'Flétrie'),
     ]
+    SOIL_CHOICES = [
+        ('terreau', 'Terreau'),
+        ('humus', 'Humus'),
+        ('sable', 'Sable'),
+        ('cendres', 'Cendres volcaniques'),
+        ('fertile', 'Terre fertile'),
+        ('sterile', 'Terre stérile'),
+    ]
 
     character = models.ForeignKey(Character, on_delete=models.CASCADE, related_name='garden_plots')
     plot_number = models.IntegerField()
@@ -654,6 +721,11 @@ class GardenPlot(models.Model):
     sessions_grown = models.IntegerField(default=0)
     is_ready = models.BooleanField(default=False)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='empty')
+    soil_type = models.CharField(
+        max_length=20, choices=SOIL_CHOICES, default='terreau', blank=True,
+    )
+    fertilizer = models.CharField(max_length=50, blank=True, default='')
+    mutation_count = models.IntegerField(default=0)
 
     class Meta:
         unique_together = ('character', 'plot_number')
@@ -671,6 +743,7 @@ class GardenUpgrade(models.Model):
         Character, on_delete=models.CASCADE, related_name='garden_upgrade',
     )
     max_plots = models.IntegerField(default=4)
+    grid_columns = models.IntegerField(default=4, help_text='Nombre de colonnes de la grille')
     fertilizer_bonus = models.FloatField(default=0, help_text='Réduction du temps de culture en %')
     special_soils = models.JSONField(default=list, blank=True, help_text='Sols spéciaux débloqués')
 
@@ -697,6 +770,77 @@ class HarvestLog(models.Model):
 
     def __str__(self) -> str:
         return f'{self.character.name}: {self.quantity}× {self.plant.name} (session {self.harvested_at_session})'
+
+
+class PlantMutationRecipe(models.Model):
+    result_plant = models.ForeignKey(
+        AlchemyPlant, on_delete=models.CASCADE, related_name='mutation_recipes',
+    )
+    pattern = models.JSONField(
+        default=list,
+        help_text='Matrice 3x3 : null = indifferent, int = plant_id, "category:<nom>" = filtre categorie',
+    )
+    required_soil = models.CharField(max_length=20, blank=True, default='')
+    required_fertilizer = models.CharField(max_length=50, blank=True, default='')
+    is_hidden = models.BooleanField(default=True, help_text='Cachee jusqu a decouverte par un joueur')
+    discovery_hint = models.TextField(blank=True, default='')
+
+    class Meta:
+        verbose_name = 'Recette de mutation'
+        verbose_name_plural = 'Recettes de mutation'
+
+    def __str__(self) -> str:
+        return f'{self.result_plant.name} ({self.result_plant.rarity})'
+
+
+class DiscoveredRecipe(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='discovered_recipes',
+    )
+    recipe = models.ForeignKey(
+        PlantMutationRecipe, on_delete=models.CASCADE, related_name='discoveries',
+    )
+    discovered_at = models.DateTimeField(auto_now_add=True)
+    times_triggered = models.IntegerField(default=1)
+
+    class Meta:
+        unique_together = ('character', 'recipe')
+        ordering = ['-discovered_at']
+        verbose_name = 'Recette decouverte'
+        verbose_name_plural = 'Recettes decouvertes'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} a decouvert {self.recipe.result_plant.name}'
+
+
+class PlotMutationLog(models.Model):
+    plot = models.ForeignKey(
+        GardenPlot, on_delete=models.CASCADE, related_name='mutation_logs',
+    )
+    harvested_plant = models.ForeignKey(
+        AlchemyPlant, on_delete=models.CASCADE, related_name='harvested_mutation_logs',
+    )
+    result_plant = models.ForeignKey(
+        AlchemyPlant, on_delete=models.CASCADE, null=True, blank=True,
+        related_name='result_mutation_logs',
+    )
+    recipe_used = models.ForeignKey(
+        PlantMutationRecipe, on_delete=models.CASCADE, null=True, blank=True,
+        related_name='mutation_logs',
+    )
+    roll_value = models.FloatField(default=0.0)
+    success = models.BooleanField(default=False)
+    session = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Log de mutation'
+        verbose_name_plural = 'Logs de mutation'
+
+    def __str__(self) -> str:
+        result = self.result_plant.name if self.result_plant else 'aucune'
+        return f'{self.plot} -> {result} ({self.roll_value:.6f})'
 
 
 # ─── Enchanteur / Runes ──────────────────────────────────────────────────────
@@ -755,6 +899,10 @@ class RuneDrawing(models.Model):
     notes = models.TextField(blank=True, default='')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     mj_feedback = models.TextField(blank=True, default='')
+    mj_annotations = models.JSONField(
+        default=dict, blank=True,
+        help_text='Annotations MJ sur le dessin (cercles, fleches, textes)',
+    )
     submitted_at = models.DateTimeField(null=True, blank=True)
     reviewed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -787,6 +935,46 @@ class RuneCollection(models.Model):
     def __str__(self) -> str:
         uses = self.uses_remaining if self.uses_remaining is not None else '∞'
         return f'{self.rune_drawing.title} — {self.character.name} ({uses} utilisations)'
+
+
+class RuneFavorite(models.Model):
+    character = models.ForeignKey(
+        Character, on_delete=models.CASCADE, related_name='rune_favorites',
+    )
+    template = models.ForeignKey(
+        RuneTemplate, on_delete=models.CASCADE, related_name='favorites',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('character', 'template')
+        ordering = ['-created_at']
+        verbose_name = 'Rune favorite'
+        verbose_name_plural = 'Runes favorites'
+
+    def __str__(self) -> str:
+        return f'{self.character.name} - {self.template.name}'
+
+
+class RuneDrawingHistory(models.Model):
+    drawing = models.ForeignKey(
+        RuneDrawing, on_delete=models.CASCADE, related_name='history',
+    )
+    status = models.CharField(max_length=20, choices=RuneDrawing.STATUS_CHOICES)
+    image_data = models.TextField(blank=True, default='', help_text='Snapshot base64 optionnel')
+    feedback = models.TextField(blank=True, default='')
+    changed_by = models.ForeignKey(
+        'auth.User', on_delete=models.SET_NULL, null=True, blank=True,
+    )
+    changed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-changed_at']
+        verbose_name = 'Historique de dessin de rune'
+        verbose_name_plural = 'Historiques de dessins de runes'
+
+    def __str__(self) -> str:
+        return f'{self.drawing.title} - {self.status} ({self.changed_at})'
 
 
 # ─── Nextcloud / Files ──────────────────────────────────────────────────────
@@ -993,6 +1181,12 @@ class CampaignInventoryEntry(models.Model):
     class Meta:
         unique_together = ('campaign', 'item')
         ordering = ['item__name']
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gte=0),
+                name='campaign_inventory_quantity_nonnegative',
+            ),
+        ]
         verbose_name = 'Entrée d\'inventaire de campagne'
         verbose_name_plural = 'Entrées d\'inventaire de campagne'
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from './components/Layout'
 import JdrRouter from './components/Jdr/JdrRouter'
 import MuscuRouter from './components/Muscu/MuscuRouter'
+import SessionDetailPage from './components/Project/SessionDetailPage'
 import HubPerso from './components/HubPerso'
 import HubAccountPage from './components/HubAccountPage'
 import { Badge, Button, Card, Input, SectionTitle, TextArea, useReveal } from './components/ui'
@@ -268,6 +269,30 @@ function ProjectPage({ slug }: { slug: string }) {
             <div className="mt-4 prose">
               {project.description}
             </div>
+
+            {project.sessions && project.sessions.length > 0 && (
+              <div className="mt-10">
+                <h2 className="text-xl font-bold text-primary mb-4">Séances</h2>
+                <ul className="grid gap-4 sm:grid-cols-2">
+                  {project.sessions.map((session) => (
+                    <li key={session.id} className="card-glass p-4 hover-lift">
+                      <a
+                        href={`#/project/${project.slug}/session/${session.id}`}
+                        className="font-semibold text-primary hover:underline"
+                      >
+                        {session.title}
+                      </a>
+                      {session.duration && (
+                        <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">{session.duration}</span>
+                      )}
+                      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+                        {session.description}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <aside className="card-glass animate-slideInRight lg:sticky lg:top-24 self-start">
             {/* istanbul ignore next */}
@@ -332,17 +357,22 @@ export default function App() {
 
   // Portfolio router: support both hash-routing (#/...) and clean URLs (/...)
   let view: React.ReactNode = null
-  const projectMatch = route.match(/^#?\/project\/([^#/?]+)/)
-  if (projectMatch) {
-    view = <ProjectPage slug={projectMatch[1]} />
+  const sessionMatch = route.match(/^#?\/project\/([^#/?]+)\/session\/([^#/?]+)/)
+  if (sessionMatch) {
+    view = <SessionDetailPage slug={sessionMatch[1]} sessionId={sessionMatch[2]} />
   } else {
-    // support /cv, /projects, /contact and #/cv, #/projects, #/contact for direct section links
-    let scrollTo: 'cv' | 'projects' | 'teaching-research' | 'contact' | undefined
-    if (route === '#/cv' || route === '/cv') scrollTo = 'cv'
-    else if (route === '#/projects' || route === '/projects') scrollTo = 'projects'
-    else if (route === '#/teaching-research' || route === '/teaching-research') scrollTo = 'teaching-research'
-    else if (route === '#/contact' || route === '/contact') scrollTo = 'contact'
-    view = <Home scrollTo={scrollTo} />
+    const projectMatch = route.match(/^#?\/project\/([^#/?]+)/)
+    if (projectMatch) {
+      view = <ProjectPage slug={projectMatch[1]} />
+    } else {
+      // support /cv, /projects, /contact and #/cv, #/projects, #/contact for direct section links
+      let scrollTo: 'cv' | 'projects' | 'teaching-research' | 'contact' | undefined
+      if (route === '#/cv' || route === '/cv') scrollTo = 'cv'
+      else if (route === '#/projects' || route === '/projects') scrollTo = 'projects'
+      else if (route === '#/teaching-research' || route === '/teaching-research') scrollTo = 'teaching-research'
+      else if (route === '#/contact' || route === '/contact') scrollTo = 'contact'
+      view = <Home scrollTo={scrollTo} />
+    }
   }
 
   return <Layout>{view}</Layout>

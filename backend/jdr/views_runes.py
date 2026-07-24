@@ -7,12 +7,13 @@ from rest_framework.views import APIView
 
 from .models import (
     Campaign, CampaignEvent, Character, Notification,
-    RuneCollection, RuneDrawing, RuneTemplate,
+    RuneCollection, RuneDrawing, RuneDrawingHistory, RuneFavorite, RuneTemplate,
 )
 from .serializers import (
     CreateRuneDrawingSerializer, ReviewRuneDrawingSerializer,
-    RuneCollectionSerializer, RuneDrawingSerializer,
-    RuneTemplateListSerializer, RuneTemplateSerializer,
+    RuneCollectionSerializer, RuneDrawingAnnotationsSerializer,
+    RuneDrawingHistorySerializer, RuneDrawingSerializer,
+    RuneFavoriteSerializer, RuneTemplateListSerializer, RuneTemplateSerializer,
 )
 from .permissions import IsMJ
 
@@ -25,6 +26,13 @@ class RuneTemplateViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action == 'retrieve':
             return RuneTemplateSerializer
         return RuneTemplateListSerializer
+
+    def get_serializer_context(self):
+        ctx = super().get_serializer_context()
+        character_id = self.request.query_params.get('character')
+        if character_id:
+            ctx['character_id'] = int(character_id)
+        return ctx
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -153,6 +161,13 @@ class RuneDrawingSubmitView(APIView):
         drawing.mj_feedback = ''
         drawing.save(update_fields=['status', 'submitted_at', 'mj_feedback'])
 
+        RuneDrawingHistory.objects.create(
+            drawing=drawing,
+            status='submitted',
+            image_data=drawing.image_data,
+            changed_by=request.user,
+        )
+
         Notification.objects.create(
             recipient=drawing.campaign.game_master,
             title='Nouvelle rune soumise',
@@ -213,6 +228,14 @@ class RuneDrawingReviewView(APIView):
         drawing.reviewed_at = timezone.now()
         drawing.save(update_fields=['status', 'mj_feedback', 'reviewed_at'])
 
+        RuneDrawingHistory.objects.create(
+            drawing=drawing,
+            status=d['status'],
+            image_data=drawing.image_data,
+            feedback=d.get('feedback', ''),
+            changed_by=request.user,
+        )
+
         if d['status'] == 'approved':
             RuneCollection.objects.create(
                 character=drawing.character,
@@ -254,3 +277,66 @@ class RuneCollectionView(APIView):
             character__player=request.user,
         ).select_related('rune_drawing__template')
         return Response(RuneCollectionSerializer(collection, many=True).data)
+
+
+class RuneFavoriteToggleView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        character_id = request.data.get('character_id')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character_id requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            template = RuneTemplate.objects.get(pk=pk)
+        except RuneTemplate.DoesNotExist:
+            return Response({'detail': 'Modèle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        fav, created = RuneFavorite.objects.get_or_create(character=character, template=template)
+        if not created:
+            fav.delete()
+            return Response({'is_favorite': False})
+        return Response(RuneFavoriteSerializer(fav).data)
+
+
+class RuneDrawingAnnotationsUpdateView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsMJ]
+
+    def patch(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.select_related('campaign').get(
+                pk=pk, campaign__game_master=request.user,
+            )
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        ser = RuneDrawingAnnotationsSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        drawing.mj_annotations = ser.validated_data['mj_annotations']
+        drawing.save(update_fields=['mj_annotations'])
+        return Response(RuneDrawingSerializer(drawing).data)
+
+
+class RuneDrawingHistoryListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            drawing = RuneDrawing.objects.select_related('character', 'campaign').get(pk=pk)
+        except RuneDrawing.DoesNotExist:
+            return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if drawing.character.player != request.user and drawing.campaign.game_master != request.user:
+            return Response(
+                {'detail': 'Permission refusée.'}, status=status.HTTP_403_FORBIDDEN,
+            )
+
+        history = drawing.history.select_related('changed_by').all()
+        return Response(RuneDrawingHistorySerializer(history, many=True).data)

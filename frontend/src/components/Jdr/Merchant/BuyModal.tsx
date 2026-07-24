@@ -3,15 +3,18 @@ import type { MarketPriceItem } from './types'
 
 interface Props {
   item: MarketPriceItem
+  wallet: string
   onConfirm: (quantity: number) => void
   onClose: () => void
   loading: boolean
 }
 
-export default function BuyModal({ item, onConfirm, onClose, loading }: Props) {
+export default function BuyModal({ item, wallet, onConfirm, onClose, loading }: Props) {
   const [qty, setQty] = useState(1)
   const unitPrice = parseFloat(item.current_price)
-  const total = (unitPrice * qty).toFixed(2)
+  const total = unitPrice * qty
+  const walletValue = parseFloat(wallet.replace(/[^\d.-]/g, '')) || 0
+  const affordable = walletValue >= total
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
@@ -28,6 +31,13 @@ export default function BuyModal({ item, onConfirm, onClose, loading }: Props) {
             <span className="text-gray-600 dark:text-gray-400">Prix unitaire</span>
             <span className="font-mono font-medium text-gray-900 dark:text-gray-100">
               {unitPrice.toFixed(2)} po / {item.unit}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-gray-600 dark:text-gray-400">Votre bourse</span>
+            <span className="font-mono font-medium text-gray-900 dark:text-gray-100">
+              {wallet}
             </span>
           </div>
 
@@ -56,11 +66,18 @@ export default function BuyModal({ item, onConfirm, onClose, loading }: Props) {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between">
-            <span className="font-medium text-gray-900 dark:text-gray-100">Total</span>
-            <span className="font-mono font-bold text-lg text-primary dark:text-primaryLight">
-              {total} po
-            </span>
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 space-y-2">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-900 dark:text-gray-100">Coût total</span>
+              <span className="font-mono font-bold text-lg text-primary dark:text-primaryLight">
+                {total.toFixed(2)} po
+              </span>
+            </div>
+            {!affordable && (
+              <p className="text-xs text-red-600 dark:text-red-400">
+                Fonds insuffisants pour cet achat.
+              </p>
+            )}
           </div>
         </div>
 
@@ -70,7 +87,7 @@ export default function BuyModal({ item, onConfirm, onClose, loading }: Props) {
           </button>
           <button
             onClick={() => onConfirm(qty)}
-            disabled={loading}
+            disabled={loading || !affordable}
             className="btn btn-accent text-xs"
           >
             {loading ? 'Achat…' : 'Confirmer l\'achat'}

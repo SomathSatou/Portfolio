@@ -3,8 +3,9 @@ from django.contrib import admin
 from .models import (
     AlchemyPlant, Campaign, CampaignMembership, CampaignSettings, Character,
     CharacterPassiveSkill, CharacterSkill, City, CityExport,
-    CityImport, GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory,
-    MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
+    CityImport, DiscoveredRecipe, GardenPlot, GardenUpgrade, HarvestLog, MarketPrice, MerchantInventory,
+    MerchantOrder, Monster, Notification, PlantMutationRecipe, PlantUsage, PlotMutationLog,
+    Resource, RuneCollection, RuneDrawing,
     PassiveSkill, RuneTemplate, Skill, UserProfile,
 )
 
@@ -117,6 +118,26 @@ class GardenUpgradeAdmin(admin.ModelAdmin):
 class HarvestLogAdmin(admin.ModelAdmin):
     list_display = ('character', 'plant', 'quantity', 'harvested_at_session', 'sold', 'sell_price_total')
     list_filter = ('sold',)
+
+
+@admin.register(PlantMutationRecipe)
+class PlantMutationRecipeAdmin(admin.ModelAdmin):
+    list_display = ('result_plant', 'required_soil', 'required_fertilizer', 'is_hidden')
+    list_filter = ('is_hidden', 'required_soil')
+    search_fields = ('result_plant__name',)
+
+
+@admin.register(DiscoveredRecipe)
+class DiscoveredRecipeAdmin(admin.ModelAdmin):
+    list_display = ('character', 'recipe', 'discovered_at', 'times_triggered')
+    list_filter = ('discovered_at',)
+    search_fields = ('character__name', 'recipe__result_plant__name')
+
+
+@admin.register(PlotMutationLog)
+class PlotMutationLogAdmin(admin.ModelAdmin):
+    list_display = ('plot', 'harvested_plant', 'result_plant', 'success', 'session', 'created_at')
+    list_filter = ('success',)
 
 
 # ─── Enchanteur / Runes ──────────────────────────────────────────────────────

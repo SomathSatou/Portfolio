@@ -5,6 +5,8 @@ export interface RuneTemplate {
   category: 'protection' | 'attaque' | 'soin' | 'utilité' | 'invocation'
   reference_image: string | null
   mana_cost: number
+  is_favorite?: boolean
+  drawing_status?: 'draft' | 'submitted' | 'approved' | 'rejected' | null
 }
 
 export interface RuneTemplateDetail extends RuneTemplate {
@@ -26,10 +28,58 @@ export interface RuneDrawing {
   notes: string
   status: 'draft' | 'submitted' | 'approved' | 'rejected'
   mj_feedback: string
+  mj_annotations?: RuneAnnotations
   submitted_at: string | null
   reviewed_at: string | null
   created_at: string
   campaign: number
+}
+
+export interface AnnotationCircle {
+  x: number
+  y: number
+  r: number
+  color: string
+  text?: string
+}
+
+export interface AnnotationText {
+  x: number
+  y: number
+  text: string
+  color: string
+}
+
+export interface AnnotationArrow {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  color: string
+}
+
+export interface RuneAnnotations {
+  circles?: AnnotationCircle[]
+  texts?: AnnotationText[]
+  arrows?: AnnotationArrow[]
+}
+
+export interface RuneDrawingHistoryEntry {
+  id: number
+  drawing: number
+  status: 'draft' | 'submitted' | 'approved' | 'rejected'
+  image_data: string
+  feedback: string
+  changed_by: number | null
+  changed_by_name: string | null
+  changed_at: string
+}
+
+export interface CharacterOption {
+  id: number
+  name: string
+  campaign: number
+  campaign_name: string
 }
 
 export interface RuneCollectionItem {

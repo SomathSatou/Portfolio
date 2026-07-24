@@ -12,34 +12,6 @@ export const DescComputerVision = () => (
       (65 % TP).
     </p>
 
-    <h4>Progression pédagogique</h4>
-    <ul>
-      <li>
-        <strong>Séances 1–2 :</strong> Introduction à la Computer Vision — représentation d'images
-        (RGB, tenseurs), rappels CNN (convolutions, pooling, activation), manipulation OpenCV
-      </li>
-      <li>
-        <strong>Séances 3–4 :</strong> Architectures CNN avancées — VGG, ResNet, MobileNet,
-        transfert d'apprentissage, augmentation de données (TP noté)
-      </li>
-      <li>
-        <strong>Séances 5–6 :</strong> OCR — détection (EAST, CRAFT) et reconnaissance de texte
-        (CRNN), métriques CER/WER
-      </li>
-      <li>
-        <strong>Séances 7–8 :</strong> Vision Transformers — ViT, TrOCR, comparaison CRNN vs
-        TrOCR (TP comparatif)
-      </li>
-      <li>
-        <strong>Séances 9–10 :</strong> Mini-projet — pipeline complet au choix (OCR
-        calligraphique, suivi d'objets, classification spécialisée)
-      </li>
-      <li>
-        <strong>Séances 11–12 :</strong> Présentations orales, feedback collectif, ouverture GenAI
-        et agents multimodaux
-      </li>
-    </ul>
-
     <h4>Outils &amp; technologies</h4>
     <ul>
       <li>Python, PyTorch / TensorFlow</li>

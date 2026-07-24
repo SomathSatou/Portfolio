@@ -129,6 +129,16 @@ python manage.py loaddata jdr/fixtures/economy.json
 python manage.py loaddata jdr/fixtures/garden.json
 ```
 
+### Audit des données JDR
+
+Depuis la racine du dépôt, lancer l’audit non destructif avant toute migration de données :
+
+```powershell
+.venv\Scripts\python.exe backend\manage.py audit_jdr_data --json
+```
+
+Il détecte les ressources et objets dupliqués, les stocks marchand/personnage recopiés, les incohérences de campagne et les quantités négatives sans modifier la base.
+
 ## Backend (Django API)
 
 - **Stack**: Django 5, Django REST Framework, django-cors-headers.

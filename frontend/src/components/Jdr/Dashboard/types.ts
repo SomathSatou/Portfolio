@@ -230,10 +230,12 @@ export interface CharacterPassiveSkill {
 
 export interface Monster {
   id: number
-  campaign: number
+  campaign: number | null
+  is_global: boolean
   name: string
   description: string
   hp: number
+  max_hp: number
   armor_class: number
   attack: string
   damage: string

@@ -7,6 +7,7 @@ Helpers partagés :
 - `_check_campaign_mj` : vérifie que l'utilisateur est MJ de la campagne.
 - `_check_campaign_access` : vérifie que l'utilisateur est MJ ou membre.
 """
+from django.db.models import Q
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -245,7 +246,7 @@ class MonsterListCreateView(APIView):
         campaign, _is_mj, err = _check_campaign_access(request, campaign_id)
         if err:
             return err
-        monsters = Monster.objects.filter(campaign=campaign)
+        monsters = Monster.objects.filter(Q(campaign=campaign) | Q(is_global=True))
         return Response(MonsterSerializer(monsters, many=True).data)
 
     def post(self, request):
@@ -269,7 +270,7 @@ class MonsterDetailView(APIView):
             monster = Monster.objects.get(pk=pk)
         except Monster.DoesNotExist:
             return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if monster.campaign.game_master != request.user:
+        if not monster.campaign_id or monster.campaign.game_master != request.user:
             return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = MonsterSerializer(monster, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -281,7 +282,7 @@ class MonsterDetailView(APIView):
             monster = Monster.objects.get(pk=pk)
         except Monster.DoesNotExist:
             return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if monster.campaign.game_master != request.user:
+        if not monster.campaign_id or monster.campaign.game_master != request.user:
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         monster.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
