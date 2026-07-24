@@ -1,0 +1,82 @@
+[
+  {
+    "model": "jdr.plantmutationrecipe",
+    "pk": 1,
+    "fields": {
+      "result_plant": 2,
+      "pattern": [
+        [3, null, 17],
+        [null, 1, null],
+        [17, null, 3]
+      ],
+      "required_soil": "",
+      "required_fertilizer": "",
+      "is_hidden": true,
+      "discovery_hint": "Lisserande entouree de Cerfeuillu et d'Herbe elfique produit une menthe plus intense."
+    }
+  },
+  {
+    "model": "jdr.plantmutationrecipe",
+    "pk": 2,
+    "fields": {
+      "result_plant": 7,
+      "pattern": [
+        [null, 6, null],
+        [6, 5, 6],
+        [null, 6, null]
+      ],
+      "required_soil": "",
+      "required_fertilizer": "",
+      "is_hidden": true,
+      "discovery_hint": "Une Ombreliane entouree d'Iris lunaire s'epanouit en Fleur bocolique."
+    }
+  },
+  {
+    "model": "jdr.plantmutationrecipe",
+    "pk": 3,
+    "fields": {
+      "result_plant": 36,
+      "pattern": [
+        [19, 20, 19],
+        [20, 18, 20],
+        [19, 20, 19]
+      ],
+      "required_soil": "",
+      "required_fertilizer": "",
+      "is_hidden": true,
+      "discovery_hint": "Trois cristaux differents alignes autour d'un Cristal de montagne captent la lumiere lunaire."
+    }
+  },
+  {
+    "model": "jdr.plantmutationrecipe",
+    "pk": 4,
+    "fields": {
+      "result_plant": 35,
+      "pattern": [
+        [9, null, 33],
+        [null, 21, null],
+        [33, null, 9]
+      ],
+      "required_soil": "cendres",
+      "required_fertilizer": "",
+      "is_hidden": true,
+      "discovery_hint": "Trèfle sanglant, Feu-piment et Racine de fer dans un sol de cendres creat une orchidee ardente."
+    }
+  },
+  {
+    "model": "jdr.plantmutationrecipe",
+    "pk": 5,
+    "fields": {
+      "result_plant": 39,
+      "pattern": [
+        [37, 28, 37],
+        [28, 35, 28],
+        [37, 28, 37]
+      ],
+      "required_soil": "cendres",
+      "required_fertilizer": "sang_bête",
+      "is_hidden": true,
+      "discovery_hint": "L'Orchidee des cendres, baignee de sang de bête et entouree de Roses de sang, s'ouvre sur le néant."
+    }
+  }
+]

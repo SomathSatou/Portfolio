@@ -10,13 +10,16 @@ from rest_framework.views import APIView
 
 from .models import (
     AlchemyPlant, Campaign, CampaignEvent, Character,
-    GardenPlot, GardenUpgrade, HarvestLog, Notification,
+    DiscoveredRecipe, GardenPlot, GardenUpgrade, HarvestLog, Notification,
+    PlotMutationLog,
 )
 from .serializers import (
     AlchemyPlantListSerializer, AlchemyPlantSerializer,
+    DiscoveredRecipeSerializer, FertilizePlotSerializer,
     GardenPlotSerializer, HarvestLogSerializer, PlantActionSerializer,
-    SellHarvestSerializer,
+    PlotMutationLogSerializer, SellHarvestSerializer,
 )
+from .services.garden_mutations import harvest_plot
 
 
 def _ensure_garden(character: Character) -> GardenUpgrade:
@@ -114,6 +117,7 @@ class GardenPlotsView(APIView):
         return Response({
             'plots': GardenPlotSerializer(plots, many=True).data,
             'max_plots': upgrade.max_plots,
+            'grid_columns': upgrade.grid_columns,
             'fertilizer_bonus': upgrade.fertilizer_bonus,
             'special_soils': upgrade.special_soils,
         })
@@ -171,22 +175,18 @@ class GardenPlotHarvestView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        plant = plot.plant
         campaign = plot.character.campaign
+        session = campaign.current_session_number if campaign else 0
 
-        HarvestLog.objects.create(
-            character=plot.character,
-            plant=plant,
-            quantity=plant.yield_amount,
-            harvested_at_session=campaign.current_session_number,
-        )
+        try:
+            result = harvest_plot(plot, session)
+        except ValueError as error:
+            return Response({'detail': str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
-        plot.plant = None
-        plot.planted_at_session = None
-        plot.sessions_grown = 0
-        plot.is_ready = False
-        plot.status = 'empty'
-        plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
+        result_plant = result['result_plant']
+        quantity = result['quantity']
+        mutated = result['mutated']
+        new_recipe = result['new_recipe']
 
         if campaign:
             CampaignEvent.objects.create(
@@ -194,14 +194,17 @@ class GardenPlotHarvestView(APIView):
                 event_type='harvest',
                 actor=request.user,
                 actor_name=request.user.username,
-                message=f'{plot.character.name} a récolté {plant.yield_amount}× {plant.name}.',
+                message=f'{plot.character.name} a récolté {quantity}× {result_plant.name}.',
                 link_hash=f'#/jdr/character/{plot.character.id}',
             )
 
         return Response({
-            'detail': f'{plant.yield_amount}× {plant.name} récoltée(s) !',
-            'plant_name': plant.name,
-            'quantity': plant.yield_amount,
+            'detail': f'{quantity}× {result_plant.name} récoltée(s) !',
+            'plant_name': result_plant.name,
+            'plant_icon': result_plant.icon,
+            'quantity': quantity,
+            'mutated': mutated,
+            'new_recipe': new_recipe,
         })
 
 
@@ -227,6 +230,67 @@ class GardenPlotClearView(APIView):
         plot.status = 'empty'
         plot.save(update_fields=['plant', 'planted_at_session', 'sessions_grown', 'is_ready', 'status'])
         return Response({'detail': 'Parcelle nettoyée.'})
+
+
+class GardenPlotFertilizeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        ser = FertilizePlotSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+
+        try:
+            plot = GardenPlot.objects.select_related('character').get(
+                pk=pk, character__player=request.user,
+            )
+        except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.status == 'empty':
+            return Response(
+                {'detail': "Vous ne pouvez pas fertiliser une parcelle vide."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        plot.fertilizer = ser.validated_data['fertilizer']
+        plot.save(update_fields=['fertilizer'])
+        return Response(GardenPlotSerializer(plot).data)
+
+
+class GardenRecipesView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        discovered = DiscoveredRecipe.objects.filter(
+            character_id=character_id,
+            character__player=request.user,
+        ).select_related('recipe', 'recipe__result_plant')
+        return Response(DiscoveredRecipeSerializer(discovered, many=True).data)
+
+
+class GardenMutationLogsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        character_id = request.query_params.get('character')
+        if not character_id:
+            return Response(
+                {'detail': 'Paramètre character requis.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        logs = PlotMutationLog.objects.filter(
+            plot__character_id=character_id,
+            plot__character__player=request.user,
+        ).select_related('harvested_plant', 'result_plant').order_by('-created_at')[:50]
+        return Response(PlotMutationLogSerializer(logs, many=True).data)
 
 
 class GardenInventoryView(APIView):

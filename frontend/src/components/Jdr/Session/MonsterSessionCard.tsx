@@ -33,7 +33,7 @@ export default function MonsterSessionCard({ monster, onUpdated }: Props) {
     setDescription(monster.description)
   }, [monster])
 
-  const hpPct = monster.hp > 0 ? Math.min(100, Math.round((hp / monster.hp) * 100)) : 0
+  const hpPct = monster.max_hp > 0 ? Math.min(100, Math.round((hp / monster.max_hp) * 100)) : 0
   const hpColor = hpPct > 60 ? 'bg-green-500' : hpPct > 30 ? 'bg-yellow-500' : 'bg-red-500'
 
   const handleSave = async () => {
@@ -96,7 +96,7 @@ export default function MonsterSessionCard({ monster, onUpdated }: Props) {
         </div>
         <div className="text-right shrink-0">
           <p className="text-xs font-medium" style={{ color: '#7c3a0e' }}>AC {monster.armor_class}</p>
-          <p className="text-xs" style={{ color: '#a0845c' }}>PV {hp}/{monster.hp}</p>
+          <p className="text-xs" style={{ color: '#a0845c' }}>PV {hp}/{monster.max_hp}</p>
         </div>
         <svg
           className={`w-4 h-4 shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`}

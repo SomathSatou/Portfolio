@@ -100,6 +100,8 @@ Compétences techniques et fonctionnelles illustrées par ce projet portfolio.
 - Séparation frontend / backend claire
 - Gestion des secrets via `.env` (ignorés par `.gitignore`)
 - Architecture modulaire (composants, données, serializers séparés)
+- Services transactionnels JDR avec contrôle des stocks et contraintes de base de données
+- Commande d’audit JDR non destructive pour détecter les duplications et incohérences avant migration
 - Dark mode accessible avec persistance utilisateur
 
 ## Catégories de projets présentés

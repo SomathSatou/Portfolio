@@ -37,11 +37,15 @@ export interface GardenPlot {
   sessions_grown: number
   is_ready: boolean
   status: 'empty' | 'growing' | 'ready' | 'withered'
+  soil_type: string
+  fertilizer: string
+  mutation_count: number
 }
 
 export interface GardenData {
   plots: GardenPlot[]
   max_plots: number
+  grid_columns: number
   fertilizer_bonus: number
   special_soils: string[]
 }
@@ -73,6 +77,40 @@ export interface GardenStats {
   total_revenue: number
   top_plants: { name: string; count: number }[]
   revenue_by_session: { session: number; revenue: number }[]
+}
+
+export interface PlantMutationRecipe {
+  id: number
+  result_plant: number
+  result_plant_name: string
+  result_plant_icon: string
+  result_plant_rarity: string
+  pattern: (number | string | null)[][]
+  required_soil: string
+  required_fertilizer: string
+  is_hidden: boolean
+  discovery_hint: string
+}
+
+export interface DiscoveredRecipe {
+  id: number
+  recipe: PlantMutationRecipe
+  discovered_at: string
+  times_triggered: number
+}
+
+export interface PlotMutationLog {
+  id: number
+  plot: number
+  harvested_plant: number
+  harvested_plant_name: string
+  result_plant: number | null
+  result_plant_name: string | null
+  result_plant_icon: string | null
+  roll_value: number
+  success: boolean
+  session: number
+  created_at: string
 }
 
 export const RARITY_COLORS: Record<string, string> = {

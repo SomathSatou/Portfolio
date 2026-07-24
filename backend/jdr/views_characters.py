@@ -11,7 +11,7 @@ from django.db.models import Q
 
 from .models import (
     Campaign, CampaignEvent, CampaignMembership, Character,
-    CharacterStat, Monster, Notification, Stat,
+    CharacterStat, Notification, Stat,
 )
 from .serializers import CharacterSerializer
 
@@ -22,8 +22,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        # Exclure les monstres (Monster hérite de Character via character_ptr)
-        qs = Character.objects.filter(monster__isnull=True).select_related('campaign', 'player')
+        qs = Character.objects.select_related('campaign', 'player')
         profile = getattr(user, 'jdr_profile', None)
         if profile and profile.role == 'mj':
             return qs.filter(

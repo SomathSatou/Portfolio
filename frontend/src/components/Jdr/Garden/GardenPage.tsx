@@ -4,24 +4,31 @@ import { useAuth } from '../useAuth.ts'
 import type { Character } from '../Dashboard/types.ts'
 import type {
   AlchemyPlant,
+  DiscoveredRecipe,
   GardenData,
   GardenStats,
   HarvestLogItem,
   InventoryItem,
+  PlotMutationLog,
 } from './types.ts'
 import GardenGrid from './GardenGrid.tsx'
 import PlantCatalog from './PlantCatalog.tsx'
 import PlantModal from './PlantModal.tsx'
 import HarvestInventory from './HarvestInventory.tsx'
 import GardenStatsView from './GardenStatsView.tsx'
+import GardenRecipesView from './GardenRecipesView.tsx'
+import GardenMutationLogsView from './GardenMutationLogsView.tsx'
+import FertilizerModal from './FertilizerModal.tsx'
 
-type Tab = 'garden' | 'catalog' | 'inventory' | 'stats'
+type Tab = 'garden' | 'catalog' | 'inventory' | 'stats' | 'recipes' | 'mutation-logs'
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'garden', label: 'Jardin' },
   { key: 'catalog', label: 'Catalogue' },
+  { key: 'recipes', label: 'Découvertes' },
   { key: 'inventory', label: 'Inventaire' },
   { key: 'stats', label: 'Statistiques' },
+  { key: 'mutation-logs', label: 'Mutations' },
 ]
 
 export default function GardenPage() {
@@ -56,6 +63,18 @@ export default function GardenPage() {
   const [statsLoading, setStatsLoading] = useState(false)
   const [history, setHistory] = useState<HarvestLogItem[]>([])
   const [historyLoading, setHistoryLoading] = useState(false)
+
+  // Recipes
+  const [recipes, setRecipes] = useState<DiscoveredRecipe[]>([])
+  const [recipesLoading, setRecipesLoading] = useState(false)
+
+  // Mutation logs
+  const [mutationLogs, setMutationLogs] = useState<PlotMutationLog[]>([])
+  const [mutationLogsLoading, setMutationLogsLoading] = useState(false)
+
+  // Fertilizer
+  const [fertilizingPlotId, setFertilizingPlotId] = useState<number | null>(null)
+  const [fertilizing, setFertilizing] = useState(false)
 
   // Toast
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null)
@@ -166,6 +185,40 @@ export default function GardenPage() {
     }
   }, [tab, loadStats, loadHistory])
 
+  // Load discovered recipes
+  const loadRecipes = useCallback(async () => {
+    if (!selectedCharacterId) return
+    setRecipesLoading(true)
+    try {
+      const res = await api.get<DiscoveredRecipe[]>('/garden/recipes/', {
+        params: { character: selectedCharacterId },
+      })
+      setRecipes(res.data)
+    } catch { /* silent */ }
+    finally { setRecipesLoading(false) }
+  }, [selectedCharacterId])
+
+  useEffect(() => {
+    if (tab === 'recipes') void loadRecipes()
+  }, [tab, loadRecipes])
+
+  // Load mutation logs
+  const loadMutationLogs = useCallback(async () => {
+    if (!selectedCharacterId) return
+    setMutationLogsLoading(true)
+    try {
+      const res = await api.get<PlotMutationLog[]>('/garden/mutation-logs/', {
+        params: { character: selectedCharacterId },
+      })
+      setMutationLogs(res.data)
+    } catch { /* silent */ }
+    finally { setMutationLogsLoading(false) }
+  }, [selectedCharacterId])
+
+  useEffect(() => {
+    if (tab === 'mutation-logs') void loadMutationLogs()
+  }, [tab, loadMutationLogs])
+
   // Actions
   const handlePlantFromGrid = (plotId: number) => {
     setPlantingPlotId(plotId)
@@ -204,12 +257,31 @@ export default function GardenPage() {
 
   const handleHarvest = async (plotId: number) => {
     try {
-      const res = await api.post<{ detail: string }>(`/garden/plots/${plotId}/harvest/`)
-      showToast(res.data.detail, true)
+      type HarvestResponse = {
+        detail: string
+        plant_name: string
+        plant_icon: string
+        quantity: number
+        mutated: boolean
+        new_recipe: boolean
+      }
+      const res = await api.post<HarvestResponse>(`/garden/plots/${plotId}/harvest/`)
+      const data = res.data
+      if (data.mutated) {
+        const recipeMsg = data.new_recipe ? ' Nouvelle recette découverte !' : ''
+        showToast(`Mutation ! ${data.quantity}× ${data.plant_icon} ${data.plant_name}${recipeMsg}`, true)
+      } else {
+        showToast(data.detail, true)
+      }
       void loadGarden()
     } catch {
       showToast('Erreur lors de la récolte.', false)
     }
+  }
+
+  const handleFertilize = async (plotId: number) => {
+    if (!selectedCharacterId) return
+    setFertilizingPlotId(plotId)
   }
 
   const handleClear = async (plotId: number) => {
@@ -341,6 +413,7 @@ export default function GardenPage() {
                 onPlant={handlePlantFromGrid}
                 onHarvest={handleHarvest}
                 onClear={handleClear}
+                onFertilize={handleFertilize}
               />
             </>
           ) : (
@@ -379,6 +452,20 @@ export default function GardenPage() {
         />
       )}
 
+      {tab === 'recipes' && (
+        <GardenRecipesView
+          recipes={recipes}
+          loading={recipesLoading}
+        />
+      )}
+
+      {tab === 'mutation-logs' && (
+        <GardenMutationLogsView
+          logs={mutationLogs}
+          loading={mutationLogsLoading}
+        />
+      )}
+
       {/* Plant detail modal */}
       {selectedPlantId && (
         <PlantModal
@@ -387,6 +474,26 @@ export default function GardenPage() {
           onPlant={handlePlantConfirm}
           onClose={() => { setSelectedPlantId(null); setPlantingPlotId(null) }}
           planting={planting}
+        />
+      )}
+
+      {/* Fertilizer modal */}
+      {fertilizingPlotId && (
+        <FertilizerModal
+          plotId={fertilizingPlotId}
+          onConfirm={async (fertilizer: string) => {
+            setFertilizing(true)
+            try {
+              await api.post(`/garden/plots/${fertilizingPlotId}/fertilize/`, { fertilizer })
+              showToast('Fertilisant appliqué.', true)
+              setFertilizingPlotId(null)
+              void loadGarden()
+            } catch {
+              showToast('Erreur lors de la fertilisation.', false)
+            } finally { setFertilizing(false) }
+          }}
+          onClose={() => setFertilizingPlotId(null)}
+          fertilizing={fertilizing}
         />
       )}
     </div>

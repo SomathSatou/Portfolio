@@ -22,10 +22,10 @@ export default function HistoryPanel({ orders, loading }: Props) {
   }, [orders, filterResource, filterBuyCity, filterSellCity])
 
   const buyCities = useMemo(() => {
-    const set = new Set(
-      orders.filter((o) => o.status === 'sold' || o.status === 'cancelled').map((o) => o.buy_city_name),
-    )
-    return Array.from(set).sort()
+    const names = orders
+      .filter((o) => (o.status === 'sold' || o.status === 'cancelled') && o.buy_city_name)
+      .map((o) => o.buy_city_name!)
+    return Array.from(new Set(names)).sort()
   }, [orders])
 
   const sellCities = useMemo(() => {

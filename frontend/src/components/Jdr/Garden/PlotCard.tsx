@@ -7,9 +7,10 @@ interface Props {
   onPlant: (plotId: number) => void
   onHarvest: (plotId: number) => void
   onClear: (plotId: number) => void
+  onFertilize?: (plotId: number) => void
 }
 
-export default function PlotCard({ plot, onPlant, onHarvest, onClear }: Props) {
+export default function PlotCard({ plot, onPlant, onHarvest, onClear, onFertilize }: Props) {
   const borderClass = plot.plant_rarity
     ? RARITY_COLORS[plot.plant_rarity] ?? 'border-gray-300 dark:border-gray-700'
     : 'border-gray-300 dark:border-gray-700'
@@ -33,6 +34,20 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear }: Props) {
       {/* Plot number badge */}
       <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-accent2 text-white text-xs font-bold flex items-center justify-center shadow">
         {plot.plot_number}
+      </div>
+
+      {/* Soil / fertilizer info */}
+      <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
+        {plot.soil_type && plot.soil_type !== 'terreau' && (
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+            {plot.soil_type}
+          </span>
+        )}
+        {plot.fertilizer && (
+          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-accent1/30 text-accent2 dark:text-accent1">
+            {plot.fertilizer}
+          </span>
+        )}
       </div>
 
       {plot.status === 'empty' && (
@@ -59,6 +74,14 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear }: Props) {
             growthTime={plot.plant_growth_time ?? 1}
           />
           <p className="text-xs text-gray-400 dark:text-gray-500">En culture…</p>
+          {onFertilize && !plot.fertilizer && (
+            <button
+              onClick={() => onFertilize(plot.id)}
+              className="btn btn-outline text-[10px] py-1 px-2"
+            >
+              Fertiliser
+            </button>
+          )}
         </div>
       )}
 
@@ -77,6 +100,14 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear }: Props) {
           >
             Récolter
           </button>
+          {onFertilize && !plot.fertilizer && (
+            <button
+              onClick={() => onFertilize(plot.id)}
+              className="btn btn-outline text-[10px] py-1 px-2"
+            >
+              Fertiliser
+            </button>
+          )}
         </div>
       )}
 

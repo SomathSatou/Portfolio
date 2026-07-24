@@ -6,8 +6,10 @@ from .models import (
     CampaignSettings, Character,
     CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell, CharacterStat, ChatMessage,
     City, CityExport, CityImport, CombatParticipant, CombatSession,
-    GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
-    MerchantOrder, Monster, Notification, PlantUsage, Resource, RuneCollection, RuneDrawing,
+    DiscoveredRecipe, GardenPlot, GardenUpgrade, HarvestLog, Item, MarketPrice, MerchantInventory,
+    MerchantOrder, Monster, Notification, PlantMutationRecipe, PlantUsage, PlotMutationLog,
+    Resource, RuneCollection, RuneDrawing,
+    RuneDrawingHistory, RuneFavorite,
     PassiveSkill, RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
 )
 
@@ -255,11 +257,11 @@ class MonsterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Monster
         fields = [
-            'id', 'campaign', 'name', 'description', 'hp', 'armor_class',
+            'id', 'campaign', 'is_global', 'name', 'description', 'hp', 'max_hp', 'armor_class',
             'attack', 'damage', 'special_abilities', 'challenge_rating',
             'monster_type', 'image', 'stats', 'created_at',
         ]
-        read_only_fields = ['id', 'campaign', 'created_at']
+        read_only_fields = ['id', 'campaign', 'is_global', 'created_at']
 
 
 # ─── Economy ─────────────────────────────────────────────────────────────────
@@ -377,6 +379,7 @@ class CreateOrderSerializer(serializers.Serializer):
 
 class SellOrderSerializer(serializers.Serializer):
     sell_city_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1, required=False)
 
 
 class SellFromInventorySerializer(serializers.Serializer):
@@ -443,17 +446,18 @@ class GardenPlotSerializer(serializers.ModelSerializer):
             'id', 'character', 'plot_number', 'plant', 'plant_name', 'plant_icon',
             'plant_rarity', 'plant_growth_time', 'plant_yield_amount',
             'planted_at_session', 'sessions_grown', 'is_ready', 'status',
+            'soil_type', 'fertilizer', 'mutation_count',
         ]
         read_only_fields = [
             'id', 'character', 'plot_number', 'planted_at_session',
-            'sessions_grown', 'is_ready', 'status',
+            'sessions_grown', 'is_ready', 'status', 'mutation_count',
         ]
 
 
 class GardenUpgradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = GardenUpgrade
-        fields = ['id', 'character', 'max_plots', 'fertilizer_bonus', 'special_soils']
+        fields = ['id', 'character', 'max_plots', 'grid_columns', 'fertilizer_bonus', 'special_soils']
         read_only_fields = ['id', 'character']
 
 
@@ -474,9 +478,51 @@ class PlantActionSerializer(serializers.Serializer):
     plant_id = serializers.IntegerField()
 
 
+class FertilizePlotSerializer(serializers.Serializer):
+    fertilizer = serializers.CharField(max_length=50)
+
+
 class SellHarvestSerializer(serializers.Serializer):
     plant_id = serializers.IntegerField()
     quantity = serializers.IntegerField(min_value=1)
+
+
+class PlantMutationRecipeSerializer(serializers.ModelSerializer):
+    result_plant_name = serializers.CharField(source='result_plant.name', read_only=True)
+    result_plant_icon = serializers.CharField(source='result_plant.icon', read_only=True)
+    result_plant_rarity = serializers.CharField(source='result_plant.rarity', read_only=True)
+
+    class Meta:
+        model = PlantMutationRecipe
+        fields = [
+            'id', 'result_plant', 'result_plant_name', 'result_plant_icon', 'result_plant_rarity',
+            'pattern', 'required_soil', 'required_fertilizer', 'is_hidden', 'discovery_hint',
+        ]
+        read_only_fields = ['id', 'result_plant_name', 'result_plant_icon', 'result_plant_rarity']
+
+
+class DiscoveredRecipeSerializer(serializers.ModelSerializer):
+    recipe = PlantMutationRecipeSerializer(read_only=True)
+
+    class Meta:
+        model = DiscoveredRecipe
+        fields = ['id', 'recipe', 'discovered_at', 'times_triggered']
+        read_only_fields = ['id', 'recipe', 'discovered_at', 'times_triggered']
+
+
+class PlotMutationLogSerializer(serializers.ModelSerializer):
+    harvested_plant_name = serializers.CharField(source='harvested_plant.name', read_only=True)
+    result_plant_name = serializers.CharField(source='result_plant.name', read_only=True, default=None)
+    result_plant_icon = serializers.CharField(source='result_plant.icon', read_only=True, default=None)
+
+    class Meta:
+        model = PlotMutationLog
+        fields = [
+            'id', 'plot', 'harvested_plant', 'harvested_plant_name',
+            'result_plant', 'result_plant_name', 'result_plant_icon',
+            'roll_value', 'success', 'session', 'created_at',
+        ]
+        read_only_fields = ['id', 'plot', 'harvested_plant', 'result_plant', 'created_at']
 
 
 # ─── Enchanteur / Runes ──────────────────────────────────────────────────────
@@ -491,11 +537,28 @@ class RuneTemplateSerializer(serializers.ModelSerializer):
 
 
 class RuneTemplateListSerializer(serializers.ModelSerializer):
+    is_favorite = serializers.SerializerMethodField()
+    drawing_status = serializers.SerializerMethodField()
+
     class Meta:
         model = RuneTemplate
         fields = [
             'id', 'name', 'difficulty', 'category', 'reference_image', 'mana_cost',
+            'is_favorite', 'drawing_status',
         ]
+
+    def get_is_favorite(self, obj: RuneTemplate) -> bool:
+        character_id = self.context.get('character_id')
+        if not character_id:
+            return False
+        return obj.favorites.filter(character_id=character_id).exists()
+
+    def get_drawing_status(self, obj: RuneTemplate) -> str | None:
+        character_id = self.context.get('character_id')
+        if not character_id:
+            return None
+        latest = obj.drawings.filter(character_id=character_id).order_by('-created_at').first()
+        return latest.status if latest else None
 
 
 class RuneDrawingSerializer(serializers.ModelSerializer):
@@ -511,10 +574,11 @@ class RuneDrawingSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'character', 'character_name', 'player_name', 'template', 'template_name',
             'template_reference_image', 'image_data', 'title', 'notes', 'status',
-            'mj_feedback', 'submitted_at', 'reviewed_at', 'created_at', 'campaign',
+            'mj_feedback', 'mj_annotations', 'submitted_at', 'reviewed_at', 'created_at', 'campaign',
         ]
         read_only_fields = [
-            'id', 'character', 'status', 'mj_feedback', 'submitted_at', 'reviewed_at', 'created_at',
+            'id', 'character', 'status', 'mj_feedback', 'mj_annotations',
+            'submitted_at', 'reviewed_at', 'created_at',
         ]
 
 
@@ -530,6 +594,28 @@ class CreateRuneDrawingSerializer(serializers.Serializer):
 class ReviewRuneDrawingSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=['approved', 'rejected'])
     feedback = serializers.CharField(required=False, allow_blank=True, default='')
+
+
+class RuneDrawingAnnotationsSerializer(serializers.Serializer):
+    mj_annotations = serializers.JSONField()
+
+
+class RuneDrawingHistorySerializer(serializers.ModelSerializer):
+    changed_by_name = serializers.CharField(source='changed_by.username', read_only=True, default=None)
+
+    class Meta:
+        model = RuneDrawingHistory
+        fields = ['id', 'drawing', 'status', 'image_data', 'feedback', 'changed_by', 'changed_by_name', 'changed_at']
+        read_only_fields = fields
+
+
+class RuneFavoriteSerializer(serializers.ModelSerializer):
+    template_name = serializers.CharField(source='template.name', read_only=True)
+
+    class Meta:
+        model = RuneFavorite
+        fields = ['id', 'character', 'template', 'template_name', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
 
 class RuneCollectionSerializer(serializers.ModelSerializer):

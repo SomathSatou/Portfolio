@@ -1,18 +1,21 @@
 """Vues JDR — Marchand (inventaire, commandes, ventes, statistiques)."""
 from decimal import Decimal
 
+from django.db import transaction
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import (
-    Campaign, CampaignEvent, Character, CharacterItem, City,
-    CityImport, Item, MerchantInventory, MerchantOrder, Notification, Resource,
+    Campaign, CampaignEvent, Character, City, CityImport, MerchantInventory,
+    MerchantOrder, Notification, Resource,
 )
 from .serializers import (
     CreateOrderSerializer, MerchantInventorySerializer,
     MerchantOrderSerializer, SellFromInventorySerializer, SellOrderSerializer,
 )
+from .services.merchant_inventory import InsufficientMerchantStockError, remove_stock
+from .services.wallet import InsufficientFundsError, add_to_wallet, subtract_from_wallet
 from .views_economy import compute_fluctuated_price
 from .views_content import _check_campaign_access
 
@@ -34,6 +37,7 @@ class MerchantInventoryView(APIView):
         ).select_related('resource')
         return Response(MerchantInventorySerializer(inventory, many=True).data)
 
+    @transaction.atomic
     def post(self, request):
         """Vend une ressource directement depuis l'inventaire marchand."""
         ser = SellFromInventorySerializer(data=request.data)
@@ -61,7 +65,10 @@ class MerchantInventoryView(APIView):
             return Response({'detail': 'Ville de vente introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            inv = MerchantInventory.objects.get(character=character, resource=resource)
+            inv = MerchantInventory.objects.select_for_update().get(
+                character=character,
+                resource=resource,
+            )
         except MerchantInventory.DoesNotExist:
             return Response(
                 {'detail': 'Vous ne possédez pas cette ressource.'},
@@ -75,35 +82,32 @@ class MerchantInventoryView(APIView):
             )
 
         city_import = CityImport.objects.filter(city=sell_city, resource=resource).first()
-        sell_price = city_import.price if city_import else resource.base_price
-        sell_price = compute_fluctuated_price(sell_price, resource.availability)
+        if city_import:
+            sell_price = compute_fluctuated_price(city_import.price, city_import.availability)
+        else:
+            sell_price = compute_fluctuated_price(resource.base_price, resource.availability)
 
         total_revenue = sell_price * d['quantity']
         total_cost = inv.average_buy_price * d['quantity']
         profit = total_revenue - total_cost
 
-        inv.quantity -= d['quantity']
-        if inv.quantity <= 0:
-            inv.quantity = 0
-        inv.save(update_fields=['quantity'])
-
         try:
-            item = Item.objects.get(campaign=campaign, resource=resource)
-            ci = CharacterItem.objects.get(character=character, item=item)
-            ci.quantity -= d['quantity']
-            if ci.quantity <= 0:
-                ci.delete()
-            else:
-                ci.save(update_fields=['quantity'])
-        except (Item.DoesNotExist, CharacterItem.DoesNotExist):
-            pass
+            remove_stock(
+                character=character,
+                resource=resource,
+                quantity=d['quantity'],
+            )
+        except InsufficientMerchantStockError as error:
+            return Response({'detail': str(error)}, status=status.HTTP_400_BAD_REQUEST)
+
+        add_to_wallet(character, total_revenue)
 
         order = MerchantOrder.objects.create(
             character=character,
             campaign=campaign,
             resource=resource,
             quantity=d['quantity'],
-            buy_city=sell_city,
+            buy_city=None,
             buy_price_unit=inv.average_buy_price,
             sell_city=sell_city,
             sell_price_unit=sell_price,
@@ -158,15 +162,24 @@ class MerchantOrderView(APIView):
             qs = qs.filter(status=status_filter)
         return Response(MerchantOrderSerializer(qs, many=True).data)
 
+    @transaction.atomic
     def post(self, request):
         ser = CreateOrderSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         d = ser.validated_data
 
         try:
-            character = Character.objects.get(pk=d['character_id'], player=request.user)
+            character = Character.objects.select_related('campaign').get(
+                pk=d['character_id'], player=request.user,
+            )
         except Character.DoesNotExist:
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.campaign_id != d['campaign_id']:
+            return Response(
+                {'detail': 'Ce personnage n\'appartient pas à cette campagne.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         try:
             campaign = Campaign.objects.get(pk=d['campaign_id'])
@@ -182,7 +195,7 @@ class MerchantOrderView(APIView):
         if not city:
             return Response({'detail': 'Ville introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        from .models import MarketPrice, CityExport
+        from .models import CityExport, MarketPrice
         market_price = MarketPrice.objects.filter(
             city_export__city=city,
             city_export__resource=resource,
@@ -197,11 +210,16 @@ class MerchantOrderView(APIView):
                     {'detail': "Cette ressource n'est pas disponible dans cette ville."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            buy_price = export.price
+            buy_price = compute_fluctuated_price(export.price, export.availability)
         else:
             buy_price = market_price.current_price
 
         total_cost = buy_price * d['quantity']
+
+        try:
+            subtract_from_wallet(character, total_cost)
+        except InsufficientFundsError as error:
+            return Response({'detail': str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
         order = MerchantOrder.objects.create(
             character=character,
@@ -242,6 +260,7 @@ class MerchantOrderView(APIView):
 class MerchantOrderSellView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @transaction.atomic
     def post(self, request, pk):
         try:
             order = MerchantOrder.objects.select_related(
@@ -259,47 +278,73 @@ class MerchantOrderSellView(APIView):
         ser = SellOrderSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
 
+        quantity = ser.validated_data.get('quantity', order.quantity)
+        if quantity <= 0 or quantity > order.quantity:
+            return Response(
+                {'detail': f'Quantité invalide (1-{order.quantity} disponible).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         sell_city = City.objects.filter(pk=ser.validated_data['sell_city_id']).first()
         if not sell_city:
             return Response({'detail': 'Ville de vente introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         city_import = CityImport.objects.filter(city=sell_city, resource=order.resource).first()
-        sell_price = city_import.price if city_import else order.resource.base_price
-        sell_price = compute_fluctuated_price(sell_price, order.resource.availability)
+        if city_import:
+            sell_price = compute_fluctuated_price(city_import.price, city_import.availability)
+        else:
+            sell_price = compute_fluctuated_price(order.resource.base_price, order.resource.availability)
 
-        total_revenue = sell_price * order.quantity
-        profit = total_revenue - order.total_cost
-
-        order.sell_city = sell_city
-        order.sell_price_unit = sell_price
-        order.total_revenue = total_revenue
-        order.profit = profit
-        order.status = 'sold'
-        order.save(update_fields=['sell_city', 'sell_price_unit', 'total_revenue', 'profit', 'status'])
+        total_revenue = sell_price * quantity
+        partial_cost = order.buy_price_unit * quantity
+        profit = total_revenue - partial_cost
 
         try:
-            mi = MerchantInventory.objects.get(character=order.character, resource=order.resource)
-            mi.quantity -= order.quantity
-            if mi.quantity <= 0:
-                mi.quantity = 0
-            mi.save(update_fields=['quantity'])
-        except MerchantInventory.DoesNotExist:
-            pass
+            remove_stock(
+                character=order.character,
+                resource=order.resource,
+                quantity=quantity,
+            )
+        except InsufficientMerchantStockError as error:
+            return Response({'detail': str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            item = Item.objects.get(campaign=order.campaign, resource=order.resource)
-            ci = CharacterItem.objects.get(character=order.character, item=item)
-            ci.quantity -= order.quantity
-            if ci.quantity <= 0:
-                ci.delete()
-            else:
-                ci.save(update_fields=['quantity'])
-        except (Item.DoesNotExist, CharacterItem.DoesNotExist):
-            pass
+        add_to_wallet(order.character, total_revenue)
+
+        if quantity == order.quantity:
+            order.sell_city = sell_city
+            order.sell_price_unit = sell_price
+            order.total_revenue = total_revenue
+            order.profit = profit
+            order.status = 'sold'
+            order.save(update_fields=[
+                'sell_city', 'sell_price_unit', 'total_revenue', 'profit', 'status',
+            ])
+            sold_order = order
+        else:
+            order.quantity -= quantity
+            order.total_cost -= partial_cost
+            order.save(update_fields=['quantity', 'total_cost'])
+            sold_order = MerchantOrder.objects.create(
+                character=order.character,
+                campaign=order.campaign,
+                resource=order.resource,
+                quantity=quantity,
+                buy_city=order.buy_city,
+                buy_price_unit=order.buy_price_unit,
+                sell_city=sell_city,
+                sell_price_unit=sell_price,
+                status='sold',
+                transit_sessions=0,
+                sessions_remaining=0,
+                created_at_session=order.created_at_session,
+                total_cost=partial_cost,
+                total_revenue=total_revenue,
+                profit=profit,
+            )
 
         profit_str = f'+{profit}' if profit >= 0 else str(profit)
         sell_msg = (
-            f'{order.character.name} a vendu {order.quantity}× {order.resource.name} '
+            f'{sold_order.character.name} a vendu {quantity}× {sold_order.resource.name} '
             f'à {sell_city.name} ({profit_str} po de bénéfice).'
         )
         Notification.objects.create(
@@ -316,7 +361,7 @@ class MerchantOrderSellView(APIView):
             message=sell_msg,
             link_hash=f'#/jdr/character/{order.character.id}',
         )
-        return Response(MerchantOrderSerializer(order).data)
+        return Response(MerchantOrderSerializer(sold_order).data)
 
 
 class SellEstimateView(APIView):
@@ -348,8 +393,10 @@ class SellEstimateView(APIView):
             return Response({'detail': 'Ville introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         city_import = CityImport.objects.filter(city=sell_city, resource=resource).first()
-        sell_price = city_import.price if city_import else resource.base_price
-        sell_price = compute_fluctuated_price(sell_price, resource.availability)
+        if city_import:
+            sell_price = compute_fluctuated_price(city_import.price, city_import.availability)
+        else:
+            sell_price = compute_fluctuated_price(resource.base_price, resource.availability)
 
         return Response({
             'sell_price_unit': str(sell_price),
@@ -390,7 +437,8 @@ class MerchantStatsView(APIView):
         )
 
         best_routes = list(
-            sold_orders.values('buy_city__name', 'sell_city__name', 'resource__name')
+            sold_orders.exclude(buy_city__isnull=True)
+            .values('buy_city__name', 'sell_city__name', 'resource__name')
             .annotate(route_profit=Sum('profit'))
             .order_by('-route_profit')[:5]
         )

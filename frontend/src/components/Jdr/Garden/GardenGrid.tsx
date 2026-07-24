@@ -6,9 +6,10 @@ interface Props {
   onPlant: (plotId: number) => void
   onHarvest: (plotId: number) => void
   onClear: (plotId: number) => void
+  onFertilize?: (plotId: number) => void
 }
 
-export default function GardenGrid({ plots, onPlant, onHarvest, onClear }: Props) {
+export default function GardenGrid({ plots, onPlant, onHarvest, onClear, onFertilize }: Props) {
   if (plots.length === 0) {
     return (
       <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
@@ -26,6 +27,7 @@ export default function GardenGrid({ plots, onPlant, onHarvest, onClear }: Props
           onPlant={onPlant}
           onHarvest={onHarvest}
           onClear={onClear}
+          onFertilize={onFertilize}
         />
       ))}
     </div>
