@@ -4,10 +4,10 @@ from django.db import migrations, models
 
 def migrate_monsters_forward(apps, schema_editor):
     LegacyMonster = apps.get_model("jdr", "LegacyMonster")
-    Monster = apps.get_model("jdr", "Monster")
+    TmpMonster = apps.get_model("jdr", "TmpMonster")
 
     for legacy_monster in LegacyMonster.objects.select_related("character_ptr").iterator():
-        monster = Monster.objects.create(
+        monster = TmpMonster.objects.create(
             campaign_id=legacy_monster.campaign_id,
             name=legacy_monster.name,
             description=legacy_monster.description,
@@ -22,7 +22,7 @@ def migrate_monsters_forward(apps, schema_editor):
             image=legacy_monster.image,
             stats=legacy_monster.stats,
         )
-        Monster.objects.filter(pk=monster.pk).update(created_at=legacy_monster.created_at)
+        TmpMonster.objects.filter(pk=monster.pk).update(created_at=legacy_monster.created_at)
 
     LegacyMonster.objects.all().delete()
 
@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
             new_name="LegacyMonster",
         ),
         migrations.CreateModel(
-            name="Monster",
+            name="TmpMonster",
             fields=[
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("name", models.CharField(max_length=200)),
@@ -92,5 +92,9 @@ class Migration(migrations.Migration):
         migrations.RunPython(migrate_monsters_forward, migrate_monsters_backward),
         migrations.DeleteModel(
             name="LegacyMonster",
+        ),
+        migrations.RenameModel(
+            old_name="TmpMonster",
+            new_name="Monster",
         ),
     ]
