@@ -112,8 +112,9 @@ jobs:
               exit 1
             fi
             echo "Running deploy.sh..."
-            if ! bash "${DEPLOY_DIR}/deploy.sh"; then
-              EXIT_CODE=$?
+            bash "${DEPLOY_DIR}/deploy.sh"
+            EXIT_CODE=$?
+            if [ ${EXIT_CODE} -ne 0 ]; then
               echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
               exit ${EXIT_CODE}
             fi
