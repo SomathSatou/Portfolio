@@ -1,6 +1,7 @@
 import React from 'react'
 import api from '../api'
 import type { Item } from './types'
+import ItemCard from '../ui/ItemCard'
 
 interface Props {
   campaignId: number
@@ -14,15 +15,6 @@ const RARITY_LABELS: Record<string, string> = {
   'très_rare': 'Très rare',
   'légendaire': 'Légendaire',
   'artéfact': 'Artéfact',
-}
-
-const RARITY_COLORS: Record<string, string> = {
-  commun: 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
-  peu_commun: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  rare: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-  'très_rare': 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
-  'légendaire': 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
-  'artéfact': 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
 }
 
 export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
@@ -150,8 +142,8 @@ export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {items.map((item) => (
-            <div key={item.id} className="card">
-              {editingId === item.id ? (
+            editingId === item.id ? (
+              <div key={item.id} className="card">
                 <form onSubmit={handleEdit} className="space-y-2">
                   <div className="grid gap-2 sm:grid-cols-2">
                     <input required placeholder="Nom" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
@@ -178,50 +170,19 @@ export default function CampaignItemsPanel({ campaignId, isMJ }: Props) {
                     <button type="button" onClick={() => setEditingId(null)} className="btn btn-outline text-xs">Annuler</button>
                   </div>
                 </form>
-              ) : (
-                <>
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-                        {item.name}
-                        {item.is_magical && <span className="ml-1 text-accent3">✦</span>}
-                      </h3>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        <span className={`text-xs px-1.5 py-0.5 rounded ${RARITY_COLORS[item.rarity] ?? ''}`}>
-                          {RARITY_LABELS[item.rarity] ?? item.rarity}
-                        </span>
-                        {item.item_type && <span className="badge">{item.item_type}</span>}
-                        {item.resource_name && (
-                          <span className="text-xs px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
-                            Comptoir: {item.resource_name}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {isMJ && (
-                      <div className="flex gap-1 shrink-0">
-                        <button onClick={() => startEdit(item)} className="text-xs text-primary dark:text-primaryLight hover:underline">Modifier</button>
-                        <button onClick={() => handleDelete(item.id)} className="text-xs text-red-500 hover:underline">Supprimer</button>
-                      </div>
-                    )}
-                  </div>
-                  {item.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{item.description}</p>
-                  )}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-500 dark:text-gray-500">
-                    {item.weight > 0 && <span>Poids: {item.weight} kg</span>}
-                    {item.value > 0 && <span>Valeur: {item.value} PO</span>}
-                  </div>
-                  {item.properties && Object.keys(item.properties).length > 0 && (
-                    <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 space-y-0.5">
-                      {Object.entries(item.properties).map(([k, v]) => (
-                        <div key={k}><span className="font-medium">{k}:</span> {String(v)}</div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+              </div>
+            ) : (
+              <ItemCard
+                key={item.id}
+                name={item.name}
+                itemType={item.item_type}
+                rarity={RARITY_LABELS[item.rarity] ?? item.rarity}
+                magical={item.is_magical}
+                description={item.description}
+                details={<><span>{item.resource_name && `Comptoir : ${item.resource_name}`}</span>{item.weight > 0 && <span>Poids : {item.weight} kg</span>}{item.value > 0 && <span>Valeur : {item.value} PO</span>}{item.properties && Object.entries(item.properties).map(([key, value]) => <span key={key}>{key} : {String(value)}</span>)}</>}
+                actions={isMJ ? <div className="flex gap-1"><button onClick={() => startEdit(item)} className="text-xs text-primary hover:underline">Modifier</button><button onClick={() => handleDelete(item.id)} className="text-xs text-red-600 hover:underline">Supprimer</button></div> : undefined}
+              />
+            )
           ))}
         </div>
       )}

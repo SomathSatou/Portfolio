@@ -1,6 +1,7 @@
 import React from 'react'
 import api from '../api'
 import type { Spell } from './types'
+import SpellCard from '../ui/SpellCard'
 
 interface Props {
   campaignId: number
@@ -135,8 +136,8 @@ export default function CampaignSpellsPanel({ campaignId, isMJ }: Props) {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {spells.map((spell) => (
-            <div key={spell.id} className="card">
-              {editingId === spell.id ? (
+            editingId === spell.id ? (
+              <div key={spell.id} className="card">
                 <form onSubmit={handleEdit} className="space-y-2">
                   <input required value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                     className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary" />
@@ -147,36 +148,19 @@ export default function CampaignSpellsPanel({ campaignId, isMJ }: Props) {
                     <button type="button" onClick={() => setEditingId(null)} className="btn btn-outline text-xs">Annuler</button>
                   </div>
                 </form>
-              ) : (
-                <>
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">{spell.name}</h3>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        <span className="badge">Niv. {spell.level}</span>
-                        {spell.school && <span className="badge">{spell.school}</span>}
-                        {spell.mana_cost > 0 && <span className="badge">Mana: {spell.mana_cost}</span>}
-                      </div>
-                    </div>
-                    {isMJ && (
-                      <div className="flex gap-1 shrink-0">
-                        <button onClick={() => startEdit(spell)} className="text-xs text-primary dark:text-primaryLight hover:underline">Modifier</button>
-                        <button onClick={() => handleDelete(spell.id)} className="text-xs text-red-500 hover:underline">Supprimer</button>
-                      </div>
-                    )}
-                  </div>
-                  {spell.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{spell.description}</p>
-                  )}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-xs text-gray-500 dark:text-gray-500">
-                    {spell.damage && <span>Dégâts: {spell.damage}</span>}
-                    {spell.range_distance && <span>Portée: {spell.range_distance}</span>}
-                    {spell.casting_time && <span>Incantation: {spell.casting_time}</span>}
-                    {spell.duration && <span>Durée: {spell.duration}</span>}
-                  </div>
-                </>
-              )}
-            </div>
+              </div>
+            ) : (
+              <SpellCard
+                key={spell.id}
+                name={spell.name}
+                school={spell.school}
+                level={spell.level}
+                manaCost={spell.mana_cost}
+                description={spell.description}
+                details={<>{spell.damage && <span>Dégâts : {spell.damage}</span>}{spell.range_distance && <span>Portée : {spell.range_distance}</span>}{spell.casting_time && <span>Incantation : {spell.casting_time}</span>}{spell.duration && <span>Durée : {spell.duration}</span>}</>}
+                actions={isMJ ? <div className="flex gap-1"><button onClick={() => startEdit(spell)} className="text-xs text-primary hover:underline">Modifier</button><button onClick={() => handleDelete(spell.id)} className="text-xs text-red-600 hover:underline">Supprimer</button></div> : undefined}
+              />
+            )
           ))}
         </div>
       )}

@@ -138,7 +138,13 @@ jobs:
         run: |
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             set -e
-            cd /var/www/Portfolio/frontend
+            DEPLOY_DIR="/var/www/Portfolio"
+            DEPLOY_USER="$(id -un)"
+            DEPLOY_GROUP="$(id -gn)"
+            sudo chown -R "$DEPLOY_USER:$DEPLOY_GROUP" "$DEPLOY_DIR/frontend/node_modules" "$DEPLOY_DIR/frontend/dist" 2>/dev/null || true
+            cd "$DEPLOY_DIR/frontend"
+            node --version
+            npm --version
             npm ci
             npm run build
           EOF

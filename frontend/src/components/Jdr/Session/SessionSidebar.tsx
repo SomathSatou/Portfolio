@@ -2,6 +2,8 @@ import React from 'react'
 import api from '../api'
 import type { CharacterSpell, CharacterItem } from '../Dashboard/types'
 import DiceText from './DiceText'
+import ItemCard from '../ui/ItemCard'
+import SpellCard from '../ui/SpellCard'
 
 interface Props {
   campaignId: string | number
@@ -56,7 +58,7 @@ export default function SessionSidebar({ campaignId, characterId, onRoll }: Prop
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-80 max-w-[90vw] bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ${
+        className={`jdr-drawer-surface fixed top-0 right-0 z-50 h-full w-80 max-w-[90vw] border-l shadow-2xl transform transition-transform duration-300 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -98,28 +100,16 @@ export default function SessionSidebar({ campaignId, characterId, onRoll }: Prop
               <p className="text-sm text-gray-500 dark:text-gray-400">Aucun sort appris.</p>
             ) : (
               spells.map((cs) => (
-                <div key={cs.id} className="rounded-lg border border-gray-200 dark:border-gray-700 p-3 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{cs.spell_name}</h3>
-                    <div className="flex gap-1">
-                      <span className="badge text-[10px]">Niv. {cs.spell_level}</span>
-                      {cs.spell_school && <span className="badge text-[10px]">{cs.spell_school}</span>}
-                    </div>
-                  </div>
-                  {cs.spell_mana_cost > 0 && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Mana: {cs.spell_mana_cost}</p>
-                  )}
-                  {cs.spell_description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      <DiceText text={cs.spell_description} onRoll={onRoll} />
-                    </p>
-                  )}
-                  {cs.notes && (
-                    <p className="text-xs text-gray-500 italic">
-                      <DiceText text={cs.notes} onRoll={onRoll} />
-                    </p>
-                  )}
-                </div>
+                <SpellCard
+                  key={cs.id}
+                  className="jdr-card-compact p-3"
+                  name={cs.spell_name}
+                  school={cs.spell_school}
+                  level={cs.spell_level}
+                  manaCost={cs.spell_mana_cost}
+                  description={cs.spell_description && <DiceText text={cs.spell_description} onRoll={onRoll} />}
+                  details={cs.notes && <span className="italic"><DiceText text={cs.notes} onRoll={onRoll} /></span>}
+                />
               ))
             )
           )}
@@ -129,44 +119,17 @@ export default function SessionSidebar({ campaignId, characterId, onRoll }: Prop
               <p className="text-sm text-gray-500 dark:text-gray-400">Aucun objet possédé.</p>
             ) : (
               items.map((ci) => (
-                <div key={ci.id} className="rounded-lg border border-gray-200 dark:border-gray-700 p-3 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-                      {ci.item_name}
-                      {ci.quantity > 1 && <span className="text-gray-500 font-normal"> ×{ci.quantity}</span>}
-                    </h3>
-                    <div className="flex gap-1">
-                      {ci.item_rarity && (
-                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${rarityColor(ci.item_rarity)}`}>
-                          {ci.item_rarity}
-                        </span>
-                      )}
-                      {ci.is_equipped && (
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-                          Équipé
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  {ci.item_type && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{ci.item_type}</p>
-                  )}
-                  {ci.item_description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      <DiceText text={ci.item_description} onRoll={onRoll} />
-                    </p>
-                  )}
-                  {ci.notes && (
-                    <p className="text-xs text-gray-500 italic">
-                      <DiceText text={ci.notes} onRoll={onRoll} />
-                    </p>
-                  )}
-                  {ci.item_is_magical && (
-                    <span className="inline-flex items-center gap-1 text-[10px] text-purple-600 dark:text-purple-400">
-                      ✨ Magique
-                    </span>
-                  )}
-                </div>
+                <ItemCard
+                  key={ci.id}
+                  className="jdr-card-compact p-3"
+                  name={ci.item_name}
+                  itemType={ci.item_type}
+                  rarity={ci.item_rarity}
+                  magical={ci.item_is_magical}
+                  quantity={ci.quantity}
+                  description={ci.item_description && <DiceText text={ci.item_description} onRoll={onRoll} />}
+                  details={<>{ci.is_equipped && <span>Équipé</span>}{ci.notes && <span className="italic"><DiceText text={ci.notes} onRoll={onRoll} /></span>}</>}
+                />
               ))
             )
           )}
@@ -174,16 +137,4 @@ export default function SessionSidebar({ campaignId, characterId, onRoll }: Prop
       </div>
     </>
   )
-}
-
-function rarityColor(rarity: string): string {
-  switch (rarity.toLowerCase()) {
-    case 'commun': return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-    case 'peu commun': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-    case 'rare': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-    case 'très rare': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-    case 'légendaire': return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
-    case 'artéfact': return 'bg-accent3/20 text-yellow-800 dark:text-accent3'
-    default: return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
-  }
 }
