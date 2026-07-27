@@ -9,30 +9,30 @@ export default function CharacterCard({ character }: CharacterCardProps) {
   return (
     <a
       href={`#/jdr/character/${character.id}`}
-      className="card-glass block no-underline animate-fadeIn"
+      className="character-card-jdr block no-underline animate-fadeIn"
     >
       <div className="flex items-center gap-3">
         {character.avatar ? (
           <img
             src={character.avatar}
             alt={character.name}
-            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/40 dark:ring-primaryLight/40"
+            className="character-avatar-jdr w-12 h-12 rounded-full object-cover ring-2"
           />
         ) : (
-          <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-            <User className="w-6 h-6 text-primary dark:text-primaryLight" />
+          <div className="character-avatar-jdr w-12 h-12 rounded-full flex items-center justify-center">
+            <User className="w-6 h-6" />
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <h3 className="font-semibold text-primary dark:text-primaryLight truncate">{character.name}</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+          <h3 className="character-name-jdr font-semibold truncate">{character.name}</h3>
+          <p className="character-info-jdr text-xs truncate">
             {character.class_type || 'Classe inconnue'} — Niv. {character.level}
           </p>
         </div>
       </div>
 
-      <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-        <span className="badge">{character.campaign_name}</span>
+      <div className="mt-2 text-xs">
+        <span className="character-badge-jdr">{character.campaign_name}</span>
       </div>
     </a>
   )
