@@ -14,6 +14,7 @@ import { MerchantPage } from './Merchant'
 import { RunesPage } from './Runes'
 import { FilesPage } from './Files'
 import { SessionPage } from './Session'
+import JdrCardPreview from './JdrCardPreview'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -42,6 +43,7 @@ function JdrRouterInner({ hash }: { hash: string }) {
   if (hash === '#/jdr/register') return <RegisterPage />
   if (hash === '#/jdr/forgot-password') return <ForgotPasswordPage />
   if (hash.startsWith('#/jdr/reset-password')) return <ResetPasswordPage />
+  if (import.meta.env.DEV && hash === '#/jdr/card-preview') return <JdrCardPreview />
 
   // Protected routes
   const sessionMatch = hash.match(/^#\/jdr\/campaign\/(\d+)\/session$/)

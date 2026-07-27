@@ -1,6 +1,7 @@
 import React from 'react'
 import api from '../api'
 import type { CampaignSettings } from './types'
+import WaxSeal from '../ui/WaxSeal'
 
 interface CampaignSettingsPanelProps {
   campaignId: number
@@ -71,7 +72,8 @@ export default function CampaignSettingsPanel({ campaignId, isMJ }: CampaignSett
         Paramètres de la campagne
       </h2>
 
-      <div className="card p-6 space-y-5">
+      <div className="card relative p-6 pb-20 space-y-5">
+        <WaxSeal label="Paramètres de campagne" tone="wine" />
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Ces paramètres définissent les contraintes de répartition des statistiques pour tous les personnages de la campagne.
         </p>

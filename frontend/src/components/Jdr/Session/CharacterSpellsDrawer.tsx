@@ -2,6 +2,7 @@ import React from 'react'
 import api from '../api'
 import type { CharacterSpell, Spell } from '../Dashboard/types'
 import DiceText from './DiceText'
+import SpellCard from '../ui/SpellCard'
 
 interface Props {
   isOpen: boolean
@@ -70,10 +71,9 @@ export default function CharacterSpellsDrawer({
         <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" onClick={onClose} />
       )}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] shadow-2xl transform transition-transform duration-300 flex flex-col ${
+        className={`jdr-drawer-surface fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] border-r shadow-2xl transform transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ background: 'var(--parchment-panel-bg, #f5e6c8)', borderRight: '1px solid rgba(201,162,39,0.5)' }}
       >
         <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: '1px solid rgba(201,162,39,0.4)' }}>
           <h2 className="font-semibold text-primary dark:text-primaryLight">
@@ -94,39 +94,16 @@ export default function CharacterSpellsDrawer({
           )}
 
           {!loading && charSpells.map((cs) => (
-            <div key={cs.id} className="rounded-lg border border-gray-200 dark:border-gray-700 p-3 space-y-1">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{cs.spell_name}</h3>
-                    <span className="badge text-[10px]">Niv. {cs.spell_level}</span>
-                    {cs.spell_school && <span className="badge text-[10px]">{cs.spell_school}</span>}
-                    {cs.spell_mana_cost > 0 && (
-                      <span className="text-[10px] text-blue-600 dark:text-blue-400">Mana: {cs.spell_mana_cost}</span>
-                    )}
-                  </div>
-                  {cs.spell_description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      <DiceText text={cs.spell_description} onRoll={onRoll} />
-                    </p>
-                  )}
-                  {cs.spell_damage && (
-                    <p className="text-xs text-red-600 dark:text-red-400 mt-0.5">
-                      Dégâts: <DiceText text={cs.spell_damage} onRoll={onRoll} />
-                    </p>
-                  )}
-                </div>
-                {isMJ && (
-                  <button
-                    onClick={() => handleRemove(cs.id)}
-                    disabled={removing === cs.id}
-                    className="text-xs text-red-500 hover:underline shrink-0"
-                  >
-                    {removing === cs.id ? '…' : 'Retirer'}
-                  </button>
-                )}
-              </div>
-            </div>
+            <SpellCard
+              key={cs.id}
+              name={cs.spell_name}
+              school={cs.spell_school}
+              level={cs.spell_level}
+              manaCost={cs.spell_mana_cost}
+              description={cs.spell_description && <DiceText text={cs.spell_description} onRoll={onRoll} />}
+              details={cs.spell_damage && <span>Dégâts : <DiceText text={cs.spell_damage} onRoll={onRoll} /></span>}
+              actions={isMJ ? <button onClick={() => handleRemove(cs.id)} disabled={removing === cs.id} className="text-xs text-red-600 hover:underline">{removing === cs.id ? '…' : 'Retirer'}</button> : undefined}
+            />
           ))}
 
           {isMJ && !showAdd && availableToAdd.length > 0 && (

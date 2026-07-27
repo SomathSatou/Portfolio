@@ -48,10 +48,9 @@ export default function CharacterDetailDrawer({ isOpen, onClose, character }: Pr
         <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" onClick={onClose} />
       )}
       <div
-        className={`fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] shadow-2xl transform transition-transform duration-300 flex flex-col ${
+        className={`jdr-drawer-surface fixed top-0 left-0 z-50 h-full w-[480px] max-w-[95vw] border-r shadow-2xl transform transition-transform duration-300 flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        style={{ background: 'var(--parchment-panel-bg, #f5e6c8)', borderRight: '1px solid rgba(201,162,39,0.5)' }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: '1px solid rgba(201,162,39,0.4)' }}>
