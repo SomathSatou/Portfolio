@@ -93,35 +93,63 @@ jobs:
           EOF
           echo "::endgroup::"
 
-      - name: Deploy application
+      - name: Update application source
         run: |
-          echo "::group::Deployment"
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            set -e
             DEPLOY_DIR="/var/www/Portfolio"
-            cd "${DEPLOY_DIR}" || { echo "::error::Cannot access ${DEPLOY_DIR}"; exit 1; }
-
-            echo "Configuring git safe directory..."
-            git config --global --add safe.directory "${DEPLOY_DIR}"
-
-            echo "Fetching and resetting to origin/main..."
-            git fetch origin || { echo "::error::git fetch failed"; exit 1; }
-            git reset --hard origin/main || { echo "::error::git reset failed"; exit 1; }
-
-            if [ ! -f "${DEPLOY_DIR}/deploy.sh" ]; then
-              echo "::error::deploy.sh not found"
-              exit 1
-            fi
-            echo "Running deploy.sh..."
-            if ! bash "${DEPLOY_DIR}/deploy.sh"; then
-              EXIT_CODE=$?
-              echo "::error::deploy.sh failed with exit code ${EXIT_CODE}"
-              exit ${EXIT_CODE}
-            fi
-            if ! systemctl is-active --quiet portfolio; then
-              echo "::warning::Service 'portfolio' is not active after deployment"
-            fi
+            cd "$DEPLOY_DIR"
+            git config --global --add safe.directory "$DEPLOY_DIR"
+            git fetch origin
+            git reset --hard origin/main
           EOF
-          echo "::endgroup::"
+
+      - name: Apply database migrations
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            set -e
+            DEPLOY_DIR="/var/www/Portfolio"
+            ENV_FILE="/etc/portfolio.env"
+            set -a
+            source "$ENV_FILE"
+            set +a
+            cd "$DEPLOY_DIR/backend"
+            source .venv/bin/activate
+            pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels mysqlclient python-dotenv
+            python manage.py migrate --noinput --verbosity=2
+            python manage.py ensure_admin
+          EOF
+
+      - name: Collect Django static files
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            set -e
+            DEPLOY_DIR="/var/www/Portfolio"
+            ENV_FILE="/etc/portfolio.env"
+            set -a
+            source "$ENV_FILE"
+            set +a
+            cd "$DEPLOY_DIR/backend"
+            source .venv/bin/activate
+            python manage.py collectstatic --noinput
+          EOF
+
+      - name: Build frontend
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            set -e
+            cd /var/www/Portfolio/frontend
+            npm ci
+            npm run build
+          EOF
+
+      - name: Restart portfolio service
+        run: |
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
+            set -e
+            systemctl restart portfolio
+            systemctl is-active --quiet portfolio
+          EOF
 
       - name: Verify deployment
         if: always()

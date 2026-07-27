@@ -68,7 +68,7 @@ python manage.py collectstatic --noinput
 
 cd "$FRONTEND_DIR"
 echo "[5/6] Building frontend..."
-npm ci --silent
+npm ci
 npm run build
 
 echo "[6/6] Restarting service..."
