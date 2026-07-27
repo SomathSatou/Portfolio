@@ -54,6 +54,7 @@ urlpatterns = [
     path('api/jdr/', include('jdr.urls')),
     path('api/muscu/', include('muscu.urls')),
     # Frontend assets (JS, CSS, images) — keep 'assets/' in the path
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^(?P<path>assets/.+)$', frontend_file),
     # Public files copied by Vite to dist root (logos, svg, pdf, etc.)
     re_path(r'^(?P<path>.+\.(?:png|svg|ico|jpg|jpeg|gif|webp|pdf|txt|webmanifest))$', frontend_file),

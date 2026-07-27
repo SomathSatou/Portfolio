@@ -8,12 +8,13 @@ interface FieldError {
 }
 
 export default function JdrProfilePage() {
-  const { user, updateProfile } = useAuth()
+  const { user, updateProfile, updateAvatar } = useAuth()
   const [username, setUsername] = React.useState(user?.username ?? '')
   const [email, setEmail] = React.useState(user?.email ?? '')
   const [loading, setLoading] = React.useState(false)
   const [success, setSuccess] = React.useState(false)
   const [errors, setErrors] = React.useState<FieldError>({})
+  const [avatarLoading, setAvatarLoading] = React.useState(false)
 
   React.useEffect(() => {
     if (user) {
@@ -58,9 +59,13 @@ export default function JdrProfilePage() {
     <div className="max-w-2xl mx-auto">
       <div className="card-parchment">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold profile-avatar-jdr">
-            {user?.username?.charAt(0).toUpperCase()}
-          </div>
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Avatar de compte" className="w-16 h-16 rounded-full object-cover profile-avatar-jdr" />
+          ) : (
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold profile-avatar-jdr">
+              {user?.username?.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div>
             <h1 className="title-medieval text-xl">Profil de l'aventurier</h1>
             <p className="text-sm profile-subtitle-jdr">
@@ -70,6 +75,13 @@ export default function JdrProfilePage() {
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label className="block mb-1 text-sm font-medium label-jdr">Portrait</label>
+            <div className="flex items-center gap-3">
+              <input type="file" accept="image/png,image/jpeg,image/webp" disabled={avatarLoading} onChange={async (event) => { const file = event.target.files?.[0]; if (!file) return; setAvatarLoading(true); try { await updateAvatar(file) } finally { setAvatarLoading(false) } }} />
+              {user?.avatar && <button type="button" disabled={avatarLoading} onClick={() => void updateAvatar(null)} className="btn-medieval-outline text-xs py-1 px-3">Supprimer</button>}
+            </div>
+          </div>
           <div>
             <label className="block mb-1 text-sm font-medium label-jdr">
               Nom d'aventurier

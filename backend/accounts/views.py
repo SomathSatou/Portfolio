@@ -17,8 +17,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import EmailVerification
+from .models import AccountProfile, EmailVerification
 from .serializers import (
+    AccountAvatarSerializer,
     EmailVerificationSerializer,
     MeSerializer,
     PasswordResetConfirmSerializer,
@@ -139,6 +140,28 @@ class MeView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class AccountAvatarView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = AccountAvatarSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        profile, _ = AccountProfile.objects.get_or_create(user=request.user)
+        if profile.avatar:
+            profile.avatar.delete(save=False)
+        profile.avatar = serializer.validated_data['avatar']
+        profile.save(update_fields=['avatar'])
+        return Response(MeSerializer(request.user, context={'request': request}).data)
+
+    def delete(self, request):
+        profile, _ = AccountProfile.objects.get_or_create(user=request.user)
+        if profile.avatar:
+            profile.avatar.delete(save=False)
+            profile.avatar = None
+            profile.save(update_fields=['avatar'])
+        return Response(MeSerializer(request.user, context={'request': request}).data)
 
 
 _token_generator = PasswordResetTokenGenerator()

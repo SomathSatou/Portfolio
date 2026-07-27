@@ -5,6 +5,16 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class AccountProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='account_profile',
+    )
+    avatar = models.ImageField(upload_to='accounts/avatars/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class EmailVerification(models.Model):
     """Stocke le token de vérification d'email pour un utilisateur nouvellement créé."""
 

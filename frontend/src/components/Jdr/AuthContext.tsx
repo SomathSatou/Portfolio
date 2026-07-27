@@ -1,5 +1,5 @@
+import axios from 'axios'
 import React from 'react'
-import api from './api'
 import type { AuthContextValue, AuthState, JdrUser } from './authTypes'
 import { AuthContext } from './authTypes'
 
@@ -12,7 +12,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchMe = React.useCallback(async () => {
     try {
-      const res = await api.get<JdrUser>('/auth/me/')
+      const res = await axios.get<JdrUser>('/api/auth/me/', { headers: { Authorization: `Bearer ${localStorage.getItem('auth_access')}` } })
       setState({ user: res.data, isAuthenticated: true, isLoading: false })
     } catch {
       setState({ user: null, isAuthenticated: false, isLoading: false })
@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   React.useEffect(() => {
-    const token = localStorage.getItem('jdr_access')
+    const token = localStorage.getItem('auth_access')
     if (token) {
       void fetchMe()
     } else {
@@ -30,26 +30,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const updateProfile = React.useCallback(
     async (data: Partial<Pick<JdrUser, 'username' | 'email'>>) => {
-      const res = await api.patch<JdrUser>('/auth/me/', data)
+      const res = await axios.patch<JdrUser>('/api/auth/me/', data, { headers: { Authorization: `Bearer ${localStorage.getItem('auth_access')}` } })
       setState((s) => ({ ...s, user: res.data }))
       return res.data
     },
     [],
   )
 
+  const updateAvatar = React.useCallback(async (avatar: File | null) => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('auth_access')}` }
+    const formData = new FormData()
+    if (avatar) formData.append('avatar', avatar)
+    const res = avatar
+      ? await axios.post<JdrUser>('/api/auth/me/avatar/', formData, { headers })
+      : await axios.delete<JdrUser>('/api/auth/me/avatar/', { headers })
+    setState((s) => ({ ...s, user: res.data }))
+    return res.data
+  }, [])
+
   const login = React.useCallback(async (email: string, password: string) => {
-    const res = await api.post<{ access: string; refresh: string }>('/auth/login/', {
+    const res = await axios.post<{ access: string; refresh: string }>('/api/auth/login/', {
       email,
       password,
     })
-    localStorage.setItem('jdr_access', res.data.access)
-    localStorage.setItem('jdr_refresh', res.data.refresh)
+    localStorage.setItem('auth_access', res.data.access)
+    localStorage.setItem('auth_refresh', res.data.refresh)
     await fetchMe()
   }, [fetchMe])
 
   const register = React.useCallback(
     async (username: string, email: string, password: string, passwordConfirm: string) => {
-      await api.post('/auth/register/', {
+      await axios.post('/api/auth/register/', {
         username,
         email,
         password,
@@ -60,26 +71,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 
   const logout = React.useCallback(() => {
-    localStorage.removeItem('jdr_access')
-    localStorage.removeItem('jdr_refresh')
+    localStorage.removeItem('auth_access')
+    localStorage.removeItem('auth_refresh')
     setState({ user: null, isAuthenticated: false, isLoading: false })
     window.location.hash = '#/jdr'
   }, [])
 
   const refreshToken = React.useCallback(async () => {
-    const refresh = localStorage.getItem('jdr_refresh')
+    const refresh = localStorage.getItem('auth_refresh')
     if (!refresh) return
     try {
-      const res = await api.post<{ access: string }>('/auth/refresh/', { refresh })
-      localStorage.setItem('jdr_access', res.data.access)
+      const res = await axios.post<{ access: string }>('/api/auth/refresh/', { refresh })
+      localStorage.setItem('auth_access', res.data.access)
     } catch {
       logout()
     }
   }, [logout])
 
   const value = React.useMemo<AuthContextValue>(
-    () => ({ ...state, login, register, logout, refreshToken, updateProfile }),
-    [state, login, register, logout, refreshToken, updateProfile],
+    () => ({ ...state, login, register, logout, refreshToken, updateProfile, updateAvatar }),
+    [state, login, register, logout, refreshToken, updateProfile, updateAvatar],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

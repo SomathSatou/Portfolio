@@ -108,9 +108,18 @@ export default function MuscuLayout({ children }: { children: React.ReactNode })
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <span className="hidden sm:inline text-sm font-medium neon-primary-text" style={{ fontSize: '0.75rem' }}>
-                {user?.username?.toUpperCase()}
-              </span>
+              <a href="#/irlrpg/profile" className="flex items-center gap-3 no-underline" aria-label="Ouvrir mon profil">
+                {user?.avatar ? (
+                  <img src={user.avatar} alt="Avatar de compte" className="h-9 w-9 rounded-full object-cover ring-2 ring-cyan-400" />
+                ) : (
+                  <span className="h-9 w-9 rounded-full flex items-center justify-center bg-cyan-950 text-cyan-300 font-semibold ring-2 ring-cyan-400">
+                    {user?.username?.charAt(0).toUpperCase()}
+                  </span>
+                )}
+                <span className="hidden sm:inline text-sm font-medium neon-primary-text" style={{ fontSize: '0.75rem' }}>
+                  {user?.username?.toUpperCase()}
+                </span>
+              </a>
               <button onClick={logout} className="btn-neon text-xs py-1 px-3">
                 EXIT
               </button>
