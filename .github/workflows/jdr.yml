@@ -153,8 +153,8 @@ jobs:
         run: |
           ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
             set -e
-            systemctl restart portfolio
-            systemctl is-active --quiet portfolio
+            sudo -n systemctl restart portfolio
+            sudo -n systemctl is-active --quiet portfolio
           EOF
 
       - name: Verify deployment
