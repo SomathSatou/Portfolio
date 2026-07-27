@@ -29,9 +29,9 @@ except ImportError:
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') 
 if not SECRET_KEY:
-    raise RuntimeError('SECRET_KEY doit être défini dans les variables d’environnement.')
+    raise RuntimeError('DJANGO_SECRET_KEY doit être défini dans les variables d’environnement.')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'

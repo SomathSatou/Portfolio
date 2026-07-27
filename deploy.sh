@@ -23,6 +23,11 @@ else
     echo "Warning: $ENV_FILE not found"
 fi
 
+if [ -z "${DJANGO_SECRET_KEY:-}" ] && [ -z "${SECRET_KEY:-}" ]; then
+    echo "::error::DJANGO_SECRET_KEY or SECRET_KEY is missing. Define one in $ENV_FILE before deploying."
+    exit 1
+fi
+
 cd "$PROJECT_DIR"
 echo "[1/6] Git status..."
 git status
