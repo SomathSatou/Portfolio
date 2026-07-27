@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .mail_sync import update_postfixadmin_password, ensure_mailbox_exists
+from .models import AccountProfile
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -101,24 +102,27 @@ class MeSerializer(serializers.ModelSerializer):
         return profile.can_access_muscu if profile else False
 
     def get_avatar(self, obj) -> str | None:
-        """Retourne l'URL d'avatar IRL RPG en priorité, puis JDR."""
+        profile, _ = AccountProfile.objects.get_or_create(user=obj)
+        if not profile.avatar:
+            return None
         request = self.context.get('request')
-
-        muscu_profile = getattr(obj, 'muscu_profile', None)
-        if muscu_profile and muscu_profile.avatar:
-            url = muscu_profile.avatar.url
-            return request.build_absolute_uri(url) if request else url
-
-        jdr_profile = getattr(obj, 'jdr_profile', None)
-        if jdr_profile and jdr_profile.avatar:
-            url = jdr_profile.avatar.url
-            return request.build_absolute_uri(url) if request else url
-
-        return None
+        url = profile.avatar.url
+        return request.build_absolute_uri(url) if request else url
 
     def get_is_banned(self, obj) -> bool:
         profile = getattr(obj, 'muscu_profile', None)
         return profile.is_banned if profile else False
+
+
+class AccountAvatarSerializer(serializers.Serializer):
+    avatar = serializers.ImageField()
+
+    def validate_avatar(self, value):
+        if value.size > 5 * 1024 * 1024:
+            raise serializers.ValidationError('L’image ne doit pas dépasser 5 Mo.')
+        if value.image.format not in {'JPEG', 'PNG', 'WEBP'}:
+            raise serializers.ValidationError('Formats acceptés : PNG, JPEG ou WebP.')
+        return value
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):

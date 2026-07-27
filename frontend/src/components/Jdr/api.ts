@@ -7,7 +7,7 @@ const api = axios.create({
 
 // Interceptor: attach Bearer token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('jdr_access')
+  const token = localStorage.getItem('auth_access')
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -22,20 +22,20 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !original._retry &&
-      localStorage.getItem('jdr_refresh')
+      localStorage.getItem('auth_refresh')
     ) {
       original._retry = true
       try {
-        const res = await axios.post('/api/jdr/auth/refresh/', {
-          refresh: localStorage.getItem('jdr_refresh'),
+        const res = await axios.post('/api/auth/refresh/', {
+          refresh: localStorage.getItem('auth_refresh'),
         })
         const { access } = res.data as { access: string }
-        localStorage.setItem('jdr_access', access)
+        localStorage.setItem('auth_access', access)
         original.headers.Authorization = `Bearer ${access}`
         return api(original)
       } catch {
-        localStorage.removeItem('jdr_access')
-        localStorage.removeItem('jdr_refresh')
+        localStorage.removeItem('auth_access')
+        localStorage.removeItem('auth_refresh')
         window.location.hash = '#/jdr/login'
       }
     }

@@ -39,7 +39,7 @@ interface BadgeData {
 }
 
 export default function ProfilePage() {
-  const { user, updateProfile } = useAuth()
+  const { user, updateProfile, updateAvatar } = useAuth()
   const [muscles, setMuscles] = React.useState<MuscleXP[]>([])
   const [total, setTotal] = React.useState<TotalXP>({ xp: 0, level: 1, rank: 'bronze' })
   const [badges, setBadges] = React.useState<BadgeData[]>([])
@@ -50,6 +50,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = React.useState(false)
   const [saveSuccess, setSaveSuccess] = React.useState(false)
   const [errors, setErrors] = React.useState<FieldError>({})
+  const [avatarLoading, setAvatarLoading] = React.useState(false)
 
   React.useEffect(() => {
     if (user) {
@@ -123,9 +124,13 @@ export default function ProfilePage() {
       {/* Header / Edit profile */}
       <form onSubmit={onSubmit} className="card-neon">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold neon-avatar">
-            {user?.username?.charAt(0).toUpperCase()}
-          </div>
+          {user?.avatar ? (
+            <img src={user.avatar} alt="Avatar de compte" className="w-16 h-16 rounded-full object-cover neon-avatar" />
+          ) : (
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold neon-avatar">
+              {user?.username?.charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="flex-1">
             <h1 className="title-neon text-xl">PROFIL</h1>
             <div className="flex items-center gap-3 mt-1">
@@ -133,6 +138,14 @@ export default function ProfilePage() {
               <span className="neon-text-sm">NIVEAU {total.level}</span>
               <span className="neon-text-sm">{total.xp} XP</span>
             </div>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block neon-label mb-1">AVATAR</label>
+          <div className="flex items-center gap-3">
+            <input type="file" accept="image/png,image/jpeg,image/webp" disabled={avatarLoading} onChange={async (event) => { const file = event.target.files?.[0]; if (!file) return; setAvatarLoading(true); try { await updateAvatar(file) } finally { setAvatarLoading(false) } }} className="text-sm" />
+            {user?.avatar && <button type="button" disabled={avatarLoading} onClick={() => void updateAvatar(null)} className="btn-neon text-xs py-1 px-3">SUPPRIMER</button>}
           </div>
         </div>
 

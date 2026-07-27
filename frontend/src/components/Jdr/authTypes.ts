@@ -20,6 +20,7 @@ export interface AuthContextValue extends AuthState {
   logout: () => void
   refreshToken: () => Promise<void>
   updateProfile: (data: Partial<Pick<JdrUser, 'username' | 'email'>>) => Promise<JdrUser>
+  updateAvatar: (avatar: File | null) => Promise<JdrUser>
 }
 
 export const AuthContext = React.createContext<AuthContextValue | null>(null)

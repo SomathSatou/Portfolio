@@ -111,7 +111,16 @@ export default function JdrLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-4">
             <NotificationBell />
             <div className="flex items-center gap-2 text-sm user-info-jdr">
-              <span className="hidden sm:inline font-medium username-jdr">{user?.username}</span>
+              <a href="#/jdr/profile" className="flex items-center gap-2 no-underline" aria-label="Ouvrir mon profil">
+                {user?.avatar ? (
+                  <img src={user.avatar} alt="Avatar de compte" className="h-9 w-9 rounded-full object-cover ring-2 ring-amber-700/50" />
+                ) : (
+                  <span className="h-9 w-9 rounded-full flex items-center justify-center bg-amber-800 text-amber-50 font-semibold">
+                    {user?.username?.charAt(0).toUpperCase()}
+                  </span>
+                )}
+                <span className="hidden sm:inline font-medium username-jdr">{user?.username}</span>
+              </a>
               <button
                 onClick={logout}
                 className="btn-medieval-outline text-xs py-1 px-3"

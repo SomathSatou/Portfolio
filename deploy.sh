@@ -55,6 +55,8 @@ if ! python manage.py migrate --noinput --verbosity=2; then
     exit 1
 fi
 echo "  → Migrations completed successfully"
+echo "  → Ensuring bootstrap administrator..."
+python manage.py ensure_admin
 
 echo "[4/6] Collecting static files..."
 python manage.py collectstatic --noinput

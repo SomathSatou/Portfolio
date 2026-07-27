@@ -7,7 +7,7 @@ const api = axios.create({
 
 // Interceptor: attach Bearer token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('muscu_access')
+  const token = localStorage.getItem('auth_access')
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -22,20 +22,20 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !original._retry &&
-      localStorage.getItem('muscu_refresh')
+      localStorage.getItem('auth_refresh')
     ) {
       original._retry = true
       try {
-        const res = await axios.post('/api/muscu/auth/refresh/', {
-          refresh: localStorage.getItem('muscu_refresh'),
+        const res = await axios.post('/api/auth/refresh/', {
+          refresh: localStorage.getItem('auth_refresh'),
         })
         const { access } = res.data as { access: string }
-        localStorage.setItem('muscu_access', access)
+        localStorage.setItem('auth_access', access)
         original.headers.Authorization = `Bearer ${access}`
         return api(original)
       } catch {
-        localStorage.removeItem('muscu_access')
-        localStorage.removeItem('muscu_refresh')
+        localStorage.removeItem('auth_access')
+        localStorage.removeItem('auth_refresh')
         window.location.hash = '#/irlrpg/login'
       }
     }
