@@ -5,9 +5,8 @@ import type { SharedFolder, FolderCategory, AccessLevel } from './types'
 import { CATEGORIES, CATEGORY_ICON, CATEGORY_LABEL } from './types'
 import FolderCard from './FolderCard'
 import FileExplorer from './FileExplorer'
-import NextcloudEmbed from './NextcloudEmbed'
 
-type ViewMode = 'folders' | 'explorer' | 'embed'
+type ViewMode = 'folders' | 'explorer'
 
 interface CampaignOption {
   id: number
@@ -126,22 +125,6 @@ export default function FilesPage() {
     return <FileExplorer folder={selectedFolder} onBack={handleBack} />
   }
 
-  if (viewMode === 'embed') {
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <button onClick={() => setViewMode('folders')} className="p-2 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>
-          </button>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Nextcloud</h2>
-        </div>
-        <NextcloudEmbed folderId={selectedFolder?.id} />
-      </div>
-    )
-  }
-
   return (
     <div className="space-y-6">
       {/* Page header */}
@@ -153,13 +136,6 @@ export default function FilesPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {/* Nextcloud embed button */}
-          <button
-            onClick={() => setViewMode('embed')}
-            className="btn btn-outline text-sm"
-          >
-            Ouvrir Nextcloud
-          </button>
           {isMJ && (
             <button
               onClick={() => setShowCreate(true)}

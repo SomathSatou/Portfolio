@@ -97,6 +97,7 @@ Pillow
 gunicorn
 daphne
 channels
+channels-redis
 ```
 
 ---
@@ -116,7 +117,7 @@ git pull
 # 2. Activer le venv & installer les dépendances
 source backend/.venv/bin/activate
 pip install -q django djangorestframework django-cors-headers \
-    djangorestframework-simplejwt Pillow gunicorn daphne channels
+    djangorestframework-simplejwt Pillow gunicorn daphne channels channels-redis
 
 # 3. Migrations Django
 cd backend
@@ -171,6 +172,43 @@ ExecStart=/var/www/Portfolio/backend/.venv/bin/gunicorn core.wsgi:application \
 [Install]
 WantedBy=multi-user.target
 ```
+
+### 6.1bis Daphne (WebSocket / chat JDR)
+
+Le chat de session JDR (`/ws/jdr/chat/<campaign_id>/`) nécessite un serveur ASGI (Daphne)
+et Redis comme backend de `CHANNEL_LAYERS` (obligatoire dès que Gunicorn tourne avec
+plusieurs workers, sinon les messages ne sont pas broadcastés entre process).
+
+```bash
+# Installer Redis (une fois)
+apt install -y redis-server
+systemctl enable --now redis-server
+
+# Variables d'environnement (/etc/portfolio.env)
+CHANNEL_LAYER_BACKEND=redis
+REDIS_URL=redis://127.0.0.1:6379/0
+```
+
+Service systemd `daphne.service` :
+
+```ini
+[Unit]
+Description=Daphne ASGI server (WebSockets JDR)
+After=network.target redis-server.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/Portfolio/backend
+EnvironmentFile=/etc/portfolio.env
+ExecStart=/var/www/Portfolio/backend/.venv/bin/daphne -b 127.0.0.1 -p 8001 core.asgi:application
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Nginx doit alors proxyfier `location /ws/` vers `http://127.0.0.1:8001` avec les en-têtes
+`Upgrade`/`Connection` nécessaires au handshake WebSocket.
 
 ### 6.2 Nginx
 

@@ -52,7 +52,7 @@ if (Test-Path "${RepoRoot}\.venv\Scripts\Activate.ps1") {
   & "${BackendDir}\.venv\Scripts\Activate.ps1"
 }
 Write-Host "=> Applying migrations..." -ForegroundColor Cyan
-python manage.py migrate --run-syncdb
+python manage.py migrate --noinput
 Write-Host "=> Starting Django dev server..." -ForegroundColor Cyan
 python manage.py runserver 8000
 "@

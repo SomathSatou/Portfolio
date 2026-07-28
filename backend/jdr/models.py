@@ -977,7 +977,7 @@ class RuneDrawingHistory(models.Model):
         return f'{self.drawing.title} - {self.status} ({self.changed_at})'
 
 
-# ─── Nextcloud / Files ──────────────────────────────────────────────────────
+# ─── Fichiers partagés (bibliothèque de campagne) ────────────────────────────
 
 class SharedFolder(models.Model):
     ACCESS_LEVEL_CHOICES = [
@@ -999,7 +999,6 @@ class SharedFolder(models.Model):
     campaign = models.ForeignKey(
         Campaign, on_delete=models.CASCADE, related_name='shared_folders',
     )
-    nextcloud_path = models.CharField(max_length=500, help_text='Chemin du dossier dans Nextcloud')
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, default='')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='other')
@@ -1016,6 +1015,32 @@ class SharedFolder(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} ({self.campaign.name})'
+
+
+def shared_file_upload_path(instance: 'SharedFile', filename: str) -> str:
+    return f'jdr_files/{instance.folder.campaign_id}/{instance.folder_id}/{filename}'
+
+
+class SharedFile(models.Model):
+    folder = models.ForeignKey(
+        SharedFolder, on_delete=models.CASCADE, related_name='files',
+    )
+    file = models.FileField(upload_to=shared_file_upload_path)
+    original_name = models.CharField(max_length=255)
+    content_type = models.CharField(max_length=100, blank=True, default='')
+    size = models.PositiveIntegerField(default=0)
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='uploaded_shared_files',
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-uploaded_at']
+        verbose_name = 'Fichier partagé'
+        verbose_name_plural = 'Fichiers partagés'
+
+    def __str__(self) -> str:
+        return f'{self.original_name} ({self.folder.name})'
 
 
 class SharedFolderAccess(models.Model):
@@ -1075,11 +1100,19 @@ class ChatMessage(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='jdr_chat_messages',
     )
-    content = models.TextField()
+    content = models.TextField(max_length=2000)
     is_dice_roll = models.BooleanField(default=False)
     dice_result = models.JSONField(
         null=True, blank=True,
         help_text='Ex: {"command": "2d20", "rolls": [14, 7], "total": 21}',
+    )
+    is_private = models.BooleanField(
+        default=False, help_text='Jet secret : visible uniquement par le MJ et son auteur',
+    )
+    whisper_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='jdr_whispers_received',
+        help_text='Si défini, message chuchoté du MJ vers ce joueur uniquement',
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

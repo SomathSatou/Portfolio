@@ -51,7 +51,7 @@ export default function SessionPage({ campaignId }: Props) {
   const { combatState, startCombat, endCombat, nextTurn, addParticipant, updateHp, onWsEvent } =
     useCombat({ campaignId, enabled: sessionActive || isMJ })
 
-  const { messages, connected, sendMessage, setInitialMessages, reconnect, retryCount } = useChat({
+  const { messages, connected, sendMessage, sendTyping, typingUserIds, setInitialMessages, reconnect, retryCount } = useChat({
     campaignId,
     enabled: sessionActive || isMJ,
     onMessage: (msg: Record<string, unknown>) => {
@@ -329,9 +329,13 @@ export default function SessionPage({ campaignId }: Props) {
             messages={messages}
             connected={connected}
             onSend={sendMessage}
+            onTyping={sendTyping}
+            typingUserIds={typingUserIds}
             currentUserId={user?.id}
             onReconnect={reconnect}
             retryCount={retryCount}
+            isMJ={isMJ}
+            members={characters.map((c) => ({ id: c.player, name: c.player_name }))}
           />
         </div>
 

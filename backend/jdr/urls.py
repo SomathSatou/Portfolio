@@ -59,7 +59,6 @@ from .views import (
     MerchantOrderView,
     MerchantStatsView,
     SellEstimateView,
-    NextcloudEmbedUrlView,
     NotificationViewSet,
     RegisterView,
     ResourceViewSet,
@@ -76,6 +75,7 @@ from .views import (
     SessionNoteView,
     SkillDetailView,
     SkillListCreateView,
+    SharedFileDeleteView,
     SharedFolderContentView,
     SharedFolderDetailView,
     SharedFolderListCreateView,
@@ -153,12 +153,12 @@ urlpatterns = [
     path('runes/drawings/<int:pk>/history/', RuneDrawingHistoryListView.as_view(), name='rune-drawing-history'),
     path('runes/pending/', RunePendingView.as_view(), name='rune-pending'),
     path('runes/collection/', RuneCollectionView.as_view(), name='rune-collection'),
-    # Files / Nextcloud
+    # Files (bibliothèque de campagne — stockage local)
     path('files/folders/', SharedFolderListCreateView.as_view(), name='shared-folders'),
     path('files/folders/<int:pk>/', SharedFolderDetailView.as_view(), name='shared-folder-detail'),
     path('files/folders/<int:pk>/content/', SharedFolderContentView.as_view(), name='shared-folder-content'),
     path('files/folders/<int:pk>/upload/', SharedFolderUploadView.as_view(), name='shared-folder-upload'),
-    path('files/embed-url/', NextcloudEmbedUrlView.as_view(), name='nextcloud-embed-url'),
+    path('files/<int:pk>/', SharedFileDeleteView.as_view(), name='shared-file-delete'),
     # Session
     path('characters/<int:pk>/avatar/', CharacterAvatarUploadView.as_view(), name='character-avatar-upload'),
     path('campaigns/<int:pk>/settings/', CampaignSettingsView.as_view(), name='campaign-settings'),

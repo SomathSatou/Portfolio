@@ -1,6 +1,6 @@
 import React from 'react'
 import api from '../api'
-import type { FolderContentResponse, NextcloudFile, SharedFolder } from './types'
+import type { FolderContentResponse, SharedFile, SharedFolder } from './types'
 import FileUpload from './FileUpload'
 
 interface FileExplorerProps {
@@ -15,10 +15,9 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / Math.pow(1024, i)).toFixed(i > 0 ? 1 : 0)} ${units[i]}`
 }
 
-function fileIcon(file: NextcloudFile): string {
-  if (file.is_directory) return '📁'
+function fileIcon(file: SharedFile): string {
   const ct = file.content_type || ''
-  const name = file.name.toLowerCase()
+  const name = file.original_name.toLowerCase()
   if (ct.startsWith('image/') || /\.(png|jpe?g|gif|webp|svg|bmp)$/.test(name)) return '🖼️'
   if (ct.startsWith('audio/') || /\.(mp3|ogg|wav|flac|m4a)$/.test(name)) return '🎵'
   if (ct.startsWith('video/') || /\.(mp4|webm|avi|mkv)$/.test(name)) return '🎬'
@@ -39,12 +38,8 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
     setError('')
     api.get<FolderContentResponse>(`/files/folders/${folder.id}/content/`)
       .then((res) => setContent(res.data))
-      .catch((err) => {
-        if (err.response?.status === 503) {
-          setError('Nextcloud non configuré. Les fichiers ne sont pas disponibles en mode développement.')
-        } else {
-          setError('Impossible de charger le contenu du dossier.')
-        }
+      .catch(() => {
+        setError('Impossible de charger le contenu du dossier.')
       })
       .finally(() => setLoading(false))
   }, [folder.id])
@@ -52,6 +47,16 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
   React.useEffect(() => {
     fetchContent()
   }, [fetchContent])
+
+  async function handleDelete(file: SharedFile) {
+    if (!confirm(`Supprimer "${file.original_name}" ?`)) return
+    try {
+      await api.delete(`/files/${file.id}/`)
+      fetchContent()
+    } catch {
+      setError('Erreur lors de la suppression du fichier.')
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -68,7 +73,9 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
         </button>
         <div className="min-w-0 flex-1">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate">{folder.name}</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{folder.nextcloud_path}</p>
+          {folder.description && (
+            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{folder.description}</p>
+          )}
         </div>
       </div>
 
@@ -104,12 +111,13 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
                 <th className="text-left px-4 py-2 font-medium text-gray-600 dark:text-gray-400">Nom</th>
                 <th className="text-left px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hidden sm:table-cell">Type</th>
                 <th className="text-right px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hidden sm:table-cell">Taille</th>
-                <th className="text-right px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hidden md:table-cell">Modifié</th>
+                <th className="text-right px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hidden md:table-cell">Ajouté</th>
+                <th className="px-4 py-2 w-10" />
               </tr>
             </thead>
             <tbody>
-              {content.files.map((file, idx) => (
-                <FileRow key={file.href || idx} file={file} />
+              {content.files.map((file) => (
+                <FileRow key={file.id} file={file} onDelete={handleDelete} />
               ))}
             </tbody>
           </table>
@@ -119,25 +127,39 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
   )
 }
 
-function FileRow({ file }: { file: NextcloudFile }) {
+function FileRow({ file, onDelete }: { file: SharedFile; onDelete: (file: SharedFile) => void }) {
   return (
     <tr className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
       <td className="px-4 py-2.5">
-        <div className="flex items-center gap-2">
+        <a
+          href={file.url ?? '#'}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 hover:underline"
+        >
           <span className="text-lg flex-shrink-0">{fileIcon(file)}</span>
-          <span className="text-gray-900 dark:text-gray-100 truncate">{file.name}</span>
-        </div>
+          <span className="text-gray-900 dark:text-gray-100 truncate">{file.original_name}</span>
+        </a>
       </td>
       <td className="px-4 py-2.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">
-        {file.is_directory ? 'Dossier' : (file.content_type || '—')}
+        {file.content_type || '—'}
       </td>
       <td className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 hidden sm:table-cell">
-        {file.is_directory ? '—' : formatFileSize(file.size)}
+        {formatFileSize(file.size)}
       </td>
       <td className="px-4 py-2.5 text-right text-gray-500 dark:text-gray-400 hidden md:table-cell">
-        {file.last_modified
-          ? new Date(file.last_modified).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
-          : '—'}
+        {new Date(file.uploaded_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}
+      </td>
+      <td className="px-4 py-2.5 text-right">
+        <button
+          onClick={() => onDelete(file)}
+          className="text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          title="Supprimer"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+          </svg>
+        </button>
       </td>
     </tr>
   )

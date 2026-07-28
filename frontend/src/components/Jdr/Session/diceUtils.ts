@@ -7,14 +7,24 @@ export function isDiceCommand(text: string): boolean {
   return DICE_REGEX.test(text.trim())
 }
 
-export function formatDiceResult(result: { command: string; rolls: number[]; modifier?: number; total: number }): string {
-  const rollsStr = result.rolls.join(' + ')
+export function formatDiceResult(result: {
+  command: string
+  rolls: number[]
+  modifier?: number
+  total: number
+  keep?: 'highest' | 'lowest'
+  kept_index?: number
+}): string {
   const mod = result.modifier
   const modStr = mod ? (mod > 0 ? ` + ${mod}` : ` - ${Math.abs(mod)}`) : ''
+  const rollsStr = result.keep && result.kept_index !== undefined
+    ? result.rolls.map((r, i) => (i === result.kept_index ? `**${r}**` : `${r}`)).join(' / ')
+    : result.rolls.join(' + ')
   if (result.rolls.length === 1 && !mod) {
     return `🎲 ${result.command} → ${result.total}`
   }
-  return `🎲 ${result.command} → [${rollsStr}]${modStr} = ${result.total}`
+  const keepLabel = result.keep === 'highest' ? ' (avantage)' : result.keep === 'lowest' ? ' (désavantage)' : ''
+  return `🎲 ${result.command}${keepLabel} → [${rollsStr}]${modStr} = ${result.total}`
 }
 
 export function formatCurrency(gold: number, silver: number, copper: number): string {

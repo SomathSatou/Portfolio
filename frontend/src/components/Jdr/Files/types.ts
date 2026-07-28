@@ -11,7 +11,6 @@ export interface SharedFolder {
   id: number
   campaign: number
   campaign_name: string
-  nextcloud_path: string
   name: string
   description: string
   category: FolderCategory
@@ -20,22 +19,25 @@ export interface SharedFolder {
   created_by_name: string
   created_at: string
   access_entries: SharedFolderAccess[]
+  file_count: number
 }
 
-export interface NextcloudFile {
-  name: string
-  href: string
+export interface SharedFile {
+  id: number
+  folder: number
+  url: string | null
+  original_name: string
   content_type: string
   size: number
-  last_modified: string
-  is_directory: boolean
+  uploaded_by: number
+  uploaded_by_name: string
+  uploaded_at: string
 }
 
 export interface FolderContentResponse {
   folder_id: number
   folder_name: string
-  nextcloud_path: string
-  files: NextcloudFile[]
+  files: SharedFile[]
   can_upload: boolean
 }
 
