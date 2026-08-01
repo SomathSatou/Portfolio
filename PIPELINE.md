@@ -104,7 +104,19 @@ channels-redis
 
 ## 5. Étapes de build & déploiement
 
-Voici ce que fait le `deploy.sh` actuel, à reproduire dans la pipeline :
+La pipeline GitHub Actions (`.github/workflows/jdr.yml`) délègue tout le travail privilégié
+(migrations, collectstatic, build frontend, restart des services, permissions fichiers) à un
+appel unique :
+
+```bash
+ssh portfolio-deploy@automia.org 'sudo /var/www/Portfolio/deploy.sh'
+```
+
+`deploy.sh` s'exécute alors en **root** (autorisé via sudoers, voir section 6.4), ce qui évite
+tout problème de permissions (chown node_modules/dist, écriture db.sqlite3, restart systemd)
+sans avoir besoin de multiplier les appels `sudo` individuels dans le workflow.
+
+Voici ce que fait le `deploy.sh` actuel :
 
 ### 5.1 Backend
 
@@ -143,8 +155,8 @@ npm run build
 ### 5.3 Redémarrage des services
 
 ```bash
-sudo systemctl restart portfolio   # Redémarre Gunicorn
-sudo systemctl reload nginx        # Recharge la config Nginx
+systemctl restart portfolio   # Redémarre Gunicorn
+systemctl reload nginx        # Recharge la config Nginx
 ```
 
 ---
@@ -353,6 +365,21 @@ server {
 - Permissions requises : `chown www-data:www-data backend/db.sqlite3 backend/`
 - ⚠️ SQLite n'est pas idéal pour la prod (pas de concurrence, risque de lock). Migration vers PostgreSQL recommandée à terme.
 
+### 6.4 Sudoers pour `portfolio-deploy`
+
+Le user SSH `portfolio-deploy` (utilisé par la CI) dispose de droits sudo NOPASSWD restreints,
+définis dans `/etc/sudoers.d/portfolio-deploy` :
+
+```
+portfolio-deploy ALL=(root) NOPASSWD: /bin/systemctl restart portfolio, /bin/systemctl is-active portfolio, /bin/systemctl restart daphne, /bin/systemctl is-active daphne, /bin/systemctl reload nginx
+portfolio-deploy ALL=(ALL) NOPASSWD: /usr/bin/mysqldump, /var/www/Portfolio/deploy.sh
+```
+
+⚠️ **Ne jamais ajouter un nouvel appel `sudo` dans le workflow ou dans `deploy.sh` sans
+l'ajouter d'abord ici** (commande + arguments exacts, sudo matche strictement). Toute commande
+`sudo` non listée bloquera le déploiement en tentant de demander un mot de passe (la CI n'a pas
+de TTY, donc `sudo` échoue silencieusement/timeout plutôt que de la fournir).
+
 ---
 
 ## 7. Variables d'environnement (prod)
@@ -431,14 +458,10 @@ chown -R www-data:www-data /var/www/Portfolio/backend/media/
    - `npm run build` (frontend — inclut tsc)
    - Optionnel : tests Python (`python manage.py test`)
 3. **CD — Déploiement** :
-   - SSH sur le serveur (ou agent de déploiement)
-   - `git pull` dans `/var/www/Portfolio`
-   - `pip install` dans le venv backend
-   - `python manage.py migrate --noinput`
-   - `python manage.py collectstatic --noinput`
-   - `npm ci && npm run build` dans frontend/
-   - `systemctl restart portfolio`
-   - `systemctl reload nginx`
+   - SSH sur le serveur (user `portfolio-deploy`)
+   - `git fetch && git reset --hard origin/main` dans `/var/www/Portfolio` (en tant que `portfolio-deploy`)
+   - `sudo /var/www/Portfolio/deploy.sh` (exécuté en root via sudoers NOPASSWD — voir section 6.4) :
+     pip install, migrate, collectstatic, npm ci + build, restart `portfolio`/`daphne`, reload `nginx`, chown
 4. **Post-déploiement** :
    - Vérifier que `https://automia.org` répond (health check)
    - Vérifier que `https://automia.org/api/projects/` répond
@@ -463,16 +486,19 @@ Pour configurer la pipeline, ton ami aura besoin de :
 
 ```bash
 # Vérifier le service
-sudo systemctl status portfolio
-sudo journalctl -u portfolio -n 50 --no-pager
+systemctl status portfolio
+journalctl -u portfolio -n 50 --no-pager
 
 # Logs Nginx
-sudo tail -50 /var/log/nginx/error.log
+tail -50 /var/log/nginx/error.log
 
 # Test Gunicorn manuellement
 cd /var/www/Portfolio/backend
 source .venv/bin/activate
 gunicorn core.wsgi:application --bind 0.0.0.0:8000
+
+# Déploiement manuel complet (root, via sudoers NOPASSWD)
+sudo /var/www/Portfolio/deploy.sh
 
 # Admin Django
 python manage.py createsuperuser

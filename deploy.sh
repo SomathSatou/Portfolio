@@ -85,4 +85,11 @@ else
     echo "::warning::daphne.service n'existe pas — le chat/dés JDR (WebSocket) ne fonctionnera pas. Voir PIPELINE.md."
 fi
 
+echo "  → Reloading nginx..."
+systemctl reload nginx || echo "::warning::systemctl reload nginx failed"
+
+echo "  → Restoring file ownership..."
+chown -R portfolio-deploy:portfolio-deploy "$FRONTEND_DIR/node_modules" "$FRONTEND_DIR/dist" 2>/dev/null || echo "::warning::chown frontend failed"
+chown -R www-data:www-data "$BACKEND_DIR/db.sqlite3" "$BACKEND_DIR/media" 2>/dev/null || echo "::warning::chown db/media failed"
+
 echo "=== Déploiement terminé avec succès ==="

@@ -17,9 +17,9 @@ ssh automia
 
 ## Actions courantes sur le serveur
 
-2. Lancer un déploiement manuel :
+2. Lancer un déploiement manuel (le script doit tourner en root, autorisé sans mot de passe via sudoers) :
 ```bash
-cd /var/www/Portfolio && bash deploy.sh
+sudo /var/www/Portfolio/deploy.sh
 ```
 
 3. Vérifier les logs du service :
