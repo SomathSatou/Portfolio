@@ -91,7 +91,9 @@ systemctl reload nginx || echo "::warning::systemctl reload nginx failed"
 echo "  → Restoring file ownership..."
 mkdir -p "$BACKEND_DIR/media"
 chown -R portfolio-deploy:portfolio-deploy "$FRONTEND_DIR/node_modules" "$FRONTEND_DIR/dist" || echo "::warning::chown frontend failed"
-chown -R www-data:www-data "$BACKEND_DIR/db.sqlite3" || echo "::warning::chown db.sqlite3 failed"
+if [ -f "$BACKEND_DIR/db.sqlite3" ]; then
+    chown -R www-data:www-data "$BACKEND_DIR/db.sqlite3" || echo "::warning::chown db.sqlite3 failed"
+fi
 chown -R www-data:www-data "$BACKEND_DIR/media" || echo "::warning::chown media failed"
 
 echo "=== Déploiement terminé avec succès ==="
