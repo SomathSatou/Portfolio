@@ -360,10 +360,9 @@ server {
 
 ### 6.3 Base de données
 
-- **SQLite** en production (fichier `backend/db.sqlite3`)
-- Le fichier DB doit être **writable** par le user qui exécute Gunicorn (www-data)
-- Permissions requises : `chown www-data:www-data backend/db.sqlite3 backend/`
-- ⚠️ SQLite n'est pas idéal pour la prod (pas de concurrence, risque de lock). Migration vers PostgreSQL recommandée à terme.
+- **MariaDB** en production, sélectionné via `DB_ENGINE=django.db.backends.mysql` dans `/etc/portfolio.env` (voir `backend/core/settings.py`)
+- **SQLite** uniquement en dev local (`backend/db.sqlite3`, absent en prod — `deploy.sh` ne le chown que s'il existe)
+- Le dossier `backend/media/` (uploads) doit être **writable** par le user qui exécute Gunicorn (www-data) : `chown www-data:www-data backend/media/`
 
 ### 6.4 Sudoers pour `portfolio-deploy`
 
