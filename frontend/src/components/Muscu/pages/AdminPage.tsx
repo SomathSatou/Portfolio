@@ -142,8 +142,8 @@ function UsersTab() {
   if (loading) return <p className="text-gray-500">Chargement…</p>
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+      <table className="w-full text-sm min-w-[640px]">
         <thead>
           <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
             <th className="py-2 px-2">Utilisateur</th>
@@ -206,8 +206,8 @@ function ExercisesTab() {
   if (loading) return <p className="text-gray-500">Chargement…</p>
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+      <table className="w-full text-sm min-w-[480px]">
         <thead>
           <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
             <th className="py-2 px-2">Nom</th>
@@ -274,8 +274,8 @@ function GymsTab() {
         <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Adresse" className="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 flex-1" />
         <button onClick={addGym} disabled={!name} className="btn btn-primary text-sm">Ajouter</button>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <table className="w-full text-sm min-w-[560px]">
           <thead>
             <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
               <th className="py-2 px-2">Nom</th>
@@ -314,9 +314,9 @@ function BadgesTab() {
   React.useEffect(() => { fetch() }, [fetch])
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
       {loading ? <p className="text-gray-500">Chargement…</p> : (
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[480px]">
           <thead>
             <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
               <th className="py-2 px-2">Icon</th>
@@ -368,39 +368,41 @@ function WorkoutsTab() {
   if (loading) return <p className="text-gray-500">Chargement…</p>
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+      <table className="w-full text-sm min-w-[640px]">
         <thead>
           <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-            <th className="py-2 px-2">ID</th>
-            <th className="py-2 px-2">Joueur</th>
-            <th className="py-2 px-2">Salle</th>
-            <th className="py-2 px-2">Statut</th>
-            <th className="py-2 px-2">Date</th>
-            <th className="py-2 px-2 text-right">Séries</th>
-            <th className="py-2 px-2">Actions</th>
+            <th className="py-2 px-2 whitespace-nowrap">ID</th>
+            <th className="py-2 px-2 whitespace-nowrap">Joueur</th>
+            <th className="py-2 px-2 whitespace-nowrap">Salle</th>
+            <th className="py-2 px-2 whitespace-nowrap">Statut</th>
+            <th className="py-2 px-2 whitespace-nowrap">Date</th>
+            <th className="py-2 px-2 text-right whitespace-nowrap">Séries</th>
+            <th className="py-2 px-2 whitespace-nowrap">Actions</th>
           </tr>
         </thead>
         <tbody>
           {workouts.map((w) => (
             <tr key={w.id} className="border-b border-gray-100 dark:border-gray-800">
-              <td className="py-2 px-2 text-gray-400">{w.id}</td>
-              <td className="py-2 px-2 font-medium text-gray-800 dark:text-gray-200">{w.user_name}</td>
-              <td className="py-2 px-2 text-gray-600 dark:text-gray-400">{w.gym_name || '—'}</td>
-              <td className="py-2 px-2">
+              <td className="py-2 px-2 text-gray-400 whitespace-nowrap">{w.id}</td>
+              <td className="py-2 px-2 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">{w.user_name}</td>
+              <td className="py-2 px-2 text-gray-600 dark:text-gray-400 whitespace-nowrap">{w.gym_name || '—'}</td>
+              <td className="py-2 px-2 whitespace-nowrap">
                 <span className={`text-xs px-2 py-0.5 rounded ${w.status === 'open' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}`}>
                   {w.status}
                 </span>
               </td>
-              <td className="py-2 px-2 text-gray-500 dark:text-gray-400 text-xs">
+              <td className="py-2 px-2 text-gray-500 dark:text-gray-400 text-xs whitespace-nowrap">
                 {new Date(w.started_at).toLocaleDateString('fr-FR')}
               </td>
-              <td className="py-2 px-2 text-right text-gray-600 dark:text-gray-400">{w.sets_count}</td>
-              <td className="py-2 px-2 flex gap-2">
-                {w.status === 'open' && (
-                  <button onClick={() => forceClose(w.id)} className="text-xs text-yellow-600 hover:text-yellow-800">Forcer clôture</button>
-                )}
-                <button onClick={() => deleteWorkout(w.id)} className="text-xs text-red-500 hover:text-red-700">Supprimer</button>
+              <td className="py-2 px-2 text-right text-gray-600 dark:text-gray-400 whitespace-nowrap">{w.sets_count}</td>
+              <td className="py-2 px-2 whitespace-nowrap">
+                <div className="flex items-center gap-2">
+                  {w.status === 'open' && (
+                    <button onClick={() => forceClose(w.id)} className="text-xs text-yellow-600 hover:text-yellow-800">Forcer clôture</button>
+                  )}
+                  <button onClick={() => deleteWorkout(w.id)} className="text-xs text-red-500 hover:text-red-700">Supprimer</button>
+                </div>
               </td>
             </tr>
           ))}

@@ -29,8 +29,8 @@ export default function HarvestInventory({ items, loading, onSell, selling }: Pr
         <span className="text-lg font-bold text-accent3">{totalValue.toFixed(2)} po</span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <table className="w-full text-sm min-w-[480px]">
           <thead>
             <tr className="border-b border-gray-200 dark:border-gray-700 text-left">
               <th className="pb-2 font-medium text-gray-500 dark:text-gray-400">Plante</th>
@@ -46,10 +46,10 @@ export default function HarvestInventory({ items, loading, onSell, selling }: Pr
               const qty = sellQty[item.plant_id] ?? 1
               return (
                 <tr key={item.plant_id} className="border-b border-gray-100 dark:border-gray-800">
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
+                  <td className="py-3 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
                       <span className="text-lg">{item.plant_icon}</span>
-                      <div>
+                      <div className="min-w-0">
                         <p className="font-medium text-gray-800 dark:text-gray-200">{item.plant_name}</p>
                         <span className={`inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-full ${badgeClass}`}>
                           {item.plant_rarity}

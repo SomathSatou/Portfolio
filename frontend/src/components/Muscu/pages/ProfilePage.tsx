@@ -123,7 +123,7 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header / Edit profile */}
       <form onSubmit={onSubmit} className="card-neon">
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-6">
           {user?.avatar ? (
             <img src={user.avatar} alt="Avatar de compte" className="w-16 h-16 rounded-full object-cover neon-avatar" />
           ) : (
@@ -131,9 +131,9 @@ export default function ProfilePage() {
               {user?.username?.charAt(0).toUpperCase()}
             </div>
           )}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h1 className="title-neon text-xl">PROFIL</h1>
-            <div className="flex items-center gap-3 mt-1">
+            <div className="flex flex-wrap items-center gap-3 mt-1">
               <span className="font-semibold neon-rank" style={{ color: rankColor }}>{rankLabel}</span>
               <span className="neon-text-sm">NIVEAU {total.level}</span>
               <span className="neon-text-sm">{total.xp} XP</span>
@@ -207,15 +207,15 @@ export default function ProfilePage() {
             <h3 className="neon-group-title mb-2">{group}</h3>
             <div className="space-y-2">
               {items.map((m) => (
-                <div key={m.muscle_name} className="flex items-center gap-3">
-                  <span className="w-36 text-sm neon-muscle-name truncate">{m.muscle_name}</span>
-                  <div className="flex-1 neon-progress-bg rounded-full h-3 overflow-hidden">
+                <div key={m.muscle_name} className="flex items-center gap-2 sm:gap-3">
+                  <span className="w-24 sm:w-36 text-sm neon-muscle-name truncate">{m.muscle_name}</span>
+                  <div className="flex-1 neon-progress-bg rounded-full h-3 overflow-hidden min-w-0">
                     <div
                       className="h-full rounded-full neon-progress-fill"
                       style={{ width: `${Math.min(100, (m.xp / Math.max(total.xp, 1)) * 100)}%` }}
                     />
                   </div>
-                  <span className="neon-xp-text w-20 text-right">
+                  <span className="neon-xp-text w-16 sm:w-20 text-right text-xs sm:text-sm">
                     NIV. {m.level} ({m.xp})
                   </span>
                 </div>

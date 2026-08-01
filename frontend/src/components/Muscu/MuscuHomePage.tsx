@@ -36,7 +36,7 @@ export default function MuscuHomePage() {
         </div>
 
         {/* Stats déco */}
-        <div className="mt-10 grid grid-cols-3 gap-4">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { label: 'RANGS', value: '7' },
             { label: 'MUSCLES', value: '20+' },

@@ -344,9 +344,9 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
         <span className="text-gray-700 dark:text-gray-300">{character.name}</span>
       </nav>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-3 min-w-0">
         {/* Main info */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6 min-w-0">
           <div className="flex items-center gap-4">
             <div className="relative group">
               {canEdit && (

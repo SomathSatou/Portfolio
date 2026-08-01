@@ -159,9 +159,9 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-3 min-w-0">
         {/* Left column: Characters + Campaigns */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6 min-w-0">
           {/* My Characters */}
           <DashboardCard
             title="Mes Personnages"

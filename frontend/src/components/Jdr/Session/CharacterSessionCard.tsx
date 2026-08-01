@@ -92,11 +92,11 @@ export default function CharacterSessionCard({
 
       {/* Stats badges */}
       {stats.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 min-w-0">
           {stats.map((cs, i) => (
             <span
               key={cs.id}
-              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${BADGE_COLORS[i % BADGE_COLORS.length]}`}
+              className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold ${BADGE_COLORS[i % BADGE_COLORS.length]}`}
             >
               {cs.stat_name.substring(0, 3).toUpperCase()} {cs.value}
             </span>
@@ -118,7 +118,7 @@ export default function CharacterSessionCard({
                     min={0}
                     value={character[field]}
                     onChange={(e) => onWalletChange(character.id, field, Math.max(0, Number(e.target.value)))}
-                    className="w-full text-center rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-1 py-0.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                    className="w-full text-center rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-0.5 py-0.5 text-xs text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                   <span className="text-[10px] text-gray-500">{label}</span>
                 </div>
@@ -135,13 +135,13 @@ export default function CharacterSessionCard({
       {/* Action buttons */}
       {(onOpenSpells || onOpenSkills || onOpenInventory) && (
         <div
-          className="border-t border-gray-200 dark:border-gray-700 pt-2 flex gap-1"
+          className="border-t border-gray-200 dark:border-gray-700 pt-2 flex flex-wrap gap-1"
           onClick={(e) => e.stopPropagation()}
         >
           {onOpenSpells && (
             <button
               onClick={() => onOpenSpells(character.id)}
-              className="flex-1 text-xs py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors font-medium"
+              className="flex-1 min-w-0 text-[10px] sm:text-xs py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors font-medium"
               title="Sorts"
             >
               ✨ Sorts
@@ -150,7 +150,7 @@ export default function CharacterSessionCard({
           {onOpenSkills && (
             <button
               onClick={() => onOpenSkills(character.id)}
-              className="flex-1 text-xs py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors font-medium"
+              className="flex-1 min-w-0 text-[10px] sm:text-xs py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors font-medium"
               title="Compétences"
             >
               ⚔️ Comp.
@@ -159,7 +159,7 @@ export default function CharacterSessionCard({
           {onOpenInventory && (
             <button
               onClick={() => onOpenInventory(character.id)}
-              className="flex-1 text-xs py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors font-medium"
+              className="flex-1 min-w-0 text-[10px] sm:text-xs py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors font-medium"
               title="Inventaire"
             >
               🎒 Inv.

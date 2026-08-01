@@ -47,7 +47,7 @@ function SectionCV() {
               <Badge key={skill} className="animate-scaleIn">{skill}</Badge>
             ))}
           </div>
-          <p className="mt-5 text-base leading-relaxed text-justify">
+          <p className="mt-5 text-base leading-relaxed text-justify sm:text-left">
             Développeur logiciel et web, j'évolue à l'interface entre recherche, ingénierie et applications métiers. 
             Je m'appuie sur une veille technologique continue pour sélectionner les outils, frameworks et architectures 
             les plus pertinents, puis les transformer en solutions logicielles robustes, performantes et maintenables. 
@@ -74,16 +74,16 @@ type CategoryLike = { name: string; projectSlugs: string[] }
 function CategoryGrid({ categories }: { categories: CategoryLike[] }) {
   const ref = useReveal<HTMLDivElement>()
   return (
-    <div ref={ref} className="reveal mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
+    <div ref={ref} className="reveal mt-8 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 stagger-children min-w-0">
       {categories.map((cat, index) => (
         <Card
           key={cat.name}
           variant="bento"
-          className={`animate-slideUp group flex flex-col ${index === 0 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
+          className={`animate-slideUp group flex flex-col min-w-0 ${index === 0 ? 'sm:col-span-2 md:col-span-2 lg:col-span-2' : ''}`}
         >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-1 h-5 rounded-full" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent3))' }} />
-            <h3 className="font-semibold text-lg text-primary">{cat.name}</h3>
+          <div className="flex items-center gap-2 mb-3 min-w-0">
+            <div className="w-1 h-5 rounded-full shrink-0" style={{ background: 'linear-gradient(to bottom, var(--color-primary), var(--color-accent3))' }} />
+            <h3 className="font-semibold text-lg text-primary break-words">{cat.name}</h3>
           </div>
           <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-300 space-y-1 flex-1">
             {cat.projectSlugs.map((slug) => {
@@ -199,8 +199,8 @@ function SectionContact() {
           {/* Honeypot field (should stay empty) */}
           <input type="text" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
-          <div className="sm:col-span-2 flex items-center justify-between">
-            <span className={`text-xs ${resultOk === true ? 'text-green-700' : resultOk === false ? 'text-red-700' : 'text-gray-500'}`}>{resultMessage}</span>
+          <div className="sm:col-span-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <span className={`text-xs break-words max-w-full sm:max-w-[70%] ${resultOk === true ? 'text-green-700' : resultOk === false ? 'text-red-700' : 'text-gray-500'}`}>{resultMessage}</span>
             <Button disabled={loading} type="submit" variant="accent" className="hover-lift">
               {loading ? 'Envoi…' : 'Envoyer'}
             </Button>
@@ -263,10 +263,10 @@ function ProjectPage({ slug }: { slug: string }) {
           <span>{project.title}</span>
         </nav>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 animate-slideUp">
-            <h1 className="text-2xl md:text-3xl font-bold text-primary">{project.title}</h1>
-            <div className="mt-4 prose">
+        <div className="grid gap-6 lg:grid-cols-3 min-w-0">
+          <div className="lg:col-span-2 animate-slideUp min-w-0">
+            <h1 className="text-2xl md:text-3xl font-bold text-primary break-words">{project.title}</h1>
+            <div className="mt-4 prose break-words">
               {project.description}
             </div>
 

@@ -56,8 +56,7 @@
       <img
         src="/assets/DataExtraction.png"
         alt="Exemple d'extraction"
-        className="w-full h-auto rounded-lg shadow-md"
-        style={{ maxWidth: 800, margin: '0 auto' }}
+        className="w-full h-auto rounded-lg shadow-md max-w-full mx-auto"
       />
       <figcaption>Processus Extract&ndash;Transform&ndash;Load (ETL) appliqu&eacute; aux documents professionnels</figcaption>
     </figure>

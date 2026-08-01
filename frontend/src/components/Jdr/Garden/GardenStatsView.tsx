@@ -16,7 +16,7 @@ export default function GardenStatsView({ stats, history, statsLoading, historyL
         <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">Chargement…</p>
       ) : stats ? (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 min-w-0">
             <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
               <p className="text-xs text-gray-500 dark:text-gray-400">Total récolté</p>
               <p className="text-2xl font-bold text-accent2 dark:text-accent1">{stats.total_harvested}</p>
@@ -83,8 +83,8 @@ export default function GardenStatsView({ stats, history, statsLoading, historyL
         ) : history.length === 0 ? (
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">Aucune récolte pour l'instant.</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full text-sm min-w-[480px]">
               <thead>
                 <tr className="border-b border-gray-200 dark:border-gray-700 text-left">
                   <th className="pb-2 font-medium text-gray-500 dark:text-gray-400">Plante</th>

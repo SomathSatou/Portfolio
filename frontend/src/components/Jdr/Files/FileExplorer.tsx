@@ -130,15 +130,15 @@ export default function FileExplorer({ folder, onBack }: FileExplorerProps) {
 function FileRow({ file, onDelete }: { file: SharedFile; onDelete: (file: SharedFile) => void }) {
   return (
     <tr className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
-      <td className="px-4 py-2.5">
+      <td className="px-4 py-2.5 min-w-0">
         <a
           href={file.url ?? '#'}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-2 hover:underline"
+          className="flex items-center gap-2 hover:underline min-w-0"
         >
           <span className="text-lg flex-shrink-0">{fileIcon(file)}</span>
-          <span className="text-gray-900 dark:text-gray-100 truncate">{file.original_name}</span>
+          <span className="text-gray-900 dark:text-gray-100 truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">{file.original_name}</span>
         </a>
       </td>
       <td className="px-4 py-2.5 text-gray-500 dark:text-gray-400 hidden sm:table-cell">

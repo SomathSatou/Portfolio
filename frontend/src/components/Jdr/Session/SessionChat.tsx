@@ -152,7 +152,7 @@ export default function SessionChat({
 
       {/* MJ options: jet secret / chuchotement */}
       {isMJ && members.length > 0 && (
-        <div className="flex items-center gap-3 mb-2 text-xs text-gray-500 dark:text-gray-400 shrink-0">
+        <div className="flex flex-wrap items-center gap-3 mb-2 text-xs text-gray-500 dark:text-gray-400 shrink-0">
           <label className="inline-flex items-center gap-1 cursor-pointer select-none">
             <input
               type="checkbox"
