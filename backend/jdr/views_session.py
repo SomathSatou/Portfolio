@@ -1,4 +1,5 @@
 """Vues JDR — Session en direct (avatar, notes, chat, wallet)."""
+from django.db.models import Q
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -82,13 +83,22 @@ class ChatMessageView(APIView):
         campaign_id = request.query_params.get('campaign')
         if not campaign_id:
             return Response({'detail': 'Paramètre campaign requis.'}, status=status.HTTP_400_BAD_REQUEST)
-        campaign, _is_mj, err = _check_campaign_access(request, campaign_id)
+        campaign, is_mj, err = _check_campaign_access(request, campaign_id)
         if err:
             return err
         limit = min(int(request.query_params.get('limit', 100)), 500)
-        messages = ChatMessage.objects.filter(
-            campaign=campaign,
-        ).select_related('author', 'campaign').order_by('-created_at')[:limit]
+        qs = ChatMessage.objects.filter(campaign=campaign)
+        if not is_mj:
+            # Un joueur ne voit que : les messages publics, ses propres jets privés,
+            # et les chuchotements du MJ qui lui sont adressés.
+            qs = qs.filter(
+                Q(is_private=False, whisper_to__isnull=True)
+                | Q(is_private=True, author=request.user)
+                | Q(whisper_to=request.user),
+            )
+        messages = qs.select_related(
+            'author', 'campaign', 'whisper_to',
+        ).order_by('-created_at')[:limit]
         data = ChatMessageSerializer(messages, many=True).data
         data.reverse()
         return Response(data)

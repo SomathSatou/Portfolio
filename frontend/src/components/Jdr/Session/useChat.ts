@@ -11,16 +11,25 @@ const MAX_RETRIES = 10
 const BASE_DELAY = 1000
 const MAX_DELAY = 30000
 
+interface SendMessageOptions {
+  private?: boolean
+  whisperTo?: number
+  keep?: 'highest' | 'lowest'
+}
+
 export default function useChat({ campaignId, enabled = true, onMessage }: UseChatOptions) {
   const onMessageRef = useRef(onMessage)
   onMessageRef.current = onMessage
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [connected, setConnected] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
+  const [typingUserIds, setTypingUserIds] = useState<number[]>([])
+  const [lastError, setLastError] = useState('')
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const closedIntentionally = useRef(false)
   const retriesRef = useRef(0)
+  const typingTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map())
 
   const connect = useCallback(() => {
     if (!enabled) return
@@ -33,9 +42,11 @@ export default function useChat({ campaignId, enabled = true, onMessage }: UseCh
 
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
     const host = window.location.host
-    const url = `${protocol}://${host}/ws/jdr/chat/${campaignId}/?token=${token}`
+    const url = `${protocol}://${host}/ws/jdr/chat/${campaignId}/`
 
-    const ws = new WebSocket(url)
+    // Le token est transmis via le sous-protocole WebSocket plutôt que la query
+    // string, pour éviter qu'il ne se retrouve dans les logs d'accès du reverse-proxy.
+    const ws = new WebSocket(url, [`jwt.${token}`])
     wsRef.current = ws
 
     ws.onopen = () => {
@@ -47,6 +58,25 @@ export default function useChat({ campaignId, enabled = true, onMessage }: UseCh
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data) as Record<string, unknown>
+
+        if (data.type === 'typing') {
+          const uid = data.user_id as number
+          setTypingUserIds((prev) => (prev.includes(uid) ? prev : [...prev, uid]))
+          clearTimeout(typingTimers.current.get(uid))
+          typingTimers.current.set(
+            uid,
+            setTimeout(() => {
+              setTypingUserIds((prev) => prev.filter((id) => id !== uid))
+            }, 3000),
+          )
+          return
+        }
+
+        if (data.type === 'error') {
+          setLastError((data.detail as string) || 'Erreur inconnue.')
+          return
+        }
+
         // Route non-chat messages (combat, inventory) to onMessage callback
         if (data.type && data.type !== 'chat_message') {
           onMessageRef.current?.(data)
@@ -101,9 +131,20 @@ export default function useChat({ campaignId, enabled = true, onMessage }: UseCh
     connect()
   }, [connect])
 
-  const sendMessage = useCallback((message: string) => {
+  const sendMessage = useCallback((message: string, options?: SendMessageOptions) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({ message }))
+      wsRef.current.send(JSON.stringify({
+        message,
+        private: options?.private,
+        whisper_to: options?.whisperTo,
+        keep: options?.keep,
+      }))
+    }
+  }, [])
+
+  const sendTyping = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: 'typing' }))
     }
   }, [])
 
@@ -111,5 +152,8 @@ export default function useChat({ campaignId, enabled = true, onMessage }: UseCh
     setMessages(msgs)
   }, [])
 
-  return { messages, connected, sendMessage, setInitialMessages, reconnect, retryCount }
+  return {
+    messages, connected, sendMessage, sendTyping, typingUserIds, lastError,
+    setInitialMessages, reconnect, retryCount,
+  }
 }

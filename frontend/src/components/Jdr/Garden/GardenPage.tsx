@@ -374,8 +374,8 @@ export default function GardenPage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700">
-        <nav className="flex gap-0 -mb-px">
+      <div className="border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        <nav className="flex gap-0 -mb-px min-w-max">
           {TABS.map((t) => (
             <button
               key={t.key}

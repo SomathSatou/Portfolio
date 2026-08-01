@@ -288,6 +288,12 @@ export interface ChatMessage {
     command: string
     rolls: number[]
     total: number
+    modifier?: number
+    keep?: 'highest' | 'lowest'
+    kept_index?: number
   } | null
+  is_private: boolean
+  whisper_to: number | null
+  whisper_to_name: string | null
   created_at: string
 }

@@ -29,9 +29,9 @@ except ImportError:
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') 
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') or os.getenv('SECRET_KEY')
 if not SECRET_KEY:
-    raise RuntimeError('DJANGO_SECRET_KEY doit être défini dans les variables d’environnement.')
+    raise RuntimeError('DJANGO_SECRET_KEY ou SECRET_KEY doit être défini dans les variables d’environnement.')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
@@ -101,11 +101,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/0')
+
+if os.environ.get('CHANNEL_LAYER_BACKEND', 'memory').lower() == 'redis':
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                'hosts': [REDIS_URL],
+            },
+        },
+    }
+else:
+    # Fallback dev (mono-process) — pas de dépendance Redis nécessaire
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        },
+    }
 
 
 # Database
@@ -246,11 +259,14 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# Media files (avatars, etc.)
+# Media files (avatars, fichiers partagés JDR, etc.)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Nextcloud integration
-NEXTCLOUD_URL = os.environ.get('NEXTCLOUD_URL', 'https://cloud.automia.org')
-NEXTCLOUD_ADMIN_USER = os.environ.get('NEXTCLOUD_ADMIN_USER', '')
-NEXTCLOUD_ADMIN_PASSWORD = os.environ.get('NEXTCLOUD_ADMIN_PASSWORD', '')
+# Limite d'upload pour les fichiers partagés JDR (Sac de Lug / bibliothèque)
+JDR_SHARED_FILE_MAX_SIZE = int(os.environ.get('JDR_SHARED_FILE_MAX_SIZE', 25 * 1024 * 1024))  # 25 Mo
+
+# Chat JDR — durcissement (longueur message, rate-limit anti-flood)
+JDR_CHAT_MESSAGE_MAX_LENGTH = int(os.environ.get('JDR_CHAT_MESSAGE_MAX_LENGTH', 2000))
+JDR_CHAT_RATE_LIMIT_COUNT = int(os.environ.get('JDR_CHAT_RATE_LIMIT_COUNT', 5))
+JDR_CHAT_RATE_LIMIT_WINDOW_SECONDS = float(os.environ.get('JDR_CHAT_RATE_LIMIT_WINDOW_SECONDS', 3))

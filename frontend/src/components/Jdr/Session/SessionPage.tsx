@@ -51,7 +51,7 @@ export default function SessionPage({ campaignId }: Props) {
   const { combatState, startCombat, endCombat, nextTurn, addParticipant, updateHp, onWsEvent } =
     useCombat({ campaignId, enabled: sessionActive || isMJ })
 
-  const { messages, connected, sendMessage, setInitialMessages, reconnect, retryCount } = useChat({
+  const { messages, connected, sendMessage, sendTyping, typingUserIds, setInitialMessages, reconnect, retryCount } = useChat({
     campaignId,
     enabled: sessionActive || isMJ,
     onMessage: (msg: Record<string, unknown>) => {
@@ -142,8 +142,8 @@ export default function SessionPage({ campaignId }: Props) {
         <span className="text-gray-700 dark:text-gray-300">Session en direct</span>
       </nav>
 
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-primary dark:text-primaryLight">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3 min-w-0">
+        <h1 className="text-2xl font-bold text-primary dark:text-primaryLight break-words min-w-0">
           🎮 Session — {campaign?.name}
         </h1>
         <div className="flex items-center gap-2 flex-wrap">
@@ -224,9 +224,9 @@ export default function SessionPage({ campaignId }: Props) {
       )}
 
       {/* 3-column layout */}
-      <div className="grid gap-6 lg:grid-cols-12">
+      <div className="grid gap-6 lg:grid-cols-12 min-w-0">
         {/* Left: Character cards / Monster list */}
-        <div className="lg:col-span-3 space-y-3">
+        <div className="lg:col-span-3 space-y-3 min-w-0">
           {/* MJ tabs */}
           {isMJ && (
             <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'rgba(201,162,39,0.4)' }}>
@@ -329,9 +329,13 @@ export default function SessionPage({ campaignId }: Props) {
             messages={messages}
             connected={connected}
             onSend={sendMessage}
+            onTyping={sendTyping}
+            typingUserIds={typingUserIds}
             currentUserId={user?.id}
             onReconnect={reconnect}
             retryCount={retryCount}
+            isMJ={isMJ}
+            members={characters.map((c) => ({ id: c.player, name: c.player_name }))}
           />
         </div>
 

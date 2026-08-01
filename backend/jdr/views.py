@@ -76,7 +76,7 @@ from .views_runes import (  # noqa: F401
     RuneTemplateViewSet,
 )
 from .views_files import (  # noqa: F401
-    NextcloudEmbedUrlView,
+    SharedFileDeleteView,
     SharedFolderContentView,
     SharedFolderDetailView,
     SharedFolderListCreateView,

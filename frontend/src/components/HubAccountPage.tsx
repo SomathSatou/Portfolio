@@ -1,6 +1,6 @@
 export default function HubAccountPage() {
-  const jdrAccess = localStorage.getItem('jdr_access')
-  const muscuAccess = localStorage.getItem('muscu_access')
+  const token = localStorage.getItem('auth_access')
+  const isAuthenticated = Boolean(token)
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -12,16 +12,16 @@ export default function HubAccountPage() {
 
         <div className="space-y-3">
           <a
-            href={jdrAccess ? '#/jdr/profile' : '#/jdr/login'}
+            href={isAuthenticated ? '#/jdr/profile' : '#/jdr/login'}
             className="block w-full btn btn-primary no-underline"
           >
-            Profil JDR {jdrAccess ? '(connecté)' : '(connexion)'}
+            Profil JDR {isAuthenticated ? '(connecté)' : '(connexion)'}
           </a>
           <a
-            href={muscuAccess ? '#/irlrpg/profile' : '#/irlrpg/login'}
+            href={isAuthenticated ? '#/irlrpg/profile' : '#/irlrpg/login'}
             className="block w-full btn btn-primary no-underline"
           >
-            Profil IRL RPG {muscuAccess ? '(connecté)' : '(connexion)'}
+            Profil IRL RPG {isAuthenticated ? '(connecté)' : '(connexion)'}
           </a>
         </div>
 

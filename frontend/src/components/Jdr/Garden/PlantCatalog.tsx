@@ -33,7 +33,7 @@ export default function PlantCatalog({
           placeholder="Rechercher…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/40 w-48"
+          className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/40 w-full sm:w-48"
         />
         <select
           value={categoryFilter}

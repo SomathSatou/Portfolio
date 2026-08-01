@@ -36,7 +36,7 @@ echo "[2/6] Activating virtualenv..."
 source "$VENV/activate"
 
 echo "[3/6] Installing Python dependencies..."
-pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels mysqlclient python-dotenv
+pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels channels-redis mysqlclient python-dotenv
 
 cd "$BACKEND_DIR"
 echo "[4/6] Running migrations..."
@@ -71,11 +71,18 @@ echo "[5/6] Building frontend..."
 npm ci
 npm run build
 
-echo "[6/6] Restarting service..."
+echo "[6/6] Restarting services..."
 systemctl restart portfolio || {
     echo "::warning::systemctl restart portfolio failed - trying reload..."
     systemctl reload portfolio || echo "::warning::reload also failed"
 }
 systemctl is-active --quiet portfolio && echo "✓ Service portfolio is running" || echo "::warning::Service portfolio is not active"
+
+if systemctl list-unit-files daphne.service >/dev/null 2>&1; then
+    systemctl restart daphne || echo "::warning::systemctl restart daphne failed"
+    systemctl is-active --quiet daphne && echo "✓ Service daphne (WebSocket) is running" || echo "::warning::Service daphne is not active"
+else
+    echo "::warning::daphne.service n'existe pas — le chat/dés JDR (WebSocket) ne fonctionnera pas. Voir PIPELINE.md."
+fi
 
 echo "=== Déploiement terminé avec succès ==="

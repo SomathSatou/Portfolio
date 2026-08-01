@@ -15,9 +15,9 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-white/10 dark:border-gray-800" style={{ background: 'rgba(95, 42, 98, 0.08)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
-      <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span>© {new Date().getFullYear()} Thomas Saout</span>
-        <nav className="flex flex-wrap items-center justify-center gap-4">
+      <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-600 dark:text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <span className="break-words">© {new Date().getFullYear()} Thomas Saout</span>
+        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
           {footerLinks.map((link) => (
             <a key={link.href} href={link.href} className="hover:text-primary dark:hover:text-primaryLight transition-colors no-underline">
               {link.label}

@@ -1709,3 +1709,60 @@
 .wax-seal-forest .wax-seal-ribbon { border-top: 1.7rem solid #275338; }
 .wax-seal-arcane .wax-seal-mark { background: radial-gradient(circle at 35% 28%, #9777c9, #4b2879 72%); }
 .wax-seal-arcane .wax-seal-ribbon { border-top: 1.7rem solid #4c2b79; }
+
+/* ════════════════════════════════════════════════════════════
+   Global responsive fixes
+   ════════════════════════════════════════════════════════════ */
+
+/* Prevent media and long content from causing horizontal scroll */
+img, video, svg, figure, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Force word breaks on long links/identifiers (DOI, HAL, URLs, invite codes) */
+.prose a, .prose code,
+.theme-jdr a, .theme-jdr code,
+.theme-irlrpg a, .theme-irlrpg code {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Portfolio text readability: remove justified text on small screens */
+@media (max-width: 639px) {
+  .hero-blobs p.text-justify,
+  .prose p {
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+/* Ensure main containers never overflow horizontally */
+main, .section, .theme-jdr, .theme-irlrpg, .parchment-bg {
+  overflow-x: hidden;
+}
+
+/* Tables: scroll horizontally when too wide, but keep full width on desktop */
+table {
+  max-width: 100%;
+}
+.overflow-x-auto table {
+  min-width: max-content;
+}
+
+/* Mobile-friendly badges: allow wrapping instead of overflowing */
+.badge, .character-badge-jdr, .jdr-themed-badge {
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Tighten headers on very small screens */
+@media (max-width: 400px) {
+  .header-container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .header-brand {
+    font-size: 0.875rem;
+  }
+}

@@ -256,9 +256,9 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
       </div>
 
       {activeTab === 'overview' && (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3 min-w-0">
           {/* Characters */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 min-w-0">
             <h2 className="text-lg font-semibold text-primary dark:text-primaryLight mb-3">
               Personnages ({characters.length})
             </h2>

@@ -10,7 +10,8 @@ from .models import (
     MerchantOrder, Monster, Notification, PlantMutationRecipe, PlantUsage, PlotMutationLog,
     Resource, RuneCollection, RuneDrawing,
     RuneDrawingHistory, RuneFavorite,
-    PassiveSkill, RuneTemplate, SessionNote, SharedFolder, SharedFolderAccess, Skill, Spell, Stat, UserProfile,
+    PassiveSkill, RuneTemplate, SessionNote, SharedFile, SharedFolder, SharedFolderAccess,
+    Skill, Spell, Stat, UserProfile,
 )
 
 
@@ -639,7 +640,7 @@ class RuneCollectionSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'character', 'rune_drawing', 'acquired_at_session']
 
 
-# ─── Nextcloud / Files ──────────────────────────────────────────────────────
+# ─── Fichiers partagés (bibliothèque de campagne) ────────────────────────────
 
 class SharedFolderAccessSerializer(serializers.ModelSerializer):
     player_name = serializers.CharField(source='player.username', read_only=True)
@@ -654,15 +655,38 @@ class SharedFolderSerializer(serializers.ModelSerializer):
     created_by_name = serializers.CharField(source='created_by.username', read_only=True)
     campaign_name = serializers.CharField(source='campaign.name', read_only=True)
     access_entries = SharedFolderAccessSerializer(many=True, read_only=True)
+    file_count = serializers.SerializerMethodField()
 
     class Meta:
         model = SharedFolder
         fields = [
-            'id', 'campaign', 'campaign_name', 'nextcloud_path', 'name', 'description',
+            'id', 'campaign', 'campaign_name', 'name', 'description',
             'category', 'access_level', 'created_by', 'created_by_name', 'created_at',
-            'access_entries',
+            'access_entries', 'file_count',
         ]
         read_only_fields = ['id', 'created_by', 'created_at']
+
+    def get_file_count(self, obj) -> int:
+        return obj.files.count()
+
+
+class SharedFileSerializer(serializers.ModelSerializer):
+    uploaded_by_name = serializers.CharField(source='uploaded_by.username', read_only=True)
+    url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SharedFile
+        fields = [
+            'id', 'folder', 'url', 'original_name', 'content_type', 'size',
+            'uploaded_by', 'uploaded_by_name', 'uploaded_at',
+        ]
+        read_only_fields = ['id', 'folder', 'uploaded_by', 'uploaded_at', 'size', 'content_type']
+
+    def get_url(self, obj) -> str | None:
+        request = self.context.get('request')
+        if not obj.file:
+            return None
+        return request.build_absolute_uri(obj.file.url) if request else obj.file.url
 
 
 class CreateSharedFolderSerializer(serializers.Serializer):
@@ -700,15 +724,18 @@ class SessionNoteSerializer(serializers.ModelSerializer):
 class ChatMessageSerializer(serializers.ModelSerializer):
     author_name = serializers.SerializerMethodField()
     author_avatar = serializers.SerializerMethodField()
+    whisper_to_name = serializers.CharField(source='whisper_to.username', read_only=True, default=None)
 
     class Meta:
         model = ChatMessage
         fields = [
             'id', 'campaign', 'author', 'author_name', 'author_avatar', 'content',
-            'is_dice_roll', 'dice_result', 'created_at',
+            'is_dice_roll', 'dice_result', 'is_private', 'whisper_to', 'whisper_to_name',
+            'created_at',
         ]
         read_only_fields = [
-            'id', 'campaign', 'author', 'is_dice_roll', 'dice_result', 'created_at',
+            'id', 'campaign', 'author', 'is_dice_roll', 'dice_result',
+            'is_private', 'whisper_to', 'created_at',
         ]
 
     def _get_character(self, obj):

@@ -14,7 +14,6 @@ from jdr.models import (
     RuneDrawing,
 )
 
-
 class Command(BaseCommand):
     help = "Audite les incohérences de données JDR sans écrire en base."
 

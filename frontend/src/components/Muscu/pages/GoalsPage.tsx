@@ -167,14 +167,14 @@ export default function GoalsPage() {
                     </div>
                     <button onClick={() => abandonGoal(g.id)} className="text-xs text-gray-400 hover:text-red-500">Abandonner</button>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden min-w-0">
                       <div
                         className="h-full rounded-full bg-accent1 transition-all"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-24 text-right">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-24 text-right shrink-0">
                       {g.current_value} / {g.target_value}
                     </span>
                   </div>

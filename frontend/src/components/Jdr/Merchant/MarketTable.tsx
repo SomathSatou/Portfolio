@@ -49,7 +49,7 @@ export default function MarketTable({ items, loading, onBuy }: Props) {
           placeholder="Rechercher…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/40 w-48"
+          className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/40 w-full sm:w-48"
         />
         <select
           value={craftFilter}
@@ -80,7 +80,7 @@ export default function MarketTable({ items, loading, onBuy }: Props) {
         <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">Aucune ressource disponible.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800">
-          <table className="min-w-full text-sm">
+          <table className="w-full text-sm min-w-[600px]">
             <thead className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
               <tr>
                 <th className="px-3 py-2 text-left font-medium">Ressource</th>

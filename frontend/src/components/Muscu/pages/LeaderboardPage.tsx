@@ -99,8 +99,8 @@ export default function LeaderboardPage() {
             </p>
           )}
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full text-sm min-w-[500px]">
               <thead>
                 <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                   <th className="py-2 px-2 w-12">#</th>

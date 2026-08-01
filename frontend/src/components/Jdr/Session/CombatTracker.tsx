@@ -237,12 +237,12 @@ export default function CombatTracker({
                   ))}
                 </select>
               ) : (
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <input
                     placeholder="Nom *"
                     value={adhocName}
                     onChange={(e) => setAdhocName(e.target.value)}
-                    className="col-span-3 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
+                    className="sm:col-span-3 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                   <div>
                     <label className="text-[10px] text-gray-500 block mb-0.5">PV</label>
