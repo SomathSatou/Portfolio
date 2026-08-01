@@ -104,58 +104,11 @@ jobs:
             git reset --hard origin/main
           EOF
 
-      - name: Apply database migrations
+      - name: Deploy application
         run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
-            set -e
-            DEPLOY_DIR="/var/www/Portfolio"
-            ENV_FILE="/etc/portfolio.env"
-            set -a
-            source "$ENV_FILE"
-            set +a
-            cd "$DEPLOY_DIR/backend"
-            source .venv/bin/activate
-            pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels mysqlclient python-dotenv
-            python manage.py migrate --noinput --verbosity=2
-            python manage.py ensure_admin
-          EOF
-
-      - name: Collect Django static files
-        run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
-            set -e
-            DEPLOY_DIR="/var/www/Portfolio"
-            ENV_FILE="/etc/portfolio.env"
-            set -a
-            source "$ENV_FILE"
-            set +a
-            cd "$DEPLOY_DIR/backend"
-            source .venv/bin/activate
-            python manage.py collectstatic --noinput
-          EOF
-
-      - name: Build frontend
-        run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
-            set -e
-            DEPLOY_DIR="/var/www/Portfolio"
-            DEPLOY_USER="$(id -un)"
-            DEPLOY_GROUP="$(id -gn)"
-            sudo chown -R "$DEPLOY_USER:$DEPLOY_GROUP" "$DEPLOY_DIR/frontend/node_modules" "$DEPLOY_DIR/frontend/dist" 2>/dev/null || true
-            cd "$DEPLOY_DIR/frontend"
-            node --version
-            npm --version
-            npm ci
-            npm run build
-          EOF
-
-      - name: Restart portfolio service
-        run: |
-          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'bash -s' <<'EOF'
-            set -e
-            sudo -n /usr/bin/systemctl restart portfolio
-            sudo -n /usr/bin/systemctl is-active --quiet portfolio
-          EOF
+          echo "::group::Deploy (migrations + collectstatic + frontend build + services restart)"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} 'sudo /var/www/Portfolio/deploy.sh'
+          echo "::endgroup::"
 
       - name: Verify deployment
         if: always()
