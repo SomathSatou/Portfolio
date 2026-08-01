@@ -89,6 +89,7 @@ echo "  → Reloading nginx..."
 systemctl reload nginx || echo "::warning::systemctl reload nginx failed"
 
 echo "  → Restoring file ownership..."
+mkdir -p "$BACKEND_DIR/media"
 chown -R portfolio-deploy:portfolio-deploy "$FRONTEND_DIR/node_modules" "$FRONTEND_DIR/dist" 2>/dev/null || echo "::warning::chown frontend failed"
 chown -R www-data:www-data "$BACKEND_DIR/db.sqlite3" "$BACKEND_DIR/media" 2>/dev/null || echo "::warning::chown db/media failed"
 
