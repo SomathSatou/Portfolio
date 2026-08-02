@@ -78,9 +78,24 @@ systemctl restart portfolio || {
 }
 systemctl is-active --quiet portfolio && echo "✓ Service portfolio is running" || echo "::warning::Service portfolio is not active"
 
-if systemctl list-unit-files daphne.service >/dev/null 2>&1; then
-    systemctl restart daphne || echo "::warning::systemctl restart daphne failed"
-    systemctl is-active --quiet daphne && echo "✓ Service daphne (WebSocket) is running" || echo "::warning::Service daphne is not active"
+# Auto-install daphne.service from repo if missing
+if [ -f "$PROJECT_DIR/systemd/daphne.service" ]; then
+    if ! systemctl list-unit-files daphne.service | grep -q daphne; then
+        echo "  → Installing daphne.service from repo..."
+        cp "$PROJECT_DIR/systemd/daphne.service" /etc/systemd/system/daphne.service
+        systemctl daemon-reload
+        systemctl enable daphne
+    fi
+fi
+
+if systemctl list-unit-files daphne.service | grep -q daphne; then
+    # Verify Redis is available (required for channel layers)
+    if systemctl is-active --quiet redis-server; then
+        systemctl restart daphne || echo "::warning::systemctl restart daphne failed"
+        systemctl is-active --quiet daphne && echo "✓ Service daphne (WebSocket) is running" || echo "::warning::Service daphne is not active"
+    else
+        echo "::warning::redis-server is not running — skipping daphne restart (WebSocket requires Redis)"
+    fi
 else
     echo "::warning::daphne.service n'existe pas — le chat/dés JDR (WebSocket) ne fonctionnera pas. Voir PIPELINE.md."
 fi
