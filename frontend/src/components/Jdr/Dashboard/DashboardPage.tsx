@@ -53,7 +53,7 @@ export default function DashboardPage() {
   const [notifications, setNotifications] = React.useState<Notification[]>([])
   const [loading, setLoading] = React.useState(true)
 
-  const isMJ = user?.role === 'mj'
+  const isMJ = user?.role === 'mj' || !!user?.is_staff
 
   React.useEffect(() => {
     let cancelled = false

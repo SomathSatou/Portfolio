@@ -121,7 +121,7 @@ function JdrRouterInner({ hash }: { hash: string }) {
     )
   }
 
-  if (hash === '#/jdr/runes') {
+  if (hash === '#/jdr/runes' || hash.startsWith('#/jdr/runes?')) {
     return (
       <ProtectedRoute>
         <RunesPage />

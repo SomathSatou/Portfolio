@@ -48,7 +48,7 @@ export default function CharacterSheet({ characterId }: CharacterSheetProps) {
   const [joinError, setJoinError] = React.useState('')
   const [leaving, setLeaving] = React.useState(false)
 
-  const isMJ = user?.role === 'mj'
+  const isMJ = user?.role === 'mj' || !!user?.is_staff
   const isOwner = character?.player === user?.id
   const canEdit = isOwner || isMJ
 

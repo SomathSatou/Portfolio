@@ -6,6 +6,7 @@ export interface JdrUser {
   email: string
   role: string
   avatar: string | null
+  is_staff?: boolean
 }
 
 export interface AuthState {

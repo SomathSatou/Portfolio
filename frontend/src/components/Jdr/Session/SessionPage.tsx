@@ -31,7 +31,7 @@ export default function SessionPage({ campaignId }: Props) {
   const [error, setError] = React.useState('')
   const [toggling, setToggling] = React.useState(false)
 
-  const isMJ = campaign ? campaign.game_master === user?.id : user?.role === 'mj'
+  const isMJ = user?.is_staff || (campaign ? campaign.game_master === user?.id : user?.role === 'mj')
   const myCharacterId = React.useMemo(() => {
     if (!user || isMJ) return null
     const myChar = characters.find((c) => c.player === user.id)

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Campaign, SharedFile, SharedFolder, SharedFolderAccess
+from .permissions import is_full_access
 from .serializers import (
     CreateSharedFolderSerializer, SharedFileSerializer, SharedFolderSerializer,
     UpdateSharedFolderSerializer,
@@ -11,7 +12,7 @@ from .serializers import (
 
 
 def _user_can_access_folder(user, folder: SharedFolder) -> bool:
-    if folder.campaign.game_master == user:
+    if folder.campaign.game_master == user or is_full_access(user):
         return True
     if folder.access_level == 'mj_only':
         return False
@@ -23,7 +24,7 @@ def _user_can_access_folder(user, folder: SharedFolder) -> bool:
 
 
 def _user_can_upload_to_folder(user, folder: SharedFolder) -> bool:
-    if folder.campaign.game_master == user:
+    if folder.campaign.game_master == user or is_full_access(user):
         return True
     access = folder.access_entries.filter(player=user).first()
     return access is not None and access.can_upload
@@ -44,7 +45,7 @@ class SharedFolderListCreateView(APIView):
         except Campaign.DoesNotExist:
             return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        is_mj = campaign.game_master == request.user
+        is_mj = campaign.game_master == request.user or is_full_access(request.user)
         is_member = campaign.memberships.filter(player=request.user, is_active=True).exists()
         if not is_mj and not is_member:
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
@@ -63,7 +64,7 @@ class SharedFolderListCreateView(APIView):
         except Campaign.DoesNotExist:
             return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': 'Seul le MJ peut créer des dossiers partagés.'},
                 status=status.HTTP_403_FORBIDDEN,
@@ -98,7 +99,7 @@ class SharedFolderDetailView(APIView):
         except SharedFolder.DoesNotExist:
             return Response({'detail': 'Dossier introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        if folder.campaign.game_master != request.user:
+        if folder.campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': 'Seul le MJ peut modifier les dossiers partagés.'},
                 status=status.HTTP_403_FORBIDDEN,
@@ -130,7 +131,7 @@ class SharedFolderDetailView(APIView):
         except SharedFolder.DoesNotExist:
             return Response({'detail': 'Dossier introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        if folder.campaign.game_master != request.user:
+        if folder.campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': 'Seul le MJ peut supprimer les dossiers partagés.'},
                 status=status.HTTP_403_FORBIDDEN,
@@ -219,7 +220,7 @@ class SharedFileDeleteView(APIView):
         except SharedFile.DoesNotExist:
             return Response({'detail': 'Fichier introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        is_mj = shared_file.folder.campaign.game_master == request.user
+        is_mj = shared_file.folder.campaign.game_master == request.user or is_full_access(request.user)
         is_uploader = shared_file.uploaded_by == request.user
         if not is_mj and not is_uploader:
             return Response(

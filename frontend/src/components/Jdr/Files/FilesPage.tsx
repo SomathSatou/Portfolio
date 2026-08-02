@@ -36,7 +36,9 @@ export default function FilesPage() {
   const [createLoading, setCreateLoading] = React.useState(false)
 
   const isMJ = React.useMemo(() => {
-    if (!selectedCampaignId || !user) return false
+    if (!user) return false
+    if (user.is_staff) return true
+    if (!selectedCampaignId) return false
     const c = campaigns.find((c) => c.id === selectedCampaignId)
     return c?.game_master === user.id
   }, [campaigns, selectedCampaignId, user])

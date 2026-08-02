@@ -15,7 +15,7 @@ from .serializers import (
     RuneDrawingHistorySerializer, RuneDrawingSerializer,
     RuneFavoriteSerializer, RuneTemplateListSerializer, RuneTemplateSerializer,
 )
-from .permissions import IsMJ
+from .permissions import IsMJ, is_full_access
 
 
 class RuneTemplateViewSet(viewsets.ReadOnlyModelViewSet):
@@ -194,10 +194,10 @@ class RunePendingView(APIView):
             status='submitted',
         ).select_related('template', 'character__player', 'campaign')
 
-        if campaign_id:
-            qs = qs.filter(campaign_id=campaign_id, campaign__game_master=request.user)
-        else:
+        if not is_full_access(request.user):
             qs = qs.filter(campaign__game_master=request.user)
+        if campaign_id:
+            qs = qs.filter(campaign_id=campaign_id)
 
         return Response(RuneDrawingSerializer(qs, many=True).data)
 
@@ -209,7 +209,9 @@ class RuneDrawingReviewView(APIView):
         try:
             drawing = RuneDrawing.objects.select_related(
                 'character', 'campaign', 'template',
-            ).get(pk=pk, campaign__game_master=request.user)
+            ).get(pk=pk)
+            if not is_full_access(request.user) and drawing.campaign.game_master != request.user:
+                raise RuneDrawing.DoesNotExist
         except RuneDrawing.DoesNotExist:
             return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -311,9 +313,9 @@ class RuneDrawingAnnotationsUpdateView(APIView):
 
     def patch(self, request, pk):
         try:
-            drawing = RuneDrawing.objects.select_related('campaign').get(
-                pk=pk, campaign__game_master=request.user,
-            )
+            drawing = RuneDrawing.objects.select_related('campaign').get(pk=pk)
+            if not is_full_access(request.user) and drawing.campaign.game_master != request.user:
+                raise RuneDrawing.DoesNotExist
         except RuneDrawing.DoesNotExist:
             return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -333,7 +335,11 @@ class RuneDrawingHistoryListView(APIView):
         except RuneDrawing.DoesNotExist:
             return Response({'detail': 'Dessin introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        if drawing.character.player != request.user and drawing.campaign.game_master != request.user:
+        if (
+            drawing.character.player != request.user
+            and drawing.campaign.game_master != request.user
+            and not is_full_access(request.user)
+        ):
             return Response(
                 {'detail': 'Permission refusée.'}, status=status.HTTP_403_FORBIDDEN,
             )

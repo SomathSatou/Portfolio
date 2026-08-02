@@ -42,7 +42,7 @@ export default function CampaignPage({ campaignId }: CampaignPageProps) {
   const [activeTab, setActiveTab] = React.useState<'overview' | 'events' | 'cities' | 'spells' | 'items' | 'stats' | 'bestiary' | 'inventory' | 'settings'>('overview')
   const [charactersWithStats, setCharactersWithStats] = React.useState<CharacterWithStats[]>([])
 
-  const isMJ = campaign?.game_master === user?.id
+  const isMJ = user?.is_staff || campaign?.game_master === user?.id
 
   React.useEffect(() => {
     if (!isMJ) return
