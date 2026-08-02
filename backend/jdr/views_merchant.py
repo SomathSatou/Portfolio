@@ -30,11 +30,21 @@ class MerchantInventoryView(APIView):
                 {'detail': 'Paramètre character requis.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        inventory = MerchantInventory.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-            quantity__gt=0,
-        ).select_related('resource')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            inventory = MerchantInventory.objects.filter(
+                character__campaign=character.campaign,
+                quantity__gt=0,
+            ).select_related('resource', 'character')
+        else:
+            inventory = MerchantInventory.objects.filter(
+                character=character,
+                quantity__gt=0,
+            ).select_related('resource')
         return Response(MerchantInventorySerializer(inventory, many=True).data)
 
     @transaction.atomic
@@ -154,10 +164,19 @@ class MerchantOrderView(APIView):
                 {'detail': 'Paramètre character requis.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        qs = MerchantOrder.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('resource', 'buy_city', 'sell_city', 'character')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            qs = MerchantOrder.objects.filter(
+                campaign=character.campaign,
+            ).select_related('resource', 'buy_city', 'sell_city', 'character')
+        else:
+            qs = MerchantOrder.objects.filter(
+                character=character,
+            ).select_related('resource', 'buy_city', 'sell_city', 'character')
         if status_filter:
             qs = qs.filter(status=status_filter)
         return Response(MerchantOrderSerializer(qs, many=True).data)
@@ -417,11 +436,21 @@ class MerchantStatsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        sold_orders = MerchantOrder.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-            status='sold',
-        )
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            sold_orders = MerchantOrder.objects.filter(
+                campaign=character.campaign,
+                status='sold',
+            )
+        else:
+            sold_orders = MerchantOrder.objects.filter(
+                character=character,
+                status='sold',
+            )
 
         totals = sold_orders.aggregate(
             total_profit=Sum('profit'),

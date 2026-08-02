@@ -1586,7 +1586,7 @@
 .theme-jdr .border-gray-300 { border-color: var(--jdr-card-line); }
 .theme-jdr .bg-white,
 .theme-jdr .bg-gray-50,
-.theme-jdr .bg-gray-100 { background-color: rgba(255, 253, 242, 0.58); }
+.theme-jdr .bg-gray-100 { background-color: #fffdf2; }
 .dark .theme-jdr .dark\:text-gray-100,
 .dark .theme-jdr .dark\:text-gray-300 { color: var(--jdr-card-ink); }
 .dark .theme-jdr .dark\:text-gray-400,
@@ -1594,7 +1594,7 @@
 .dark .theme-jdr .dark\:border-gray-600,
 .dark .theme-jdr .dark\:border-gray-700 { border-color: var(--jdr-card-line); }
 .dark .theme-jdr .dark\:bg-gray-800,
-.dark .theme-jdr .dark\:bg-gray-900 { background-color: rgba(45, 26, 6, 0.58); }
+.dark .theme-jdr .dark\:bg-gray-900 { background-color: var(--color-jdr-surface-dark); }
 .theme-jdr input:not([type='checkbox']):not([type='radio']),
 .theme-jdr textarea,
 .theme-jdr select,

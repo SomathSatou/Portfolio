@@ -102,6 +102,10 @@ class Character(models.Model):
         blank=True,
     )
     class_type = models.CharField(max_length=100, blank=True, default='')
+    is_hidden = models.BooleanField(
+        default=False,
+        help_text='Personnage système (ex. MJ) masqué dans les listes.',
+    )
     level = models.IntegerField(default=1)
     description = models.TextField(blank=True, default='')
     avatar = models.ImageField(upload_to='jdr/characters/', blank=True, null=True)

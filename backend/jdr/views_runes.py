@@ -58,10 +58,19 @@ class RuneDrawingListCreateView(APIView):
                 {'detail': 'Paramètre character requis.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        drawings = RuneDrawing.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('template', 'character__player')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            drawings = RuneDrawing.objects.filter(
+                campaign=character.campaign,
+            ).select_related('template', 'character__player')
+        else:
+            drawings = RuneDrawing.objects.filter(
+                character=character,
+            ).select_related('template', 'character__player')
         return Response(RuneDrawingSerializer(drawings, many=True).data)
 
     def post(self, request):
@@ -274,10 +283,19 @@ class RuneCollectionView(APIView):
                 {'detail': 'Paramètre character requis.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        collection = RuneCollection.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('rune_drawing__template')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            collection = RuneCollection.objects.filter(
+                character__campaign=character.campaign,
+            ).select_related('rune_drawing__template')
+        else:
+            collection = RuneCollection.objects.filter(
+                character=character,
+            ).select_related('rune_drawing__template')
         return Response(RuneCollectionSerializer(collection, many=True).data)
 
 

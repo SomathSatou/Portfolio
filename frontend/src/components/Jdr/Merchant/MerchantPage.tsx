@@ -87,18 +87,31 @@ export default function MerchantPage() {
     [characters, selectedCharacterId],
   )
 
+  const isMJ = user?.role === 'mj'
+
   // Load initial data
   useEffect(() => {
     let cancelled = false
     setError(null)
     Promise.all([
       api.get<City[]>('/economy/cities/'),
-      api.get<Character[]>('/characters/'),
+      isMJ ? api.get<Character>('/characters/mj/') : api.get<Character[]>('/characters/'),
     ]).then(([citiesRes, charRes]) => {
       if (cancelled) return
       setCities(citiesRes.data)
 
-      const merchantChars = charRes.data.filter(
+      if (isMJ) {
+        const mjChar = charRes.data as Character
+        setCharacters([mjChar])
+        setSelectedCharacterId(mjChar.id)
+        setSelectedCampaignId(mjChar.campaign)
+        if (citiesRes.data.length > 0) {
+          setSelectedCityId(citiesRes.data[0].id)
+        }
+        return
+      }
+
+      const merchantChars = (charRes.data as Character[]).filter(
         (c) => c.player === user?.id && c.class_type.toLowerCase() === 'marchand',
       )
       setCharacters(merchantChars)
@@ -115,7 +128,7 @@ export default function MerchantPage() {
       if (!cancelled) setError(extractError(err))
     })
     return () => { cancelled = true }
-  }, [user?.id])
+  }, [user?.id, isMJ])
 
   // Load market when city/campaign change
   const loadMarket = useCallback(async () => {
@@ -273,7 +286,7 @@ export default function MerchantPage() {
     } finally { setModalLoading(false) }
   }
 
-  if (characters.length === 0) {
+  if (characters.length === 0 && !isMJ) {
     return (
       <div className="text-center py-12">
         <h2 className="text-xl font-bold text-primary dark:text-primaryLight mb-2">
@@ -309,7 +322,7 @@ export default function MerchantPage() {
               {formatGold(selectedCharacter)}
             </span>
           )}
-          {characters.length > 1 && (
+          {!isMJ && characters.length > 1 && (
             <select
               value={selectedCharacterId ?? ''}
               onChange={(e) => {
@@ -325,9 +338,14 @@ export default function MerchantPage() {
               ))}
             </select>
           )}
-          {characters.length === 1 && (
+          {!isMJ && characters.length === 1 && (
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">
               {characters[0].name}
+            </span>
+          )}
+          {isMJ && (
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">
+              Mode MJ
             </span>
           )}
         </div>

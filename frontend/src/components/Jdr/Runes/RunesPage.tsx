@@ -40,6 +40,19 @@ function RunesPageInner() {
   // Fetch characters
   React.useEffect(() => {
     const fetch = async () => {
+      if (isMJ) {
+        // MJ uses a hidden system character
+        try {
+          const res = await api.get<CharacterOption>('/characters/mj/')
+          setCharacters([res.data])
+          if (!selectedCharacterId) {
+            setSelectedCharacterId(res.data.id)
+          }
+        } catch {
+          // silently fail
+        }
+        return
+      }
       try {
         const res = await api.get<CharacterOption[]>('/characters/')
         setCharacters(res.data)
@@ -273,7 +286,7 @@ function RunesPageInner() {
               {activeTab === 'review' && 'Validez les glyphes soumis par les joueurs.'}
             </p>
           </div>
-          {activeTab !== 'review' && characters.length > 0 && (
+          {activeTab !== 'review' && !isMJ && characters.length > 0 && (
             <div className="flex items-center gap-3">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Personnage :</label>
               <select
@@ -288,6 +301,11 @@ function RunesPageInner() {
                 ))}
               </select>
             </div>
+          )}
+          {activeTab !== 'review' && isMJ && (
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Mode MJ
+            </span>
           )}
         </div>
 

@@ -35,7 +35,18 @@ class CampaignViewSet(viewsets.ModelViewSet):
         ).distinct()
 
     def perform_create(self, serializer):
-        serializer.save(game_master=self.request.user)
+        campaign = serializer.save(game_master=self.request.user)
+        Character.objects.get_or_create(
+            name='MJ',
+            player=self.request.user,
+            campaign=campaign,
+            defaults={
+                'class_type': 'MJ',
+                'description': 'Personnage système du Maître du Jeu',
+                'level': 1,
+                'is_hidden': True,
+            },
+        )
 
     def get_permissions(self):
         from .permissions import IsMJ

@@ -84,23 +84,38 @@ export default function GardenPage() {
     setTimeout(() => setToast(null), 3000)
   }
 
+  const isMJ = user?.role === 'mj'
+
   // Load characters
   useEffect(() => {
     let cancelled = false
-    api.get<Character[]>('/characters/').then((res) => {
-      if (cancelled) return
-      // Filter cultivateur/alchimiste characters
-      const gardenChars = res.data.filter(
-        (c) => c.player === user?.id &&
-          ['cultivateur', 'alchimiste'].includes(c.class_type.toLowerCase()),
-      )
-      setCharacters(gardenChars)
-      if (gardenChars.length > 0) {
-        setSelectedCharacterId(gardenChars[0].id)
+    const load = async () => {
+      if (isMJ) {
+        // MJ uses a hidden system character; it never appears in the public list
+        try {
+          const res = await api.get<Character>('/characters/mj/')
+          if (cancelled) return
+          setCharacters([])
+          setSelectedCharacterId(res.data.id)
+        } catch { /* silent */ }
+        return
       }
-    }).catch(() => {})
+      try {
+        const res = await api.get<Character[]>('/characters/')
+        if (cancelled) return
+        const gardenChars = res.data.filter(
+          (c) => c.player === user?.id &&
+            ['cultivateur', 'alchimiste'].includes(c.class_type.toLowerCase()),
+        )
+        setCharacters(gardenChars)
+        if (gardenChars.length > 0) {
+          setSelectedCharacterId(gardenChars[0].id)
+        }
+      } catch { /* silent */ }
+    }
+    void load()
     return () => { cancelled = true }
-  }, [user?.id])
+  }, [user?.id, isMJ])
 
   // Load garden plots
   const loadGarden = useCallback(async () => {
@@ -312,7 +327,7 @@ export default function GardenPage() {
 
   const hasEmptyPlot = gardenData ? gardenData.plots.some((p) => p.status === 'empty') : false
 
-  if (characters.length === 0) {
+  if (characters.length === 0 && !isMJ) {
     return (
       <div className="text-center py-12">
         <div className="text-5xl mb-4">🌱</div>
@@ -355,7 +370,11 @@ export default function GardenPage() {
 
         {/* Character selector */}
         <div className="flex flex-wrap gap-3">
-          {characters.length > 1 ? (
+          {isMJ ? (
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">
+              Mode MJ
+            </span>
+          ) : characters.length > 1 ? (
             <select
               value={selectedCharacterId ?? ''}
               onChange={(e) => setSelectedCharacterId(Number(e.target.value))}
@@ -367,7 +386,7 @@ export default function GardenPage() {
             </select>
           ) : (
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">
-              {characters[0].name}
+              {characters[0]?.name}
             </span>
           )}
         </div>
