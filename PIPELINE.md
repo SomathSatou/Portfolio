@@ -201,12 +201,17 @@ CHANNEL_LAYER_BACKEND=redis
 REDIS_URL=redis://127.0.0.1:6379/0
 ```
 
-Service systemd `daphne.service` :
+Service systemd `daphne.service` — **versionné dans `systemd/daphne.service`** :
+
+> Le fichier source de référence est `systemd/daphne.service` dans le dépôt.
+> `deploy.sh` l'installe automatiquement dans `/etc/systemd/system/` si absent.
+> Pour un premier setup complet (Redis + services), exécuter `scripts/setup-services.sh`.
 
 ```ini
 [Unit]
 Description=Daphne ASGI server (WebSockets JDR)
 After=network.target redis-server.service
+Requires=redis-server.service
 
 [Service]
 User=www-data
@@ -214,6 +219,8 @@ Group=www-data
 WorkingDirectory=/var/www/Portfolio/backend
 EnvironmentFile=/etc/portfolio.env
 ExecStart=/var/www/Portfolio/backend/.venv/bin/daphne -b 127.0.0.1 -p 8001 core.asgi:application
+Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target

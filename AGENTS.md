@@ -34,6 +34,9 @@ Portfolio/
 │   │   ├── services/            # Services métier transactionnels
 │   │   └── management/commands/ # Commandes d’administration, dont audit_jdr_data
 │   └── db.sqlite3               # SQLite dev database
+├── nginx/             # Nginx configuration (portfolio.conf)
+├── systemd/           # Systemd service units (portfolio.service, daphne.service)
+├── scripts/           # Server provisioning scripts (setup-services.sh)
 ├── start.ps1          # PowerShell: lance backend + frontend en parallèle
 ├── deploy.sh          # Déploiement Linux (git pull, migrate, build, systemctl)
 └── package.json       # Root: Tailwind, i18next, script start

@@ -1,0 +1,19 @@
+[Unit]
+Description=Portfolio Django (Gunicorn)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/Portfolio/backend
+EnvironmentFile=/etc/portfolio.env
+ExecStart=/var/www/Portfolio/backend/.venv/bin/gunicorn core.wsgi:application \
+  --bind 127.0.0.1:8000 \
+  --workers 3
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

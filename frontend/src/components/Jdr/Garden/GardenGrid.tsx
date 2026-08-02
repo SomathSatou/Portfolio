@@ -3,13 +3,21 @@ import PlotCard from './PlotCard.tsx'
 
 interface Props {
   plots: GardenPlot[]
+  gridColumns: number
   onPlant: (plotId: number) => void
   onHarvest: (plotId: number) => void
   onClear: (plotId: number) => void
   onFertilize?: (plotId: number) => void
 }
 
-export default function GardenGrid({ plots, onPlant, onHarvest, onClear, onFertilize }: Props) {
+export default function GardenGrid({
+  plots,
+  gridColumns,
+  onPlant,
+  onHarvest,
+  onClear,
+  onFertilize,
+}: Props) {
   if (plots.length === 0) {
     return (
       <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
@@ -18,9 +26,15 @@ export default function GardenGrid({ plots, onPlant, onHarvest, onClear, onFerti
     )
   }
 
+  const sortedPlots = [...plots].sort((a, b) => a.plot_number - b.plot_number)
+  const columns = Math.max(gridColumns, 1)
+
   return (
-    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-      {plots.map((plot) => (
+    <div
+      className="grid gap-3"
+      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+    >
+      {sortedPlots.map((plot) => (
         <PlotCard
           key={plot.id}
           plot={plot}
