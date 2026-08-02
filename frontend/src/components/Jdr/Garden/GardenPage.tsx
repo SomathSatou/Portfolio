@@ -429,6 +429,7 @@ export default function GardenPage() {
               </div>
               <GardenGrid
                 plots={gardenData.plots}
+                gridColumns={gardenData.grid_columns}
                 onPlant={handlePlantFromGrid}
                 onHarvest={handleHarvest}
                 onClear={handleClear}

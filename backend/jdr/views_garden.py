@@ -118,7 +118,7 @@ class GardenPlotsView(APIView):
                 character__campaign=character.campaign,
             ).select_related('plant', 'character').order_by('character__name', 'plot_number')
         else:
-            plots = GardenPlot.objects.filter(character=character).select_related('plant')
+            plots = GardenPlot.objects.filter(character=character).select_related('plant').order_by('plot_number')
         return Response({
             'plots': GardenPlotSerializer(plots, many=True).data,
             'max_plots': upgrade.max_plots,
