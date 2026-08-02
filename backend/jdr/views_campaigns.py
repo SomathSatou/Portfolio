@@ -13,6 +13,7 @@ from .models import (
     Campaign, CampaignEvent, CampaignMembership, Character, City, MarketPrice,
     MerchantOrder, Notification, Resource,
 )
+from .permissions import is_full_access
 from .services.merchant_inventory import receive_delivery
 from .serializers import (
     CampaignEventSerializer, CampaignMembershipSerializer,
@@ -27,6 +28,8 @@ class CampaignViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if is_full_access(user):
+            return Campaign.objects.all()
         return Campaign.objects.filter(
             Q(game_master=user) | Q(memberships__player=user, memberships__is_active=True)
         ).distinct()
@@ -44,7 +47,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def advance_session(self, request, pk=None):
         campaign = Campaign.objects.select_for_update().get(pk=pk)
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': 'Seul le MJ peut avancer la session.'},
                 status=status.HTTP_403_FORBIDDEN,
@@ -170,7 +173,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='toggle-session')
     def toggle_session(self, request, pk=None):
         campaign = self.get_object()
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': 'Seul le MJ peut lancer ou arrêter une session.'},
                 status=status.HTTP_403_FORBIDDEN,
@@ -219,7 +222,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='invite')
     def invite(self, request, pk=None):
         campaign = self.get_object()
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response(
                 {'detail': "Seul le MJ peut générer un code d'invitation."},
                 status=status.HTTP_403_FORBIDDEN,
@@ -295,7 +298,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
             cities = campaign.cities.all()
             serializer = CityListSerializer(cities, many=True)
             return Response(serializer.data)
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier les villes.'}, status=status.HTTP_403_FORBIDDEN)
         city_ids = request.data.get('city_ids', [])
         if not city_ids:

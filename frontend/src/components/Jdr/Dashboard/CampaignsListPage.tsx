@@ -10,7 +10,7 @@ export default function CampaignsListPage() {
   const [loading, setLoading] = React.useState(true)
 
   // Create campaign (MJ only)
-  const isMJ = user?.role === 'mj'
+  const isMJ = user?.role === 'mj' || !!user?.is_staff
   const [showCreate, setShowCreate] = React.useState(false)
   const [createName, setCreateName] = React.useState('')
   const [createDesc, setCreateDesc] = React.useState('')

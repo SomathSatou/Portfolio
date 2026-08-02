@@ -34,35 +34,33 @@ export default function RunesSidebar({ mobileOpen, onClose }: RunesSidebarProps)
       )}
       <aside
         className={`
+          sidebar-jdr
           fixed inset-y-0 left-0 z-40 w-60
           transform transition-transform duration-200 ease-in-out
           lg:relative lg:translate-x-0 lg:inset-auto lg:shrink-0
-          bg-amber-50/90 dark:bg-gray-900/95 border-r border-primary/20 dark:border-primaryLight/20
           flex flex-col
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        <div className="px-4 py-5">
-          <h2 className="font-serif text-lg font-bold text-primary dark:text-primaryLight">
+        <div className="px-4 py-5 sidebar-header-jdr">
+          <h2 className="title-medieval text-base">
             Atelier de Runes
           </h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          <p className="sidebar-subtitle-jdr mt-0.5">
             Grimoire, dessin & validation
           </p>
         </div>
-        <nav className="flex-1 px-3 pb-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 pt-3 pb-4 space-y-0.5 overflow-y-auto">
           {visibleTabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => handleClick(tab.key)}
-              className={`
-                w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-left
-                ${activeTab === tab.key
-                  ? 'bg-primary text-white dark:bg-primaryLight dark:text-gray-900 shadow-sm'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-primary/10 dark:hover:bg-primaryLight/10'}
-              `}
+              className={`w-full text-left sidebar-item-jdr ${activeTab === tab.key ? 'is-active' : ''}`}
             >
-              <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg
+                className={`w-4 h-4 flex-shrink-0 sidebar-icon-jdr ${activeTab === tab.key ? 'is-active' : ''}`}
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d={tab.icon} />
               </svg>
               {tab.label}

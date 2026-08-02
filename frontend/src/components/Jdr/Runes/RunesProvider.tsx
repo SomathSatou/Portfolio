@@ -8,7 +8,7 @@ interface RunesProviderProps {
 
 export function RunesProvider({ children }: RunesProviderProps) {
   const { user } = useAuth()
-  const isMJ = user?.role === 'mj'
+  const isMJ = user?.role === 'mj' || !!user?.is_staff
 
   const hash = window.location.hash
   const params = new URLSearchParams(hash.split('?')[1] ?? '')

@@ -12,6 +12,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .permissions import is_full_access
 from .models import (
     Campaign, CampaignMembership, CampaignSettings, Character,
     CharacterItem, CharacterPassiveSkill, CharacterSkill, CharacterSpell,
@@ -37,7 +38,7 @@ def _check_campaign_mj(request, campaign_id):
         campaign = Campaign.objects.get(pk=campaign_id)
     except Campaign.DoesNotExist:
         return None, Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-    if campaign.game_master != request.user:
+    if campaign.game_master != request.user and not is_full_access(request.user):
         return campaign, Response(
             {'detail': 'Seul le MJ peut modifier le contenu de la campagne.'},
             status=status.HTTP_403_FORBIDDEN,
@@ -54,7 +55,7 @@ def _check_campaign_access(request, campaign_id):
         campaign = Campaign.objects.get(pk=campaign_id)
     except Campaign.DoesNotExist:
         return None, False, Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-    is_mj = campaign.game_master == request.user
+    is_mj = campaign.game_master == request.user or is_full_access(request.user)
     is_member = CampaignMembership.objects.filter(
         campaign=campaign, player=request.user, is_active=True,
     ).exists()
@@ -102,7 +103,7 @@ class SpellDetailView(APIView):
             spell = Spell.objects.get(pk=pk)
         except Spell.DoesNotExist:
             return Response({'detail': 'Sort introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if spell.campaign.game_master != request.user:
+        if spell.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = SpellSerializer(spell, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -114,7 +115,7 @@ class SpellDetailView(APIView):
             spell = Spell.objects.get(pk=pk)
         except Spell.DoesNotExist:
             return Response({'detail': 'Sort introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if spell.campaign.game_master != request.user:
+        if spell.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         spell.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -156,7 +157,7 @@ class ItemDetailView(APIView):
             item = Item.objects.get(pk=pk)
         except Item.DoesNotExist:
             return Response({'detail': 'Objet introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if item.campaign.game_master != request.user:
+        if item.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = ItemSerializer(item, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -168,7 +169,7 @@ class ItemDetailView(APIView):
             item = Item.objects.get(pk=pk)
         except Item.DoesNotExist:
             return Response({'detail': 'Objet introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if item.campaign.game_master != request.user:
+        if item.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -216,7 +217,7 @@ class StatDetailView(APIView):
             stat = Stat.objects.get(pk=pk)
         except Stat.DoesNotExist:
             return Response({'detail': 'Stat introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if stat.campaign.game_master != request.user:
+        if stat.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = StatSerializer(stat, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -228,7 +229,7 @@ class StatDetailView(APIView):
             stat = Stat.objects.get(pk=pk)
         except Stat.DoesNotExist:
             return Response({'detail': 'Stat introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if stat.campaign.game_master != request.user:
+        if stat.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         stat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -270,7 +271,7 @@ class MonsterDetailView(APIView):
             monster = Monster.objects.get(pk=pk)
         except Monster.DoesNotExist:
             return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if not monster.campaign_id or monster.campaign.game_master != request.user:
+        if (not monster.campaign_id or monster.campaign.game_master != request.user) and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = MonsterSerializer(monster, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -282,7 +283,7 @@ class MonsterDetailView(APIView):
             monster = Monster.objects.get(pk=pk)
         except Monster.DoesNotExist:
             return Response({'detail': 'Monstre introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if not monster.campaign_id or monster.campaign.game_master != request.user:
+        if (not monster.campaign_id or monster.campaign.game_master != request.user) and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer.'}, status=status.HTTP_403_FORBIDDEN)
         monster.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -326,7 +327,7 @@ class CharacterStatsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         if character.campaign:
             campaign_stats = Stat.objects.filter(campaign=character.campaign)
@@ -358,7 +359,7 @@ class CharacterStatsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
 
         settings = None
@@ -421,7 +422,7 @@ class CharacterSpellsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         spells = CharacterSpell.objects.filter(character=character).select_related('spell')
         return Response(CharacterSpellSerializer(spells, many=True).data)
@@ -437,7 +438,7 @@ class CharacterSpellsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         try:
             spell = Spell.objects.get(pk=spell_id, campaign=character.campaign)
@@ -462,7 +463,7 @@ class CharacterSpellRemoveView(APIView):
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = cs.character.player == request.user
         is_mj = cs.character.campaign and cs.character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         cs.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -486,7 +487,7 @@ class SkillListCreateView(APIView):
             campaign = Campaign.objects.get(pk=campaign_id)
         except Campaign.DoesNotExist:
             return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut créer des compétences.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = SkillSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -509,7 +510,7 @@ class SkillDetailView(APIView):
             skill = Skill.objects.select_related('campaign').get(pk=pk)
         except Skill.DoesNotExist:
             return Response({'detail': 'Compétence introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if skill.campaign.game_master != request.user:
+        if skill.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier les compétences.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = SkillSerializer(skill, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -521,7 +522,7 @@ class SkillDetailView(APIView):
             skill = Skill.objects.select_related('campaign').get(pk=pk)
         except Skill.DoesNotExist:
             return Response({'detail': 'Compétence introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if skill.campaign.game_master != request.user:
+        if skill.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer les compétences.'}, status=status.HTTP_403_FORBIDDEN)
         skill.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -545,7 +546,7 @@ class PassiveSkillListCreateView(APIView):
             campaign = Campaign.objects.get(pk=campaign_id)
         except Campaign.DoesNotExist:
             return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if campaign.game_master != request.user:
+        if campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut créer des compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = PassiveSkillSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -568,7 +569,7 @@ class PassiveSkillDetailView(APIView):
             ps = PassiveSkill.objects.select_related('campaign').get(pk=pk)
         except PassiveSkill.DoesNotExist:
             return Response({'detail': 'Compétence passive introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if ps.campaign.game_master != request.user:
+        if ps.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut modifier les compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = PassiveSkillSerializer(ps, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -580,7 +581,7 @@ class PassiveSkillDetailView(APIView):
             ps = PassiveSkill.objects.select_related('campaign').get(pk=pk)
         except PassiveSkill.DoesNotExist:
             return Response({'detail': 'Compétence passive introuvable.'}, status=status.HTTP_404_NOT_FOUND)
-        if ps.campaign.game_master != request.user:
+        if ps.campaign.game_master != request.user and not is_full_access(request.user):
             return Response({'detail': 'Seul le MJ peut supprimer les compétences passives.'}, status=status.HTTP_403_FORBIDDEN)
         ps.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -599,7 +600,7 @@ class CharacterSkillsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         skills = CharacterSkill.objects.filter(character=character).select_related('skill')
         return Response(CharacterSkillSerializer(skills, many=True).data)
@@ -615,7 +616,7 @@ class CharacterSkillsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         try:
             skill = Skill.objects.get(pk=skill_id, campaign=character.campaign)
@@ -640,7 +641,7 @@ class CharacterSkillRemoveView(APIView):
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = cs.character.player == request.user
         is_mj = cs.character.campaign and cs.character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         cs.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -659,7 +660,7 @@ class CharacterPassiveSkillsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         ps = CharacterPassiveSkill.objects.filter(character=character).select_related('passive_skill')
         return Response(CharacterPassiveSkillSerializer(ps, many=True).data)
@@ -675,7 +676,7 @@ class CharacterPassiveSkillsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         try:
             passive_skill = PassiveSkill.objects.get(pk=passive_skill_id, campaign=character.campaign)
@@ -700,7 +701,7 @@ class CharacterPassiveSkillRemoveView(APIView):
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = cps.character.player == request.user
         is_mj = cps.character.campaign and cps.character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         cps.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -719,7 +720,7 @@ class CharacterItemsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         items = CharacterItem.objects.filter(character=character).select_related('item')
         return Response(CharacterItemSerializer(items, many=True).data)
@@ -736,7 +737,7 @@ class CharacterItemsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         try:
             item = Item.objects.get(pk=item_id, campaign=character.campaign)
@@ -769,7 +770,7 @@ class CharacterItemDetailView(APIView):
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = ci.character.player == request.user
         is_mj = ci.character.campaign and ci.character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = CharacterItemSerializer(ci, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -783,7 +784,7 @@ class CharacterItemDetailView(APIView):
             return Response({'detail': 'Entrée introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = ci.character.player == request.user
         is_mj = ci.character.campaign and ci.character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         ci.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

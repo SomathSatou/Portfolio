@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Campaign, Character, ChatMessage, SessionNote
+from .permissions import is_full_access
 from .serializers import (
     AvatarUploadSerializer, CharacterSerializer,
     CharacterWithStatsSerializer, ChatMessageSerializer,
@@ -23,7 +24,7 @@ class CharacterAvatarUploadView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
         is_owner = character.player == request.user
         is_mj = character.campaign and character.campaign.game_master == request.user
-        if not is_owner and not is_mj:
+        if not is_owner and not is_mj and not is_full_access(request.user):
             return Response({'detail': 'Accès refusé.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = AvatarUploadSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

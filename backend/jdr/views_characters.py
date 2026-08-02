@@ -21,8 +21,11 @@ class CharacterViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        from .permissions import is_full_access
         user = self.request.user
         qs = Character.objects.select_related('campaign', 'player')
+        if is_full_access(user):
+            return qs
         profile = getattr(user, 'jdr_profile', None)
         if profile and profile.role == 'mj':
             return qs.filter(
@@ -34,7 +37,10 @@ class CharacterViewSet(viewsets.ModelViewSet):
         serializer.save(player=self.request.user)
 
     def check_object_permissions(self, request, obj):
+        from .permissions import is_full_access
         super().check_object_permissions(request, obj)
+        if is_full_access(request.user):
+            return
         if obj.player == request.user:
             return
         if obj.campaign and obj.campaign.game_master == request.user:
