@@ -5,7 +5,7 @@
 from accounts.views import PasswordResetConfirmView, PasswordResetRequestView  # noqa: F401
 from .views_auth import JdrLoginView, JdrMeView, RegisterView  # noqa: F401
 from .views_campaigns import CampaignViewSet  # noqa: F401
-from .views_characters import CharacterViewSet  # noqa: F401
+from .views_characters import CharacterViewSet, MJCharacterView  # noqa: F401
 from .views_content import (  # noqa: F401
     CampaignSettingsView,
     CharacterItemDetailView,

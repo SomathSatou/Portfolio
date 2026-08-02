@@ -113,7 +113,12 @@ class GardenPlotsView(APIView):
             return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         upgrade = _ensure_garden(character)
-        plots = GardenPlot.objects.filter(character=character).select_related('plant')
+        if character.is_hidden and character.campaign:
+            plots = GardenPlot.objects.filter(
+                character__campaign=character.campaign,
+            ).select_related('plant', 'character').order_by('character__name', 'plot_number')
+        else:
+            plots = GardenPlot.objects.filter(character=character).select_related('plant')
         return Response({
             'plots': GardenPlotSerializer(plots, many=True).data,
             'max_plots': upgrade.max_plots,
@@ -131,10 +136,13 @@ class GardenPlotPlantView(APIView):
         ser.is_valid(raise_exception=True)
 
         try:
-            plot = GardenPlot.objects.select_related('character', 'character__campaign').get(
-                pk=pk, character__player=request.user,
-            )
+            plot = GardenPlot.objects.select_related('character', 'character__campaign').get(pk=pk)
         except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.character.player != request.user and not (
+            plot.character.campaign and plot.character.campaign.game_master == request.user
+        ):
             return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         if plot.status != 'empty':
@@ -163,10 +171,13 @@ class GardenPlotHarvestView(APIView):
 
     def post(self, request, pk):
         try:
-            plot = GardenPlot.objects.select_related('plant', 'character', 'character__campaign').get(
-                pk=pk, character__player=request.user,
-            )
+            plot = GardenPlot.objects.select_related('plant', 'character', 'character__campaign').get(pk=pk)
         except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.character.player != request.user and not (
+            plot.character.campaign and plot.character.campaign.game_master == request.user
+        ):
             return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         if plot.status != 'ready' or not plot.plant:
@@ -189,12 +200,15 @@ class GardenPlotHarvestView(APIView):
         new_recipe = result['new_recipe']
 
         if campaign:
+            is_gm = campaign.game_master == request.user
+            actor_name = 'MJ' if is_gm else request.user.username
+            message = f'{"MJ" if is_gm else plot.character.name} a récolté {quantity}× {result_plant.name}.'
             CampaignEvent.objects.create(
                 campaign=campaign,
                 event_type='harvest',
                 actor=request.user,
-                actor_name=request.user.username,
-                message=f'{plot.character.name} a récolté {quantity}× {result_plant.name}.',
+                actor_name=actor_name,
+                message=message,
                 link_hash=f'#/jdr/character/{plot.character.id}',
             )
 
@@ -213,8 +227,13 @@ class GardenPlotClearView(APIView):
 
     def post(self, request, pk):
         try:
-            plot = GardenPlot.objects.get(pk=pk, character__player=request.user)
+            plot = GardenPlot.objects.select_related('character', 'character__campaign').get(pk=pk)
         except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.character.player != request.user and not (
+            plot.character.campaign and plot.character.campaign.game_master == request.user
+        ):
             return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         if plot.status != 'withered':
@@ -240,10 +259,13 @@ class GardenPlotFertilizeView(APIView):
         ser.is_valid(raise_exception=True)
 
         try:
-            plot = GardenPlot.objects.select_related('character').get(
-                pk=pk, character__player=request.user,
-            )
+            plot = GardenPlot.objects.select_related('character', 'character__campaign').get(pk=pk)
         except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.character.player != request.user and not (
+            plot.character.campaign and plot.character.campaign.game_master == request.user
+        ):
             return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
         if plot.status == 'empty':
@@ -268,10 +290,19 @@ class GardenRecipesView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        discovered = DiscoveredRecipe.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('recipe', 'recipe__result_plant')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            discovered = DiscoveredRecipe.objects.filter(
+                character__campaign=character.campaign,
+            ).select_related('recipe', 'recipe__result_plant')
+        else:
+            discovered = DiscoveredRecipe.objects.filter(
+                character=character,
+            ).select_related('recipe', 'recipe__result_plant')
         return Response(DiscoveredRecipeSerializer(discovered, many=True).data)
 
 
@@ -286,10 +317,19 @@ class GardenMutationLogsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        logs = PlotMutationLog.objects.filter(
-            plot__character_id=character_id,
-            plot__character__player=request.user,
-        ).select_related('harvested_plant', 'result_plant').order_by('-created_at')[:50]
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            logs = PlotMutationLog.objects.filter(
+                plot__character__campaign=character.campaign,
+            ).select_related('harvested_plant', 'result_plant').order_by('-created_at')[:50]
+        else:
+            logs = PlotMutationLog.objects.filter(
+                plot__character=character,
+            ).select_related('harvested_plant', 'result_plant').order_by('-created_at')[:50]
         return Response(PlotMutationLogSerializer(logs, many=True).data)
 
 
@@ -304,11 +344,21 @@ class GardenInventoryView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        harvests = HarvestLog.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-            sold=False,
-        ).select_related('plant')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            harvests = HarvestLog.objects.filter(
+                character__campaign=character.campaign,
+                sold=False,
+            ).select_related('plant')
+        else:
+            harvests = HarvestLog.objects.filter(
+                character=character,
+                sold=False,
+            ).select_related('plant')
 
         inventory: dict[int, dict] = {}
         for h in harvests:
@@ -350,9 +400,14 @@ class GardenSellView(APIView):
         except AlchemyPlant.DoesNotExist:
             return Response({'detail': 'Plante introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
-        unsold = HarvestLog.objects.filter(
-            character=character, plant=plant, sold=False,
-        ).order_by('harvested_at_session')
+        if character.is_hidden and character.campaign:
+            unsold = HarvestLog.objects.filter(
+                character__campaign=character.campaign, plant=plant, sold=False,
+            ).order_by('harvested_at_session')
+        else:
+            unsold = HarvestLog.objects.filter(
+                character=character, plant=plant, sold=False,
+            ).order_by('harvested_at_session')
 
         available = sum(h.quantity for h in unsold)
         if available < d['quantity']:
@@ -404,10 +459,19 @@ class GardenStatsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        all_logs = HarvestLog.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('plant')
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            all_logs = HarvestLog.objects.filter(
+                character__campaign=character.campaign,
+            ).select_related('plant')
+        else:
+            all_logs = HarvestLog.objects.filter(
+                character=character,
+            ).select_related('plant')
 
         total_harvested = sum(h.quantity for h in all_logs)
         sold_logs = [h for h in all_logs if h.sold]
@@ -448,8 +512,17 @@ class GardenHistoryView(APIView):
                 {'detail': 'Paramètre character requis.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        logs = HarvestLog.objects.filter(
-            character_id=character_id,
-            character__player=request.user,
-        ).select_related('plant').order_by('-harvested_at_session')[:50]
+        try:
+            character = Character.objects.get(pk=character_id, player=request.user)
+        except Character.DoesNotExist:
+            return Response({'detail': 'Personnage introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if character.is_hidden and character.campaign:
+            logs = HarvestLog.objects.filter(
+                character__campaign=character.campaign,
+            ).select_related('plant').order_by('-harvested_at_session')[:50]
+        else:
+            logs = HarvestLog.objects.filter(
+                character=character,
+            ).select_related('plant').order_by('-harvested_at_session')[:50]
         return Response(HarvestLogSerializer(logs, many=True).data)

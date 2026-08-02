@@ -6,6 +6,7 @@ gestion des jointures et départs de campagne.
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from django.db.models import Q
 
@@ -13,6 +14,7 @@ from .models import (
     Campaign, CampaignEvent, CampaignMembership, Character,
     CharacterStat, Notification, Stat,
 )
+from .permissions import is_full_access
 from .serializers import CharacterSerializer
 
 
@@ -23,7 +25,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         from .permissions import is_full_access
         user = self.request.user
-        qs = Character.objects.select_related('campaign', 'player')
+        qs = Character.objects.select_related('campaign', 'player').filter(is_hidden=False)
         if is_full_access(user):
             return qs
         profile = getattr(user, 'jdr_profile', None)
@@ -134,4 +136,38 @@ class CharacterViewSet(viewsets.ModelViewSet):
             CampaignMembership.objects.filter(
                 campaign=old_campaign, player=request.user,
             ).update(is_active=False)
+        return Response(CharacterSerializer(character).data)
+
+
+class MJCharacterView(APIView):
+    """Retourne (et crée si besoin) le personnage MJ caché d'une campagne."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        campaign_id = request.query_params.get('campaign')
+        campaign = None
+        if campaign_id:
+            try:
+                campaign = Campaign.objects.get(pk=campaign_id)
+            except Campaign.DoesNotExist:
+                return Response({'detail': 'Campagne introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+            if campaign.game_master != request.user and not is_full_access(request.user):
+                return Response({'detail': 'Seul le MJ de la campagne peut utiliser ce personnage.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            campaign = Campaign.objects.filter(game_master=request.user).order_by('-created_at').first()
+            if not campaign:
+                return Response({'detail': 'Aucune campagne gérée.'}, status=status.HTTP_404_NOT_FOUND)
+
+        character, _created = Character.objects.get_or_create(
+            name='MJ',
+            player=request.user,
+            campaign=campaign,
+            defaults={
+                'class_type': 'MJ',
+                'description': 'Personnage système du Maître du Jeu',
+                'level': 1,
+                'is_hidden': True,
+            },
+        )
         return Response(CharacterSerializer(character).data)

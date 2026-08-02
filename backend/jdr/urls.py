@@ -25,6 +25,7 @@ from .views import (
     CharactersWithStatsView,
     CharacterViewSet,
     ChatMessageView,
+    MJCharacterView,
     CombatAddParticipantView,
     CombatEndView,
     CombatNextTurnView,
@@ -160,6 +161,7 @@ urlpatterns = [
     path('files/folders/<int:pk>/upload/', SharedFolderUploadView.as_view(), name='shared-folder-upload'),
     path('files/<int:pk>/', SharedFileDeleteView.as_view(), name='shared-file-delete'),
     # Session
+    path('characters/mj/', MJCharacterView.as_view(), name='character-mj'),
     path('characters/<int:pk>/avatar/', CharacterAvatarUploadView.as_view(), name='character-avatar-upload'),
     path('campaigns/<int:pk>/settings/', CampaignSettingsView.as_view(), name='campaign-settings'),
     path('campaigns/<int:pk>/characters-with-stats/', CharactersWithStatsView.as_view(), name='characters-with-stats'),
