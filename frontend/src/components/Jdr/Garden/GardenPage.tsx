@@ -14,6 +14,7 @@ import type {
 import GardenGrid from './GardenGrid.tsx'
 import PlantCatalog from './PlantCatalog.tsx'
 import PlantModal from './PlantModal.tsx'
+import UnlockPlotModal from './UnlockPlotModal.tsx'
 import HarvestInventory from './HarvestInventory.tsx'
 import GardenStatsView from './GardenStatsView.tsx'
 import GardenRecipesView from './GardenRecipesView.tsx'
@@ -75,6 +76,10 @@ export default function GardenPage() {
   // Fertilizer
   const [fertilizingPlotId, setFertilizingPlotId] = useState<number | null>(null)
   const [fertilizing, setFertilizing] = useState(false)
+
+  // Unlock
+  const [unlockingPlotId, setUnlockingPlotId] = useState<number | null>(null)
+  const [unlocking, setUnlocking] = useState(false)
 
   // Toast
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null)
@@ -299,6 +304,28 @@ export default function GardenPage() {
     setFertilizingPlotId(plotId)
   }
 
+  const handleUnlock = (plotId: number) => {
+    setUnlockingPlotId(plotId)
+    if (inventory.length === 0) void loadInventory()
+  }
+
+  const handleUnlockConfirm = async (plotId: number, plantId: number) => {
+    if (!gardenData) return
+    setUnlocking(true)
+    try {
+      const res = await api.post<{ detail: string }>(`/garden/plots/${plotId}/unlock/`, {
+        plant_id: plantId,
+        quantity: gardenData.plot_unlock_cost,
+      })
+      showToast(res.data.detail, true)
+      setUnlockingPlotId(null)
+      void loadGarden()
+      void loadInventory()
+    } catch {
+      showToast('Erreur lors du déblocage.', false)
+    } finally { setUnlocking(false) }
+  }
+
   const handleClear = async (plotId: number) => {
     try {
       await api.post(`/garden/plots/${plotId}/clear/`)
@@ -430,10 +457,12 @@ export default function GardenPage() {
               <GardenGrid
                 plots={gardenData.plots}
                 gridColumns={gardenData.grid_columns}
+                unlockCost={gardenData.plot_unlock_cost}
                 onPlant={handlePlantFromGrid}
                 onHarvest={handleHarvest}
                 onClear={handleClear}
                 onFertilize={handleFertilize}
+                onUnlock={handleUnlock}
               />
             </>
           ) : (
@@ -514,6 +543,19 @@ export default function GardenPage() {
           }}
           onClose={() => setFertilizingPlotId(null)}
           fertilizing={fertilizing}
+        />
+      )}
+
+      {/* Unlock plot modal */}
+      {unlockingPlotId && gardenData && (
+        <UnlockPlotModal
+          plotId={unlockingPlotId}
+          plotNumber={gardenData.plots.find((p) => p.id === unlockingPlotId)?.plot_number ?? 0}
+          unlockCost={gardenData.plot_unlock_cost}
+          inventory={inventory}
+          onUnlock={handleUnlockConfirm}
+          onClose={() => setUnlockingPlotId(null)}
+          unlocking={unlocking}
         />
       )}
     </div>

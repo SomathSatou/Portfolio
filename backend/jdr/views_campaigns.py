@@ -298,7 +298,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'], url_path='characters')
     def campaign_characters(self, request, pk=None):
         campaign = self.get_object()
-        characters = Character.objects.filter(campaign=campaign)
+        characters = Character.objects.filter(campaign=campaign, is_hidden=False)
         serializer = CharacterSerializer(characters, many=True)
         return Response(serializer.data)
 

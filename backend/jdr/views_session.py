@@ -41,7 +41,7 @@ class CharactersWithStatsView(APIView):
         if err:
             return err
         characters = Character.objects.filter(
-            campaign=campaign,
+            campaign=campaign, is_hidden=False,
         ).select_related('player').prefetch_related('character_stats__stat')
         return Response(CharacterWithStatsSerializer(characters, many=True).data)
 

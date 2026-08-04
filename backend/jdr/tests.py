@@ -6,8 +6,8 @@ from rest_framework.test import APIClient, APITestCase
 
 from .models import (
     AlchemyPlant, Campaign, Character, CharacterItem, City, CityExport, CityImport,
-    GardenPlot, GardenUpgrade, Item, MerchantInventory, MerchantOrder, Monster,
-    PlantMutationRecipe, PlotMutationLog, Resource, UserProfile,
+    GardenPlot, GardenUpgrade, HarvestLog, Item, MerchantInventory, MerchantOrder,
+    Monster, PlantMutationRecipe, PlotMutationLog, Resource, UserProfile,
 )
 from .services.merchant_inventory import InsufficientMerchantStockError, receive_delivery, remove_stock
 
@@ -362,3 +362,57 @@ class GardenMutationServiceTests(TestCase):
         center.refresh_from_db()
         self.assertEqual(center.fertilizer, "")
         self.assertEqual(center.status, "empty")
+
+
+class GardenPlotUnlockApiTests(APITestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(username="unlocker", password="password")
+        UserProfile.objects.create(user=self.user, role="joueur")
+        self.campaign = Campaign.objects.create(name="Jardin verrouille", game_master=self.user)
+        self.character = Character.objects.create(
+            name="Cultivateur", player=self.user, campaign=self.campaign,
+        )
+        self.upgrade = GardenUpgrade.objects.create(
+            character=self.character, max_plots=25, grid_columns=5, plot_unlock_cost=3,
+        )
+        self.plant = AlchemyPlant.objects.create(
+            name="Herbe base", category="Herbes", rarity="Commune", growth_time=1, yield_amount=2,
+        )
+        self.locked_plot = GardenPlot.objects.create(
+            character=self.character, plot_number=12, status="locked",
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
+
+    def test_unlock_fails_with_insufficient_stock(self):
+        HarvestLog.objects.create(
+            character=self.character, plant=self.plant, quantity=2, harvested_at_session=1,
+        )
+
+        response = self.client.post(
+            f"/api/jdr/garden/plots/{self.locked_plot.id}/unlock/",
+            {"plant_id": self.plant.id, "quantity": 3},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.locked_plot.refresh_from_db()
+        self.assertEqual(self.locked_plot.status, "locked")
+
+    def test_unlock_consumes_plants_and_unlocks_plot(self):
+        HarvestLog.objects.create(
+            character=self.character, plant=self.plant, quantity=3, harvested_at_session=1,
+        )
+
+        response = self.client.post(
+            f"/api/jdr/garden/plots/{self.locked_plot.id}/unlock/",
+            {"plant_id": self.plant.id, "quantity": 3},
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.locked_plot.refresh_from_db()
+        self.assertEqual(self.locked_plot.status, "empty")
+        self.assertTrue(
+            HarvestLog.objects.filter(character=self.character, plant=self.plant, consumed=True).exists()
+        )

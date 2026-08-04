@@ -36,7 +36,7 @@ export interface GardenPlot {
   planted_at_session: number | null
   sessions_grown: number
   is_ready: boolean
-  status: 'empty' | 'growing' | 'ready' | 'withered'
+  status: 'empty' | 'growing' | 'ready' | 'withered' | 'locked'
   soil_type: string
   fertilizer: string
   mutation_count: number
@@ -46,6 +46,7 @@ export interface GardenData {
   plots: GardenPlot[]
   max_plots: number
   grid_columns: number
+  plot_unlock_cost: number
   fertilizer_bonus: number
   special_soils: string[]
 }

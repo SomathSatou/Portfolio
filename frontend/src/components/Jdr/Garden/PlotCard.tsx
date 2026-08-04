@@ -4,13 +4,23 @@ import GrowthProgressBar from './GrowthProgressBar.tsx'
 
 interface Props {
   plot: GardenPlot
+  unlockCost: number
   onPlant: (plotId: number) => void
   onHarvest: (plotId: number) => void
   onClear: (plotId: number) => void
   onFertilize?: (plotId: number) => void
+  onUnlock?: (plotId: number) => void
 }
 
-export default function PlotCard({ plot, onPlant, onHarvest, onClear, onFertilize }: Props) {
+export default function PlotCard({
+  plot,
+  unlockCost,
+  onPlant,
+  onHarvest,
+  onClear,
+  onFertilize,
+  onUnlock,
+}: Props) {
   const borderClass = plot.plant_rarity
     ? RARITY_COLORS[plot.plant_rarity] ?? 'border-gray-300 dark:border-gray-700'
     : 'border-gray-300 dark:border-gray-700'
@@ -20,6 +30,7 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear, onFertiliz
     growing: 'bg-green-50/50 dark:bg-green-900/10',
     ready: 'bg-accent1/10 dark:bg-accent1/10',
     withered: 'bg-red-50/50 dark:bg-red-900/10',
+    locked: 'bg-gray-100 dark:bg-gray-800/30',
   }
 
   return (
@@ -29,6 +40,7 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear, onFertiliz
         ${borderClass} ${statusBg[plot.status] ?? ''}
         ${plot.status === 'ready' ? 'ring-1 ring-accent1/40' : ''}
         ${plot.status === 'withered' ? 'opacity-70' : ''}
+        ${plot.status === 'locked' ? 'border-dashed opacity-60' : ''}
       `}
     >
       {/* Plot number badge */}
@@ -124,6 +136,24 @@ export default function PlotCard({ plot, onPlant, onHarvest, onClear, onFertiliz
           >
             Nettoyer
           </button>
+        </div>
+      )}
+
+      {plot.status === 'locked' && (
+        <div className="flex flex-col items-center justify-center min-h-[96px] gap-1 pt-3">
+          <div className="text-2xl opacity-40 grayscale">🔒</div>
+          <p className="text-[10px] text-gray-400 dark:text-gray-500">Verrouillée</p>
+          <p className="text-[10px] text-accent2 dark:text-accent1 font-medium">
+            {unlockCost} plantes
+          </p>
+          {onUnlock && (
+            <button
+              onClick={() => onUnlock(plot.id)}
+              className="btn btn-outline text-[9px] py-0.5 px-1.5 border-accent2 text-accent2 hover:bg-accent2/10"
+            >
+              Débloquer
+            </button>
+          )}
         </div>
       )}
     </div>
