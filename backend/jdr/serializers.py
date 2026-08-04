@@ -488,6 +488,11 @@ class SellHarvestSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(min_value=1)
 
 
+class UnlockPlotSerializer(serializers.Serializer):
+    plant_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+
 class PlantMutationRecipeSerializer(serializers.ModelSerializer):
     result_plant_name = serializers.CharField(source='result_plant.name', read_only=True)
     result_plant_icon = serializers.CharField(source='result_plant.icon', read_only=True)

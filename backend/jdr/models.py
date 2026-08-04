@@ -706,6 +706,7 @@ class GardenPlot(models.Model):
         ('growing', 'En culture'),
         ('ready', 'Prête'),
         ('withered', 'Flétrie'),
+        ('locked', 'Verrouillée'),
     ]
     SOIL_CHOICES = [
         ('terreau', 'Terreau'),
@@ -746,10 +747,14 @@ class GardenUpgrade(models.Model):
     character = models.OneToOneField(
         Character, on_delete=models.CASCADE, related_name='garden_upgrade',
     )
-    max_plots = models.IntegerField(default=4)
-    grid_columns = models.IntegerField(default=4, help_text='Nombre de colonnes de la grille')
+    max_plots = models.IntegerField(default=25)
+    grid_columns = models.IntegerField(default=5, help_text='Nombre de colonnes de la grille')
     fertilizer_bonus = models.FloatField(default=0, help_text='Réduction du temps de culture en %')
     special_soils = models.JSONField(default=list, blank=True, help_text='Sols spéciaux débloqués')
+    plot_unlock_cost = models.IntegerField(
+        default=3,
+        help_text='Nombre de plantes nécessaires pour débloquer une parcelle',
+    )
 
     class Meta:
         verbose_name = 'Amélioration de jardin'
@@ -765,6 +770,7 @@ class HarvestLog(models.Model):
     quantity = models.IntegerField()
     harvested_at_session = models.IntegerField()
     sold = models.BooleanField(default=False)
+    consumed = models.BooleanField(default=False, help_text='Consomme pour debloquer une parcelle')
     sell_price_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     class Meta:

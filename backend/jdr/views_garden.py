@@ -4,6 +4,7 @@ Fournit aussi le helper `advance_garden_session` utilisé par CampaignViewSet.
 """
 from decimal import Decimal
 
+from django.db.models import Sum
 from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,9 +18,12 @@ from .serializers import (
     AlchemyPlantListSerializer, AlchemyPlantSerializer,
     DiscoveredRecipeSerializer, FertilizePlotSerializer,
     GardenPlotSerializer, HarvestLogSerializer, PlantActionSerializer,
-    PlotMutationLogSerializer, SellHarvestSerializer,
+    PlotMutationLogSerializer, SellHarvestSerializer, UnlockPlotSerializer,
 )
 from .services.garden_mutations import harvest_plot
+
+
+CENTRAL_PLOT_NUMBER = 13
 
 
 def _ensure_garden(character: Character) -> GardenUpgrade:
@@ -28,7 +32,11 @@ def _ensure_garden(character: Character) -> GardenUpgrade:
     existing_count = GardenPlot.objects.filter(character=character).count()
     if existing_count < upgrade.max_plots:
         plots_to_create = [
-            GardenPlot(character=character, plot_number=i)
+            GardenPlot(
+                character=character,
+                plot_number=i,
+                status='empty' if i == CENTRAL_PLOT_NUMBER else 'locked',
+            )
             for i in range(existing_count + 1, upgrade.max_plots + 1)
         ]
         GardenPlot.objects.bulk_create(plots_to_create)
@@ -123,6 +131,7 @@ class GardenPlotsView(APIView):
             'plots': GardenPlotSerializer(plots, many=True).data,
             'max_plots': upgrade.max_plots,
             'grid_columns': upgrade.grid_columns,
+            'plot_unlock_cost': upgrade.plot_unlock_cost,
             'fertilizer_bonus': upgrade.fertilizer_bonus,
             'special_soils': upgrade.special_soils,
         })
@@ -268,6 +277,12 @@ class GardenPlotFertilizeView(APIView):
         ):
             return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
 
+        if plot.status == 'locked':
+            return Response(
+                {'detail': "Cette parcelle est verrouillée."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         if plot.status == 'empty':
             return Response(
                 {'detail': "Vous ne pouvez pas fertiliser une parcelle vide."},
@@ -277,6 +292,85 @@ class GardenPlotFertilizeView(APIView):
         plot.fertilizer = ser.validated_data['fertilizer']
         plot.save(update_fields=['fertilizer'])
         return Response(GardenPlotSerializer(plot).data)
+
+
+class GardenPlotUnlockView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        ser = UnlockPlotSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+
+        try:
+            plot = GardenPlot.objects.select_related('character', 'character__garden_upgrade').get(pk=pk)
+        except GardenPlot.DoesNotExist:
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.character.player != request.user and not (
+            plot.character.campaign and plot.character.campaign.game_master == request.user
+        ):
+            return Response({'detail': 'Parcelle introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if plot.status != 'locked':
+            return Response(
+                {'detail': "Cette parcelle n'est pas verrouillée."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        character = plot.character
+        try:
+            plant = AlchemyPlant.objects.get(pk=ser.validated_data['plant_id'])
+        except AlchemyPlant.DoesNotExist:
+            return Response({'detail': 'Plante introuvable.'}, status=status.HTTP_404_NOT_FOUND)
+
+        required = character.garden_upgrade.plot_unlock_cost
+        if ser.validated_data['quantity'] != required:
+            return Response(
+                {'detail': f"Le déblocage coûte exactement {required}× {plant.name}."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Consume from inventory (HarvestLog unsold, unconsumed)
+        logs = HarvestLog.objects.filter(
+            character=character,
+            plant=plant,
+            sold=False,
+            consumed=False,
+        ).order_by('harvested_at_session')
+
+        total = logs.aggregate(sum_quantity=Sum('quantity'))['sum_quantity'] or 0
+        if total < required:
+            return Response(
+                {'detail': f"Stock insuffisant : {total}/{required}× {plant.name}."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        remaining = required
+        for log in logs:
+            if remaining <= 0:
+                break
+            if log.quantity <= remaining:
+                remaining -= log.quantity
+                log.consumed = True
+                log.save(update_fields=['consumed'])
+            else:
+                log.quantity -= remaining
+                log.save(update_fields=['quantity'])
+                remaining = 0
+
+        plot.status = 'empty'
+        plot.plant = None
+        plot.planted_at_session = None
+        plot.sessions_grown = 0
+        plot.is_ready = False
+        plot.fertilizer = ''
+        plot.mutation_count = 0
+        plot.save()
+
+        return Response({
+            'detail': f'Parcelle {plot.plot_number} débloquée.',
+            'plot': GardenPlotSerializer(plot).data,
+        })
 
 
 class GardenRecipesView(APIView):
@@ -353,11 +447,13 @@ class GardenInventoryView(APIView):
             harvests = HarvestLog.objects.filter(
                 character__campaign=character.campaign,
                 sold=False,
+                consumed=False,
             ).select_related('plant')
         else:
             harvests = HarvestLog.objects.filter(
                 character=character,
                 sold=False,
+                consumed=False,
             ).select_related('plant')
 
         inventory: dict[int, dict] = {}

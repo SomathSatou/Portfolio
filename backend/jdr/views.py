@@ -57,6 +57,7 @@ from .views_garden import (  # noqa: F401
     GardenPlotFertilizeView,
     GardenPlotHarvestView,
     GardenPlotPlantView,
+    GardenPlotUnlockView,
     GardenPlotsView,
     GardenRecipesView,
     GardenSellView,
