@@ -27,7 +27,6 @@ from .serializers import (
     RegisterSerializer,
     ResendVerificationSerializer,
 )
-from .mail_sync import ensure_mailbox_exists, update_postfixadmin_password
 
 
 class RegisterView(generics.CreateAPIView):
@@ -250,10 +249,6 @@ class PasswordResetConfirmView(APIView):
 
         user.set_password(data['new_password'])
         user.save(update_fields=['password'])
-
-        # Synchronise le mot de passe avec PostfixAdmin
-        if user.email and '@' in user.email:
-            update_postfixadmin_password(user.email, data['new_password'])
 
         return Response({'detail': 'Mot de passe mis à jour avec succès.'})
 

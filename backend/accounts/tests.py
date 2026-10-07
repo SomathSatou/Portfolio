@@ -100,6 +100,43 @@ class AvatarAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
+@override_settings(EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+@patch.dict('sys.modules', {'crypt': None})
+class MailboxIsolationTests(APITestCase):
+    """Les comptes du site ne doivent jamais créer ni modifier de boîte mail."""
+
+    def test_register_sends_verification_without_mailbox_sync(self):
+        from django.core import mail
+        response = self.client.post(reverse('auth-register'), {
+            'username': 'newuser',
+            'email': 'contact@automia.org',
+            'password': 'verysecurepassword123',
+            'password_confirm': 'verysecurepassword123',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['contact@automia.org'])
+
+    def test_password_reset_confirm_without_mailbox_sync(self):
+        from django.contrib.auth.tokens import PasswordResetTokenGenerator
+        from django.utils.encoding import force_bytes
+        from django.utils.http import urlsafe_base64_encode
+        user = User.objects.create_user(username='resetuser', email='admin@automia.org', password='oldpassword123')
+        response = self.client.post(reverse('auth-password-reset-confirm'), {
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': PasswordResetTokenGenerator().make_token(user),
+            'new_password': 'brandnewpassword123',
+            'new_password_confirm': 'brandnewpassword123',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        user.refresh_from_db()
+        self.assertTrue(user.check_password('brandnewpassword123'))
+
+    def test_no_postfixadmin_database_connection(self):
+        from django.conf import settings
+        self.assertNotIn('postfixadmin', settings.DATABASES)
+
+
 class EnsureAdminCommandTests(TestCase):
     def test_noop_when_config_missing(self):
         with patch.dict(os.environ, {}, clear=True):

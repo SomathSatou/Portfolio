@@ -239,48 +239,10 @@ Points importants :
 - SSL via Let's Encrypt (certbot)
 - Le frontend est servi **par Django** (pas directement par Nginx) via les URL patterns `core/urls.py`
 
+Config réelle du site portfolio en production (`/etc/nginx/sites-available/portfolio`) :
+
+```nginx
 server {
-    server_name mail.automia.org;
-
-    root /var/www/html/roundcubemail;
-    index index.php index.html;
-
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
-    }
-
-    location ~ /\. {
-        deny all;
-    }
-
-    location ~ ^/(config|temp|logs)/ {
-        deny all;
-    }
-
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/mail.automia.org/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/mail.automia.org/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-}
-server {
-    if ($host = mail.automia.org) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-    listen 80;
-    server_name mail.automia.org;
-    return 404; # managed by Certbot
-
-
-}server {
     listen 80 default_server;
     server_name automia.org www.automia.org;
     return 301 https://$host$request_uri;
@@ -343,27 +305,9 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
-server {
-  listen 80;
-  server_name postfixadmin.automia.org;
+```
 
-  root /usr/share/postfixadmin/public;
-  index index.php index.html;
-
-  location / {
-    try_files $uri $uri/ /index.php?$query_string;
-  }
-
-  location ~ \.php$ {
-    include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/run/php/php8.4-fpm.sock;
-  }
-
-  location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg)$ {
-    expires 7d;
-    add_header Cache-Control "public";
-  }
-}
+La messagerie (Roundcube, PostfixAdmin) est décrite en section 6.5.
 
 ### 6.3 Base de données
 
@@ -385,6 +329,36 @@ portfolio-deploy ALL=(ALL) NOPASSWD: /usr/bin/mysqldump, /var/www/Portfolio/depl
 l'ajouter d'abord ici** (commande + arguments exacts, sudo matche strictement). Toute commande
 `sudo` non listée bloquera le déploiement en tentant de demander un mot de passe (la CI n'a pas
 de TTY, donc `sudo` échoue silencieusement/timeout plutôt que de la fournir).
+
+### 6.5 Messagerie (mail.automia.org)
+
+| Composant | Détails |
+|-----------|---------|
+| Roundcube 1.6 (paquet Ubuntu) | Code `/usr/share/roundcube`, config `/etc/roundcube/config.inc.php`, données `/var/lib/roundcube`, logs `/var/log/roundcube/` ; vhost Nginx `/etc/nginx/sites-available/mail` |
+| Postfix | Domaines/boîtes/alias lus dans la base MariaDB `postfixadmin` via `/etc/postfix/mysql-*.cf` (`640 root:postfix`, contiennent le mot de passe SQL) |
+| Dovecot | IMAP/POP3/LMTP, auth SQL `/etc/dovecot/dovecot-sql.conf.ext`, hash `{SHA512-CRYPT}`, maildirs `/var/vmail/<domaine>/<user>/` (uid/gid 5000) |
+| OpenDKIM | Sélecteur `default`, socket `/var/spool/postfix/opendkim/opendkim.sock` (`opendkim:postfix`, UMask 007), tables `/etc/opendkim/{key,signing}.table` |
+| TLS | Postfix (25/587) et Dovecot (993/995) utilisent `/etc/letsencrypt/live/mail.automia.org/` ; hook de rechargement `/etc/letsencrypt/renewal-hooks/deploy/reload-mail.sh` |
+| PostfixAdmin | `/usr/share/postfixadmin/public`, vhost `postfixadmin.automia.org` |
+
+Routage Postfix :
+
+- `virtual_mailbox_domains` : table `domain` (`SELECT domain FROM domain WHERE domain='%s'`).
+- `virtual_alias_domains` est **vide** (sinon le domaine devient « alias-only » et tout est rejeté avec `User unknown in virtual alias table`).
+- `virtual_alias_maps` : table `alias`, puis chaque boîte vers elle-même ; le catch-all `@automia.org → thomassaout@automia.org` ne s'applique qu'aux adresses sans boîte ni alias.
+- `admin@` et `contact@` sont livrés dans leur boîte **et** en copie dans `thomassaout@automia.org`.
+
+Les comptes du site (Django) et les boîtes mail sont **indépendants** : les boîtes se gèrent uniquement dans PostfixAdmin (ou via `doveadm pw -s SHA512-CRYPT` + SQL), jamais depuis l'inscription du portfolio.
+
+Contrôles rapides :
+
+```bash
+postmap -q automia.org mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
+postmap -q contact@automia.org mysql:/etc/postfix/mysql-virtual-alias-maps.cf
+doveadm auth test contact@automia.org
+opendkim-testkey -d automia.org -s default -vvv
+openssl s_client -connect mail.automia.org:993 -verify_hostname mail.automia.org </dev/null
+```
 
 ---
 

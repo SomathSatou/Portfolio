@@ -149,28 +149,6 @@ else:
         }
     }
 
-# Base de données PostfixAdmin (pour synchronisation Roundcube)
-# Permet de synchroniser les mots de passe Django avec PostfixAdmin/Dovecot
-_POSTFIX_DB_HOST = os.getenv('POSTFIX_DB_HOST', 'localhost')
-_POSTFIX_DB_NAME = os.getenv('POSTFIX_DB_NAME', 'postfixadmin')
-_POSTFIX_DB_USER = os.getenv('POSTFIX_DB_USER', 'root')
-_POSTFIX_DB_PASSWORD = os.getenv('POSTFIX_DB_PASSWORD', '')
-_POSTFIX_DB_PORT = os.getenv('POSTFIX_DB_PORT', '3306')
-
-if _POSTFIX_DB_HOST and _POSTFIX_DB_PASSWORD:
-    DATABASES['postfixadmin'] = {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': _POSTFIX_DB_NAME,
-        'USER': _POSTFIX_DB_USER,
-        'PASSWORD': _POSTFIX_DB_PASSWORD,
-        'HOST': _POSTFIX_DB_HOST,
-        'PORT': _POSTFIX_DB_PORT,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -238,7 +216,8 @@ EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'false').lower() in ('1', 'true', 'ye
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'contact@automia.org')
 SERVER_EMAIL = os.getenv('SERVER_EMAIL', DEFAULT_FROM_EMAIL)
 
-if EMAIL_HOST and EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
+# Relais SMTP dès qu'un hôte est défini (l'authentification est optionnelle, ex. Postfix local)
+if EMAIL_HOST and 'EMAIL_BACKEND' not in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # DRF config

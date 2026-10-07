@@ -195,6 +195,7 @@ Les descriptions riches sont des composants React dans `components/Project/Desc*
 - Vérifier `tsc -b` (via `npm run build`) pour les erreurs TypeScript
 - Ne pas modifier `db.sqlite3` directement — utiliser les migrations Django
 - Avant une migration de données JDR, exécuter `.venv\Scripts\python.exe backend\manage.py audit_jdr_data --json` depuis la racine ; les livraisons marchandes alimentent uniquement `MerchantInventory`
+- Messagerie (Postfix/Dovecot/Roundcube/PostfixAdmin) : voir `PIPELINE.md` §6.5. Les comptes Django et les boîtes mail sont indépendants — ne jamais réintroduire de création de boîte ou de synchronisation de mot de passe depuis l'inscription du site
 - `Monster` est un modèle de créature autonome : ne pas le lier à `Character` ni lui attribuer de joueur, inventaire, portefeuille ou ressources de personnage
 - Ajouter un nouveau projet : créer l'entrée dans `data/projects.ts` ou `data/teachingResearch.ts`, ajouter son slug dans `data/seo.json`, et si besoin un composant `Desc*.tsx`
 - Lancer `npm run seo` après toute modification de `data/seo.json` pour régénérer `public/robots.txt` et `public/sitemap.xml`
