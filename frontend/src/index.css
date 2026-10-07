@@ -1398,6 +1398,33 @@
 .back-link-jdr { color: #a0845c; }
 .back-link-jdr:hover { color: #7c3a0e; }
 
+/* ── Clickable avatar (file picker trigger) ─ */
+.avatar-upload-btn {
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.avatar-upload-btn:hover:not(:disabled) { filter: brightness(1.1); transform: scale(1.03); }
+.avatar-upload-btn:disabled { cursor: wait; opacity: 0.6; }
+.avatar-upload-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.avatar-upload-btn:hover .avatar-upload-overlay,
+.avatar-upload-btn:focus-visible .avatar-upload-overlay,
+.avatar-upload-btn:disabled .avatar-upload-overlay { opacity: 1; }
+
 /* ── JDR Profile page classes ─ */
 .profile-avatar-jdr {
   background: rgba(201,162,39,0.2);
