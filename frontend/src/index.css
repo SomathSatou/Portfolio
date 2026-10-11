@@ -85,7 +85,6 @@
   }
   /* Sections / cartes */
   .section {
-    @apply bg-white dark:bg-gray-800;
     @apply text-gray-900 dark:text-gray-100;
   }
   /* Boutons */
@@ -114,7 +113,7 @@
 
 @layer components {
   .section {
-    @apply mx-auto max-w-7xl px-6 md:px-8 py-16 dark:bg-gray-900;
+    @apply mx-auto max-w-7xl px-6 md:px-8 py-16;
   }
 
   .card {
