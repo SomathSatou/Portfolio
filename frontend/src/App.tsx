@@ -31,7 +31,7 @@ function SectionCV() {
         <div className="relative inline-block">
           <div className="avatar-ring" />
           <img
-            src="/assets/avatar.jpg"
+            src="/assets/avatar.png"
             alt="Portrait de Thomas Saout, développeur logiciel et web"
             loading="eager"
             decoding="async"
@@ -308,6 +308,11 @@ function ProjectPage({ slug }: { slug: string }) {
               </div>
             )}
             {/* istanbul ignore next */}
+            {project.status && (
+              <div className="mb-4">
+                <Badge>{project.status === 'en-cours' ? 'En cours' : 'En pause'}</Badge>
+              </div>
+            )}
             {project.tags && project.tags.length > 0 && (
               <div className="mb-4 flex flex-wrap gap-2">
                 {project.tags.map((t: string) => (
@@ -315,10 +320,19 @@ function ProjectPage({ slug }: { slug: string }) {
                 ))}
               </div>
             )}
-            {project.github && (
-              <Button href={project.github} target="_blank" rel="noreferrer" variant="outline" className="hover-lift">
-                Voir sur GitHub
-              </Button>
+            {(project.link || project.github) && (
+              <div className="flex flex-col gap-2">
+                {project.link && (
+                  <Button href={project.link} variant="accent" className="hover-lift">
+                    Ouvrir l'app
+                  </Button>
+                )}
+                {project.github && (
+                  <Button href={project.github} target="_blank" rel="noreferrer" variant="outline" className="hover-lift">
+                    Voir sur GitHub
+                  </Button>
+                )}
+              </div>
             )}
           </aside>
         </div>

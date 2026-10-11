@@ -120,7 +120,6 @@ describe('teachingResearch data', () => {
   it('exports expected teaching/research categories', () => {
     const names = teachingResearchCategories.map((c) => c.name)
     expect(names).toContain('Recherche')
-    expect(names).toContain('Formation')
     expect(names).toContain('Enseignement')
   })
 

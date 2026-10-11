@@ -142,7 +142,11 @@ Les projets sont définis statiquement dans `frontend/src/data/` :
 - `projectIndex.ts` — Index fusionné (`allProjects`, `projectBySlug`)
 - `seo.json` — Données SEO : siteUrl, pages canoniques et slugs des projets pour le sitemap
 
-Chaque projet : `{ slug, title, description (ReactNode), category, tags?, github?, image? }`
+Chaque projet : `{ slug, title, description (ReactNode), category, tags?, github?, link?, status?: 'en-cours' | 'en-pause', image?, sessions? }`
+
+- `github` : URL du repo dédié du projet. Pas de fallback vers le profil — si absent, le bouton « Voir sur GitHub » est masqué.
+- `link` : URL vers l'app en ligne (ex. `#/jdr`) — affiche un bouton « Ouvrir l'app ».
+- `status` : badge d'état affiché sur la page projet (« En cours » / « En pause »).
 
 Les descriptions riches sont des composants React dans `components/Project/Desc*.tsx`.
 

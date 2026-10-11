@@ -5,6 +5,8 @@ import { DescICTAI2024 } from '../components/Project/DescICTAI2024'
 import { DescOverview } from '../components/Project/DescOverview'
 import { DescComputerVision } from '../components/Project/DescComputerVision'
 import { DescGenAI } from '../components/Project/DescGenAI'
+import { DescMlops } from '../components/Project/DescMlops'
+import { DescClaudeCode } from '../components/Project/DescClaudeCode'
 import { DescProjetLSF } from '../components/Project/DescProjetLSF'
 import { DescProjetOCR } from '../components/Project/DescProjetOCR'
 
@@ -23,8 +25,11 @@ const P = (title: string, category: string, extra: Partial<Project> = {}): Proje
   description: (extra.description ?? 'Description à venir.') as ReactNode,
   category,
   tags: extra.tags,
-  github: extra.github ?? 'https://github.com/SomathSatou',
+  github: extra.github,
+  link: extra.link,
+  status: extra.status,
   image: extra.image,
+  sessions: extra.sessions,
 })
 
 export const teachingResearchProjects: Project[] = [
@@ -36,12 +41,8 @@ export const teachingResearchProjects: Project[] = [
   P('Overview', 'Recherche', {
     tags: ['IEEE Access', "État de l'art", 'Extraction de données', 'Factures', 'Survey'],
     description: DescOverview(),
+    github: 'https://github.com/SomathSatou/awesome-invoices-automated-extraction',
   }),
-
-  // Formation
-  P('Vercel', 'Formation'),
-  P('Supabase', 'Formation'),
-  P('OpenRouter', 'Formation'),
 
   P('Computer Vision', 'Enseignement', {
     tags: ['CNN', 'Transformers', 'OCR', 'ViT', 'PyTorch', 'OpenCV', '18h'],
@@ -125,6 +126,110 @@ export const teachingResearchProjects: Project[] = [
     ] satisfies Session[],
   }),
 
+  P('MLOps', 'Enseignement', {
+    tags: ['MLOps', 'Docker', 'CI/CD', 'MLflow', 'DVC', 'FastAPI', '27h'],
+    description: DescMlops(),
+    sessions: [
+      {
+        id: 'rappels-ml',
+        title: 'Séance 1 : Rappels de machine learning et lancement du projet fil rouge',
+        duration: '3h',
+        description:
+          'Régression, métriques et validation temporelle. Lancement du projet bike-demand-mlops : exploration du jeu de données Bike Sharing et baseline scikit-learn.',
+      },
+      {
+        id: 'cycle-mlops',
+        title: 'Séance 2 : Cycle de vie MLOps, traçabilité et lignage',
+        duration: '3h',
+        description:
+          'Cycle MLOps et rôles des équipes, notion de lignage. Mise en œuvre de MLflow Tracking et de DVC.',
+      },
+      {
+        id: 'pipelines-reproductibles',
+        title: 'Séance 3 : Pipelines reproductibles',
+        duration: '3h',
+        description:
+          'Pipelines scikit-learn et ColumnTransformer, orchestration d\'un DAG avec DVC, caching et reproductibilité.',
+      },
+      {
+        id: 'feature-engineering-couts',
+        title: 'Séance 4 : Feature engineering, modélisation et coûts de calcul',
+        duration: '3h',
+        description:
+          'Features temporelles et encodage cyclique, validation croisée temporelle, comparaison de modèles et estimation des coûts CPU/GPU.',
+      },
+      {
+        id: 'serving-fastapi',
+        title: 'Séance 5 : Serving du modèle avec FastAPI',
+        duration: '3h',
+        description:
+          'Sérialisation du modèle et contrat d\'API, endpoints /predict et /health, tests de l\'API en local.',
+      },
+      {
+        id: 'docker',
+        title: 'Séance 6 : Conteneurisation et déploiement local avec Docker',
+        duration: '3h',
+        description:
+          'Dockerfile et optimisation des couches, Docker Compose et orchestration de service, portabilité entre environnements.',
+      },
+      {
+        id: 'cicd-ct',
+        title: 'Séance 7 : Intégration, déploiement et entraînement continus',
+        duration: '3h',
+        description:
+          'CI/CD et Continuous Training : workflows GitHub Actions de test, d\'entraînement et de build Docker, gestion des artefacts et des secrets.',
+      },
+      {
+        id: 'monitoring-derive',
+        title: 'Séance 8 : Monitoring, dérive des données et qualité en production',
+        duration: '3h',
+        description:
+          'Types de dérive (données, concept, prédiction, label), rapports Evidently, alerte et seuil de réentraînement.',
+      },
+      {
+        id: 'gouvernance-soutenance',
+        title: 'Séance 9 : Gouvernance, gestion d\'incident, coûts et soutenance',
+        duration: '3h',
+        description:
+          'Fiche modèle et documentation, procédure de gestion d\'incident et de rollback, TCO CPU/GPU/cloud, soutenances.',
+      },
+    ] satisfies Session[],
+  }),
+  P('Claude Code', 'Enseignement', {
+    tags: ['Claude Code', 'Agents IA', 'Bonnes pratiques', 'Formation'],
+    description: DescClaudeCode(),
+    sessions: [
+      {
+        id: 'vue-ensemble',
+        title: 'Claude Code — Vue d\'ensemble',
+        description:
+          'Présentation de l\'outil, cas d\'usage et positionnement dans le workflow de développement.',
+      },
+      {
+        id: 'claude-md-memory',
+        title: 'CLAUDE.md et Memory',
+        description:
+          'Fichiers de contexte projet et mémoire persistante : conventions, règles et bonnes pratiques.',
+      },
+      {
+        id: 'skills',
+        title: 'Skills',
+        description: 'Compétences réutilisables pour étendre les capacités de l\'agent.',
+      },
+      {
+        id: 'sub-agents',
+        title: 'Sub-agents',
+        description: 'Délégation de tâches à des sous-agents spécialisés.',
+      },
+      {
+        id: 'hooks',
+        title: 'Hooks',
+        description:
+          'Points d\'ancrage pour automatiser des actions autour du cycle de vie de l\'agent.',
+      },
+    ] satisfies Session[],
+  }),
+
   // Projets encadrés (Projet Majeur IA)
   P('Reconnaissance LSF', 'Enseignement', {
     slug: 'reconnaissance-lsf',
@@ -143,12 +248,6 @@ export const teachingResearchCategories: Category[] = [
     name: 'Recherche',
     projectSlugs: teachingResearchProjects
       .filter((p) => p.category === 'Recherche')
-      .map((p) => p.slug),
-  },
-  {
-    name: 'Formation',
-    projectSlugs: teachingResearchProjects
-      .filter((p) => p.category === 'Formation')
       .map((p) => p.slug),
   },
   {

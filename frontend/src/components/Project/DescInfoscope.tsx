@@ -53,6 +53,13 @@ export const DescInfoscope = () => (
     </p>
 
     <p>
+      <strong>Statut : refonte en cours.</strong> Le socle technique est en place ;
+      la migration des contenus se poursuivra à la récupération des images
+      associées aux articles. Ce projet est aussi l'occasion de me familiariser
+      avec la stack technique de l'écosystème MedIA.
+    </p>
+
+    <p>
       <strong>
         Ce projet illustre ma capacité à accompagner des structures associatives et
         médiatiques dans leur transition numérique, en proposant des solutions

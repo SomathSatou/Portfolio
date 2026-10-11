@@ -2,6 +2,15 @@ import type { ReactNode } from 'react'
 import { DescriptionExtractDoc } from '../components/Project/DescriptionExtractDoc';
 import { DescFullMetalWar } from '../components/Project/DescFullMetalWar';
 import { DescInfoscope } from '../components/Project/DescInfoscope';
+import { DescGenerationDoc } from '../components/Project/DescGenerationDoc';
+import { DescLlmNlp } from '../components/Project/DescLlmNlp';
+import { DescAlfi } from '../components/Project/DescAlfi';
+import { DescMechaIdle } from '../components/Project/DescMechaIdle';
+import { DescIdleOne } from '../components/Project/DescIdleOne';
+import { DescJdr } from '../components/Project/DescJdr';
+import { DescIrlRpg } from '../components/Project/DescIrlRpg';
+import { DescN8n } from '../components/Project/DescN8n';
+import { DescAudit } from '../components/Project/DescAudit';
 
 export type Session = {
   id: string
@@ -18,6 +27,8 @@ export type Project = {
   category: string
   tags?: string[]
   github?: string
+  link?: string
+  status?: 'en-cours' | 'en-pause'
   image?: string
   sessions?: Session[]
 }
@@ -38,8 +49,11 @@ const P = (title: string, category: string, extra: Partial<Project> = {}): Proje
   ,
   category,
   tags: extra.tags,
-  github: extra.github ?? 'https://github.com/SomathSatou',
+  github: extra.github,
+  link: extra.link,
+  status: extra.status,
   image: extra.image,
+  sessions: extra.sessions,
 })
 
 export const projects: Project[] = [
@@ -48,28 +62,70 @@ export const projects: Project[] = [
     tags: ["TALN", "Traitement de texte", "Reconnaissance visuelle", "Graphes", "Analyse de documents"], 
     description: DescriptionExtractDoc()
   }),
-  P('Génération de documents', 'Traitement documentaire'),
-  P('LLM & NLP', 'Traitement documentaire'),
+  P('Génération de documents', 'Traitement documentaire', {
+    description: DescGenerationDoc()
+  }),
+  P('LLM & NLP', 'Traitement documentaire', {
+    tags: ["LLM", "TALN", "RAG", "Agents conversationnels"],
+    description: DescLlmNlp()
+  }),
 
   // Jeux
-  P('ALFI (ludique)', 'Jeux'),
-  P('MechaIDLE', 'Jeux'),
+  P('ALFI (ludique)', 'Jeux', {
+    tags: ["Serious game", "VR", "AR", "Formation"],
+    description: DescAlfi()
+  }),
+  P('MechaIDLE', 'Jeux', {
+    tags: ["Unity", "C#", "RPG", "Idle"],
+    description: DescMechaIdle(),
+    status: 'en-pause',
+  }),
+  P('IdleOne', 'Jeux', {
+    tags: ["Unity", "C#", "Idle", "Breeding", "Agents IA"],
+    description: DescIdleOne(),
+    github: 'https://github.com/SomathSatou/IdleOne',
+    status: 'en-cours',
+  }),
   P('FullMetalWar', 'Jeux', { 
-    tags: ["IA", "Stratégie", "Jeux"],
-    description: DescFullMetalWar() }),
+    tags: ["IA", "Stratégie", "Jeux", "C++"],
+    description: DescFullMetalWar(),
+    github: 'https://github.com/SomathSatou/FullMetalWar'
+  }),
 
   // Web
-  P('Projet à définir (Java, Laravel, TailwindCSS)', 'Web'),
+  P('JDR — Le Monde de Lug', 'Web', {
+    slug: 'jdr-le-monde-de-lug',
+    tags: ["Django", "React", "WebSockets", "Temps réel", "Jeu de rôle"],
+    description: DescJdr(),
+    github: 'https://github.com/SomathSatou/Portfolio',
+    link: '#/jdr',
+    status: 'en-cours',
+  }),
+  P('IRL RPG', 'Web', {
+    slug: 'irl-rpg',
+    tags: ["Django", "React", "Gamification", "Sport"],
+    description: DescIrlRpg(),
+    github: 'https://github.com/SomathSatou/Portfolio',
+    link: '#/irlrpg',
+    status: 'en-cours',
+  }),
   P('Infoscope (Django + React)', 'Web', {
     tags: ["Django", "React", "WordPress Migration", "Média", "CMS"],
-    description: DescInfoscope()
+    description: DescInfoscope(),
+    status: 'en-cours',
   }),
 
   // Automatisation
-  P('N8N', 'Automatisation'),
+  P('N8N', 'Automatisation', {
+    tags: ["n8n", "Workflows", "Mailing", "Self-hosted"],
+    description: DescN8n()
+  }),
 
   // Sécurité
-  P('Audit', 'Sécurité'),
+  P('Audit', 'Sécurité', {
+    tags: ["Lynis", "Nmap", "Nikto", "CIS", "TLS"],
+    description: DescAudit()
+  }),
 ]
 
 export type Category = {
