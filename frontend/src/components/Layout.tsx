@@ -5,6 +5,7 @@ import Footer from './Footer'
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
+      <div className="page-backdrop" aria-hidden="true" />
       <Header />
       <main>{children}</main>
       <Footer />

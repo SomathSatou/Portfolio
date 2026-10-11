@@ -1143,6 +1143,26 @@
   z-index: 1;
 }
 
+/* Fond décoratif continu — blobs fixes visibles sur toute la hauteur de la page */
+.page-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(520px at 95% 5%, rgba(95, 42, 98, 0.22), transparent 70%),
+    radial-gradient(460px at 2% 45%, rgba(160, 222, 89, 0.12), transparent 70%),
+    radial-gradient(560px at 85% 105%, rgba(95, 42, 98, 0.16), transparent 70%),
+    radial-gradient(380px at 30% 100%, rgba(245, 192, 36, 0.08), transparent 70%);
+}
+.dark .page-backdrop {
+  background:
+    radial-gradient(520px at 95% 5%, rgba(169, 118, 195, 0.14), transparent 70%),
+    radial-gradient(460px at 2% 45%, rgba(160, 222, 89, 0.07), transparent 70%),
+    radial-gradient(560px at 85% 105%, rgba(169, 118, 195, 0.10), transparent 70%),
+    radial-gradient(380px at 30% 100%, rgba(245, 192, 36, 0.05), transparent 70%);
+}
+
 /* Anneau conique animé autour de l'avatar */
 .avatar-ring {
   position: absolute;
