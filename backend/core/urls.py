@@ -53,6 +53,7 @@ urlpatterns = [
     path('api/auth/', include('accounts.urls')),
     path('api/jdr/', include('jdr.urls')),
     path('api/muscu/', include('muscu.urls')),
+    path('api/idleone/', include('idleone.urls')),
     # Frontend assets (JS, CSS, images) — keep 'assets/' in the path
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^(?P<path>assets/.+)$', frontend_file),

@@ -24,6 +24,7 @@ Portfolio/
 │  ├─ index.html             # Point d'entrée Vite
 │  ├─ package.json           # Scripts (dev, build, lint, preview)
 │  └─ ...
+├─ backend/                  # API Django REST (auth partagée, jdr, muscu, idleone)
 ├─ package.json              # Dépendances racine (ex: tailwind, i18n)
 ├─ .gitignore                # Règles d'exclusion Git
 └─ README.md                 # Ce fichier
@@ -194,6 +195,8 @@ Définis dans `backend/api/urls.py` et `backend/api/views.py`.
 - `POST /api/contact/` — envoyer un message de contact
   - Corps JSON (voir `ContactSerializer`): `{ name, email, message, honeypot? }`
   - Dev: email affiché en console; Prod: configurez SMTP et `CONTACT_RECIPIENT`
+- `POST /api/auth/…` — authentification unifiée (register, login JWT, refresh, me, password-reset, verify-email) ; compte partagé entre les modules (jdr, muscu, idleone)
+- `GET/PUT/DELETE /api/idleone/saves/{slot}/` — sauvegardes cloud du jeu IdleOne (slots 0-2, authentifié)
 
 Exemples
 ```bash
