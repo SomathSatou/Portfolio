@@ -5,6 +5,8 @@ Le token JWT produit est identique — les apps utilisent le même
 `django.contrib.auth.User`. Les contrôles d'accès spécifiques
 (ex. `can_access_muscu`) sont faits dans leurs apps respectives.
 """
+import logging
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -27,6 +29,13 @@ from .serializers import (
     RegisterSerializer,
     ResendVerificationSerializer,
 )
+
+logger = logging.getLogger(__name__)
+
+
+def _client_ip(request):
+    forwarded = request.META.get('HTTP_X_FORWARDED_FOR', '')
+    return forwarded.split(',')[0].strip() if forwarded else request.META.get('REMOTE_ADDR', '')
 
 
 class RegisterView(generics.CreateAPIView):
@@ -97,13 +106,20 @@ class LoginView(APIView):
         email = request.data.get('email', '').strip()
         password = request.data.get('password', '')
 
-        try:
-            user_obj = User.objects.get(email=email)
-        except User.DoesNotExist:
+        candidates = list(User.objects.filter(email__iexact=email).order_by('id')[:2])
+        if not candidates:
+            logger.warning('Login refusé (email inconnu) email=%s ip=%s', email, _client_ip(request))
             return Response(
                 {'detail': 'Identifiants invalides.'},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
+        if len(candidates) > 1:
+            logger.error('Login impossible : plusieurs comptes partagent email=%s ip=%s', email, _client_ip(request))
+            return Response(
+                {'detail': 'Plusieurs comptes utilisent cet email. Contactez l\'administrateur.'},
+                status=status.HTTP_409_CONFLICT,
+            )
+        user_obj = candidates[0]
 
         # Vérifie si le compte est activé (email confirmé)
         if not user_obj.is_active:
@@ -114,6 +130,7 @@ class LoginView(APIView):
 
         user = authenticate(request, username=user_obj.username, password=password)
         if user is None:
+            logger.warning('Login refusé (mot de passe) user=%s ip=%s', user_obj.username, _client_ip(request))
             return Response(
                 {'detail': 'Identifiants invalides.'},
                 status=status.HTTP_401_UNAUTHORIZED,

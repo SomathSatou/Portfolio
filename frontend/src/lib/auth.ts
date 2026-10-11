@@ -22,3 +22,19 @@ export function clearTokens(): void {
 export function hasSession(): boolean {
   return Boolean(getAccessToken())
 }
+
+export const LOGIN_ERROR_INVALID = 'Identifiants invalides.'
+export const LOGIN_ERROR_SERVER = 'Le serveur est indisponible pour le moment. Réessayez dans quelques instants.'
+export const LOGIN_ERROR_NETWORK = 'Impossible de joindre le serveur. Vérifiez votre connexion.'
+
+interface HttpError {
+  response?: { status?: number; data?: { detail?: string } }
+}
+
+/** Message utilisateur pour un échec de connexion : distingue identifiants refusés et panne serveur. */
+export function loginErrorMessage(err: unknown): string {
+  const response = err && typeof err === 'object' ? (err as HttpError).response : undefined
+  if (!response) return LOGIN_ERROR_NETWORK
+  if ((response.status ?? 0) >= 500) return LOGIN_ERROR_SERVER
+  return response.data?.detail || LOGIN_ERROR_INVALID
+}

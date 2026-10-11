@@ -84,20 +84,14 @@ Portfolio/
 - `npm run build` → `tsc -b && vite build` (output dans `frontend/dist/`)
 - `npm run lint` → `eslint .`
 
-### Backend (pas de requirements.txt — à créer idéalement)
+### Backend (`backend/requirements.txt`)
 
-Paquets pip nécessaires :
+Versions **épinglées** (celles validées en production) ; `deploy.sh` exécute `pip install -r backend/requirements.txt`.
+Pour monter de version : modifier le fichier, tester en local, déployer.
 
 ```
-django>=5.2
-djangorestframework
-django-cors-headers
-djangorestframework-simplejwt
-Pillow
-gunicorn
-daphne
-channels
-channels-redis
+Django, djangorestframework, djangorestframework-simplejwt, django-cors-headers,
+channels, channels-redis, daphne, gunicorn, Pillow, python-dotenv, mysqlclient (Linux uniquement)
 ```
 
 ---
@@ -329,6 +323,46 @@ portfolio-deploy ALL=(ALL) NOPASSWD: /usr/bin/mysqldump, /var/www/Portfolio/depl
 l'ajouter d'abord ici** (commande + arguments exacts, sudo matche strictement). Toute commande
 `sudo` non listée bloquera le déploiement en tentant de demander un mot de passe (la CI n'a pas
 de TTY, donc `sudo` échoue silencieusement/timeout plutôt que de la fournir).
+
+### 6.4 bis Permissions des fichiers de configuration (incident du 07/10/2026)
+
+`backend/.env` **est un symlink vers `/etc/portfolio.env`** (créé le 06/04/2026). `settings.py` le
+charge via `python-dotenv` au démarrage : si `/etc/portfolio.env` devient illisible par `www-data`,
+Gunicorn/Daphne ne démarrent plus (502 généralisé), et la CI (`portfolio-deploy`) échoue dès les
+pre-checks. C'est exactement ce qui s'est produit le 07/10/2026 après une intervention sur la
+messagerie qui avait repassé le fichier en `600 root:root`.
+
+Modèle de permissions attendu (appliqué de manière idempotente par `deploy.sh` → `ensure_env_permissions`) :
+
+| Fichier | Owner:Group | Mode | Lecteurs |
+|---|---|---|---|
+| `/etc/portfolio.env` | `root:portfolio` | `640` | `www-data` (Gunicorn/Daphne), `portfolio-deploy` (CI) via le groupe `portfolio` |
+| `backend/.env` | symlink → `/etc/portfolio.env` | — | idem |
+| `backend/media/` | `www-data:www-data` | `755` | uploads (avatars, fichiers JDR) |
+| `frontend/node_modules`, `frontend/dist` | `portfolio-deploy:portfolio-deploy` | — | build CI |
+
+Création initiale du groupe (une seule fois) :
+
+```bash
+groupadd --system portfolio
+usermod -aG portfolio www-data
+usermod -aG portfolio portfolio-deploy
+chown root:portfolio /etc/portfolio.env && chmod 640 /etc/portfolio.env
+```
+
+Garde-fous en place depuis cet incident :
+
+- `settings.py` ne charge `backend/.env` que s'il est lisible (`os.access`) et ignore les `OSError` ;
+  les variables injectées par systemd (`EnvironmentFile=`) restent prioritaires (`override=False`).
+- `deploy.sh` installe `backend/requirements.txt` (versions épinglées) au lieu de `pip install` sans version.
+- `deploy.sh` et le workflow font un **health-check HTTP** (`/api/projects/` → 200) : `systemctl is-active`
+  était un faux positif (le maître Gunicorn vit quelques secondes pendant que les workers plantent).
+- Les pages de connexion JDR/Muscu distinguent désormais une panne serveur (5xx) d'identifiants refusés.
+
+⚠️ **Périmètre de `deploy.sh`** : il ne touche qu'aux fichiers du portfolio listés ci-dessus. Les fichiers
+de la messagerie (`/etc/postfix/mysql-*.cf`, `/etc/dovecot/`, `/var/vmail/`, `/etc/roundcube/`,
+`/etc/opendkim/`) et les autres services ne sont **jamais** modifiés ni redémarrés par le déploiement.
+Réciproquement, toute intervention sur la messagerie ne doit pas modifier les droits de `/etc/portfolio.env`.
 
 ### 6.5 Messagerie (mail.automia.org)
 

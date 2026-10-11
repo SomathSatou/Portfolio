@@ -7,11 +7,34 @@ FRONTEND_DIR="$PROJECT_DIR/frontend"
 VENV="$BACKEND_DIR/.venv/bin"
 DEPLOY_LOG="$PROJECT_DIR/deploy.log"
 ENV_FILE="/etc/portfolio.env"
+# Groupe de lecture de la config portfolio (www-data = Gunicorn/Daphne, portfolio-deploy = CI)
+ENV_GROUP="portfolio"
+APP_USER="www-data"
+DEPLOY_USER="portfolio-deploy"
+HEALTH_URL="http://127.0.0.1:8000/api/projects/"
 
 exec > >(tee -a "$DEPLOY_LOG") 2>&1
 
 echo "=== Déploiement $(date) ==="
 echo "Working directory: $(pwd)"
+
+# Permissions de la config portfolio uniquement (jamais les fichiers mail / autres services).
+# backend/.env est un symlink vers $ENV_FILE : rendre $ENV_FILE lisible suffit.
+ensure_env_permissions() {
+    [ -f "$ENV_FILE" ] || return 0
+    getent group "$ENV_GROUP" >/dev/null || groupadd --system "$ENV_GROUP"
+    for u in "$APP_USER" "$DEPLOY_USER"; do
+        id "$u" >/dev/null 2>&1 && ! id -nG "$u" | tr ' ' '\n' | grep -qx "$ENV_GROUP" && usermod -aG "$ENV_GROUP" "$u"
+    done
+    chown "root:$ENV_GROUP" "$ENV_FILE"
+    chmod 640 "$ENV_FILE"
+    if ! sudo -u "$APP_USER" test -r "$ENV_FILE"; then
+        echo "::error::$ENV_FILE n'est pas lisible par $APP_USER — Gunicorn ne pourra pas démarrer."
+        exit 1
+    fi
+}
+
+ensure_env_permissions
 
 # Load environment variables (DB, email, etc.)
 if [ -f "$ENV_FILE" ]; then
@@ -36,7 +59,7 @@ echo "[2/6] Activating virtualenv..."
 source "$VENV/activate"
 
 echo "[3/6] Installing Python dependencies..."
-pip install -q django djangorestframework django-cors-headers djangorestframework-simplejwt Pillow gunicorn daphne channels channels-redis mysqlclient python-dotenv
+pip install -q -r "$BACKEND_DIR/requirements.txt"
 
 cd "$BACKEND_DIR"
 echo "[4/6] Running migrations..."
@@ -76,7 +99,25 @@ systemctl restart portfolio || {
     echo "::warning::systemctl restart portfolio failed - trying reload..."
     systemctl reload portfolio || echo "::warning::reload also failed"
 }
-systemctl is-active --quiet portfolio && echo "✓ Service portfolio is running" || echo "::warning::Service portfolio is not active"
+
+# Health-check HTTP : "is-active" est un faux positif quand les workers Gunicorn plantent au boot.
+health_check() {
+    local attempt code
+    for attempt in $(seq 1 15); do
+        code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$HEALTH_URL" || echo 000)
+        if [ "$code" = "200" ]; then
+            echo "✓ API portfolio répond (HTTP 200) après ${attempt} tentative(s)"
+            return 0
+        fi
+        sleep 2
+    done
+    echo "::error::L'API portfolio ne répond pas (dernier code HTTP : $code) — $HEALTH_URL"
+    echo "  → Dernières erreurs Gunicorn :"
+    journalctl -u portfolio --since "-2min" --no-pager | grep -E "Error|Traceback" | tail -10 || true
+    return 1
+}
+
+health_check || exit 1
 
 # Auto-install daphne.service from repo if missing
 if [ -f "$PROJECT_DIR/systemd/daphne.service" ]; then

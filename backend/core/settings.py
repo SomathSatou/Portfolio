@@ -20,9 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load .env file if present (dev) — in prod, env vars come from systemd EnvironmentFile
 try:
     from dotenv import load_dotenv
-    load_dotenv(BASE_DIR / '.env')
 except ImportError:
-    pass
+    load_dotenv = None
+
+_DOTENV_PATH = BASE_DIR / '.env'
+if load_dotenv is not None and os.access(_DOTENV_PATH, os.R_OK):
+    try:
+        load_dotenv(_DOTENV_PATH, override=False)
+    except OSError:
+        pass
 
 
 # Quick-start development settings - unsuitable for production

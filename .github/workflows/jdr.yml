@@ -127,3 +127,22 @@ jobs:
             fi
           EOF
           echo "::endgroup::"
+
+      - name: Health check (public API)
+        run: |
+          echo "::group::Public API health check"
+          for attempt in $(seq 1 10); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "https://${{ vars.SSH_AUTOMIA_HOST }}/api/projects/" || echo 000)
+            if [ "$code" = "200" ]; then
+              echo "✓ https://${{ vars.SSH_AUTOMIA_HOST }}/api/projects/ → 200 (tentative $attempt)"
+              echo "::endgroup::"
+              exit 0
+            fi
+            echo "Tentative $attempt : HTTP $code — nouvelle tentative dans 3s"
+            sleep 3
+          done
+          echo "::error::L'API publique ne répond pas (dernier code HTTP : $code)"
+          ssh ${{ vars.SSH_AUTOMIA_USER }}@${{ vars.SSH_AUTOMIA_HOST }} \
+            'journalctl -u portfolio --since "5 minutes ago" --no-pager | grep -E "Error|Traceback" | tail -20' || true
+          echo "::endgroup::"
+          exit 1

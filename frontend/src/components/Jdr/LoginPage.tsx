@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from './useAuth'
+import { loginErrorMessage } from '../../lib/auth'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -19,8 +20,8 @@ export default function LoginPage() {
     try {
       await login(email, password)
       window.location.hash = '#/jdr/dashboard'
-    } catch {
-      setError('Identifiants invalides.')
+    } catch (err: unknown) {
+      setError(loginErrorMessage(err))
     } finally {
       setLoading(false)
     }

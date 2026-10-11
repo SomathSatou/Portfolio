@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from './useAuth'
+import { loginErrorMessage } from '../../lib/auth'
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -20,12 +21,7 @@ export default function LoginPage() {
       await login(email, password)
       window.location.hash = '#/irlrpg/dashboard'
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosErr = err as { response?: { data?: { detail?: string } } }
-        setError(axiosErr.response?.data?.detail || 'Identifiants invalides.')
-      } else {
-        setError('Identifiants invalides.')
-      }
+      setError(loginErrorMessage(err))
     } finally {
       setLoading(false)
     }

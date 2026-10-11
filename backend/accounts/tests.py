@@ -59,6 +59,30 @@ class MeAPITests(APITestCase):
         self.assertEqual(self.user.username, 'newname')
 
 
+class LoginAPITests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='loginuser', email='Login@Example.com', password='testpass123')
+        self.url = reverse('auth-login')
+
+    def test_login_is_case_insensitive_on_email(self):
+        response = self.client.post(self.url, {'email': 'login@example.com', 'password': 'testpass123'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access', response.data)
+
+    def test_wrong_password_returns_401(self):
+        response = self.client.post(self.url, {'email': 'login@example.com', 'password': 'nope'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_unknown_email_returns_401(self):
+        response = self.client.post(self.url, {'email': 'ghost@example.com', 'password': 'testpass123'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_duplicate_email_returns_409_instead_of_500(self):
+        User.objects.create_user(username='twin', email='login@example.com', password='other')
+        response = self.client.post(self.url, {'email': 'login@example.com', 'password': 'testpass123'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
+
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class AvatarAPITests(APITestCase):
     def setUp(self):

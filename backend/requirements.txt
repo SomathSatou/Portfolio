@@ -1,0 +1,15 @@
+# Dépendances backend — versions épinglées (celles validées en production).
+# Mettre à jour explicitement puis redéployer ; deploy.sh installe ce fichier.
+Django==5.2.6
+djangorestframework==3.16.1
+djangorestframework-simplejwt==5.5.1
+django-cors-headers==4.9.0
+channels==4.3.2
+channels-redis==4.3.0
+daphne==4.2.1
+gunicorn==23.0.0
+Pillow==12.1.1
+python-dotenv==1.1.1
+
+# Production uniquement (MariaDB) — nécessite libmariadb-dev / default-libmysqlclient-dev
+mysqlclient==2.2.8; sys_platform == "linux"

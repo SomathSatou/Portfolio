@@ -20,11 +20,9 @@ class JdrLoginView(_BaseLoginView):
         response = super().post(request)
         if response.status_code == 200:
             email = request.data.get('email', '').strip()
-            try:
-                user = User.objects.get(email=email)
+            user = User.objects.filter(email__iexact=email).order_by('id').first()
+            if user is not None:
                 UserProfile.objects.get_or_create(user=user)
-            except User.DoesNotExist:
-                pass
         return response
 
 
