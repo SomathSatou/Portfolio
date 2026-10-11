@@ -38,6 +38,19 @@ def _client_ip(request):
     return forwarded.split(',')[0].strip() if forwarded else request.META.get('REMOTE_ADDR', '')
 
 
+# Branding par app source (header `X-App`) : (nom affiché, chemin reset-password frontend).
+_APP_BRANDING = {
+    'muscu': ('IRL RPG', '#/irlrpg/reset-password'),
+    'idleone': ('IdleOne', '#/idleone/reset-password'),
+}
+_DEFAULT_BRANDING = ('JDR', '#/jdr/reset-password')
+
+
+def _app_branding(request):
+    """Retourne (app_name, reset_password_path) selon le header `X-App`."""
+    return _APP_BRANDING.get(request.headers.get('X-App', ''), _DEFAULT_BRANDING)
+
+
 class RegisterView(generics.CreateAPIView):
     """Inscription d'un nouveau compte (commun JDR + IRL RPG).
 
@@ -61,8 +74,7 @@ class RegisterView(generics.CreateAPIView):
         verify_url = f"{frontend_origin}/#/verify-email?token={verification.token}"
 
         # Détermine l'app source pour personnaliser le message
-        app_header = request.headers.get('X-App', '')
-        app_name = 'IRL RPG' if app_header == 'muscu' else 'JDR'
+        app_name, _ = _app_branding(request)
 
         # Envoie l'email de confirmation
         send_mail(
@@ -207,16 +219,8 @@ class PasswordResetRequestView(APIView):
         token = _token_generator.make_token(user)
 
         frontend_origin = request.headers.get('Origin', 'https://automia.org')
-        reset_url_jdr = f'{frontend_origin}/#/jdr/reset-password?uid={uid}&token={token}'
-        reset_url_muscu = f'{frontend_origin}/#/irlrpg/reset-password?uid={uid}&token={token}'
-
-        app_header = request.headers.get('X-App', '')
-        if app_header == 'muscu':
-            reset_url = reset_url_muscu
-            app_name = 'IRL RPG'
-        else:
-            reset_url = reset_url_jdr
-            app_name = 'JDR'
+        app_name, reset_path = _app_branding(request)
+        reset_url = f'{frontend_origin}/{reset_path}?uid={uid}&token={token}'
 
         send_mail(
             subject=f'[{app_name}] Réinitialisation de votre mot de passe',
@@ -364,8 +368,7 @@ class ResendVerificationEmailView(APIView):
         frontend_origin = request.headers.get('Origin', 'https://automia.org')
         verify_url = f"{frontend_origin}/#/verify-email?token={verification.token}"
 
-        app_header = request.headers.get('X-App', '')
-        app_name = 'IRL RPG' if app_header == 'muscu' else 'JDR'
+        app_name, _ = _app_branding(request)
 
         send_mail(
             subject=f"[{app_name}] Confirmez votre inscription",

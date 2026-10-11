@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'api',
     'jdr',
     'muscu',
+    'idleone',
     'accounts',
 ]
 

@@ -33,6 +33,9 @@ Portfolio/
 │   ├── jdr/                     # Module JDR (API, modèles, services, migrations)
 │   │   ├── services/            # Services métier transactionnels
 │   │   └── management/commands/ # Commandes d’administration, dont audit_jdr_data
+│   ├── idleone/                 # App IdleOne (jeu Unity) — profil + sauvegardes cloud
+│   ├── muscu/                   # App IRL RPG (suivi musculation)
+│   ├── accounts/                # Auth unifiée (User partagé, JWT, vérif email)
 │   └── db.sqlite3               # SQLite dev database
 ├── nginx/             # Nginx configuration (portfolio.conf)
 ├── systemd/           # Systemd service units (portfolio.service, daphne.service)
@@ -93,6 +96,9 @@ npm start
 - `GET  /api/projects/`      — Liste des projets (ReadOnlyModelViewSet)
 - `GET  /api/projects/{id}/`  — Détail projet
 - `POST /api/contact/`        — Envoi de message (`{ name, email, message, honeypot? }`)
+- `POST /api/auth/…`          — Auth unifiée (register, login JWT, refresh, me, password-reset, verify-email)
+- `POST /api/idleone/auth/…`  — Auth IdleOne (délègue au User partagé, crée `IdleOneProfile`)
+- `GET/PUT/DELETE /api/idleone/saves/{slot}/` — Slots de sauvegarde cloud du jeu IdleOne (0-2)
 
 Le frontend proxy `/api` vers `http://127.0.0.1:8000` via Vite (`vite.config.ts`).
 

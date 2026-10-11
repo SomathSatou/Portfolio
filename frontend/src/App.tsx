@@ -5,6 +5,8 @@ import MuscuRouter from './components/Muscu/MuscuRouter'
 import SessionDetailPage from './components/Project/SessionDetailPage'
 import HubPerso from './components/HubPerso'
 import HubAccountPage from './components/HubAccountPage'
+import VerifyEmailPage from './components/Auth/VerifyEmailPage'
+import IdleOneResetPasswordPage from './components/IdleOne/ResetPasswordPage'
 import { Badge, Button, Card, Input, SectionTitle, TextArea, useReveal } from './components/ui'
 import { categories as projectCategories } from './data/projects'
 import { projectBySlug } from './data/projectIndex'
@@ -357,6 +359,16 @@ export default function App() {
   }
   if (route === '#/perso/account' || route === '/perso/account') {
     return <HubAccountPage />
+  }
+
+  // Email verification — cible des liens d'inscription (partagée JDR / IRL RPG / IdleOne)
+  if (route.startsWith('#/verify-email') || route.startsWith('/verify-email')) {
+    return <VerifyEmailPage />
+  }
+
+  // IdleOne routes — reset-password envoyé depuis le jeu Unity
+  if (route.startsWith('#/idleone') || route.startsWith('/idleone')) {
+    return <IdleOneResetPasswordPage />
   }
 
   // IRL RPG routes — rendered outside of the portfolio Layout
