@@ -1104,45 +1104,6 @@
    Portfolio — Hero & Bento
    ════════════════════════════════════════════════════════════ */
 
-/* Blobs dégradés d'arrière-plan du hero */
-.hero-blobs {
-  position: relative;
-  overflow: hidden;
-}
-.hero-blobs::before,
-.hero-blobs::after {
-  content: '';
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
-  pointer-events: none;
-  z-index: 0;
-}
-.hero-blobs::before {
-  width: 420px;
-  height: 420px;
-  top: -120px;
-  left: -100px;
-  background: radial-gradient(circle, rgba(95, 42, 98, 0.28), transparent 70%);
-}
-.hero-blobs::after {
-  width: 360px;
-  height: 360px;
-  bottom: -140px;
-  right: -80px;
-  background: radial-gradient(circle, rgba(160, 222, 89, 0.2), transparent 70%);
-}
-.dark .hero-blobs::before {
-  background: radial-gradient(circle, rgba(169, 118, 195, 0.18), transparent 70%);
-}
-.dark .hero-blobs::after {
-  background: radial-gradient(circle, rgba(160, 222, 89, 0.1), transparent 70%);
-}
-.hero-blobs > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* Fond décoratif continu — blobs fixes visibles sur toute la hauteur de la page */
 .page-backdrop {
   position: fixed;
@@ -1776,7 +1737,7 @@ img, video, svg, figure, iframe, embed, object {
 
 /* Portfolio text readability: remove justified text on small screens */
 @media (max-width: 639px) {
-  .hero-blobs p.text-justify,
+  #cv p.text-justify,
   .prose p {
     text-align: left;
     hyphens: none;

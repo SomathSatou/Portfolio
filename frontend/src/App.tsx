@@ -26,7 +26,7 @@ function getCurrentRoute(): string {
 
 function SectionCV() {
   return (
-    <section id="cv" className="hero-blobs">
+    <section id="cv">
       <div className="section flex flex-col items-center text-center gap-6 animate-fadeIn">
         <div className="relative inline-block">
           <div className="avatar-ring" />
